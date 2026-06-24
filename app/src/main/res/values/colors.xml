@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">#006064</color>
+    <color name="primary_variant">#00363a</color>
+    <color name="on_primary">#FFFFFF</color>
+    <color name="secondary">#00838f</color>
+    <color name="secondary_variant">#005662</color>
+    <color name="on_secondary">#FFFFFF</color>
+    <color name="background">#F5F5F5</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="error">#B00020</color>
+    <color name="beach_accent">#FFD54F</color>
+    <color name="water_accent">#0288D1</color>
+    <color name="advisor_bg">#E0F7FA</color>
+
+    <!-- Compatibility colors -->
+    <color name="purple_200">#BB86FC</color>
+    <color name="purple_500">#6200EE</color>
+    <color name="purple_700">#3700B3</color>
+    <color name="teal_200">#03DAC5</color>
+    <color name="teal_700">#018786</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+</resources>
