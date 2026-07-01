@@ -56,8 +56,12 @@ public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHol
         holder.itemView.setOnClickListener(v -> listener.onBeachClick(beach));
         
         if (beach.getConditions() != null) {
-            holder.conditions.setText(String.format("Water Temp: %.1f°C | Wave Height: %.1fm", 
-                beach.getConditions().getWaterTemperature(), beach.getConditions().getWaveHeight()));
+            String conditionsText = String.format("Air: %s | Waves: %s", 
+                beach.getConditions().getAirTemperature() != null ? beach.getConditions().getAirTemperature() + "°F" : "--",
+                beach.getConditions().getWaveHeight() != null ? beach.getConditions().getWaveHeight() + "m" : "--");
+            holder.conditions.setText(conditionsText);
+        } else {
+            holder.conditions.setText("Conditions unavailable");
         }
 
         if (!beach.getHazards().isEmpty()) {

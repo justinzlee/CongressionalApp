@@ -25,6 +25,7 @@ import com.example.myapplication.ai.SafetyAdvisor;
 import com.example.myapplication.data.BeachRepository;
 import com.example.myapplication.location.LocationService;
 import com.example.myapplication.model.Beach;
+import com.google.android.material.appbar.MaterialToolbar;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,6 @@ import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
     private BeachRepository repository;
-    private SafetyAdvisor advisor;
     private LocationService locationService;
     private BeachAdapter adapter;
     
@@ -41,12 +41,10 @@ public class MainActivity extends AppCompatActivity {
     private AutoCompleteTextView citySearchEditText;
     private AutoCompleteTextView radiusSpinner;
     private Button citySearchButton;
-    private TextView advisorTitle;
-    private TextView advisorText;
     
     private double currentLat = 34.0522; // Default LA
     private double currentLon = -118.2437;
-    private double currentRadius = 10.0;
+    private double currentRadius = 5000.0;
     private boolean hasSearched = false;
 
     private final String[] US_COASTAL_CITIES = {
@@ -69,16 +67,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         repository = new BeachRepository();
-        advisor = new SafetyAdvisor();
         locationService = new LocationService(this);
 
         searchEditText = findViewById(R.id.searchEditText);
         citySearchEditText = findViewById(R.id.citySearchEditText);
         citySearchButton = findViewById(R.id.citySearchButton);
         radiusSpinner = findViewById(R.id.radiusSpinner);
-        advisorTitle = findViewById(R.id.advisorTitle);
-        advisorText = findViewById(R.id.advisorText);
         
         RecyclerView recyclerView = findViewById(R.id.beachRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -92,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
         setupRadiusSpinner();
         setupSearch();
         setupCitySearch();
+        
+        updateList(); // Initial update
         requestLocation();
     }
 
@@ -129,11 +129,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupRadiusSpinner() {
-        String[] options = {"5 miles", "10 miles", "25 miles", "50 miles"};
+        String[] options = {"5 miles", "10 miles", "25 miles", "50 miles", "All"};
         ArrayAdapter<String> radiusAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, options);
         radiusSpinner.setAdapter(radiusAdapter);
-        radiusSpinner.setText(options[1], false); // Default 10
-        currentRadius = 10;
+        radiusSpinner.setText(options[4], false); // Default All
+        currentRadius = 5000;
 
         radiusSpinner.setOnItemClickListener((parent, view, position, id) -> {
             switch (position) {
@@ -141,6 +141,7 @@ public class MainActivity extends AppCompatActivity {
                 case 1: currentRadius = 10; break;
                 case 2: currentRadius = 25; break;
                 case 3: currentRadius = 50; break;
+                case 4: currentRadius = 5000; break;
             }
             updateList();
         });
@@ -191,15 +192,6 @@ public class MainActivity extends AppCompatActivity {
             .collect(Collectors.toList());
 
         adapter.setBeaches(filtered, hasSearched);
-        
-        if (!filtered.isEmpty()) {
-            Beach top = filtered.get(0);
-            advisorTitle.setText("Safety Advisor (" + top.getName() + ")");
-            advisorText.setText(advisor.getAdvice(top.getHazards()));
-        } else {
-            advisorTitle.setText("AI Safety Advisor");
-            advisorText.setText("No beaches found within " + (currentRadius == Double.MAX_VALUE ? "any distance" : currentRadius + " miles") + ".");
-        }
     }
 
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {

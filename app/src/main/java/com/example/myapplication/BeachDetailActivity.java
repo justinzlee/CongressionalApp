@@ -5,6 +5,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
+import com.example.myapplication.ai.SafetyAdvisor;
 import com.example.myapplication.data.BeachRepository;
 import com.example.myapplication.model.Beach;
 import com.google.android.material.appbar.MaterialToolbar;
@@ -31,35 +32,43 @@ public class BeachDetailActivity extends AppCompatActivity {
         }
 
         MaterialToolbar toolbar = findViewById(R.id.detailToolbar);
-        toolbar.setTitle(beach.getName());
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (toolbar != null) {
+            toolbar.setTitle(beach.getName());
+            setSupportActionBar(toolbar);
+            if (getSupportActionBar() != null) {
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            }
+            toolbar.setNavigationOnClickListener(v -> onBackPressed());
         }
-        toolbar.setNavigationOnClickListener(v -> onBackPressed());
 
         ImageView image = findViewById(R.id.beachDetailImage);
         Glide.with(this).load(beach.getImageUrl()).into(image);
 
-        TextView waterTemp = findViewById(R.id.detailWaterTemp);
         TextView airTemp = findViewById(R.id.detailAirTemp);
         TextView waveHeight = findViewById(R.id.detailWaveHeight);
         TextView uvIndex = findViewById(R.id.detailUvIndex);
+        TextView visibility = findViewById(R.id.detailVisibility);
+        TextView windSpeed = findViewById(R.id.detailWindSpeed);
         TextView hazards = findViewById(R.id.detailHazards);
+        TextView advisorSummary = findViewById(R.id.advisorSummary);
 
         if (beach.getConditions() != null) {
-            waterTemp.setText(beach.getConditions().getWaterTemperature() != null ? beach.getConditions().getWaterTemperature() + "°C" : "--");
-            airTemp.setText(beach.getConditions().getAirTemperature() != null ? beach.getConditions().getAirTemperature() + "°C" : "--");
+            airTemp.setText(beach.getConditions().getAirTemperature() != null ? beach.getConditions().getAirTemperature() + "°F" : "--");
             waveHeight.setText(beach.getConditions().getWaveHeight() != null ? beach.getConditions().getWaveHeight() + "m" : "--");
             uvIndex.setText(beach.getConditions().getUvIndex() != null ? beach.getConditions().getUvIndex().toString() : "--");
+            visibility.setText(beach.getConditions().getVisibility() != null ? beach.getConditions().getVisibility() + "km" : "--");
+            windSpeed.setText(beach.getConditions().getWindSpeed() != null ? beach.getConditions().getWindSpeed() + "km/h" : "--");
         }
 
         if (!beach.getHazards().isEmpty()) {
             hazards.setText(beach.getHazards().stream()
-                    .map(h -> h.getType().name() + ": " + h.getDescription())
+                    .map(h -> h.getType().name().replace("_", " ") + ": " + h.getDescription())
                     .collect(Collectors.joining("\n\n")));
         } else {
             hazards.setText("No major hazards reported.");
         }
+
+        SafetyAdvisor advisor = new SafetyAdvisor();
+        advisorSummary.setText(advisor.getBeachSummary(beach));
     }
 }

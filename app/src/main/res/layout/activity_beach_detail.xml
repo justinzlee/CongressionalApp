@@ -3,20 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background">
+    android:background="#F5F5F5">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:theme="@style/ThemeOverlay.MaterialComponents.Dark">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:contentScrim="@color/primary"
+            app:contentScrim="?attr/colorPrimary"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:titleEnabled="true">
+            app:titleEnabled="false">
 
             <ImageView
                 android:id="@+id/beachDetailImage"
@@ -43,13 +43,49 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:padding="20dp">
+
+            <!-- AI Advisor Summary -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardBackgroundColor="#E3F2FD"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:strokeColor="#BBDEFB"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="AI Safety Advisor"
+                        android:textColor="#1976D2"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/advisorSummary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:lineSpacingExtra="4dp"
+                        android:textColor="#333333"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Current Statistics"
-                android:textColor="@color/primary_variant"
+                android:text="Weather Conditions"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -58,53 +94,68 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:cardCornerRadius="16dp"
-                app:cardElevation="4dp"
+                app:cardElevation="2dp"
                 app:strokeWidth="0dp">
 
                 <GridLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:columnCount="2"
-                    android:padding="16dp">
+                    android:padding="12dp">
 
+                    <!-- Air Temp -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
                         android:orientation="vertical"
                         android:padding="8dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Water Temp" android:textColor="#666666" />
-                        <TextView android:id="@+id/detailWaterTemp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="18sp" android:textStyle="bold" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Air Temp" android:textColor="#757575" android:textSize="12sp" />
+                        <TextView android:id="@+id/detailAirTemp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" />
                     </LinearLayout>
 
+                    <!-- UV Index -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
                         android:orientation="vertical"
                         android:padding="8dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Air Temp" android:textColor="#666666" />
-                        <TextView android:id="@+id/detailAirTemp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="18sp" android:textStyle="bold" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="UV Index" android:textColor="#757575" android:textSize="12sp" />
+                        <TextView android:id="@+id/detailUvIndex" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" />
                     </LinearLayout>
 
+                    <!-- Wind Speed -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
                         android:orientation="vertical"
                         android:padding="8dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Wave Height" android:textColor="#666666" />
-                        <TextView android:id="@+id/detailWaveHeight" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="18sp" android:textStyle="bold" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Wind Speed" android:textColor="#757575" android:textSize="12sp" />
+                        <TextView android:id="@+id/detailWindSpeed" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" />
                     </LinearLayout>
 
+                    <!-- Wave Height -->
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_columnWeight="1"
                         android:orientation="vertical"
                         android:padding="8dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="UV Index" android:textColor="#666666" />
-                        <TextView android:id="@+id/detailUvIndex" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textSize="18sp" android:textStyle="bold" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Wave Height" android:textColor="#757575" android:textSize="12sp" />
+                        <TextView android:id="@+id/detailWaveHeight" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <!-- Visibility -->
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_columnWeight="1"
+                        android:orientation="vertical"
+                        android:padding="8dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Visibility" android:textColor="#757575" android:textSize="12sp" />
+                        <TextView android:id="@+id/detailVisibility" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" />
                     </LinearLayout>
                 </GridLayout>
             </com.google.android.material.card.MaterialCardView>
@@ -113,18 +164,29 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Safety Hazards"
-                android:textColor="@color/error"
+                android:text="Safety Alerts"
+                android:textColor="#D32F2F"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/detailHazards"
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:lineSpacingExtra="4dp"
-                android:textColor="#333333" />
+                android:layout_marginTop="12dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:strokeColor="#FFCDD2"
+                app:strokeWidth="1dp">
+
+                <TextView
+                    android:id="@+id/detailHazards"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:lineSpacingExtra="6dp"
+                    android:textColor="#424242"
+                    android:textSize="15sp" />
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
