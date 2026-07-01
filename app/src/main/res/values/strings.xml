@@ -1,3 +1,21 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">BeachSafety US</string>
+    <string name="ai_safety_advisor">AI Safety Advisor</string>
+    <string name="weather_conditions">Weather Conditions</string>
+    <string name="air_temp">Air Temp</string>
+    <string name="uv_index">UV Index</string>
+    <string name="wind_speed">Wind Speed</string>
+    <string name="wave_height">Wave Height</string>
+    <string name="visibility">Visibility</string>
+    <string name="safety_alerts">Safety Alerts</string>
+    <string name="no_major_hazards">No major hazards reported.</string>
+    <string name="conditions_unavailable">Conditions unavailable</string>
+    <string name="select_coastal_city">Select Coastal City</string>
+    <string name="beach_name_hint">Beach Name</string>
+    <string name="radius_hint">Radius</string>
+    <string name="find_nearby_beaches">Find Nearby Beaches</string>
+    <string name="nearby_beaches">Nearby Beaches</string>
+    <string name="distance_away">%1$.2f miles away</string>
+    <string name="hazards_label">Hazards: %1$s</string>
+    <string name="beach_image_desc">Beach Image</string>
 </resources>

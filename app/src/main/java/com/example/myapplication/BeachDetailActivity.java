@@ -9,6 +9,7 @@ import com.example.myapplication.ai.SafetyAdvisor;
 import com.example.myapplication.data.BeachRepository;
 import com.example.myapplication.model.Beach;
 import com.google.android.material.appbar.MaterialToolbar;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class BeachDetailActivity extends AppCompatActivity {
@@ -22,7 +23,7 @@ public class BeachDetailActivity extends AppCompatActivity {
         String beachId = getIntent().getStringExtra(EXTRA_BEACH_ID);
         BeachRepository repository = new BeachRepository();
         Beach beach = repository.getBeaches().stream()
-                .filter(b -> b.getId().equals(beachId))
+                .filter(b -> Objects.equals(b.getId(), beachId))
                 .findFirst()
                 .orElse(null);
 
@@ -38,7 +39,7 @@ public class BeachDetailActivity extends AppCompatActivity {
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
-            toolbar.setNavigationOnClickListener(v -> onBackPressed());
+            toolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
         }
 
         ImageView image = findViewById(R.id.beachDetailImage);
@@ -65,7 +66,7 @@ public class BeachDetailActivity extends AppCompatActivity {
                     .map(h -> h.getType().name().replace("_", " ") + ": " + h.getDescription())
                     .collect(Collectors.joining("\n\n")));
         } else {
-            hazards.setText("No major hazards reported.");
+            hazards.setText(getString(R.string.no_major_hazards));
         }
 
         SafetyAdvisor advisor = new SafetyAdvisor();

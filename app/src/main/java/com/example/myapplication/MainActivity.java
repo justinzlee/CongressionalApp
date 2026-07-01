@@ -8,20 +8,16 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import com.example.myapplication.ai.SafetyAdvisor;
 import com.example.myapplication.data.BeachRepository;
 import com.example.myapplication.location.LocationService;
 import com.example.myapplication.model.Beach;
@@ -182,16 +178,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateList() {
         String query = searchEditText.getText().toString();
-        List<Beach> filtered = repository.searchBeaches(query);
-        
-        filtered = filtered.stream()
+        List<Beach> filteredBeaches = repository.searchBeaches(query).stream()
             .filter(b -> calculateDistance(currentLat, currentLon, b.getLatitude(), b.getLongitude()) <= currentRadius)
             .sorted((b1, b2) -> Double.compare(
                 calculateDistance(currentLat, currentLon, b1.getLatitude(), b1.getLongitude()),
                 calculateDistance(currentLat, currentLon, b2.getLatitude(), b2.getLongitude())))
             .collect(Collectors.toList());
 
-        adapter.setBeaches(filtered, hasSearched);
+        adapter.setBeaches(filteredBeaches, hasSearched);
     }
 
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {

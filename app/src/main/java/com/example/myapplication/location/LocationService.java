@@ -7,9 +7,6 @@ import android.location.Location;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
-
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
@@ -19,7 +16,7 @@ import com.google.android.gms.location.Priority;
 public class LocationService {
     private final FusedLocationProviderClient fusedLocationClient;
     private final Context context;
-    private com.google.android.gms.location.LocationCallback locationCallback;
+    private LocationCallback locationCallback;
 
     public interface LocationUpdateListener {
         void onLocationUpdated(double latitude, double longitude);

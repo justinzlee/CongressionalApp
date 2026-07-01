@@ -2,6 +2,7 @@ package com.example.myapplication.model;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class Hazard {
     private final HazardType type;
@@ -13,7 +14,7 @@ public class Hazard {
         this.type = type;
         this.severity = severity;
         this.description = description;
-        this.treatmentSteps = treatmentSteps != null ? treatmentSteps : Collections.emptyList();
+        this.treatmentSteps = Objects.requireNonNullElse(treatmentSteps, Collections.emptyList());
     }
 
     public HazardType getType() { return type; }

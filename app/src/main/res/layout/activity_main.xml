@@ -14,7 +14,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:title="BeachSafety US"
+            app:title="@string/app_name"
             app:titleTextColor="@color/on_primary" />
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -47,7 +47,7 @@
                         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Select Coastal City"
+                        android:hint="@string/select_coastal_city"
                         app:startIconDrawable="@android:drawable/ic_menu_mylocation">
 
                         <AutoCompleteTextView
@@ -55,6 +55,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:completionThreshold="1"
+                            android:hint="@string/select_coastal_city"
                             android:inputType="text" />
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -62,6 +63,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
+                        android:baselineAligned="false"
                         android:orientation="horizontal">
 
                         <com.google.android.material.textfield.TextInputLayout
@@ -69,7 +71,7 @@
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_weight="1"
-                            android:hint="Beach Name"
+                            android:hint="@string/beach_name_hint"
                             app:startIconDrawable="@android:drawable/ic_menu_search">
 
                             <com.google.android.material.textfield.TextInputEditText
@@ -84,7 +86,7 @@
                             android:layout_width="140dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="8dp"
-                            android:hint="Radius">
+                            android:hint="@string/radius_hint">
 
                             <AutoCompleteTextView
                                 android:id="@+id/radiusSpinner"
@@ -99,18 +101,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="56dp"
                         android:layout_marginTop="12dp"
-                        android:text="Find Nearby Beaches"
+                        android:text="@string/find_nearby_beaches"
                         app:cornerRadius="8dp" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"
-                android:text="Nearby Beaches"
+                android:text="@string/nearby_beaches"
                 android:textColor="@color/primary_variant"
                 android:textSize="20sp"
                 android:textStyle="bold" />

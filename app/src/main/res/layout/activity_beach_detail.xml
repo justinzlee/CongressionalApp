@@ -22,6 +22,7 @@
                 android:id="@+id/beachDetailImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:contentDescription="@string/beach_image_desc"
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="parallax" />
 
@@ -65,7 +66,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="AI Safety Advisor"
+                        android:text="@string/ai_safety_advisor"
                         android:textColor="#1976D2"
                         android:textSize="18sp"
                         android:textStyle="bold" />
@@ -84,7 +85,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Weather Conditions"
+                android:text="@string/weather_conditions"
                 android:textColor="?attr/colorPrimary"
                 android:textSize="20sp"
                 android:textStyle="bold" />
@@ -110,7 +111,7 @@
                         android:layout_columnWeight="1"
                         android:orientation="vertical"
                         android:padding="8dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Air Temp" android:textColor="#757575" android:textSize="12sp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/air_temp" android:textColor="#757575" android:textSize="12sp" />
                         <TextView android:id="@+id/detailAirTemp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" />
                     </LinearLayout>
 
@@ -121,7 +122,7 @@
                         android:layout_columnWeight="1"
                         android:orientation="vertical"
                         android:padding="8dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="UV Index" android:textColor="#757575" android:textSize="12sp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/uv_index" android:textColor="#757575" android:textSize="12sp" />
                         <TextView android:id="@+id/detailUvIndex" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" />
                     </LinearLayout>
 
@@ -132,7 +133,7 @@
                         android:layout_columnWeight="1"
                         android:orientation="vertical"
                         android:padding="8dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Wind Speed" android:textColor="#757575" android:textSize="12sp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/wind_speed" android:textColor="#757575" android:textSize="12sp" />
                         <TextView android:id="@+id/detailWindSpeed" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" />
                     </LinearLayout>
 
@@ -143,7 +144,7 @@
                         android:layout_columnWeight="1"
                         android:orientation="vertical"
                         android:padding="8dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Wave Height" android:textColor="#757575" android:textSize="12sp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/wave_height" android:textColor="#757575" android:textSize="12sp" />
                         <TextView android:id="@+id/detailWaveHeight" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" />
                     </LinearLayout>
 
@@ -154,7 +155,7 @@
                         android:layout_columnWeight="1"
                         android:orientation="vertical"
                         android:padding="8dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Visibility" android:textColor="#757575" android:textSize="12sp" />
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/visibility" android:textColor="#757575" android:textSize="12sp" />
                         <TextView android:id="@+id/detailVisibility" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" />
                     </LinearLayout>
                 </GridLayout>
@@ -164,7 +165,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Safety Alerts"
+                android:text="@string/safety_alerts"
                 android:textColor="#D32F2F"
                 android:textSize="20sp"
                 android:textStyle="bold" />

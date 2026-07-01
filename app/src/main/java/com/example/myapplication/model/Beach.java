@@ -2,6 +2,7 @@ package com.example.myapplication.model;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 public class Beach {
     private final String id;
@@ -18,9 +19,9 @@ public class Beach {
         this.name = name;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.hazards = hazards != null ? hazards : Collections.emptyList();
+        this.hazards = Objects.requireNonNullElse(hazards, Collections.emptyList());
         this.conditions = conditions;
-        this.nearestHelp = nearestHelp != null ? nearestHelp : Collections.emptyList();
+        this.nearestHelp = Objects.requireNonNullElse(nearestHelp, Collections.emptyList());
         this.imageUrl = imageUrl;
     }
 

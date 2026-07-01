@@ -52,12 +52,4 @@ public class SafetyAdvisor {
 
         return summary.toString();
     }
-
-    // Keep the old method signature for compatibility if needed elsewhere, but mark as deprecated or update it
-    public String getAdvice(List<Hazard> hazards) {
-        if (hazards == null || hazards.isEmpty()) {
-            return "Conditions look great! Still, always swim between the flags.";
-        }
-        return "Multiple hazards detected. Please check the beach details for a full AI safety summary.";
-    }
 }

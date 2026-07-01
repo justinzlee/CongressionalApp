@@ -7,8 +7,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.model.Beach;
-import com.example.myapplication.model.Hazard;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
 
 public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHolder> {
@@ -56,30 +56,30 @@ public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHol
         holder.itemView.setOnClickListener(v -> listener.onBeachClick(beach));
         
         if (beach.getConditions() != null) {
-            String conditionsText = String.format("Air: %s | Waves: %s", 
+            String conditionsText = String.format(Locale.getDefault(), "Air: %s | Waves: %s", 
                 beach.getConditions().getAirTemperature() != null ? beach.getConditions().getAirTemperature() + "°F" : "--",
                 beach.getConditions().getWaveHeight() != null ? beach.getConditions().getWaveHeight() + "m" : "--");
             holder.conditions.setText(conditionsText);
         } else {
-            holder.conditions.setText("Conditions unavailable");
+            holder.conditions.setText(holder.itemView.getContext().getString(R.string.conditions_unavailable));
         }
 
         if (!beach.getHazards().isEmpty()) {
-            String hazards = beach.getHazards().stream()
-                .map(h -> h.getType().name())
+            String hazardNames = beach.getHazards().stream()
+                .map(h -> h.getType().name().replace("_", " "))
                 .collect(Collectors.joining(", "));
-            holder.hazards.setText("Hazards: " + hazards);
+            holder.hazards.setText(holder.itemView.getContext().getString(R.string.hazards_label, hazardNames));
         } else {
-            holder.hazards.setText("No major hazards reported.");
+            holder.hazards.setText(holder.itemView.getContext().getString(R.string.no_major_hazards));
         }
 
         if (!beach.getNearestHelp().isEmpty()) {
-            holder.help.setText("Nearest Help: " + beach.getNearestHelp().get(0).getName());
+            holder.help.setText(String.format(Locale.getDefault(), "Nearest Help: %s", beach.getNearestHelp().get(0).getName()));
         }
 
         if (isSearching) {
             double distance = calculateDistance(userLat, userLon, beach.getLatitude(), beach.getLongitude());
-            holder.distance.setText(String.format("%.2f miles away", distance));
+            holder.distance.setText(holder.itemView.getContext().getString(R.string.distance_away, distance));
             holder.distance.setVisibility(View.VISIBLE);
         } else {
             holder.distance.setVisibility(View.GONE);
@@ -102,10 +102,10 @@ public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHol
         return earthRadius * c;
     }
 
-    static class BeachViewHolder extends RecyclerView.ViewHolder {
-        TextView name, conditions, hazards, help, distance;
+    public static class BeachViewHolder extends RecyclerView.ViewHolder {
+        public TextView name, conditions, hazards, help, distance;
 
-        BeachViewHolder(@NonNull View itemView) {
+        public BeachViewHolder(@NonNull View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.beachName);
             conditions = itemView.findViewById(R.id.beachConditions);
