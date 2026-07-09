@@ -8,12 +8,14 @@ import com.bumptech.glide.Glide;
 import com.example.myapplication.ai.SafetyAdvisor;
 import com.example.myapplication.data.BeachRepository;
 import com.example.myapplication.model.Beach;
+import com.example.myapplication.network.WeatherClient;
 import com.google.android.material.appbar.MaterialToolbar;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class BeachDetailActivity extends AppCompatActivity {
     public static final String EXTRA_BEACH_ID = "extra_beach_id";
+    private WeatherClient weatherClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,10 +57,10 @@ public class BeachDetailActivity extends AppCompatActivity {
 
         if (beach.getConditions() != null) {
             airTemp.setText(beach.getConditions().getAirTemperature() != null ? beach.getConditions().getAirTemperature() + "°F" : "--");
-            waveHeight.setText(beach.getConditions().getWaveHeight() != null ? beach.getConditions().getWaveHeight() + "m" : "--");
+            waveHeight.setText(beach.getConditions().getWaveHeight() != null ? beach.getConditions().getWaveHeight() + " ft" : "--");
             uvIndex.setText(beach.getConditions().getUvIndex() != null ? beach.getConditions().getUvIndex().toString() : "--");
-            visibility.setText(beach.getConditions().getVisibility() != null ? beach.getConditions().getVisibility() + "km" : "--");
-            windSpeed.setText(beach.getConditions().getWindSpeed() != null ? beach.getConditions().getWindSpeed() + "km/h" : "--");
+            visibility.setText(beach.getConditions().getVisibility() != null ? beach.getConditions().getVisibility() + " mi" : "--");
+            windSpeed.setText(beach.getConditions().getWindSpeed() != null ? beach.getConditions().getWindSpeed() + " mph" : "--");
         }
 
         if (!beach.getHazards().isEmpty()) {
@@ -69,7 +71,40 @@ public class BeachDetailActivity extends AppCompatActivity {
             hazards.setText(getString(R.string.no_major_hazards));
         }
 
-        SafetyAdvisor advisor = new SafetyAdvisor();
-        advisorSummary.setText(advisor.getBeachSummary(beach));
+        weatherClient = new WeatherClient();
+        fetchRealTimeData(beach, airTemp, waveHeight, uvIndex, visibility, windSpeed, advisorSummary);
+    }
+
+    private void fetchRealTimeData(Beach beach, TextView airTemp, TextView waveHeight, TextView uvIndex, 
+                                   TextView visibility, TextView windSpeed, TextView advisorSummary) {
+        weatherClient.getBeachConditions(beach.getLatitude(), beach.getLongitude(), new WeatherClient.WeatherCallback() {
+            @Override
+            public void onSuccess(com.example.myapplication.model.BeachConditions conditions) {
+                runOnUiThread(() -> {
+                    airTemp.setText(String.format(java.util.Locale.US, "%.1f°F", conditions.getAirTemperature()));
+                    waveHeight.setText(String.format(java.util.Locale.US, "%.1f ft", conditions.getWaveHeight()));
+                    uvIndex.setText(String.valueOf(conditions.getUvIndex()));
+                    visibility.setText(String.format(java.util.Locale.US, "%.1f mi", conditions.getVisibility()));
+                    windSpeed.setText(String.format(java.util.Locale.US, "%.1f mph", conditions.getWindSpeed()));
+
+                    // Update AI Summary with real-time data
+                    SafetyAdvisor advisor = new SafetyAdvisor();
+                    // We need a beach object with the updated conditions for the summary
+                    Beach updatedBeach = new Beach(beach.getId(), beach.getName(), beach.getLatitude(), 
+                        beach.getLongitude(), beach.getHazards(), conditions, beach.getNearestHelp(), beach.getImageUrl());
+                    advisorSummary.setText(advisor.getBeachSummary(updatedBeach));
+                });
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                runOnUiThread(() -> {
+                    // Fallback to static data if available
+                    if (beach.getConditions() != null) {
+                        // ... already set in onCreate
+                    }
+                });
+            }
+        });
     }
 }

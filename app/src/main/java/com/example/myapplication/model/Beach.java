@@ -33,4 +33,8 @@ public class Beach {
     public BeachConditions getConditions() { return conditions; }
     public List<HelpLocation> getNearestHelp() { return nearestHelp; }
     public String getImageUrl() { return imageUrl; }
+
+    public Beach withConditions(BeachConditions newConditions) {
+        return new Beach(id, name, latitude, longitude, hazards, newConditions, nearestHelp, imageUrl);
+    }
 }

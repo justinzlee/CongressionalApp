@@ -18,10 +18,10 @@ public class SafetyAdvisor {
                    .append(conditions.getAirTemperature()).append("°F with a UV index of ")
                    .append(conditions.getUvIndex()).append(". ");
             summary.append("Sea conditions show ")
-                   .append(conditions.getWaveHeight()).append("m waves and wind at ")
-                   .append(conditions.getWindSpeed()).append("km/h. ");
+                   .append(String.format(java.util.Locale.US, "%.1f", conditions.getWaveHeight())).append(" ft waves and wind at ")
+                   .append(conditions.getWindSpeed()).append(" mph. ");
             summary.append("Visibility is currently at ")
-                   .append(conditions.getVisibility()).append("km.\n\n");
+                   .append(String.format(java.util.Locale.US, "%.1f", conditions.getVisibility())).append(" mi.\n\n");
         }
 
         List<Hazard> hazards = beach.getHazards();

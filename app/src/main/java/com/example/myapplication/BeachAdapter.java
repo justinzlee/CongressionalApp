@@ -58,7 +58,7 @@ public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHol
         if (beach.getConditions() != null) {
             String conditionsText = String.format(Locale.getDefault(), "Air: %s | Waves: %s", 
                 beach.getConditions().getAirTemperature() != null ? beach.getConditions().getAirTemperature() + "°F" : "--",
-                beach.getConditions().getWaveHeight() != null ? beach.getConditions().getWaveHeight() + "m" : "--");
+                beach.getConditions().getWaveHeight() != null ? String.format(Locale.getDefault(), "%.1f ft", beach.getConditions().getWaveHeight()) : "--");
             holder.conditions.setText(conditionsText);
         } else {
             holder.conditions.setText(holder.itemView.getContext().getString(R.string.conditions_unavailable));

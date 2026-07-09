@@ -87,6 +87,8 @@ public class MainActivity extends AppCompatActivity {
         setupSearch();
         setupCitySearch();
         
+        repository.refreshAllData(() -> runOnUiThread(this::updateList));
+        
         updateList(); // Initial update
         requestLocation();
     }

@@ -32,6 +32,8 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
     implementation(libs.play.services.location)
+    implementation(libs.okhttp)
+    implementation(libs.gson)
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
     testImplementation(libs.junit)

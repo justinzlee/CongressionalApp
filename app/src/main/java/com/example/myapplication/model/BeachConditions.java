@@ -1,11 +1,11 @@
 package com.example.myapplication.model;
 
 public class BeachConditions {
-    private final Double airTemperature;
+    private final Double airTemperature; // °F
     private final Integer uvIndex;
-    private final Double windSpeed;
-    private final Double waveHeight;
-    private final Double visibility;
+    private final Double windSpeed;      // mph
+    private final Double waveHeight;     // feet
+    private final Double visibility;     // miles
 
     public BeachConditions(Double airTemperature, Integer uvIndex, Double windSpeed, Double waveHeight, Double visibility) {
         this.airTemperature = airTemperature;
