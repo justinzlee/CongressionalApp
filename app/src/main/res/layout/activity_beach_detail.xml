@@ -46,7 +46,7 @@
             android:orientation="vertical"
             android:padding="20dp">
 
-            <!-- AI Advisor Summary -->
+            <!-- Advisor Summary -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

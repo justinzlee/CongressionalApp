@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">BeachSafety US</string>
-    <string name="ai_safety_advisor">AI Safety Advisor</string>
+    <string name="ai_safety_advisor">Safety Advisor</string>
     <string name="weather_conditions">Weather Conditions</string>
     <string name="air_temp">Air Temp</string>
     <string name="uv_index">UV Index</string>

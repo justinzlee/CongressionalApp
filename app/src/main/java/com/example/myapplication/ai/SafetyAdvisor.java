@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 public class SafetyAdvisor {
     public String getBeachSummary(Beach beach) {
         StringBuilder summary = new StringBuilder();
-        summary.append("AI Safety Summary for ").append(beach.getName()).append(":\n\n");
+        summary.append("Safety Summary for ").append(beach.getName()).append(":\n\n");
 
         BeachConditions conditions = beach.getConditions();
         if (conditions != null) {

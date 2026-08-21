@@ -87,7 +87,7 @@ public class BeachDetailActivity extends AppCompatActivity {
                     visibility.setText(String.format(java.util.Locale.US, "%.1f mi", conditions.getVisibility()));
                     windSpeed.setText(String.format(java.util.Locale.US, "%.1f mph", conditions.getWindSpeed()));
 
-                    // Update AI Summary with real-time data
+                    // Update Safety Summary with real-time data
                     SafetyAdvisor advisor = new SafetyAdvisor();
                     // We need a beach object with the updated conditions for the summary
                     Beach updatedBeach = new Beach(beach.getId(), beach.getName(), beach.getLatitude(), 
