@@ -112,7 +112,7 @@
                         android:orientation="vertical"
                         android:padding="8dp">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/air_temp" android:textColor="#757575" android:textSize="12sp" />
-                        <TextView android:id="@+id/detailAirTemp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" />
+                        <TextView android:id="@+id/detailAirTemp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" app:drawableStartCompat="@drawable/ic_thermometer" android:drawablePadding="8dp" app:drawableTint="#F57C00" />
                     </LinearLayout>
 
                     <!-- UV Index -->
@@ -123,7 +123,7 @@
                         android:orientation="vertical"
                         android:padding="8dp">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/uv_index" android:textColor="#757575" android:textSize="12sp" />
-                        <TextView android:id="@+id/detailUvIndex" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" />
+                        <TextView android:id="@+id/detailUvIndex" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" app:drawableStartCompat="@drawable/ic_sun" android:drawablePadding="8dp" app:drawableTint="#FBC02D" />
                     </LinearLayout>
 
                     <!-- Wind Speed -->
@@ -134,7 +134,7 @@
                         android:orientation="vertical"
                         android:padding="8dp">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/wind_speed" android:textColor="#757575" android:textSize="12sp" />
-                        <TextView android:id="@+id/detailWindSpeed" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" />
+                        <TextView android:id="@+id/detailWindSpeed" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" app:drawableStartCompat="@drawable/ic_wind" android:drawablePadding="8dp" app:drawableTint="#0288D1" />
                     </LinearLayout>
 
                     <!-- Wave Height -->
@@ -145,7 +145,7 @@
                         android:orientation="vertical"
                         android:padding="8dp">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/wave_height" android:textColor="#757575" android:textSize="12sp" />
-                        <TextView android:id="@+id/detailWaveHeight" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" />
+                        <TextView android:id="@+id/detailWaveHeight" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" app:drawableStartCompat="@drawable/ic_wave" android:drawablePadding="8dp" app:drawableTint="#01579B" />
                     </LinearLayout>
 
                     <!-- Visibility -->
@@ -156,7 +156,7 @@
                         android:orientation="vertical"
                         android:padding="8dp">
                         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/visibility" android:textColor="#757575" android:textSize="12sp" />
-                        <TextView android:id="@+id/detailVisibility" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" />
+                        <TextView android:id="@+id/detailVisibility" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" app:drawableStartCompat="@drawable/ic_visibility" android:drawablePadding="8dp" app:drawableTint="#455A64" />
                     </LinearLayout>
                 </GridLayout>
             </com.google.android.material.card.MaterialCardView>

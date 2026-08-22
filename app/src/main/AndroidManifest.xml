@@ -31,6 +31,12 @@
             android:exported="false"
             android:theme="@style/Theme.MyApplication" />
 
+        <activity
+            android:name=".SettingsActivity"
+            android:exported="false"
+            android:label="Settings"
+            android:theme="@style/Theme.MyApplication" />
+
     </application>
 
 </manifest>

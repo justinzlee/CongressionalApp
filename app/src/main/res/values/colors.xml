@@ -12,6 +12,14 @@
     <color name="beach_accent">#FFD54F</color>
     <color name="water_accent">#0288D1</color>
     <color name="advisor_bg">#E0F7FA</color>
+    <color name="safe_green">#2E7D32</color>
+
+    <!-- UV Index Colors -->
+    <color name="uv_low">#2E7D32</color>
+    <color name="uv_moderate">#FBC02D</color>
+    <color name="uv_high">#F57C00</color>
+    <color name="uv_very_high">#D32F2F</color>
+    <color name="uv_extreme">#7B1FA2</color>
 
     <!-- Compatibility colors -->
     <color name="purple_200">#BB86FC</color>

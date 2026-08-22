@@ -1,12 +1,19 @@
 package com.example.myapplication;
 
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import com.bumptech.glide.Glide;
 import com.example.myapplication.model.Beach;
+import com.example.myapplication.model.BeachConditions;
+import com.example.myapplication.util.UnitConverter;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
@@ -55,21 +62,50 @@ public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHol
         holder.name.setText(beach.getName());
         holder.itemView.setOnClickListener(v -> listener.onBeachClick(beach));
         
-        if (beach.getConditions() != null) {
+        Glide.with(holder.itemView.getContext())
+            .load(beach.getImageUrl())
+            .centerCrop()
+            .placeholder(R.color.water_accent)
+            .into(holder.beachImage);
+
+        BeachConditions conditions = beach.getConditions();
+        if (conditions != null) {
+            String tempText = UnitConverter.formatTemperature(holder.itemView.getContext(), conditions.getAirTemperature());
+            String waveText = UnitConverter.formatWaveHeight(holder.itemView.getContext(), conditions.getWaveHeight());
             String conditionsText = String.format(Locale.getDefault(), "Air: %s | Waves: %s", 
-                beach.getConditions().getAirTemperature() != null ? beach.getConditions().getAirTemperature() + "°F" : "--",
-                beach.getConditions().getWaveHeight() != null ? String.format(Locale.getDefault(), "%.1f ft", beach.getConditions().getWaveHeight()) : "--");
+                tempText,
+                waveText);
             holder.conditions.setText(conditionsText);
+
+            // UV Badge setup
+            if (conditions.getUvIndex() != null) {
+                holder.uvBadgeContainer.setVisibility(View.VISIBLE);
+                holder.uvValue.setText(String.valueOf(conditions.getUvIndex()));
+                holder.uvLabel.setText(conditions.getUvLabel());
+                
+                int color = ContextCompat.getColor(holder.itemView.getContext(), conditions.getUvColorResId());
+                GradientDrawable drawable = (GradientDrawable) holder.uvCircle.getBackground().mutate();
+                drawable.setColor(color);
+                int strokeWidth = (int) (2 * holder.itemView.getContext().getResources().getDisplayMetrics().density);
+                drawable.setStroke(strokeWidth, Color.BLACK);
+                
+                holder.uvValue.setTextColor(color);
+            } else {
+                holder.uvBadgeContainer.setVisibility(View.GONE);
+            }
         } else {
             holder.conditions.setText(holder.itemView.getContext().getString(R.string.conditions_unavailable));
+            holder.uvBadgeContainer.setVisibility(View.GONE);
         }
 
         if (!beach.getHazards().isEmpty()) {
+            holder.hazards.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.error));
             String hazardNames = beach.getHazards().stream()
                 .map(h -> h.getType().name().replace("_", " "))
                 .collect(Collectors.joining(", "));
             holder.hazards.setText(holder.itemView.getContext().getString(R.string.hazards_label, hazardNames));
         } else {
+            holder.hazards.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.safe_green));
             holder.hazards.setText(holder.itemView.getContext().getString(R.string.no_major_hazards));
         }
 
@@ -103,15 +139,22 @@ public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHol
     }
 
     public static class BeachViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, conditions, hazards, help, distance;
+        public TextView name, conditions, hazards, help, distance, uvValue, uvLabel;
+        public ImageView beachImage;
+        public View uvCircle, uvBadgeContainer;
 
         public BeachViewHolder(@NonNull View itemView) {
             super(itemView);
+            beachImage = itemView.findViewById(R.id.beachImage);
             name = itemView.findViewById(R.id.beachName);
             conditions = itemView.findViewById(R.id.beachConditions);
             hazards = itemView.findViewById(R.id.beachHazards);
             help = itemView.findViewById(R.id.beachHelp);
             distance = itemView.findViewById(R.id.beachDistance);
+            uvBadgeContainer = itemView.findViewById(R.id.uvBadgeContainer);
+            uvCircle = itemView.findViewById(R.id.uvCircle);
+            uvValue = itemView.findViewById(R.id.uvValue);
+            uvLabel = itemView.findViewById(R.id.uvLabel);
         }
     }
 }

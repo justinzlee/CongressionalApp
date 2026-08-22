@@ -51,18 +51,19 @@ public class BeachRepository {
         for (int i = 0; i < beaches.size(); i++) {
             final int index = i;
             Beach beach = beaches.get(i);
+            
+            // Refresh Weather
             weatherClient.getBeachConditions(beach.getLatitude(), beach.getLongitude(), new WeatherClient.WeatherCallback() {
                 @Override
                 public void onSuccess(BeachConditions conditions) {
                     synchronized (beaches) {
-                        beaches.set(index, beach.withConditions(conditions));
+                        beaches.set(index, beaches.get(index).withConditions(conditions));
                     }
                     if (listener != null) listener.onDataRefreshed();
                 }
 
                 @Override
                 public void onFailure(Exception e) {
-                    // Fail silently or log
                 }
             });
         }

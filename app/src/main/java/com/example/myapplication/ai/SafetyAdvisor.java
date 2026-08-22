@@ -4,24 +4,31 @@ import com.example.myapplication.model.Beach;
 import com.example.myapplication.model.BeachConditions;
 import com.example.myapplication.model.Hazard;
 import com.example.myapplication.model.HelpLocation;
+import com.example.myapplication.util.UnitConverter;
+import android.content.Context;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class SafetyAdvisor {
-    public String getBeachSummary(Beach beach) {
+    public String getBeachSummary(Context context, Beach beach) {
         StringBuilder summary = new StringBuilder();
         summary.append("Safety Summary for ").append(beach.getName()).append(":\n\n");
 
         BeachConditions conditions = beach.getConditions();
         if (conditions != null) {
+            String tempText = UnitConverter.formatTemperature(context, conditions.getAirTemperature());
+            String windText = UnitConverter.formatWindSpeed(context, conditions.getWindSpeed());
+            String waveText = UnitConverter.formatWaveHeight(context, conditions.getWaveHeight());
+            String visibilityText = UnitConverter.formatVisibility(context, conditions.getVisibility());
+            
             summary.append("Weather: The air temperature is ")
-                   .append(conditions.getAirTemperature()).append("°F with a UV index of ")
-                   .append(conditions.getUvIndex()).append(". ");
+                   .append(tempText).append(" with a UV index of ")
+                   .append(conditions.getFormattedUvIndex()).append(". ");
             summary.append("Sea conditions show ")
-                   .append(String.format(java.util.Locale.US, "%.1f", conditions.getWaveHeight())).append(" ft waves and wind at ")
-                   .append(conditions.getWindSpeed()).append(" mph. ");
+                   .append(waveText).append(" waves and wind at ")
+                   .append(windText).append(". ");
             summary.append("Visibility is currently at ")
-                   .append(String.format(java.util.Locale.US, "%.1f", conditions.getVisibility())).append(" mi.\n\n");
+                   .append(visibilityText).append(".\n\n");
         }
 
         List<Hazard> hazards = beach.getHazards();

@@ -4,11 +4,14 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.TextViewCompat;
 import com.bumptech.glide.Glide;
 import com.example.myapplication.ai.SafetyAdvisor;
 import com.example.myapplication.data.BeachRepository;
 import com.example.myapplication.model.Beach;
 import com.example.myapplication.network.WeatherClient;
+import com.example.myapplication.util.UnitConverter;
 import com.google.android.material.appbar.MaterialToolbar;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -56,18 +59,16 @@ public class BeachDetailActivity extends AppCompatActivity {
         TextView advisorSummary = findViewById(R.id.advisorSummary);
 
         if (beach.getConditions() != null) {
-            airTemp.setText(beach.getConditions().getAirTemperature() != null ? beach.getConditions().getAirTemperature() + "°F" : "--");
-            waveHeight.setText(beach.getConditions().getWaveHeight() != null ? beach.getConditions().getWaveHeight() + " ft" : "--");
-            uvIndex.setText(beach.getConditions().getUvIndex() != null ? beach.getConditions().getUvIndex().toString() : "--");
-            visibility.setText(beach.getConditions().getVisibility() != null ? beach.getConditions().getVisibility() + " mi" : "--");
-            windSpeed.setText(beach.getConditions().getWindSpeed() != null ? beach.getConditions().getWindSpeed() + " mph" : "--");
+            updateConditionsDisplay(beach.getConditions(), airTemp, waveHeight, uvIndex, visibility, windSpeed);
         }
 
         if (!beach.getHazards().isEmpty()) {
+            hazards.setTextColor(ContextCompat.getColor(this, R.color.error));
             hazards.setText(beach.getHazards().stream()
                     .map(h -> h.getType().name().replace("_", " ") + ": " + h.getDescription())
                     .collect(Collectors.joining("\n\n")));
         } else {
+            hazards.setTextColor(ContextCompat.getColor(this, R.color.safe_green));
             hazards.setText(getString(R.string.no_major_hazards));
         }
 
@@ -81,18 +82,14 @@ public class BeachDetailActivity extends AppCompatActivity {
             @Override
             public void onSuccess(com.example.myapplication.model.BeachConditions conditions) {
                 runOnUiThread(() -> {
-                    airTemp.setText(String.format(java.util.Locale.US, "%.1f°F", conditions.getAirTemperature()));
-                    waveHeight.setText(String.format(java.util.Locale.US, "%.1f ft", conditions.getWaveHeight()));
-                    uvIndex.setText(String.valueOf(conditions.getUvIndex()));
-                    visibility.setText(String.format(java.util.Locale.US, "%.1f mi", conditions.getVisibility()));
-                    windSpeed.setText(String.format(java.util.Locale.US, "%.1f mph", conditions.getWindSpeed()));
+                    updateConditionsDisplay(conditions, airTemp, waveHeight, uvIndex, visibility, windSpeed);
 
                     // Update Safety Summary with real-time data
                     SafetyAdvisor advisor = new SafetyAdvisor();
                     // We need a beach object with the updated conditions for the summary
                     Beach updatedBeach = new Beach(beach.getId(), beach.getName(), beach.getLatitude(), 
                         beach.getLongitude(), beach.getHazards(), conditions, beach.getNearestHelp(), beach.getImageUrl());
-                    advisorSummary.setText(advisor.getBeachSummary(updatedBeach));
+                    advisorSummary.setText(advisor.getBeachSummary(BeachDetailActivity.this, updatedBeach));
                 });
             }
 
@@ -106,5 +103,41 @@ public class BeachDetailActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private void updateConditionsDisplay(com.example.myapplication.model.BeachConditions conditions, 
+                                        TextView airTemp, TextView waveHeight, TextView uvIndex, 
+                                        TextView visibility, TextView windSpeed) {
+        if (conditions.getAirTemperature() != null) {
+            airTemp.setText(UnitConverter.formatTemperature(this, conditions.getAirTemperature()));
+            
+            // Dynamic Thermometer
+            int iconRes;
+            int color;
+            double temp = conditions.getAirTemperature();
+            if (temp < 60) {
+                iconRes = R.drawable.ic_thermometer_cold;
+                color = android.graphics.Color.parseColor("#03A9F4"); // Light Blue
+            } else if (temp < 85) {
+                iconRes = R.drawable.ic_thermometer_warm;
+                color = android.graphics.Color.parseColor("#F57C00"); // Orange
+            } else {
+                iconRes = R.drawable.ic_thermometer_hot;
+                color = android.graphics.Color.parseColor("#D32F2F"); // Red
+            }
+            
+            airTemp.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, 0, 0);
+            TextViewCompat.setCompoundDrawableTintList(airTemp, android.content.res.ColorStateList.valueOf(color));
+        } else {
+            airTemp.setText("--");
+        }
+
+        waveHeight.setText(UnitConverter.formatWaveHeight(this, conditions.getWaveHeight()));
+        
+        uvIndex.setText(conditions.getFormattedUvIndex());
+        
+        visibility.setText(UnitConverter.formatVisibility(this, conditions.getVisibility()));
+        
+        windSpeed.setText(UnitConverter.formatWindSpeed(this, conditions.getWindSpeed()));
     }
 }
