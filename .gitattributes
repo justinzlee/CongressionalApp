@@ -1,2 +1,11 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Gradle wrapper: force LF endings and keep gradlew executable regardless
+# of contributor OS/editor settings (Windows CRLF or a chmod slip broke
+# ./gradlew before)
+/gradlew text eol=lf
+/gradlew.bat text eol=crlf
+/gradle/wrapper/gradle-wrapper.jar binary
+/gradle/wrapper/gradle-wrapper.properties text eol=lf
+/gradle/gradle-daemon-jvm.properties text eol=lf
