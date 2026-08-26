@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -26,6 +27,7 @@ import com.example.myapplication.data.BeachRepository;
 import com.example.myapplication.location.LocationService;
 import com.example.myapplication.model.Beach;
 import com.example.myapplication.util.EdgeToEdge;
+import com.example.myapplication.util.UnitConverter;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import java.io.IOException;
@@ -48,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 
     private double currentLat = 34.0522; // Default LA
     private double currentLon = -118.2437;
-    private double currentRadius = 5000.0;
+    private double currentRadius = Double.MAX_VALUE; // Default All
     private boolean hasSearched = false;
 
     private final String[] US_COASTAL_CITIES = {
@@ -74,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        EdgeToEdge.applyTopInset(findViewById(R.id.heroContainer));
+        EdgeToEdge.applyTopInset(findViewById(R.id.appBarLayout));
         EdgeToEdge.applyBottomInset(findViewById(R.id.mainScrollView));
 
         repository = new BeachRepository();
@@ -143,6 +145,8 @@ public class MainActivity extends AppCompatActivity {
                 currentLat = address.getLatitude();
                 currentLon = address.getLongitude();
                 hasSearched = true;
+                currentRadius = Double.MAX_VALUE; // Reset to "All"
+                radiusToggleGroup.check(R.id.radiusAll);
                 adapter.updateUserLocation(currentLat, currentLon);
                 updateList();
                 Toast.makeText(this, "Searching near: " + cityName, Toast.LENGTH_SHORT).show();
@@ -155,15 +159,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupRadiusSpinner() {
-        currentRadius = 5000; // Default All
+        currentRadius = Double.MAX_VALUE; // Default All
+        radiusToggleGroup.check(R.id.radiusAll);
 
         radiusToggleGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (!isChecked) return;
-            if (checkedId == R.id.radius5) currentRadius = 5;
-            else if (checkedId == R.id.radius10) currentRadius = 10;
-            else if (checkedId == R.id.radius25) currentRadius = 25;
-            else if (checkedId == R.id.radius50) currentRadius = 50;
-            else currentRadius = 5000;
+            hasSearched = true;
+            
+            if (checkedId == R.id.radius5) {
+                currentRadius = 5.0;
+            } else if (checkedId == R.id.radius10) {
+                currentRadius = 10.0;
+            } else if (checkedId == R.id.radius25) {
+                currentRadius = 25.0;
+            } else if (checkedId == R.id.radius50) {
+                currentRadius = 50.0;
+            } else {
+                currentRadius = Double.MAX_VALUE;
+            }
             updateList();
         });
     }
@@ -190,6 +203,7 @@ public class MainActivity extends AppCompatActivity {
             public void onLocationUpdated(double latitude, double longitude) {
                 currentLat = latitude;
                 currentLon = longitude;
+                hasSearched = true; // Show distances once we have a location
                 adapter.updateUserLocation(latitude, longitude);
                 updateList();
             }
@@ -202,12 +216,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateList() {
+        SharedPreferences prefs = getSharedPreferences(SettingsActivity.PREFS_NAME, MODE_PRIVATE);
+        boolean useMetric = prefs.getBoolean(SettingsActivity.KEY_USE_METRIC, false);
+
         String query = searchEditText.getText().toString();
         List<Beach> filteredBeaches = repository.searchBeaches(query).stream()
-            .filter(b -> calculateDistance(currentLat, currentLon, b.getLatitude(), b.getLongitude()) <= currentRadius)
-            .sorted((b1, b2) -> Double.compare(
-                calculateDistance(currentLat, currentLon, b1.getLatitude(), b1.getLongitude()),
-                calculateDistance(currentLat, currentLon, b2.getLatitude(), b2.getLongitude())))
+            .filter(b -> {
+                if (currentRadius >= 1000.0) return true; // Disable filter for "All"
+                double distanceMiles = UnitConverter.calculateDistance(currentLat, currentLon, b.getLatitude(), b.getLongitude());
+                double compareDistance = useMetric ? distanceMiles * 1.60934 : distanceMiles;
+                return compareDistance <= currentRadius;
+            })
+            .sorted((b1, b2) -> {
+                double d1 = UnitConverter.calculateDistance(currentLat, currentLon, b1.getLatitude(), b1.getLongitude());
+                double d2 = UnitConverter.calculateDistance(currentLat, currentLon, b2.getLatitude(), b2.getLongitude());
+                return Double.compare(d1, d2);
+            })
             .collect(Collectors.toList());
 
         adapter.setBeaches(filteredBeaches, hasSearched);
@@ -216,23 +240,25 @@ public class MainActivity extends AppCompatActivity {
                 R.plurals.beach_count, filteredBeaches.size(), filteredBeaches.size()));
     }
 
-    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-        double earthRadius = 3958.8;
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLon = Math.toRadians(lon2 - lon1);
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                   Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
-                   Math.sin(dLon / 2) * Math.sin(dLon / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return earthRadius * c;
-    }
-
     @Override
     protected void onResume() {
         super.onResume();
+        updateRadiusButtonLabels();
         if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
+        updateList();
+    }
+
+    private void updateRadiusButtonLabels() {
+        SharedPreferences prefs = getSharedPreferences(SettingsActivity.PREFS_NAME, MODE_PRIVATE);
+        boolean useMetric = prefs.getBoolean(SettingsActivity.KEY_USE_METRIC, false);
+        String unit = useMetric ? "km" : "mi";
+        
+        ((Button)findViewById(R.id.radius5)).setText("5" + unit);
+        ((Button)findViewById(R.id.radius10)).setText("10" + unit);
+        ((Button)findViewById(R.id.radius25)).setText("25" + unit);
+        ((Button)findViewById(R.id.radius50)).setText("50" + unit);
     }
 
     @Override

@@ -7,51 +7,26 @@
     android:background="@color/background"
     android:orientation="vertical">
 
-    <!-- Hero -->
-    <LinearLayout
-        android:id="@+id/heroContainer"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_hero_gradient"
-        android:orientation="vertical"
-        android:paddingBottom="52dp"
-        android:theme="@style/ThemeOverlay.Material3.Dark">
+        android:background="@color/primary">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            app:navigationIconTint="@color/on_hero" />
+            app:title="@string/app_name"
+            app:titleTextColor="@color/on_primary" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="24dp"
-            android:text="@string/app_name"
-            android:textAppearance="@style/TextAppearance.App.Display" />
+    </com.google.android.material.appbar.AppBarLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="24dp"
-            android:alpha="0.82"
-            android:text="@string/app_tagline"
-            android:textColor="@color/on_hero"
-            android:textSize="15sp" />
-
-    </LinearLayout>
-
-    <!-- Scrolling content, floats up over the hero -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/mainScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:clipToPadding="false"
         android:fillViewport="true">
 
         <LinearLayout
@@ -59,15 +34,14 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="16dp"
-            android:paddingBottom="24dp">
+            android:paddingVertical="16dp">
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="-40dp"
                 app:cardBackgroundColor="@color/surface"
                 app:cardCornerRadius="24dp"
-                app:cardElevation="10dp"
+                app:cardElevation="4dp"
                 app:strokeWidth="0dp">
 
                 <LinearLayout

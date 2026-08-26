@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.myapplication.util.EdgeToEdge;
 import com.google.android.material.appbar.MaterialToolbar;
