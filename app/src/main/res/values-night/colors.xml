@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Night ocean -->
+    <color name="primary">#35C9C0</color>
+    <color name="primary_variant">#8FE9E1</color>
+    <color name="on_primary">#06201E</color>
+    <color name="ocean_gradient_start">#123A42</color>
+    <color name="ocean_gradient_end">#0B1E23</color>
+
+    <!-- Sunset coral -->
+    <color name="secondary">#FF9270</color>
+    <color name="secondary_variant">#FFB199</color>
+    <color name="on_secondary">#3A0F04</color>
+
+    <!-- Sand / sun -->
+    <color name="beach_accent">#F0C36D</color>
+    <color name="tertiary_gold">#F0C36D</color>
+
+    <!-- Neutrals -->
+    <color name="background">#0B1E23</color>
+    <color name="surface">#122A30</color>
+    <color name="surface_alt">#17323A</color>
+    <color name="divider">#1F3B42</color>
+    <color name="text_primary">#F3EFE3</color>
+    <color name="text_secondary">#9FB6B8</color>
+
+    <!-- Status -->
+    <color name="error">#FF6B6B</color>
+    <color name="safe_green">#4DD3A6</color>
+    <color name="advisor_bg">#143036</color>
+    <color name="water_accent">#2E6E7A</color>
+
+    <!-- UV Index -->
+    <color name="uv_low">#4DD3A6</color>
+    <color name="uv_moderate">#F0C36D</color>
+    <color name="uv_high">#F2955F</color>
+    <color name="uv_very_high">#FF6B6B</color>
+    <color name="uv_extreme">#B084C4</color>
+
+    <!-- Stat tile icon + tint pairs -->
+    <color name="icon_temp">#FF9868</color>
+    <color name="icon_uv">#F0C36D</color>
+    <color name="icon_wind">#5FC0D8</color>
+    <color name="icon_wave">#35C9C0</color>
+    <color name="icon_visibility">#9FB6B8</color>
+
+    <color name="tile_temp_bg">#4DFF9868</color>
+    <color name="tile_uv_bg">#4DF0C36D</color>
+    <color name="tile_wind_bg">#4D5FC0D8</color>
+    <color name="tile_wave_bg">#4D35C9C0</color>
+    <color name="tile_visibility_bg">#4D9FB6B8</color>
+
+    <color name="chip_hazard_bg">#40FF6B6B</color>
+    <color name="chip_safe_bg">#404DD3A6</color>
+</resources>

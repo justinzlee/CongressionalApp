@@ -3,6 +3,7 @@ package com.example.myapplication;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
+import com.example.myapplication.util.EdgeToEdge;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
@@ -21,6 +22,9 @@ public class SettingsActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         toolbar.setNavigationOnClickListener(v -> finish());
+
+        EdgeToEdge.applyTopInset(findViewById(R.id.settingsToolbarContainer));
+        EdgeToEdge.applyBottomInset(findViewById(R.id.settingsContent));
 
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         

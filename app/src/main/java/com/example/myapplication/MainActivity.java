@@ -8,10 +8,12 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +25,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.data.BeachRepository;
 import com.example.myapplication.location.LocationService;
 import com.example.myapplication.model.Beach;
+import com.example.myapplication.util.EdgeToEdge;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,9 +41,11 @@ public class MainActivity extends AppCompatActivity {
     
     private EditText searchEditText;
     private AutoCompleteTextView citySearchEditText;
-    private AutoCompleteTextView radiusSpinner;
+    private MaterialButtonToggleGroup radiusToggleGroup;
     private Button citySearchButton;
-    
+    private View emptyState;
+    private TextView beachCountBadge;
+
     private double currentLat = 34.0522; // Default LA
     private double currentLon = -118.2437;
     private double currentRadius = 5000.0;
@@ -68,14 +74,19 @@ public class MainActivity extends AppCompatActivity {
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        EdgeToEdge.applyTopInset(findViewById(R.id.heroContainer));
+        EdgeToEdge.applyBottomInset(findViewById(R.id.mainScrollView));
+
         repository = new BeachRepository();
         locationService = new LocationService(this);
 
         searchEditText = findViewById(R.id.searchEditText);
         citySearchEditText = findViewById(R.id.citySearchEditText);
         citySearchButton = findViewById(R.id.citySearchButton);
-        radiusSpinner = findViewById(R.id.radiusSpinner);
-        
+        radiusToggleGroup = findViewById(R.id.radiusToggleGroup);
+        emptyState = findViewById(R.id.emptyState);
+        beachCountBadge = findViewById(R.id.beachCountBadge);
+
         RecyclerView recyclerView = findViewById(R.id.beachRecyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new BeachAdapter(new ArrayList<>(), currentLat, currentLon, beach -> {
@@ -144,20 +155,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupRadiusSpinner() {
-        String[] options = {"5 miles", "10 miles", "25 miles", "50 miles", "All"};
-        ArrayAdapter<String> radiusAdapter = new ArrayAdapter<>(this, android.R.layout.simple_dropdown_item_1line, options);
-        radiusSpinner.setAdapter(radiusAdapter);
-        radiusSpinner.setText(options[4], false); // Default All
-        currentRadius = 5000;
+        currentRadius = 5000; // Default All
 
-        radiusSpinner.setOnItemClickListener((parent, view, position, id) -> {
-            switch (position) {
-                case 0: currentRadius = 5; break;
-                case 1: currentRadius = 10; break;
-                case 2: currentRadius = 25; break;
-                case 3: currentRadius = 50; break;
-                case 4: currentRadius = 5000; break;
-            }
+        radiusToggleGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
+            if (!isChecked) return;
+            if (checkedId == R.id.radius5) currentRadius = 5;
+            else if (checkedId == R.id.radius10) currentRadius = 10;
+            else if (checkedId == R.id.radius25) currentRadius = 25;
+            else if (checkedId == R.id.radius50) currentRadius = 50;
+            else currentRadius = 5000;
             updateList();
         });
     }
@@ -205,6 +211,9 @@ public class MainActivity extends AppCompatActivity {
             .collect(Collectors.toList());
 
         adapter.setBeaches(filteredBeaches, hasSearched);
+        emptyState.setVisibility(filteredBeaches.isEmpty() ? View.VISIBLE : View.GONE);
+        beachCountBadge.setText(getResources().getQuantityString(
+                R.plurals.beach_count, filteredBeaches.size(), filteredBeaches.size()));
     }
 
     private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {

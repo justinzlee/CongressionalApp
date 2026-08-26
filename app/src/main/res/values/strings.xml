@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">BeachSafety US</string>
+    <string name="app_tagline">Live conditions for the US coast</string>
     <string name="ai_safety_advisor">Safety Advisor</string>
     <string name="weather_conditions">Weather Conditions</string>
     <string name="air_temp">Air Temp</string>
@@ -12,10 +13,21 @@
     <string name="conditions_unavailable">Conditions unavailable</string>
     <string name="select_coastal_city">Select Coastal City</string>
     <string name="beach_name_hint">Beach Name</string>
-    <string name="radius_hint">Radius</string>
+    <string name="radius_label">Search Radius</string>
     <string name="find_nearby_beaches">Find Nearby Beaches</string>
     <string name="nearby_beaches">Nearby Beaches</string>
     <string name="distance_away">%1$.2f miles away</string>
     <string name="hazards_label">Hazards: %1$s</string>
     <string name="beach_image_desc">Beach Image</string>
+    <string name="empty_state_title">No beaches to show</string>
+    <string name="empty_state_subtitle">Try a different city or widen your search radius.</string>
+    <string name="settings_title">Settings</string>
+    <string name="units_section_title">Units</string>
+    <string name="use_metric_title">Use Metric System</string>
+    <string name="use_metric_subtitle">Converts temperature to °C, wind to km/h, and waves to meters.</string>
+
+    <plurals name="beach_count">
+        <item quantity="one">%1$d beach</item>
+        <item quantity="other">%1$d beaches</item>
+    </plurals>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,8 +12,10 @@ import com.example.myapplication.ai.SafetyAdvisor;
 import com.example.myapplication.data.BeachRepository;
 import com.example.myapplication.model.Beach;
 import com.example.myapplication.network.WeatherClient;
+import com.example.myapplication.util.EdgeToEdge;
 import com.example.myapplication.util.UnitConverter;
 import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.card.MaterialCardView;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -45,7 +48,9 @@ public class BeachDetailActivity extends AppCompatActivity {
                 getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             }
             toolbar.setNavigationOnClickListener(v -> getOnBackPressedDispatcher().onBackPressed());
+            EdgeToEdge.applyTopInset(toolbar);
         }
+        EdgeToEdge.applyBottomInset(findViewById(R.id.detailScrollView));
 
         ImageView image = findViewById(R.id.beachDetailImage);
         Glide.with(this).load(beach.getImageUrl()).into(image);
@@ -57,18 +62,22 @@ public class BeachDetailActivity extends AppCompatActivity {
         TextView windSpeed = findViewById(R.id.detailWindSpeed);
         TextView hazards = findViewById(R.id.detailHazards);
         TextView advisorSummary = findViewById(R.id.advisorSummary);
+        MaterialCardView hazardsCard = findViewById(R.id.hazardsCard);
 
         if (beach.getConditions() != null) {
             updateConditionsDisplay(beach.getConditions(), airTemp, waveHeight, uvIndex, visibility, windSpeed);
         }
 
-        if (!beach.getHazards().isEmpty()) {
-            hazards.setTextColor(ContextCompat.getColor(this, R.color.error));
+        boolean hasHazards = !beach.getHazards().isEmpty();
+        int hazardColor = ContextCompat.getColor(this, hasHazards ? R.color.error : R.color.safe_green);
+        hazardsCard.setStrokeColor(ColorStateList.valueOf(hazardColor));
+        if (hasHazards) {
+            hazards.setTextColor(hazardColor);
             hazards.setText(beach.getHazards().stream()
                     .map(h -> h.getType().name().replace("_", " ") + ": " + h.getDescription())
                     .collect(Collectors.joining("\n\n")));
         } else {
-            hazards.setTextColor(ContextCompat.getColor(this, R.color.safe_green));
+            hazards.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
             hazards.setText(getString(R.string.no_major_hazards));
         }
 
@@ -117,15 +126,15 @@ public class BeachDetailActivity extends AppCompatActivity {
             double temp = conditions.getAirTemperature();
             if (temp < 60) {
                 iconRes = R.drawable.ic_thermometer_cold;
-                color = android.graphics.Color.parseColor("#03A9F4"); // Light Blue
+                color = ContextCompat.getColor(this, R.color.icon_wind);
             } else if (temp < 85) {
                 iconRes = R.drawable.ic_thermometer_warm;
-                color = android.graphics.Color.parseColor("#F57C00"); // Orange
+                color = ContextCompat.getColor(this, R.color.icon_temp);
             } else {
                 iconRes = R.drawable.ic_thermometer_hot;
-                color = android.graphics.Color.parseColor("#D32F2F"); // Red
+                color = ContextCompat.getColor(this, R.color.error);
             }
-            
+
             airTemp.setCompoundDrawablesWithIntrinsicBounds(iconRes, 0, 0, 0);
             TextViewCompat.setCompoundDrawableTintList(airTemp, android.content.res.ColorStateList.valueOf(color));
         } else {

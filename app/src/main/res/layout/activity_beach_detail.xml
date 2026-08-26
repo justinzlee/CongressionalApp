@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F5F5">
+    android:background="@color/background">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:theme="@style/ThemeOverlay.MaterialComponents.Dark">
+        android:theme="@style/ThemeOverlay.Material3.Dark">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsing_toolbar"
@@ -22,63 +22,76 @@
                 android:id="@+id/beachDetailImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:background="@drawable/bg_image_placeholder"
                 android:contentDescription="@string/beach_image_desc"
                 android:scaleType="centerCrop"
+                app:layout_collapseMode="parallax" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_hero_scrim"
                 app:layout_collapseMode="parallax" />
 
             <com.google.android.material.appbar.MaterialToolbar
                 android:id="@+id/detailToolbar"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:layout_collapseMode="pin" />
+                android:layout_height="wrap_content"
+                android:minHeight="?attr/actionBarSize"
+                app:layout_collapseMode="pin"
+                app:navigationIcon="@drawable/ic_back"
+                app:navigationIconTint="@color/on_hero" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/detailScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:clipToPadding="false"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/bg_sheet_top"
+            android:layout_marginTop="-24dp"
             android:orientation="vertical"
-            android:padding="20dp">
+            android:paddingHorizontal="20dp"
+            android:paddingTop="32dp"
+            android:paddingBottom="28dp">
 
             <!-- Advisor Summary -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
-                app:cardBackgroundColor="#E3F2FD"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                app:strokeColor="#BBDEFB"
-                app:strokeWidth="1dp">
+                app:cardBackgroundColor="@color/advisor_bg"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="16dp">
+                    android:padding="18dp">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/ai_safety_advisor"
-                        android:textColor="#1976D2"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:textColor="@color/primary_variant"
+                        android:textSize="17sp"
+                        android:fontFamily="sans-serif-medium" />
 
                     <TextView
                         android:id="@+id/advisorSummary"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:lineSpacingExtra="4dp"
-                        android:textColor="#333333"
-                        android:textSize="14sp" />
+                        android:layout_marginTop="10dp"
+                        android:textAppearance="@style/TextAppearance.App.Body" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -86,107 +99,127 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/weather_conditions"
-                android:textColor="?attr/colorPrimary"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textAppearance="@style/TextAppearance.App.Title" />
 
-            <com.google.android.material.card.MaterialCardView
+            <GridLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:cardCornerRadius="16dp"
-                app:cardElevation="2dp"
-                app:strokeWidth="0dp">
+                android:layout_marginTop="14dp"
+                android:columnCount="2"
+                android:useDefaultMargins="false">
 
-                <GridLayout
-                    android:layout_width="match_parent"
+                <!-- Air Temp -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:columnCount="2"
-                    android:padding="12dp">
-
-                    <!-- Air Temp -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/air_temp" android:textColor="#757575" android:textSize="12sp" />
-                        <TextView android:id="@+id/detailAirTemp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" app:drawableStartCompat="@drawable/ic_thermometer" android:drawablePadding="8dp" app:drawableTint="#F57C00" />
+                    android:layout_columnWeight="1"
+                    android:layout_margin="6dp"
+                    app:cardBackgroundColor="@color/tile_temp_bg"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="14dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/air_temp" android:textAppearance="@style/TextAppearance.App.Caption" />
+                        <TextView android:id="@+id/detailAirTemp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:drawablePadding="8dp" android:textAppearance="@style/TextAppearance.App.StatValue" app:drawableStartCompat="@drawable/ic_thermometer" app:drawableTint="@color/icon_temp" />
                     </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                    <!-- UV Index -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/uv_index" android:textColor="#757575" android:textSize="12sp" />
-                        <TextView android:id="@+id/detailUvIndex" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" app:drawableStartCompat="@drawable/ic_sun" android:drawablePadding="8dp" app:drawableTint="#FBC02D" />
+                <!-- UV Index -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="6dp"
+                    app:cardBackgroundColor="@color/tile_uv_bg"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="14dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/uv_index" android:textAppearance="@style/TextAppearance.App.Caption" />
+                        <TextView android:id="@+id/detailUvIndex" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:drawablePadding="8dp" android:textAppearance="@style/TextAppearance.App.StatValue" app:drawableStartCompat="@drawable/ic_sun" app:drawableTint="@color/icon_uv" />
                     </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                    <!-- Wind Speed -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/wind_speed" android:textColor="#757575" android:textSize="12sp" />
-                        <TextView android:id="@+id/detailWindSpeed" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" app:drawableStartCompat="@drawable/ic_wind" android:drawablePadding="8dp" app:drawableTint="#0288D1" />
+                <!-- Wind Speed -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="6dp"
+                    app:cardBackgroundColor="@color/tile_wind_bg"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="14dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/wind_speed" android:textAppearance="@style/TextAppearance.App.Caption" />
+                        <TextView android:id="@+id/detailWindSpeed" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:drawablePadding="8dp" android:textAppearance="@style/TextAppearance.App.StatValue" app:drawableStartCompat="@drawable/ic_wind" app:drawableTint="@color/icon_wind" />
                     </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                    <!-- Wave Height -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/wave_height" android:textColor="#757575" android:textSize="12sp" />
-                        <TextView android:id="@+id/detailWaveHeight" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" app:drawableStartCompat="@drawable/ic_wave" android:drawablePadding="8dp" app:drawableTint="#01579B" />
+                <!-- Wave Height -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    android:layout_margin="6dp"
+                    app:cardBackgroundColor="@color/tile_wave_bg"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="14dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/wave_height" android:textAppearance="@style/TextAppearance.App.Caption" />
+                        <TextView android:id="@+id/detailWaveHeight" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:drawablePadding="8dp" android:textAppearance="@style/TextAppearance.App.StatValue" app:drawableStartCompat="@drawable/ic_wave" app:drawableTint="@color/icon_wave" />
                     </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
 
-                    <!-- Visibility -->
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_columnWeight="1"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/visibility" android:textColor="#757575" android:textSize="12sp" />
-                        <TextView android:id="@+id/detailVisibility" android:layout_width="wrap_content" android:layout_height="wrap_content" android:textColor="#212121" android:textSize="18sp" android:textStyle="bold" app:drawableStartCompat="@drawable/ic_visibility" android:drawablePadding="8dp" app:drawableTint="#455A64" />
+                <!-- Visibility (full width) -->
+                <com.google.android.material.card.MaterialCardView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnSpan="2"
+                    android:layout_columnWeight="2"
+                    android:layout_margin="6dp"
+                    app:cardBackgroundColor="@color/tile_visibility_bg"
+                    app:cardCornerRadius="18dp"
+                    app:cardElevation="0dp"
+                    app:strokeWidth="0dp">
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:orientation="vertical" android:padding="14dp">
+                        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/visibility" android:textAppearance="@style/TextAppearance.App.Caption" />
+                        <TextView android:id="@+id/detailVisibility" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="6dp" android:drawablePadding="8dp" android:textAppearance="@style/TextAppearance.App.StatValue" app:drawableStartCompat="@drawable/ic_visibility" app:drawableTint="@color/icon_visibility" />
                     </LinearLayout>
-                </GridLayout>
-            </com.google.android.material.card.MaterialCardView>
+                </com.google.android.material.card.MaterialCardView>
+
+            </GridLayout>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
                 android:text="@string/safety_alerts"
-                android:textColor="#D32F2F"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                android:textAppearance="@style/TextAppearance.App.Title"
+                android:textColor="@color/error"
+                app:drawableStartCompat="@drawable/ic_warning"
+                app:drawableTint="@color/error" />
 
             <com.google.android.material.card.MaterialCardView
+                android:id="@+id/hazardsCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                app:cardCornerRadius="12dp"
+                app:cardBackgroundColor="@color/surface"
+                app:cardCornerRadius="18dp"
                 app:cardElevation="0dp"
-                app:strokeColor="#FFCDD2"
-                app:strokeWidth="1dp">
+                app:strokeColor="@color/safe_green"
+                app:strokeWidth="1.5dp">
 
                 <TextView
                     android:id="@+id/detailHazards"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="16dp"
-                    android:lineSpacingExtra="6dp"
-                    android:textColor="#424242"
-                    android:textSize="15sp" />
+                    android:textAppearance="@style/TextAppearance.App.Body" />
             </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>

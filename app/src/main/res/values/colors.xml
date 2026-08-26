@@ -1,32 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary">#006064</color>
-    <color name="primary_variant">#00363a</color>
+    <!-- Ocean -->
+    <color name="primary">#0E7C86</color>
+    <color name="primary_variant">#0B5C63</color>
     <color name="on_primary">#FFFFFF</color>
-    <color name="secondary">#00838f</color>
-    <color name="secondary_variant">#005662</color>
+    <color name="ocean_gradient_start">#1798A3</color>
+    <color name="ocean_gradient_end">#0B5C63</color>
+    <!-- Fixed light color for text/icons on the hero gradient and photo
+         scrims, which stay dark in both light and dark theme. Do NOT use
+         colorOnPrimary here: that flips to dark ink in dark mode. -->
+    <color name="on_hero">#FFFFFF</color>
+
+    <!-- Sunset coral -->
+    <color name="secondary">#FF7A59</color>
+    <color name="secondary_variant">#E85F3E</color>
     <color name="on_secondary">#FFFFFF</color>
-    <color name="background">#F5F5F5</color>
+
+    <!-- Sand / sun -->
+    <color name="beach_accent">#E8A93C</color>
+    <color name="tertiary_gold">#E8A93C</color>
+
+    <!-- Neutrals -->
+    <color name="background">#FBF5E9</color>
     <color name="surface">#FFFFFF</color>
-    <color name="error">#B00020</color>
-    <color name="beach_accent">#FFD54F</color>
-    <color name="water_accent">#0288D1</color>
-    <color name="advisor_bg">#E0F7FA</color>
-    <color name="safe_green">#2E7D32</color>
+    <color name="surface_alt">#F4EDDD</color>
+    <color name="divider">#EAE1CD</color>
+    <color name="text_primary">#1C2E2E</color>
+    <color name="text_secondary">#6F7F80</color>
 
-    <!-- UV Index Colors -->
-    <color name="uv_low">#2E7D32</color>
-    <color name="uv_moderate">#FBC02D</color>
-    <color name="uv_high">#F57C00</color>
-    <color name="uv_very_high">#D32F2F</color>
-    <color name="uv_extreme">#7B1FA2</color>
+    <!-- Status -->
+    <color name="error">#E15252</color>
+    <color name="safe_green">#2FAE84</color>
+    <color name="advisor_bg">#E4F3F1</color>
+    <color name="water_accent">#3E9AA8</color>
 
-    <!-- Compatibility colors -->
-    <color name="purple_200">#BB86FC</color>
-    <color name="purple_500">#6200EE</color>
-    <color name="purple_700">#3700B3</color>
-    <color name="teal_200">#03DAC5</color>
-    <color name="teal_700">#018786</color>
-    <color name="black">#000000</color>
-    <color name="white">#FFFFFF</color>
+    <!-- UV Index -->
+    <color name="uv_low">#2FAE84</color>
+    <color name="uv_moderate">#E8A93C</color>
+    <color name="uv_high">#F2854B</color>
+    <color name="uv_very_high">#E15252</color>
+    <color name="uv_extreme">#8E5B9F</color>
+
+    <!-- Stat tile icon + tint pairs -->
+    <color name="icon_temp">#F27C4B</color>
+    <color name="icon_uv">#E8A93C</color>
+    <color name="icon_wind">#2F97B0</color>
+    <color name="icon_wave">#0B5C63</color>
+    <color name="icon_visibility">#7C8B8C</color>
+
+    <color name="tile_temp_bg">#33F27C4B</color>
+    <color name="tile_uv_bg">#33E8A93C</color>
+    <color name="tile_wind_bg">#332F97B0</color>
+    <color name="tile_wave_bg">#330B5C63</color>
+    <color name="tile_visibility_bg">#337C8B8C</color>
+
+    <color name="chip_hazard_bg">#26E15252</color>
+    <color name="chip_safe_bg">#262FAE84</color>
 </resources>

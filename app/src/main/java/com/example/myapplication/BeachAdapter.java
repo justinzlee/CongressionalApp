@@ -1,6 +1,6 @@
 package com.example.myapplication;
 
-import android.graphics.Color;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.TextViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.myapplication.model.Beach;
@@ -65,7 +66,7 @@ public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHol
         Glide.with(holder.itemView.getContext())
             .load(beach.getImageUrl())
             .centerCrop()
-            .placeholder(R.color.water_accent)
+            .placeholder(R.drawable.bg_image_placeholder)
             .into(holder.beachImage);
 
         BeachConditions conditions = beach.getConditions();
@@ -84,11 +85,12 @@ public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHol
                 holder.uvLabel.setText(conditions.getUvLabel());
                 
                 int color = ContextCompat.getColor(holder.itemView.getContext(), conditions.getUvColorResId());
+                int strokeColor = ContextCompat.getColor(holder.itemView.getContext(), R.color.surface);
                 GradientDrawable drawable = (GradientDrawable) holder.uvCircle.getBackground().mutate();
                 drawable.setColor(color);
-                int strokeWidth = (int) (2 * holder.itemView.getContext().getResources().getDisplayMetrics().density);
-                drawable.setStroke(strokeWidth, Color.BLACK);
-                
+                int strokeWidth = (int) (2.5 * holder.itemView.getContext().getResources().getDisplayMetrics().density);
+                drawable.setStroke(strokeWidth, strokeColor);
+
                 holder.uvValue.setTextColor(color);
             } else {
                 holder.uvBadgeContainer.setVisibility(View.GONE);
@@ -98,14 +100,20 @@ public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHol
             holder.uvBadgeContainer.setVisibility(View.GONE);
         }
 
-        if (!beach.getHazards().isEmpty()) {
-            holder.hazards.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.error));
+        boolean hasHazards = !beach.getHazards().isEmpty();
+        int hazardColor = ContextCompat.getColor(holder.itemView.getContext(),
+                hasHazards ? R.color.error : R.color.safe_green);
+        int hazardChipBg = ContextCompat.getColor(holder.itemView.getContext(),
+                hasHazards ? R.color.chip_hazard_bg : R.color.chip_safe_bg);
+        holder.hazards.setTextColor(hazardColor);
+        holder.hazards.setBackgroundTintList(ColorStateList.valueOf(hazardChipBg));
+        TextViewCompat.setCompoundDrawableTintList(holder.hazards, ColorStateList.valueOf(hazardColor));
+        if (hasHazards) {
             String hazardNames = beach.getHazards().stream()
                 .map(h -> h.getType().name().replace("_", " "))
                 .collect(Collectors.joining(", "));
             holder.hazards.setText(holder.itemView.getContext().getString(R.string.hazards_label, hazardNames));
         } else {
-            holder.hazards.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.safe_green));
             holder.hazards.setText(holder.itemView.getContext().getString(R.string.no_major_hazards));
         }
 

@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginHorizontal="4dp"
     android:layout_marginVertical="8dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp"
+    app:cardBackgroundColor="@color/surface"
+    app:cardCornerRadius="22dp"
+    app:cardElevation="3dp"
+    app:cardPreventCornerOverlap="false"
+    app:rippleColor="@color/primary"
     app:strokeWidth="0dp">
 
     <LinearLayout
@@ -17,9 +20,10 @@
         <ImageView
             android:id="@+id/beachImage"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:scaleType="centerCrop"
-            android:background="@color/water_accent" />
+            android:layout_height="140dp"
+            android:background="@drawable/bg_image_placeholder"
+            android:contentDescription="@string/beach_image_desc"
+            android:scaleType="centerCrop" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,99 +41,105 @@
                     android:id="@+id/beachName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/primary_variant"
-                    android:textSize="22sp"
-                    android:textStyle="bold" />
+                    android:textAppearance="@style/TextAppearance.App.Title"
+                    tools:text="Santa Monica Beach" />
 
                 <TextView
                     android:id="@+id/beachDistance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:textColor="#666666"
-                    android:textSize="14sp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginVertical="12dp"
-                    android:background="#DDDDDD" />
+                    android:textAppearance="@style/TextAppearance.App.Subtitle" />
 
                 <TextView
                     android:id="@+id/beachConditions"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:drawablePadding="8dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_pill_neutral"
+                    android:drawablePadding="6dp"
                     android:gravity="center_vertical"
-                    android:textColor="#444444"
-                    app:drawableStartCompat="@android:drawable/ic_menu_day" />
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp"
+                    android:textColor="@color/text_primary"
+                    android:textSize="13sp"
+                    app:drawableStartCompat="@drawable/ic_sun"
+                    app:drawableTint="@color/icon_uv" />
 
                 <TextView
                     android:id="@+id/beachHazards"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:drawablePadding="8dp"
+                    android:background="@drawable/bg_pill_neutral"
+                    android:drawablePadding="6dp"
                     android:gravity="center_vertical"
-                    android:textColor="@color/error"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp"
+                    android:textSize="13sp"
                     android:textStyle="bold"
-                    app:drawableStartCompat="@android:drawable/stat_sys_warning" />
+                    app:drawableStartCompat="@drawable/ic_warning" />
 
                 <TextView
                     android:id="@+id/beachHelp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:drawablePadding="8dp"
+                    android:drawablePadding="6dp"
                     android:gravity="center_vertical"
-                    android:textColor="#666666"
-                    android:textSize="13sp"
-                    app:drawableStartCompat="@android:drawable/ic_menu_info_details" />
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    app:drawableStartCompat="@drawable/ic_location"
+                    app:drawableTint="@color/text_secondary" />
             </LinearLayout>
 
-            <!-- UV Indicator -->
             <LinearLayout
-                android:id="@+id/uvBadgeContainer"
-                android:layout_width="70dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="16dp"
-                android:layout_marginStart="8dp"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:visibility="gone">
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="4dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <!-- UV Indicator -->
+                <LinearLayout
+                    android:id="@+id/uvBadgeContainer"
+                    android:layout_width="66dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:text="UV INDEX"
-                    android:textColor="#9E9E9E"
-                    android:textSize="9sp"
-                    android:textStyle="bold" />
+                    android:background="@drawable/bg_pill_neutral"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingVertical="10dp"
+                    android:visibility="gone">
 
-                <View
-                    android:id="@+id/uvCircle"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
-                    android:background="@drawable/uv_circle" />
+                    <View
+                        android:id="@+id/uvCircle"
+                        android:layout_width="28dp"
+                        android:layout_height="28dp"
+                        android:background="@drawable/uv_circle" />
 
-                <TextView
-                    android:id="@+id/uvValue"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:textColor="#212121"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/uvValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:textSize="15sp"
+                        android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/uvLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#757575"
-                    android:textSize="10sp"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:id="@+id/uvLabel"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="@style/TextAppearance.App.Caption" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="4dp"
+                    android:alpha="0.4"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="@color/text_secondary" />
             </LinearLayout>
 
         </LinearLayout>
