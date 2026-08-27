@@ -224,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
         boolean hasFine = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         boolean hasCoarse = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
 
-        if (!hasFine || !hasCoarse) {
+        if (!hasFine && !hasCoarse) {
             ActivityCompat.requestPermissions(this, permissions, 1);
         } else {
             fetchLocation();
@@ -330,11 +330,11 @@ public class MainActivity extends AppCompatActivity {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == 1 && grantResults.length > 0) {
-            boolean granted = true;
+            boolean anyGranted = false;
             for (int result : grantResults) {
-                if (result != PackageManager.PERMISSION_GRANTED) granted = false;
+                if (result == PackageManager.PERMISSION_GRANTED) anyGranted = true;
             }
-            if (granted) fetchLocation();
+            if (anyGranted) fetchLocation();
         }
     }
 }

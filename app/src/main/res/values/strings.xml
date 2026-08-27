@@ -26,6 +26,9 @@
     <string name="units_section_title">Units</string>
     <string name="use_metric_title">Use Metric System</string>
     <string name="use_metric_subtitle">Converts temperature to °C, wind to km/h, and waves to meters.</string>
+    <string name="display_section_title">Display</string>
+    <string name="use_dark_mode_title">Dark Mode</string>
+    <string name="use_dark_mode_subtitle">Switch the app between light and dark appearance.</string>
 
     <plurals name="beach_count">
         <item quantity="one">%1$d beach</item>

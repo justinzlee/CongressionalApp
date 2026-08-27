@@ -29,7 +29,9 @@ public class LocationService {
     }
 
     public void getLastLocation(LocationUpdateListener listener) {
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        boolean hasFine = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        boolean hasCoarse = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        if (!hasFine && !hasCoarse) {
             listener.onLocationError("Permission not granted");
             return;
         }
@@ -44,14 +46,19 @@ public class LocationService {
     }
 
     public void startLocationUpdates(LocationUpdateListener listener) {
-        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        boolean hasFine = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        boolean hasCoarse = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        if (!hasFine && !hasCoarse) {
             listener.onLocationError("Permission not granted");
             return;
         }
 
         stopLocationUpdates();
 
-        LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 2000)
+        // PRIORITY_HIGH_ACCURACY requires ACCESS_FINE_LOCATION and throws SecurityException
+        // with only ACCESS_COARSE_LOCATION granted (e.g. user picked "approximate" access).
+        int priority = hasFine ? Priority.PRIORITY_HIGH_ACCURACY : Priority.PRIORITY_BALANCED_POWER_ACCURACY;
+        LocationRequest locationRequest = new LocationRequest.Builder(priority, 2000)
                 .setMinUpdateIntervalMillis(1000)
                 .build();
 
