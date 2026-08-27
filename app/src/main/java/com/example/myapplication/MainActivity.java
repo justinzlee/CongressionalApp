@@ -34,6 +34,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean hasLocation = false;
     private boolean isManualLocation = false;
     private boolean shouldScrollToTop = false;
+    private final ExecutorService geocoderExecutor = Executors.newSingleThreadExecutor();
 
     private final String[] US_COASTAL_CITIES = {
         "San Diego, CA", "Carlsbad, CA", "Encinitas, CA", "Oceanside, CA", "La Jolla, CA",
@@ -164,21 +167,34 @@ public class MainActivity extends AppCompatActivity {
 
     private void searchByCity(String cityName) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-        try {
-            List<Address> addresses = geocoder.getFromLocationName(cityName, 1);
-            if (addresses != null && !addresses.isEmpty()) {
-                Address address = addresses.get(0);
-                isManualLocation = true;
-                updateUserLocation(address.getLatitude(), address.getLongitude());
-                currentRadiusMiles = Double.MAX_VALUE; // Reset to "All"
-                radiusToggleGroup.check(R.id.radiusAll);
-                Toast.makeText(this, "Searching near: " + cityName, Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Location not found", Toast.LENGTH_SHORT).show();
+        citySearchButton.setEnabled(false);
+        geocoderExecutor.execute(() -> {
+            List<Address> addresses = null;
+            String errorMessage = null;
+            try {
+                addresses = geocoder.getFromLocationName(cityName, 1);
+            } catch (IOException e) {
+                errorMessage = "Network error";
             }
-        } catch (IOException e) {
-            Toast.makeText(this, "Network error", Toast.LENGTH_SHORT).show();
-        }
+
+            List<Address> results = addresses;
+            String error = errorMessage;
+            runOnUiThread(() -> {
+                citySearchButton.setEnabled(true);
+                if (error != null) {
+                    Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
+                } else if (results != null && !results.isEmpty()) {
+                    Address address = results.get(0);
+                    isManualLocation = true;
+                    updateUserLocation(address.getLatitude(), address.getLongitude());
+                    currentRadiusMiles = Double.MAX_VALUE; // Reset to "All"
+                    radiusToggleGroup.check(R.id.radiusAll);
+                    Toast.makeText(this, "Searching near: " + cityName, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(this, "Location not found", Toast.LENGTH_SHORT).show();
+                }
+            });
+        });
     }
 
     private void setupRadiusSpinner() {
@@ -255,6 +271,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onLocationError(String error) {
                 updateList();
+                Toast.makeText(MainActivity.this, error, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -324,6 +341,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         locationService.stopLocationUpdates();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        geocoderExecutor.shutdown();
     }
 
     @Override

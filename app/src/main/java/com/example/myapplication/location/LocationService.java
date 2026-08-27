@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -28,11 +29,22 @@ public class LocationService {
         this.fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
     }
 
+    private boolean isLocationEnabled() {
+        LocationManager locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        return locationManager != null
+                && (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER));
+    }
+
     public void getLastLocation(LocationUpdateListener listener) {
         boolean hasFine = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         boolean hasCoarse = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         if (!hasFine && !hasCoarse) {
             listener.onLocationError("Permission not granted");
+            return;
+        }
+        if (!isLocationEnabled()) {
+            listener.onLocationError("Location services are turned off");
             return;
         }
 
@@ -42,7 +54,7 @@ public class LocationService {
             } else {
                 listener.onLocationError("Last location unknown");
             }
-        });
+        }).addOnFailureListener(e -> listener.onLocationError(e.getMessage()));
     }
 
     public void startLocationUpdates(LocationUpdateListener listener) {
@@ -50,6 +62,10 @@ public class LocationService {
         boolean hasCoarse = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         if (!hasFine && !hasCoarse) {
             listener.onLocationError("Permission not granted");
+            return;
+        }
+        if (!isLocationEnabled()) {
+            listener.onLocationError("Location services are turned off");
             return;
         }
 
