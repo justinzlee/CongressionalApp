@@ -65,6 +65,10 @@ public class UnitConverter {
         double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
                    Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
                    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        
+        // Harden against floating point errors that could make a > 1
+        a = Math.min(1.0, Math.max(0.0, a));
+        
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         return earthRadius * c;
     }

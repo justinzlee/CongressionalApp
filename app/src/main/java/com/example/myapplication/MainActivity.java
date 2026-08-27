@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private BeachRepository repository;
     private LocationService locationService;
     private BeachAdapter adapter;
+    private RecyclerView beachRecyclerView;
     
     private EditText searchEditText;
     private AutoCompleteTextView citySearchEditText;
@@ -52,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
     private double currentLon = -118.2437;
     private double currentRadiusMiles = Double.MAX_VALUE; // Default All
     private boolean hasLocation = false;
+    private boolean isManualLocation = false;
+    private boolean shouldScrollToTop = false;
 
     private final String[] US_COASTAL_CITIES = {
         "San Diego, CA", "Carlsbad, CA", "Encinitas, CA", "Oceanside, CA", "La Jolla, CA",
@@ -89,14 +92,14 @@ public class MainActivity extends AppCompatActivity {
         emptyState = findViewById(R.id.emptyState);
         beachCountBadge = findViewById(R.id.beachCountBadge);
 
-        RecyclerView recyclerView = findViewById(R.id.beachRecyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        beachRecyclerView = findViewById(R.id.beachRecyclerView);
+        beachRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new BeachAdapter(new ArrayList<>(), currentLat, currentLon, beach -> {
             Intent intent = new Intent(MainActivity.this, BeachDetailActivity.class);
             intent.putExtra(BeachDetailActivity.EXTRA_BEACH_ID, beach.getId());
             startActivity(intent);
         });
-        recyclerView.setAdapter(adapter);
+        beachRecyclerView.setAdapter(adapter);
 
         setupRadiusSpinner();
         setupSearch();
@@ -106,6 +109,11 @@ public class MainActivity extends AppCompatActivity {
         repository.refreshAllData(() -> runOnUiThread(this::updateList));
 
         updateList(); // Initial update
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         requestLocation();
     }
 
@@ -127,6 +135,15 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
             startActivity(new Intent(this, SettingsActivity.class));
+            return true;
+        } else if (item.getItemId() == R.id.action_my_location) {
+            isManualLocation = false;
+            searchEditText.setText("");
+            citySearchEditText.setText("");
+            radiusToggleGroup.check(R.id.radiusAll);
+            shouldScrollToTop = true;
+            Toast.makeText(this, "Using real-time location", Toast.LENGTH_SHORT).show();
+            requestLocation();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -151,14 +168,10 @@ public class MainActivity extends AppCompatActivity {
             List<Address> addresses = geocoder.getFromLocationName(cityName, 1);
             if (addresses != null && !addresses.isEmpty()) {
                 Address address = addresses.get(0);
-                currentLat = address.getLatitude();
-                currentLon = address.getLongitude();
-                hasLocation = true;
+                isManualLocation = true;
+                updateUserLocation(address.getLatitude(), address.getLongitude());
                 currentRadiusMiles = Double.MAX_VALUE; // Reset to "All"
                 radiusToggleGroup.check(R.id.radiusAll);
-                updateRadiusButtonsEnabled();
-                adapter.updateUserLocation(currentLat, currentLon);
-                updateList();
                 Toast.makeText(this, "Searching near: " + cityName, Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(this, "Location not found", Toast.LENGTH_SHORT).show();
@@ -203,23 +216,40 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void requestLocation() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        String[] permissions = {
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        };
+        
+        boolean hasFine = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        boolean hasCoarse = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+
+        if (!hasFine || !hasCoarse) {
+            ActivityCompat.requestPermissions(this, permissions, 1);
         } else {
             fetchLocation();
         }
     }
 
     private void fetchLocation() {
+        locationService.getLastLocation(new LocationService.LocationUpdateListener() {
+            @Override
+            public void onLocationUpdated(double latitude, double longitude) {
+                if (!isManualLocation) {
+                    updateUserLocation(latitude, longitude);
+                }
+            }
+
+            @Override
+            public void onLocationError(String error) {}
+        });
+
         locationService.startLocationUpdates(new LocationService.LocationUpdateListener() {
             @Override
             public void onLocationUpdated(double latitude, double longitude) {
-                currentLat = latitude;
-                currentLon = longitude;
-                hasLocation = true; // Show distances once we have a location
-                updateRadiusButtonsEnabled();
-                adapter.updateUserLocation(latitude, longitude);
-                updateList();
+                if (!isManualLocation) {
+                    updateUserLocation(latitude, longitude);
+                }
             }
 
             @Override
@@ -227,6 +257,15 @@ public class MainActivity extends AppCompatActivity {
                 updateList();
             }
         });
+    }
+
+    private void updateUserLocation(double latitude, double longitude) {
+        currentLat = latitude;
+        currentLon = longitude;
+        hasLocation = true;
+        updateRadiusButtonsEnabled();
+        adapter.updateUserLocation(latitude, longitude);
+        updateList();
     }
 
     private void updateList() {
@@ -244,10 +283,15 @@ public class MainActivity extends AppCompatActivity {
             })
             .collect(Collectors.toList());
 
-        adapter.setBeaches(filteredBeaches, hasLocation);
+        adapter.setBeaches(filteredBeaches, hasLocation, currentLat, currentLon);
         emptyState.setVisibility(filteredBeaches.isEmpty() ? View.VISIBLE : View.GONE);
         beachCountBadge.setText(getResources().getQuantityString(
                 R.plurals.beach_count, filteredBeaches.size(), filteredBeaches.size()));
+
+        if (shouldScrollToTop) {
+            beachRecyclerView.scrollToPosition(0);
+            shouldScrollToTop = false;
+        }
     }
 
     @Override
@@ -285,8 +329,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1 && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            fetchLocation();
+        if (requestCode == 1 && grantResults.length > 0) {
+            boolean granted = true;
+            for (int result : grantResults) {
+                if (result != PackageManager.PERMISSION_GRANTED) granted = false;
+            }
+            if (granted) fetchLocation();
         }
     }
 }

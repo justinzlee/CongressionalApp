@@ -34,6 +34,15 @@ public class BeachRepository {
             "https://images.unsplash.com/photo-1624388300251-5d9c24097486?auto=format&fit=crop&w=800&q=80"));
         beaches.add(new Beach("CA5", "Moonlight State Beach", 33.0484, -117.2981, null, null, null, 
             "https://images.unsplash.com/photo-1439460127823-30ad2f7da420?auto=format&fit=crop&w=800&q=80"));
+
+        beaches.add(new Beach("LA1", "Santa Monica Pier", 34.0099, -118.4960, null, null, null,
+            "https://images.unsplash.com/photo-1505245208761-ba872912fac0?auto=format&fit=crop&w=800&q=80"));
+        beaches.add(new Beach("LA2", "Huntington Beach", 33.6599, -117.9992, null, null, null,
+            "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=800&q=80"));
+        beaches.add(new Beach("LA3", "Malibu Lagoon", 34.0322, -118.6775, null, null, null,
+            "https://images.unsplash.com/photo-1588665798939-269e9e8f49a2?auto=format&fit=crop&w=800&q=80"));
+        beaches.add(new Beach("LA4", "Venice Beach", 33.9850, -118.4695, null, null, null,
+            "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&w=800&q=80"));
         
         beaches.add(new Beach("FL1", "South Beach", 25.7826, -80.1285, 
             Collections.singletonList(new Hazard(HazardType.UV_INDEX, Severity.EXTREME, "High UV today.", Arrays.asList("Apply SPF 50", "Reapply every 2h"))),

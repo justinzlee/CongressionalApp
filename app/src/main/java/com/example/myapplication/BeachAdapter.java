@@ -36,9 +36,11 @@ public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHol
         this.listener = listener;
     }
 
-    public void setBeaches(List<Beach> beaches, boolean hasLocation) {
+    public void setBeaches(List<Beach> beaches, boolean hasLocation, double userLat, double userLon) {
         this.beaches = beaches;
         this.hasLocation = hasLocation;
+        this.userLat = userLat;
+        this.userLon = userLon;
         notifyDataSetChanged();
     }
 

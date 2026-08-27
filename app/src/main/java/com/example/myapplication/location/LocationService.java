@@ -28,14 +28,31 @@ public class LocationService {
         this.fusedLocationClient = LocationServices.getFusedLocationProviderClient(context);
     }
 
+    public void getLastLocation(LocationUpdateListener listener) {
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            listener.onLocationError("Permission not granted");
+            return;
+        }
+
+        fusedLocationClient.getLastLocation().addOnSuccessListener(location -> {
+            if (location != null) {
+                listener.onLocationUpdated(location.getLatitude(), location.getLongitude());
+            } else {
+                listener.onLocationError("Last location unknown");
+            }
+        });
+    }
+
     public void startLocationUpdates(LocationUpdateListener listener) {
         if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             listener.onLocationError("Permission not granted");
             return;
         }
 
-        LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 10000)
-                .setMinUpdateIntervalMillis(5000)
+        stopLocationUpdates();
+
+        LocationRequest locationRequest = new LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 2000)
+                .setMinUpdateIntervalMillis(1000)
                 .build();
 
         locationCallback = new LocationCallback() {
@@ -55,6 +72,7 @@ public class LocationService {
     public void stopLocationUpdates() {
         if (fusedLocationClient != null && locationCallback != null) {
             fusedLocationClient.removeLocationUpdates(locationCallback);
+            locationCallback = null;
         }
     }
 }
