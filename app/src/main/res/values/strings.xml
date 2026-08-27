@@ -14,6 +14,7 @@
     <string name="select_coastal_city">Select Coastal City</string>
     <string name="beach_name_hint">Beach Name</string>
     <string name="radius_label">Search Radius</string>
+    <string name="radius_needs_location">Search a city or enable location to filter by distance</string>
     <string name="find_nearby_beaches">Find Nearby Beaches</string>
     <string name="nearby_beaches">Nearby Beaches</string>
     <string name="distance_away">%1$.2f miles away</string>

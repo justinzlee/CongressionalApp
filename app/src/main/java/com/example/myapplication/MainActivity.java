@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
     private double currentLat = 34.0522; // Default LA
     private double currentLon = -118.2437;
-    private double currentRadius = Double.MAX_VALUE; // Default All
-    private boolean hasSearched = false;
+    private double currentRadiusMiles = Double.MAX_VALUE; // Default All
+    private boolean hasLocation = false;
 
     private final String[] US_COASTAL_CITIES = {
         "San Diego, CA", "Carlsbad, CA", "Encinitas, CA", "Oceanside, CA", "La Jolla, CA",
@@ -101,11 +101,20 @@ public class MainActivity extends AppCompatActivity {
         setupRadiusSpinner();
         setupSearch();
         setupCitySearch();
-        
+        updateRadiusButtonsEnabled();
+
         repository.refreshAllData(() -> runOnUiThread(this::updateList));
-        
+
         updateList(); // Initial update
         requestLocation();
+    }
+
+    private void updateRadiusButtonsEnabled() {
+        findViewById(R.id.radius5).setEnabled(hasLocation);
+        findViewById(R.id.radius10).setEnabled(hasLocation);
+        findViewById(R.id.radius25).setEnabled(hasLocation);
+        findViewById(R.id.radius50).setEnabled(hasLocation);
+        findViewById(R.id.radiusHint).setVisibility(hasLocation ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -144,9 +153,10 @@ public class MainActivity extends AppCompatActivity {
                 Address address = addresses.get(0);
                 currentLat = address.getLatitude();
                 currentLon = address.getLongitude();
-                hasSearched = true;
-                currentRadius = Double.MAX_VALUE; // Reset to "All"
+                hasLocation = true;
+                currentRadiusMiles = Double.MAX_VALUE; // Reset to "All"
                 radiusToggleGroup.check(R.id.radiusAll);
+                updateRadiusButtonsEnabled();
                 adapter.updateUserLocation(currentLat, currentLon);
                 updateList();
                 Toast.makeText(this, "Searching near: " + cityName, Toast.LENGTH_SHORT).show();
@@ -159,23 +169,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupRadiusSpinner() {
-        currentRadius = Double.MAX_VALUE; // Default All
+        currentRadiusMiles = Double.MAX_VALUE; // Default All
         radiusToggleGroup.check(R.id.radiusAll);
 
         radiusToggleGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (!isChecked) return;
-            hasSearched = true;
-            
+
+            if (checkedId == R.id.radiusAll) {
+                currentRadiusMiles = Double.MAX_VALUE;
+                updateList();
+                return;
+            }
+
             if (checkedId == R.id.radius5) {
-                currentRadius = 5.0;
+                currentRadiusMiles = 5.0;
             } else if (checkedId == R.id.radius10) {
-                currentRadius = 10.0;
+                currentRadiusMiles = 10.0;
             } else if (checkedId == R.id.radius25) {
-                currentRadius = 25.0;
+                currentRadiusMiles = 25.0;
             } else if (checkedId == R.id.radius50) {
-                currentRadius = 50.0;
-            } else {
-                currentRadius = Double.MAX_VALUE;
+                currentRadiusMiles = 50.0;
             }
             updateList();
         });
@@ -203,7 +216,8 @@ public class MainActivity extends AppCompatActivity {
             public void onLocationUpdated(double latitude, double longitude) {
                 currentLat = latitude;
                 currentLon = longitude;
-                hasSearched = true; // Show distances once we have a location
+                hasLocation = true; // Show distances once we have a location
+                updateRadiusButtonsEnabled();
                 adapter.updateUserLocation(latitude, longitude);
                 updateList();
             }
@@ -216,16 +230,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateList() {
-        SharedPreferences prefs = getSharedPreferences(SettingsActivity.PREFS_NAME, MODE_PRIVATE);
-        boolean useMetric = prefs.getBoolean(SettingsActivity.KEY_USE_METRIC, false);
-
         String query = searchEditText.getText().toString();
         List<Beach> filteredBeaches = repository.searchBeaches(query).stream()
             .filter(b -> {
-                if (currentRadius >= 1000.0) return true; // Disable filter for "All"
+                if (currentRadiusMiles >= 1000.0) return true; // Disable filter for "All"
                 double distanceMiles = UnitConverter.calculateDistance(currentLat, currentLon, b.getLatitude(), b.getLongitude());
-                double compareDistance = useMetric ? distanceMiles * 1.60934 : distanceMiles;
-                return compareDistance <= currentRadius;
+                return distanceMiles <= currentRadiusMiles;
             })
             .sorted((b1, b2) -> {
                 double d1 = UnitConverter.calculateDistance(currentLat, currentLon, b1.getLatitude(), b1.getLongitude());
@@ -234,7 +244,7 @@ public class MainActivity extends AppCompatActivity {
             })
             .collect(Collectors.toList());
 
-        adapter.setBeaches(filteredBeaches, hasSearched);
+        adapter.setBeaches(filteredBeaches, hasLocation);
         emptyState.setVisibility(filteredBeaches.isEmpty() ? View.VISIBLE : View.GONE);
         beachCountBadge.setText(getResources().getQuantityString(
                 R.plurals.beach_count, filteredBeaches.size(), filteredBeaches.size()));
@@ -253,12 +263,17 @@ public class MainActivity extends AppCompatActivity {
     private void updateRadiusButtonLabels() {
         SharedPreferences prefs = getSharedPreferences(SettingsActivity.PREFS_NAME, MODE_PRIVATE);
         boolean useMetric = prefs.getBoolean(SettingsActivity.KEY_USE_METRIC, false);
+
+        setRadiusButtonLabel(R.id.radius5, 5.0, useMetric);
+        setRadiusButtonLabel(R.id.radius10, 10.0, useMetric);
+        setRadiusButtonLabel(R.id.radius25, 25.0, useMetric);
+        setRadiusButtonLabel(R.id.radius50, 50.0, useMetric);
+    }
+
+    private void setRadiusButtonLabel(int buttonId, double miles, boolean useMetric) {
+        long displayValue = useMetric ? Math.round(miles * 1.60934) : (long) miles;
         String unit = useMetric ? "km" : "mi";
-        
-        ((Button)findViewById(R.id.radius5)).setText("5" + unit);
-        ((Button)findViewById(R.id.radius10)).setText("10" + unit);
-        ((Button)findViewById(R.id.radius25)).setText("25" + unit);
-        ((Button)findViewById(R.id.radius50)).setText("50" + unit);
+        ((Button) findViewById(buttonId)).setText(displayValue + unit);
     }
 
     @Override

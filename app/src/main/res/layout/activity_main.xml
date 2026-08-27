@@ -11,14 +11,15 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primary">
+        android:background="@drawable/bg_hero_gradient"
+        android:theme="@style/ThemeOverlay.Material3.Dark">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="@string/app_name"
-            app:titleTextColor="@color/on_primary" />
+            app:titleTextColor="@color/on_hero" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -170,6 +171,15 @@
                             app:strokeColor="@color/divider" />
 
                     </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                    <TextView
+                        android:id="@+id/radiusHint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/radius_needs_location"
+                        android:textAppearance="@style/TextAppearance.App.Subtitle"
+                        android:textSize="12sp" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/citySearchButton"

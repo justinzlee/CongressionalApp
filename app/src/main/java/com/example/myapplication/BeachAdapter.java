@@ -26,6 +26,7 @@ public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHol
     private List<Beach> beaches;
     private double userLat;
     private double userLon;
+    private boolean hasLocation;
     private final OnBeachClickListener listener;
 
     public BeachAdapter(List<Beach> beaches, double userLat, double userLon, OnBeachClickListener listener) {
@@ -35,14 +36,16 @@ public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHol
         this.listener = listener;
     }
 
-    public void setBeaches(List<Beach> beaches, boolean unused) {
+    public void setBeaches(List<Beach> beaches, boolean hasLocation) {
         this.beaches = beaches;
+        this.hasLocation = hasLocation;
         notifyDataSetChanged();
     }
 
     public void updateUserLocation(double lat, double lon) {
         this.userLat = lat;
         this.userLon = lon;
+        this.hasLocation = true;
         notifyDataSetChanged();
     }
 
@@ -108,11 +111,18 @@ public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHol
 
         if (!beach.getNearestHelp().isEmpty()) {
             holder.help.setText(String.format(Locale.getDefault(), "Nearest Help: %s", beach.getNearestHelp().get(0).getName()));
+            holder.help.setVisibility(View.VISIBLE);
+        } else {
+            holder.help.setVisibility(View.GONE);
         }
 
-        double distance = UnitConverter.calculateDistance(userLat, userLon, beach.getLatitude(), beach.getLongitude());
-        holder.distance.setText(UnitConverter.formatDistance(holder.itemView.getContext(), distance));
-        holder.distance.setVisibility(View.VISIBLE);
+        if (hasLocation) {
+            double distance = UnitConverter.calculateDistance(userLat, userLon, beach.getLatitude(), beach.getLongitude());
+            holder.distance.setText(UnitConverter.formatDistance(holder.itemView.getContext(), distance));
+            holder.distance.setVisibility(View.VISIBLE);
+        } else {
+            holder.distance.setVisibility(View.GONE);
+        }
     }
 
     @Override
