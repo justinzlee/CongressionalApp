@@ -2,9 +2,11 @@ package com.example.myapplication.data;
 
 import com.example.myapplication.model.*;
 import com.example.myapplication.network.WeatherClient;
+import com.example.myapplication.util.UnitConverter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -101,5 +103,27 @@ public class BeachRepository {
                 .filter(b -> b.getName().toLowerCase().contains(query.toLowerCase()))
                 .collect(Collectors.toList());
         }
+    }
+
+    /**
+     * Beaches within radiusMiles of (lat, lon), closest first. If none fall within
+     * the radius (e.g. the user is nowhere near a covered coastline), falls back to
+     * the closest fallbackCount beaches so a location-based report is never empty.
+     */
+    public List<Beach> findNearbyBeaches(double lat, double lon, double radiusMiles, int fallbackCount) {
+        Comparator<Beach> byDistance = Comparator.comparingDouble(
+            b -> UnitConverter.calculateDistance(lat, lon, b.getLatitude(), b.getLongitude()));
+
+        List<Beach> withinRadius = getBeaches().stream()
+            .filter(b -> UnitConverter.calculateDistance(lat, lon, b.getLatitude(), b.getLongitude()) <= radiusMiles)
+            .sorted(byDistance)
+            .collect(Collectors.toList());
+
+        if (!withinRadius.isEmpty()) return withinRadius;
+
+        return getBeaches().stream()
+            .sorted(byDistance)
+            .limit(fallbackCount)
+            .collect(Collectors.toList());
     }
 }

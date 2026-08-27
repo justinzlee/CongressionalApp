@@ -59,4 +59,40 @@ public class SafetyAdvisor {
 
         return summary.toString();
     }
+
+    /** Builds a multi-beach digest for a "beaches near me" style report. */
+    public String getNearbyBeachesReport(Context context, List<Beach> nearbyBeaches, double userLat, double userLon) {
+        if (nearbyBeaches.isEmpty()) {
+            return "No beaches found near your current location.";
+        }
+
+        StringBuilder report = new StringBuilder();
+        report.append(nearbyBeaches.size())
+              .append(nearbyBeaches.size() == 1 ? " beach found near you:\n\n" : " beaches found near you:\n\n");
+
+        for (Beach beach : nearbyBeaches) {
+            double distance = UnitConverter.calculateDistance(userLat, userLon, beach.getLatitude(), beach.getLongitude());
+            report.append("- ").append(beach.getName())
+                  .append(" (").append(UnitConverter.formatDistance(context, distance)).append(")\n");
+
+            BeachConditions conditions = beach.getConditions();
+            if (conditions != null) {
+                report.append("   Air: ").append(UnitConverter.formatTemperature(context, conditions.getAirTemperature()))
+                      .append(" | Waves: ").append(UnitConverter.formatWaveHeight(context, conditions.getWaveHeight()))
+                      .append(" | UV: ").append(conditions.getFormattedUvIndex()).append("\n");
+            }
+
+            List<Hazard> hazards = beach.getHazards();
+            if (hazards == null || hazards.isEmpty()) {
+                report.append("   No major hazards reported.\n\n");
+            } else {
+                String hazardNames = hazards.stream()
+                    .map(h -> h.getType().name().toLowerCase().replace("_", " "))
+                    .collect(Collectors.joining(", "));
+                report.append("   Active alerts: ").append(hazardNames).append("\n\n");
+            }
+        }
+
+        return report.toString().trim();
+    }
 }

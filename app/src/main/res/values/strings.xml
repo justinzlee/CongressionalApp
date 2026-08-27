@@ -17,6 +17,11 @@
     <string name="radius_needs_location">Search a city or enable location to filter by distance</string>
     <string name="find_nearby_beaches">Find Nearby Beaches</string>
     <string name="nearby_beaches">Nearby Beaches</string>
+    <string name="nearby_report_action">Nearby Beach Report</string>
+    <string name="nearby_report_title">Beaches Near You</string>
+    <string name="nearby_report_fetching_location">Getting your current location…</string>
+    <string name="nearby_report_location_failed">Couldn\'t get your location: %1$s</string>
+    <string name="nearby_report_permission_needed">Location permission is needed for a nearby beach report</string>
     <string name="distance_away">%1$.2f miles away</string>
     <string name="hazards_label">Hazards: %1$s</string>
     <string name="beach_image_desc">Beach Image</string>
