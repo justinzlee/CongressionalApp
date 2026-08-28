@@ -273,15 +273,14 @@
 
 </LinearLayout>
 
-    <!-- Home screen: shown on top of the app at launch, tap anywhere to reveal it -->
+    <!-- Home screen: shown on top of the app at launch, then automatically
+         reveals the app underneath after a short delay -->
     <FrameLayout
         android:id="@+id/welcomeOverlay"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        android:focusable="true">
+        android:layout_height="match_parent">
 
-        <com.example.myapplication.MosaicRevealOverlay
+        <com.example.myapplication.WaveRevealOverlay
             android:id="@+id/welcomeRevealView"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
@@ -307,19 +306,8 @@
                 android:layout_marginTop="16dp"
                 android:fontFamily="sans-serif-medium"
                 android:text="@string/app_name"
-                android:textColor="@color/on_hero"
+                android:textColor="@color/on_wave"
                 android:textSize="28sp" />
-
-            <TextView
-                android:id="@+id/welcomeTapToStart"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:alpha="0.6"
-                android:letterSpacing="0.04"
-                android:text="@string/tap_to_start"
-                android:textColor="@color/on_hero"
-                android:textSize="13sp" />
 
         </LinearLayout>
 

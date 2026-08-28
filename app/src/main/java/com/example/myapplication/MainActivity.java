@@ -2,7 +2,6 @@ package com.example.myapplication;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -123,8 +122,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupWelcomeOverlay(Bundle savedInstanceState) {
         View welcomeOverlay = findViewById(R.id.welcomeOverlay);
         View welcomeContent = findViewById(R.id.welcomeContent);
-        MosaicRevealOverlay revealView = findViewById(R.id.welcomeRevealView);
-        TextView tapToStartText = findViewById(R.id.welcomeTapToStart);
+        WaveRevealOverlay revealView = findViewById(R.id.welcomeRevealView);
 
         if (savedInstanceState != null) {
             // Activity was recreated (e.g. rotation) - don't replay the intro.
@@ -132,25 +130,20 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        revealView.setFillColor(getColor(R.color.forest_green_translucent));
+        revealView.setWaterColors(
+            getColor(R.color.wave_deep),
+            getColor(R.color.wave_shallow),
+            getColor(R.color.wave_foam));
 
-        ObjectAnimator blink = ObjectAnimator.ofFloat(tapToStartText, View.ALPHA, 0.25f, 0.9f);
-        blink.setDuration(900);
-        blink.setStartDelay(400);
-        blink.setRepeatMode(ValueAnimator.REVERSE);
-        blink.setRepeatCount(ValueAnimator.INFINITE);
-        blink.start();
-
-        welcomeOverlay.setOnClickListener(v -> {
-            blink.cancel();
-            welcomeOverlay.setClickable(false);
-
-            // The green plate shatters into a grid of squares that shrink and
-            // fade away starting at the center and rippling outward in a
-            // circular wave, revealing the app underneath.
+        // Hold on the logo/name for a beat, then reveal automatically - no
+        // tap required.
+        welcomeOverlay.postDelayed(() -> {
+            // The water pulls back like an outgoing tide: the swell sweeps
+            // down and off the bottom of the screen, trailing foam lines and
+            // fading out to reveal the app underneath.
             ValueAnimator revealAnimator = ValueAnimator.ofFloat(0f, 1f);
-            revealAnimator.setDuration(900);
-            revealAnimator.setInterpolator(new android.view.animation.AccelerateInterpolator(1.2f));
+            revealAnimator.setDuration(1400);
+            revealAnimator.setInterpolator(new android.view.animation.AccelerateDecelerateInterpolator());
             revealAnimator.addUpdateListener(anim -> revealView.setProgress((float) anim.getAnimatedValue()));
             revealAnimator.addListener(new AnimatorListenerAdapter() {
                 @Override
@@ -160,10 +153,9 @@ public class MainActivity extends AppCompatActivity {
             });
             revealAnimator.start();
 
-            // The logo and prompt fade out quickly so they don't linger once
-            // the hole has already swallowed them.
-            welcomeContent.animate().alpha(0f).setDuration(250).start();
-        });
+            // The logo fades as the water slides out from under it.
+            welcomeContent.animate().alpha(0f).setDuration(500).start();
+        }, 1200);
     }
 
     @Override

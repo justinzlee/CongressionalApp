@@ -57,7 +57,10 @@
     <color name="chip_hazard_bg">#26E15252</color>
     <color name="chip_safe_bg">#262FAE84</color>
 
-    <!-- Home / welcome screen -->
-    <color name="forest_green">#1B4332</color>
-    <color name="forest_green_translucent">#FA1B4332</color>
+    <!-- Home / welcome screen: shallow-water blues for the wave reveal -->
+    <color name="wave_deep">#2E9EC4</color>
+    <color name="wave_shallow">#A9E4F2</color>
+    <color name="wave_foam">#FFFFFF</color>
+    <!-- Deep teal ink: white would wash out against the light blue water -->
+    <color name="on_wave">#08414E</color>
 </resources>
