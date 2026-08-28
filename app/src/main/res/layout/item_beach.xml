@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Nearby-beach row. The design's row is a compact strip (level chip, name +
+  short verdict, distance and surf on the right); the photo is kept above it
+  because it is real data the app fetches per beach.
+-->
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginVertical="8dp"
+    android:layout_marginBottom="8dp"
     app:cardBackgroundColor="@color/surface"
-    app:cardCornerRadius="22dp"
-    app:cardElevation="3dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="0dp"
     app:cardPreventCornerOverlap="false"
     app:rippleColor="@color/primary"
-    app:strokeWidth="0dp">
+    app:strokeColor="@color/divider"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +26,7 @@
         <ImageView
             android:id="@+id/beachImage"
             android:layout_width="match_parent"
-            android:layout_height="140dp"
+            android:layout_height="116dp"
             android:background="@drawable/bg_image_placeholder"
             android:contentDescription="@string/beach_image_desc"
             android:scaleType="centerCrop" />
@@ -28,120 +34,108 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:padding="16dp">
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="11dp">
+
+            <!-- Level chip: filled in code with the beach's safety tint -->
+            <FrameLayout
+                android:id="@+id/beachLevelChip"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:background="@drawable/bg_level_chip">
+
+                <ImageView
+                    android:id="@+id/beachLevelIcon"
+                    android:layout_width="17dp"
+                    android:layout_height="17dp"
+                    android:layout_gravity="center"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_check_circle"
+                    app:tint="@color/safe" />
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="11dp"
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/beachName"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="@style/TextAppearance.App.Title"
-                    tools:text="Santa Monica Beach" />
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/beachName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="1"
+                        android:textAppearance="@style/TextAppearance.App.Title"
+                        tools:text="Santa Monica Beach" />
+
+                    <!-- Lifebuoy marks a beach with a lifeguard station on record -->
+                    <ImageView
+                        android:id="@+id/beachGuardedIcon"
+                        android:layout_width="12dp"
+                        android:layout_height="12dp"
+                        android:layout_marginStart="6dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_lifebuoy"
+                        android:visibility="gone"
+                        app:tint="@color/primary"
+                        tools:visibility="visible" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/beachVerdict"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:textColor="@color/safe"
+                    android:textSize="12sp"
+                    tools:text="Good to swim" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:gravity="end"
+                android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/beachDistance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:textAppearance="@style/TextAppearance.App.Subtitle" />
-
-                <TextView
-                    android:id="@+id/beachConditions"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:background="@drawable/bg_pill_neutral"
-                    android:drawablePadding="6dp"
-                    android:gravity="center_vertical"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="5dp"
-                    android:textColor="@color/text_primary"
-                    android:textSize="13sp"
-                    app:drawableStartCompat="@drawable/ic_sun"
-                    app:drawableTint="@color/icon_uv" />
-
-                <TextView
-                    android:id="@+id/beachHazards"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:background="@drawable/bg_pill_neutral"
-                    android:drawablePadding="6dp"
-                    android:gravity="center_vertical"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="5dp"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    app:drawableStartCompat="@drawable/ic_warning" />
-
-                <TextView
-                    android:id="@+id/beachHelp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:drawablePadding="6dp"
-                    android:gravity="center_vertical"
-                    android:textColor="@color/text_secondary"
+                    android:textAppearance="@style/TextAppearance.App.Subtitle"
                     android:textSize="12sp"
-                    app:drawableStartCompat="@drawable/ic_location"
-                    app:drawableTint="@color/text_secondary" />
-            </LinearLayout>
+                    tools:text="0.8 mi" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="4dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <!-- UV Indicator -->
-                <LinearLayout
-                    android:id="@+id/uvBadgeContainer"
-                    android:layout_width="66dp"
+                <TextView
+                    android:id="@+id/beachSurf"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_pill_neutral"
-                    android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingVertical="10dp"
-                    android:visibility="gone">
-
-                    <View
-                        android:id="@+id/uvCircle"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:background="@drawable/uv_circle" />
-
-                    <TextView
-                        android:id="@+id/uvValue"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="6dp"
-                        android:textSize="15sp"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/uvLabel"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.App.Caption" />
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_marginStart="4dp"
-                    android:alpha="0.4"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_chevron_right"
-                    app:tint="@color/text_secondary" />
+                    android:layout_marginTop="2dp"
+                    android:textAppearance="@style/TextAppearance.App.Subtitle"
+                    android:textSize="11sp"
+                    tools:text="0.4 m surf" />
             </LinearLayout>
 
+            <ImageView
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_marginStart="6dp"
+                android:alpha="0.45"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_chevron_right"
+                app:tint="@color/text_secondary" />
         </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

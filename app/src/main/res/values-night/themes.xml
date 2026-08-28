@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <!--
+      Night is Nocturne's native mode; only the system-bar icon polarity
+      differs from the base theme, everything else resolves through the
+      night color palette.
+    -->
     <style name="Theme.MyApplication" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorOnPrimary">@color/on_primary</item>
-        <item name="colorPrimaryVariant">@color/primary_variant</item>
         <item name="colorPrimaryContainer">@color/advisor_bg</item>
         <item name="colorOnPrimaryContainer">@color/primary_variant</item>
 
         <item name="colorSecondary">@color/secondary</item>
         <item name="colorOnSecondary">@color/on_secondary</item>
-        <item name="colorSecondaryVariant">@color/secondary_variant</item>
         <item name="colorSecondaryContainer">@color/surface_alt</item>
         <item name="colorOnSecondaryContainer">@color/text_primary</item>
         <item name="colorTertiary">@color/tertiary_gold</item>
@@ -22,9 +25,9 @@
         <item name="colorOnSurface">@color/text_primary</item>
         <item name="colorSurfaceVariant">@color/surface_alt</item>
         <item name="colorOnSurfaceVariant">@color/text_secondary</item>
-        <item name="colorSurfaceContainer">@color/surface_alt</item>
+        <item name="colorSurfaceContainer">@color/surface</item>
         <item name="colorSurfaceContainerLow">@color/surface</item>
-        <item name="colorSurfaceContainerLowest">@color/surface</item>
+        <item name="colorSurfaceContainerLowest">@color/background</item>
         <item name="colorSurfaceContainerHigh">@color/surface_alt</item>
         <item name="colorSurfaceContainerHighest">@color/surface_alt</item>
         <item name="colorOutline">@color/divider</item>

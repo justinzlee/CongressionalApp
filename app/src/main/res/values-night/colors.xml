@@ -1,55 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Nocturne design-system tokens, verbatim from the design's styles.css:
+  bg #161826, surface #232532, text #e9e9ed, accent #9184d9, with the
+  safety scale safe #4fbf95 / caution #e6a84f / danger #e0685c. This is
+  the app's native look; values/colors.xml holds the derived light
+  counterpart.
+-->
 <resources>
-    <!-- Night ocean -->
-    <color name="primary">#35C9C0</color>
-    <color name="primary_variant">#8FE9E1</color>
-    <color name="on_primary">#06201E</color>
-    <color name="ocean_gradient_start">#123A42</color>
-    <color name="ocean_gradient_end">#0B1E23</color>
+    <!-- Accent: the product blurple -->
+    <color name="primary">#9184D9</color>
+    <color name="primary_variant">#D2CEFD</color>
+    <color name="on_primary">#161826</color>
+    <color name="accent_soft">#E7E5FE</color>
 
-    <!-- Sunset coral -->
-    <color name="secondary">#FF9270</color>
-    <color name="secondary_variant">#FFB199</color>
-    <color name="on_secondary">#3A0F04</color>
+    <!-- Grounds -->
+    <color name="background">#161826</color>
+    <color name="surface">#232532</color>
+    <color name="surface_alt">#2B2E3D</color>
+    <!-- shadow-sm in Nocturne is a hairline edge, not a drop shadow -->
+    <color name="divider">#3F424D</color>
+    <color name="text_primary">#E9E9ED</color>
+    <color name="text_secondary">#9397AB</color>
 
-    <!-- Sand / sun -->
-    <color name="beach_accent">#F0C36D</color>
-    <color name="tertiary_gold">#F0C36D</color>
+    <!-- Semantic safety scale -->
+    <color name="safe">#4FBF95</color>
+    <color name="caution">#E6A84F</color>
+    <color name="danger">#E0685C</color>
+    <color name="safe_tint">#244FBF95</color>
+    <color name="caution_tint">#24E6A84F</color>
+    <color name="danger_tint">#24E0685C</color>
+    <color name="accent_tint">#249184D9</color>
 
-    <!-- Neutrals -->
-    <color name="background">#0B1E23</color>
-    <color name="surface">#122A30</color>
-    <color name="surface_alt">#17323A</color>
-    <color name="divider">#1F3B42</color>
-    <color name="text_primary">#F3EFE3</color>
-    <color name="text_secondary">#9FB6B8</color>
+    <!-- Legacy aliases kept so existing layouts and code keep resolving -->
+    <color name="error">#E0685C</color>
+    <color name="safe_green">#4FBF95</color>
+    <color name="advisor_bg">#1D1F33</color>
+    <color name="water_accent">#9184D9</color>
+    <color name="secondary">#E6A84F</color>
+    <color name="secondary_variant">#F0C36D</color>
+    <color name="on_secondary">#161826</color>
+    <color name="tertiary_gold">#E6A84F</color>
+    <color name="ocean_gradient_start">#161826</color>
+    <color name="ocean_gradient_end">#161826</color>
+    <color name="on_hero">#FFFFFF</color>
 
-    <!-- Status -->
-    <color name="error">#FF6B6B</color>
-    <color name="safe_green">#4DD3A6</color>
-    <color name="advisor_bg">#143036</color>
-    <color name="water_accent">#2E6E7A</color>
-
-    <!-- UV Index -->
-    <color name="uv_low">#4DD3A6</color>
-    <color name="uv_moderate">#F0C36D</color>
-    <color name="uv_high">#F2955F</color>
-    <color name="uv_very_high">#FF6B6B</color>
+    <!-- UV Index scale -->
+    <color name="uv_low">#4FBF95</color>
+    <color name="uv_moderate">#E6A84F</color>
+    <color name="uv_high">#EC8B58</color>
+    <color name="uv_very_high">#E0685C</color>
     <color name="uv_extreme">#B084C4</color>
 
-    <!-- Stat tile icon + tint pairs -->
-    <color name="icon_temp">#FF9868</color>
-    <color name="icon_uv">#F0C36D</color>
-    <color name="icon_wind">#5FC0D8</color>
-    <color name="icon_wave">#35C9C0</color>
-    <color name="icon_visibility">#9FB6B8</color>
+    <!-- Stat tile icons -->
+    <color name="icon_temp">#EC8B58</color>
+    <color name="icon_uv">#E6A84F</color>
+    <color name="icon_wind">#9397AB</color>
+    <color name="icon_wave">#9184D9</color>
+    <color name="icon_visibility">#9397AB</color>
 
-    <color name="tile_temp_bg">#4DFF9868</color>
-    <color name="tile_uv_bg">#4DF0C36D</color>
-    <color name="tile_wind_bg">#4D5FC0D8</color>
-    <color name="tile_wave_bg">#4D35C9C0</color>
-    <color name="tile_visibility_bg">#4D9FB6B8</color>
+    <color name="tile_temp_bg">#00000000</color>
+    <color name="tile_uv_bg">#00000000</color>
+    <color name="tile_wind_bg">#00000000</color>
+    <color name="tile_wave_bg">#00000000</color>
+    <color name="tile_visibility_bg">#00000000</color>
 
-    <color name="chip_hazard_bg">#40FF6B6B</color>
-    <color name="chip_safe_bg">#404DD3A6</color>
+    <!-- Welcome intro keeps its light-blue beach palette (outside Nocturne) -->
+    <color name="wave_deep">#2E9EC4</color>
+    <color name="wave_shallow">#A9E4F2</color>
+    <color name="wave_foam">#FFFFFF</color>
+    <color name="on_wave">#08414E</color>
 </resources>

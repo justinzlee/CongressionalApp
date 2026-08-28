@@ -34,6 +34,41 @@
     <string name="display_section_title">Display</string>
     <string name="use_dark_mode_title">Dark Mode</string>
     <string name="use_dark_mode_subtitle">Switch the app between light and dark appearance.</string>
+    <string name="settings_footnote">Conditions come from public coastal forecasts. Always follow the signs and flags at the beach.</string>
+
+    <!-- Swim verdict -->
+    <string name="verdict_safe">Good to swim</string>
+    <string name="verdict_safe_short">Good to swim</string>
+    <string name="verdict_caution">Take care</string>
+    <string name="verdict_caution_short">Take care</string>
+    <string name="verdict_danger">Not safe to swim</string>
+    <string name="verdict_danger_short">Not safe today</string>
+    <string name="verdict_unknown">Checking conditions</string>
+    <string name="verdict_unknown_note">Live conditions for this beach haven\'t loaded yet. Check the flags and signs on the beach before you swim.</string>
+    <string name="verdict_updated">%1$s · updated just now</string>
+    <string name="beach_details">Beach details</string>
+
+    <!-- Home header -->
+    <string name="header_kicker_near_you">Near you</string>
+    <string name="header_kicker_searching">Showing</string>
+    <string name="header_title_default">Beaches near you</string>
+
+    <!-- Section kickers -->
+    <string name="back">Back</string>
+    <string name="detail_meta">%1$s · %2$s away</string>
+    <string name="guarded_yes">Lifeguard tower nearby</string>
+    <string name="guarded_no">No patrol listed</string>
+    <string name="section_conditions">Conditions</string>
+    <string name="section_watch_for">What to watch for</string>
+    <string name="section_search">Find a beach</string>
+    <string name="lifeguards_title">Lifeguards</string>
+    <string name="lifeguards_none">No lifeguard station is listed for this beach. Never swim alone.</string>
+    <string name="lifeguards_nearest">%1$s is the nearest help on record.</string>
+    <string name="stat_surf">Surf</string>
+    <string name="stat_uv">UV</string>
+    <string name="stat_wind">Wind</string>
+    <string name="stat_water">Air temp</string>
+    <string name="surf_suffix">%1$s surf</string>
 
     <plurals name="beach_count">
         <item quantity="one">%1$d beach</item>

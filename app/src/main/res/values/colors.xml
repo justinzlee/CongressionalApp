@@ -1,66 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  Light counterpart to the Nocturne design system. Nocturne itself is
+  dark-only (see values-night/colors.xml, which carries its exact tokens);
+  these values are derived from the system's own documented neutral and
+  accent tonal ramps so the Dark Mode toggle still has somewhere sane to
+  land. Status hues are darkened from the dark-theme versions to keep
+  contrast on a light ground.
+-->
 <resources>
-    <!-- Ocean -->
-    <color name="primary">#0E7C86</color>
-    <color name="primary_variant">#0B5C63</color>
+    <!-- Accent: blurple, accent-700 from the Nocturne ramp for light-ground contrast -->
+    <color name="primary">#5D5294</color>
+    <color name="primary_variant">#423A6A</color>
     <color name="on_primary">#FFFFFF</color>
-    <color name="ocean_gradient_start">#1798A3</color>
-    <color name="ocean_gradient_end">#0B5C63</color>
-    <!-- Fixed light color for text/icons on the hero gradient and photo
-         scrims, which stay dark in both light and dark theme. Do NOT use
-         colorOnPrimary here: that flips to dark ink in dark mode. -->
+    <color name="accent_soft">#E7E5FE</color>
+
+    <!-- Grounds: neutral ramp -->
+    <color name="background">#F3F5FE</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="surface_alt">#E4E7F5</color>
+    <color name="divider">#CFD3E5</color>
+    <color name="text_primary">#292B31</color>
+    <color name="text_secondary">#75798C</color>
+
+    <!-- Semantic safety scale -->
+    <color name="safe">#2E8B68</color>
+    <color name="caution">#A9752B</color>
+    <color name="danger">#C1504A</color>
+    <color name="safe_tint">#1F2E8B68</color>
+    <color name="caution_tint">#1FA9752B</color>
+    <color name="danger_tint">#1FC1504A</color>
+    <color name="accent_tint">#1F5D5294</color>
+
+    <!-- Legacy aliases kept so existing layouts and code keep resolving -->
+    <color name="error">#C1504A</color>
+    <color name="safe_green">#2E8B68</color>
+    <color name="advisor_bg">#ECEAFB</color>
+    <color name="water_accent">#5D5294</color>
+    <color name="secondary">#A9752B</color>
+    <color name="secondary_variant">#8A5D1F</color>
+    <color name="on_secondary">#FFFFFF</color>
+    <color name="tertiary_gold">#A9752B</color>
+    <color name="ocean_gradient_start">#F3F5FE</color>
+    <color name="ocean_gradient_end">#F3F5FE</color>
+    <!-- Text/icons over photo scrims, which stay dark in both themes -->
     <color name="on_hero">#FFFFFF</color>
 
-    <!-- Sunset coral -->
-    <color name="secondary">#FF7A59</color>
-    <color name="secondary_variant">#E85F3E</color>
-    <color name="on_secondary">#FFFFFF</color>
+    <!-- UV Index scale -->
+    <color name="uv_low">#2E8B68</color>
+    <color name="uv_moderate">#A9752B</color>
+    <color name="uv_high">#B2622F</color>
+    <color name="uv_very_high">#C1504A</color>
+    <color name="uv_extreme">#7A4E8C</color>
 
-    <!-- Sand / sun -->
-    <color name="beach_accent">#E8A93C</color>
-    <color name="tertiary_gold">#E8A93C</color>
+    <!-- Stat tile icons -->
+    <color name="icon_temp">#B2622F</color>
+    <color name="icon_uv">#A9752B</color>
+    <color name="icon_wind">#75798C</color>
+    <color name="icon_wave">#5D5294</color>
+    <color name="icon_visibility">#75798C</color>
 
-    <!-- Neutrals -->
-    <color name="background">#FBF5E9</color>
-    <color name="surface">#FFFFFF</color>
-    <color name="surface_alt">#F4EDDD</color>
-    <color name="divider">#EAE1CD</color>
-    <color name="text_primary">#1C2E2E</color>
-    <color name="text_secondary">#6F7F80</color>
+    <color name="tile_temp_bg">#00000000</color>
+    <color name="tile_uv_bg">#00000000</color>
+    <color name="tile_wind_bg">#00000000</color>
+    <color name="tile_wave_bg">#00000000</color>
+    <color name="tile_visibility_bg">#00000000</color>
 
-    <!-- Status -->
-    <color name="error">#E15252</color>
-    <color name="safe_green">#2FAE84</color>
-    <color name="advisor_bg">#E4F3F1</color>
-    <color name="water_accent">#3E9AA8</color>
-
-    <!-- UV Index -->
-    <color name="uv_low">#2FAE84</color>
-    <color name="uv_moderate">#E8A93C</color>
-    <color name="uv_high">#F2854B</color>
-    <color name="uv_very_high">#E15252</color>
-    <color name="uv_extreme">#8E5B9F</color>
-
-    <!-- Stat tile icon + tint pairs -->
-    <color name="icon_temp">#F27C4B</color>
-    <color name="icon_uv">#E8A93C</color>
-    <color name="icon_wind">#2F97B0</color>
-    <color name="icon_wave">#0B5C63</color>
-    <color name="icon_visibility">#7C8B8C</color>
-
-    <color name="tile_temp_bg">#33F27C4B</color>
-    <color name="tile_uv_bg">#33E8A93C</color>
-    <color name="tile_wind_bg">#332F97B0</color>
-    <color name="tile_wave_bg">#330B5C63</color>
-    <color name="tile_visibility_bg">#337C8B8C</color>
-
-    <color name="chip_hazard_bg">#26E15252</color>
-    <color name="chip_safe_bg">#262FAE84</color>
-
-    <!-- Home / welcome screen: shallow-water blues for the wave reveal -->
+    <!-- Home / welcome screen: shallow-water blues for the wave reveal.
+         The welcome intro is outside the Nocturne screen set, so it keeps
+         the light-blue beach palette it was designed with. -->
     <color name="wave_deep">#2E9EC4</color>
     <color name="wave_shallow">#A9E4F2</color>
     <color name="wave_foam">#FFFFFF</color>
-    <!-- Deep teal ink: white would wash out against the light blue water -->
     <color name="on_wave">#08414E</color>
 </resources>

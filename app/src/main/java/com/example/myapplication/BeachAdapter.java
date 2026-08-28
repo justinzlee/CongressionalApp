@@ -1,6 +1,5 @@
 package com.example.myapplication;
 
-import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,14 +8,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
+import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
+import android.content.res.ColorStateList;
 import com.bumptech.glide.Glide;
 import com.example.myapplication.model.Beach;
 import com.example.myapplication.model.BeachConditions;
+import com.example.myapplication.model.HelpType;
+import com.example.myapplication.model.SafetyLevel;
 import com.example.myapplication.util.UnitConverter;
 import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
 
 public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHolder> {
     public interface OnBeachClickListener {
@@ -61,69 +62,63 @@ public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHol
     @Override
     public void onBindViewHolder(@NonNull BeachViewHolder holder, int position) {
         Beach beach = beaches.get(position);
+        View row = holder.itemView;
+
         holder.name.setText(beach.getName());
-        holder.itemView.setOnClickListener(v -> listener.onBeachClick(beach));
-        
-        Glide.with(holder.itemView.getContext())
+        row.setOnClickListener(v -> listener.onBeachClick(beach));
+
+        Glide.with(row.getContext())
             .load(beach.getImageUrl())
             .centerCrop()
-            .placeholder(R.color.water_accent)
+            .placeholder(R.drawable.bg_image_placeholder)
             .into(holder.beachImage);
 
+        // Verdict drives the row's chip colour and its one-line summary.
+        SafetyLevel level = SafetyLevel.evaluate(beach);
+        if (level != null) {
+            int color = ContextCompat.getColor(row.getContext(), level.getColorRes());
+            int tint = ContextCompat.getColor(row.getContext(), level.getTintRes());
+            holder.levelIcon.setImageResource(level.getIconRes());
+            ImageViewCompat.setImageTintList(holder.levelIcon, ColorStateList.valueOf(color));
+            tintChip(holder.levelChip, tint);
+            holder.verdict.setText(level.getShortVerdictRes());
+            holder.verdict.setTextColor(color);
+        } else {
+            int muted = ContextCompat.getColor(row.getContext(), R.color.text_secondary);
+            holder.levelIcon.setImageResource(R.drawable.ic_warning_circle);
+            ImageViewCompat.setImageTintList(holder.levelIcon, ColorStateList.valueOf(muted));
+            tintChip(holder.levelChip, ContextCompat.getColor(row.getContext(), R.color.surface_alt));
+            holder.verdict.setText(R.string.verdict_unknown);
+            holder.verdict.setTextColor(muted);
+        }
+
+        // A lifeguard station on record earns the lifebuoy marker.
+        boolean guarded = beach.getNearestHelp().stream()
+            .anyMatch(h -> h.getType() == HelpType.LIFEGUARD_TOWER);
+        holder.guardedIcon.setVisibility(guarded ? View.VISIBLE : View.GONE);
+
         BeachConditions conditions = beach.getConditions();
-        if (conditions != null) {
-            String tempText = UnitConverter.formatTemperature(holder.itemView.getContext(), conditions.getAirTemperature());
-            String waveText = UnitConverter.formatWaveHeight(holder.itemView.getContext(), conditions.getWaveHeight());
-            String conditionsText = String.format(Locale.getDefault(), "Air: %s | Waves: %s", 
-                tempText,
-                waveText);
-            holder.conditions.setText(conditionsText);
-
-            // UV Badge setup
-            if (conditions.getUvIndex() != null) {
-                holder.uvBadgeContainer.setVisibility(View.VISIBLE);
-                holder.uvValue.setText(String.valueOf(conditions.getUvIndex()));
-                holder.uvLabel.setText(conditions.getUvLabel());
-                
-                int color = ContextCompat.getColor(holder.itemView.getContext(), conditions.getUvColorResId());
-                GradientDrawable drawable = (GradientDrawable) holder.uvCircle.getBackground().mutate();
-                drawable.setColor(color);
-                int strokeWidth = (int) (2 * holder.itemView.getContext().getResources().getDisplayMetrics().density);
-                drawable.setStroke(strokeWidth, Color.BLACK);
-                
-                holder.uvValue.setTextColor(color);
-            } else {
-                holder.uvBadgeContainer.setVisibility(View.GONE);
-            }
+        if (conditions != null && conditions.getWaveHeight() != null) {
+            holder.surf.setText(row.getContext().getString(R.string.surf_suffix,
+                UnitConverter.formatWaveHeight(row.getContext(), conditions.getWaveHeight())));
+            holder.surf.setVisibility(View.VISIBLE);
         } else {
-            holder.conditions.setText(holder.itemView.getContext().getString(R.string.conditions_unavailable));
-            holder.uvBadgeContainer.setVisibility(View.GONE);
-        }
-
-        if (!beach.getHazards().isEmpty()) {
-            holder.hazards.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.error));
-            String hazardNames = beach.getHazards().stream()
-                .map(h -> h.getType().name().replace("_", " "))
-                .collect(Collectors.joining(", "));
-            holder.hazards.setText(holder.itemView.getContext().getString(R.string.hazards_label, hazardNames));
-        } else {
-            holder.hazards.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.safe_green));
-            holder.hazards.setText(holder.itemView.getContext().getString(R.string.no_major_hazards));
-        }
-
-        if (!beach.getNearestHelp().isEmpty()) {
-            holder.help.setText(String.format(Locale.getDefault(), "Nearest Help: %s", beach.getNearestHelp().get(0).getName()));
-            holder.help.setVisibility(View.VISIBLE);
-        } else {
-            holder.help.setVisibility(View.GONE);
+            holder.surf.setVisibility(View.GONE);
         }
 
         if (hasLocation) {
             double distance = UnitConverter.calculateDistance(userLat, userLon, beach.getLatitude(), beach.getLongitude());
-            holder.distance.setText(UnitConverter.formatDistance(holder.itemView.getContext(), distance));
+            holder.distance.setText(UnitConverter.formatDistance(row.getContext(), distance));
             holder.distance.setVisibility(View.VISIBLE);
         } else {
             holder.distance.setVisibility(View.GONE);
+        }
+    }
+
+    private static void tintChip(View chip, int color) {
+        android.graphics.drawable.Drawable background = chip.getBackground();
+        if (background instanceof GradientDrawable) {
+            ((GradientDrawable) background.mutate()).setColor(color);
         }
     }
 
@@ -133,22 +128,20 @@ public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHol
     }
 
     public static class BeachViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, conditions, hazards, help, distance, uvValue, uvLabel;
-        public ImageView beachImage;
-        public View uvCircle, uvBadgeContainer;
+        public final TextView name, verdict, distance, surf;
+        public final ImageView beachImage, levelIcon, guardedIcon;
+        public final View levelChip;
 
         public BeachViewHolder(@NonNull View itemView) {
             super(itemView);
             beachImage = itemView.findViewById(R.id.beachImage);
             name = itemView.findViewById(R.id.beachName);
-            conditions = itemView.findViewById(R.id.beachConditions);
-            hazards = itemView.findViewById(R.id.beachHazards);
-            help = itemView.findViewById(R.id.beachHelp);
+            verdict = itemView.findViewById(R.id.beachVerdict);
             distance = itemView.findViewById(R.id.beachDistance);
-            uvBadgeContainer = itemView.findViewById(R.id.uvBadgeContainer);
-            uvCircle = itemView.findViewById(R.id.uvCircle);
-            uvValue = itemView.findViewById(R.id.uvValue);
-            uvLabel = itemView.findViewById(R.id.uvLabel);
+            surf = itemView.findViewById(R.id.beachSurf);
+            levelChip = itemView.findViewById(R.id.beachLevelChip);
+            levelIcon = itemView.findViewById(R.id.beachLevelIcon);
+            guardedIcon = itemView.findViewById(R.id.beachGuardedIcon);
         }
     }
 }

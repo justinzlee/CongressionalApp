@@ -17,22 +17,27 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.content.res.ColorStateList;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import com.example.myapplication.ai.SafetyNote;
 import com.example.myapplication.data.BeachRepository;
 import com.example.myapplication.location.LocationService;
 import com.example.myapplication.model.Beach;
+import com.example.myapplication.model.BeachConditions;
+import com.example.myapplication.model.SafetyLevel;
 import com.example.myapplication.util.EdgeToEdge;
 import com.example.myapplication.util.UnitConverter;
-import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.card.MaterialCardView;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +58,16 @@ public class MainActivity extends AppCompatActivity {
     private Button citySearchButton;
     private View emptyState;
     private TextView beachCountBadge;
+
+    // Header + verdict card, the design's answer to "can I swim right now?"
+    private TextView headerKicker, headerTitle;
+    private MaterialCardView verdictCard;
+    private View verdictBand;
+    private ImageView verdictIcon;
+    private TextView verdictText, verdictMeta, verdictNote;
+    private Button verdictDetailsButton;
+    private View statGrid;
+    private TextView statSurfValue, statUvValue, statWindValue, statTempValue;
 
     private double currentLat = 34.0522; // Default LA
     private double currentLon = -118.2437;
@@ -82,9 +97,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        MaterialToolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         EdgeToEdge.applyTopInset(findViewById(R.id.appBarLayout));
         EdgeToEdge.applyBottomInset(findViewById(R.id.mainScrollView));
 
@@ -97,6 +109,25 @@ public class MainActivity extends AppCompatActivity {
         radiusToggleGroup = findViewById(R.id.radiusToggleGroup);
         emptyState = findViewById(R.id.emptyState);
         beachCountBadge = findViewById(R.id.beachCountBadge);
+
+        headerKicker = findViewById(R.id.headerKicker);
+        headerTitle = findViewById(R.id.headerTitle);
+        verdictCard = findViewById(R.id.verdictCard);
+        verdictBand = findViewById(R.id.verdictBand);
+        verdictIcon = findViewById(R.id.verdictIcon);
+        verdictText = findViewById(R.id.verdictText);
+        verdictMeta = findViewById(R.id.verdictMeta);
+        verdictNote = findViewById(R.id.verdictNote);
+        verdictDetailsButton = findViewById(R.id.verdictDetailsButton);
+        statGrid = findViewById(R.id.statGrid);
+        statSurfValue = findViewById(R.id.statSurfValue);
+        statUvValue = findViewById(R.id.statUvValue);
+        statWindValue = findViewById(R.id.statWindValue);
+        statTempValue = findViewById(R.id.statTempValue);
+
+        findViewById(R.id.settingsButton).setOnClickListener(
+            v -> startActivity(new Intent(this, SettingsActivity.class)));
+        findViewById(R.id.myLocationButton).setOnClickListener(v -> useRealTimeLocation());
 
         beachRecyclerView = findViewById(R.id.beachRecyclerView);
         beachRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -172,28 +203,15 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.radiusHint).setVisibility(hasLocation ? View.GONE : View.VISIBLE);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_settings) {
-            startActivity(new Intent(this, SettingsActivity.class));
-            return true;
-        } else if (item.getItemId() == R.id.action_my_location) {
-            isManualLocation = false;
-            searchEditText.setText("");
-            citySearchEditText.setText("");
-            radiusToggleGroup.check(R.id.radiusAll);
-            shouldScrollToTop = true;
-            Toast.makeText(this, "Using real-time location", Toast.LENGTH_SHORT).show();
-            requestLocation();
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
+    /** Clears any manual city search and snaps back to the device's location. */
+    private void useRealTimeLocation() {
+        isManualLocation = false;
+        searchEditText.setText("");
+        citySearchEditText.setText("");
+        radiusToggleGroup.check(R.id.radiusAll);
+        shouldScrollToTop = true;
+        Toast.makeText(this, "Using real-time location", Toast.LENGTH_SHORT).show();
+        requestLocation();
     }
 
     private void setupCitySearch() {
@@ -347,10 +365,67 @@ public class MainActivity extends AppCompatActivity {
         beachCountBadge.setText(getResources().getQuantityString(
                 R.plurals.beach_count, filteredBeaches.size(), filteredBeaches.size()));
 
+        // The list is distance-sorted, so the first entry is the beach the
+        // verdict card speaks for.
+        bindVerdict(filteredBeaches.isEmpty() ? null : filteredBeaches.get(0));
+
         if (shouldScrollToTop) {
             beachRecyclerView.scrollToPosition(0);
             shouldScrollToTop = false;
         }
+    }
+
+    /**
+     * Fills the hero verdict card and the four stat tiles for the closest
+     * beach, or hides them when there is nothing to report on.
+     */
+    private void bindVerdict(Beach beach) {
+        if (beach == null) {
+            verdictCard.setVisibility(View.GONE);
+            statGrid.setVisibility(View.GONE);
+            headerTitle.setText(R.string.header_title_default);
+            return;
+        }
+
+        verdictCard.setVisibility(View.VISIBLE);
+        statGrid.setVisibility(View.VISIBLE);
+
+        headerKicker.setText(isManualLocation
+            ? R.string.header_kicker_searching : R.string.header_kicker_near_you);
+        headerTitle.setText(beach.getName());
+
+        SafetyLevel level = SafetyLevel.evaluate(beach);
+        int color = ContextCompat.getColor(this,
+            level != null ? level.getColorRes() : R.color.text_secondary);
+
+        verdictBand.setBackgroundColor(color);
+        verdictIcon.setImageResource(
+            level != null ? level.getIconRes() : R.drawable.ic_warning_circle);
+        ImageViewCompat.setImageTintList(verdictIcon, ColorStateList.valueOf(color));
+        verdictText.setText(level != null ? level.getVerdictRes() : R.string.verdict_unknown);
+        verdictText.setTextColor(color);
+        verdictMeta.setText(getString(R.string.verdict_updated, beach.getName()));
+
+        if (level == null) {
+            verdictNote.setText(R.string.verdict_unknown_note);
+        } else {
+            verdictNote.setText(new SafetyNote().describe(this, beach, level));
+        }
+
+        verdictDetailsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, BeachDetailActivity.class);
+            intent.putExtra(BeachDetailActivity.EXTRA_BEACH_ID, beach.getId());
+            startActivity(intent);
+        });
+
+        BeachConditions conditions = beach.getConditions();
+        statSurfValue.setText(conditions == null ? "--"
+            : UnitConverter.formatWaveHeight(this, conditions.getWaveHeight()));
+        statUvValue.setText(conditions == null ? "--" : conditions.getFormattedUvIndex());
+        statWindValue.setText(conditions == null ? "--"
+            : UnitConverter.formatWindSpeed(this, conditions.getWindSpeed()));
+        statTempValue.setText(conditions == null ? "--"
+            : UnitConverter.formatTemperature(this, conditions.getAirTemperature()));
     }
 
     @Override

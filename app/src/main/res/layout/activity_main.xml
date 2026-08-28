@@ -11,56 +11,339 @@
     android:background="@color/background"
     android:orientation="vertical">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <!-- Header: location kicker over the screen title, actions on the right -->
+    <LinearLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_hero_gradient"
-        android:theme="@style/ThemeOverlay.Material3.Dark">
+        android:background="@color/background"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="16dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="10dp">
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:title="@string/app_name"
-            app:titleTextColor="@color/on_hero" />
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-    </com.google.android.material.appbar.AppBarLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="13dp"
+                    android:layout_height="13dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_map_pin"
+                    app:tint="@color/text_secondary" />
+
+                <TextView
+                    android:id="@+id/headerKicker"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:text="@string/header_kicker_near_you"
+                    android:textAppearance="@style/TextAppearance.App.Caption" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/headerTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/header_title_default"
+                android:textAppearance="@style/TextAppearance.App.Display" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/myLocationButton"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/nearby_report_action"
+            android:padding="9dp"
+            android:src="@drawable/ic_location"
+            app:tint="@color/text_secondary" />
+
+        <ImageButton
+            android:id="@+id/settingsButton"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/settings_title"
+            android:padding="9dp"
+            android:src="@drawable/ic_gear"
+            app:tint="@color/text_secondary" />
+    </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/mainScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingHorizontal="16dp"
-            android:paddingVertical="16dp">
+            android:paddingTop="6dp"
+            android:paddingBottom="24dp">
+
+            <!-- ══════ VERDICT CARD ══════ -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/verdictCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/surface"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/divider"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <!-- The design's colour band across the top of the card -->
+                    <View
+                        android:id="@+id/verdictBand"
+                        android:layout_width="match_parent"
+                        android:layout_height="4dp"
+                        android:background="@color/safe" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:paddingHorizontal="15dp"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="15dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:orientation="horizontal">
+
+                            <ImageView
+                                android:id="@+id/verdictIcon"
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_check_circle"
+                                app:tint="@color/safe" />
+
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="11dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/verdictText"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="sans-serif-medium"
+                                    android:textColor="@color/safe"
+                                    android:textSize="23sp"
+                                    tools:text="Good to swim" />
+
+                                <TextView
+                                    android:id="@+id/verdictMeta"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="3dp"
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:textAppearance="@style/TextAppearance.App.Subtitle"
+                                    tools:text="La Jolla Shores · updated just now" />
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/verdictNote"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:textAppearance="@style/TextAppearance.App.Body"
+                            tools:text="Small clean waves and a light onshore breeze." />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/verdictDetailsButton"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:letterSpacing="0"
+                            android:text="@string/beach_details"
+                            android:textAllCaps="false"
+                            android:textColor="@color/primary"
+                            android:textSize="14sp"
+                            app:cornerRadius="8dp"
+                            app:strokeColor="@color/primary" />
+                    </LinearLayout>
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ══════ STAT TILES ══════ -->
+            <LinearLayout
+                android:id="@+id/statGrid"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        style="@style/Widget.App.StatTile"
+                        android:layout_marginEnd="4.5dp">
+
+                        <LinearLayout
+                            style="@style/Widget.App.StatTileLabelRow">
+
+                            <ImageView
+                                style="@style/Widget.App.StatTileIcon"
+                                android:src="@drawable/ic_wave" />
+
+                            <TextView
+                                style="@style/Widget.App.StatTileLabel"
+                                android:text="@string/stat_surf" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/statSurfValue"
+                            style="@style/Widget.App.StatTileValue"
+                            tools:text="0.4 m" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/Widget.App.StatTile"
+                        android:layout_marginStart="4.5dp">
+
+                        <LinearLayout
+                            style="@style/Widget.App.StatTileLabelRow">
+
+                            <ImageView
+                                style="@style/Widget.App.StatTileIcon"
+                                android:src="@drawable/ic_sun" />
+
+                            <TextView
+                                style="@style/Widget.App.StatTileLabel"
+                                android:text="@string/stat_uv" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/statUvValue"
+                            style="@style/Widget.App.StatTileValue"
+                            tools:text="8 · very high" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="9dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        style="@style/Widget.App.StatTile"
+                        android:layout_marginEnd="4.5dp">
+
+                        <LinearLayout
+                            style="@style/Widget.App.StatTileLabelRow">
+
+                            <ImageView
+                                style="@style/Widget.App.StatTileIcon"
+                                android:src="@drawable/ic_wind" />
+
+                            <TextView
+                                style="@style/Widget.App.StatTileLabel"
+                                android:text="@string/stat_wind" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/statWindValue"
+                            style="@style/Widget.App.StatTileValue"
+                            tools:text="14 mph" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        style="@style/Widget.App.StatTile"
+                        android:layout_marginStart="4.5dp">
+
+                        <LinearLayout
+                            style="@style/Widget.App.StatTileLabelRow">
+
+                            <ImageView
+                                style="@style/Widget.App.StatTileIcon"
+                                android:src="@drawable/ic_thermometer" />
+
+                            <TextView
+                                style="@style/Widget.App.StatTileLabel"
+                                android:text="@string/stat_water" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/statTempValue"
+                            style="@style/Widget.App.StatTileValue"
+                            tools:text="75°F" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ══════ FIND A BEACH ══════ -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/section_search"
+                android:textAppearance="@style/TextAppearance.App.Caption" />
 
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/surface"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="4dp"
-                app:strokeWidth="0dp">
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/divider"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="13dp">
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/select_coastal_city"
-                        app:startIconDrawable="@drawable/ic_location"
+                        app:boxCornerRadiusBottomEnd="8dp"
+                        app:boxCornerRadiusBottomStart="8dp"
+                        app:boxCornerRadiusTopEnd="8dp"
+                        app:boxCornerRadiusTopStart="8dp"
+                        app:boxStrokeColor="@color/divider"
+                        app:startIconDrawable="@drawable/ic_map_pin"
                         app:startIconTint="@color/primary">
 
                         <AutoCompleteTextView
@@ -69,15 +352,21 @@
                             android:layout_height="wrap_content"
                             android:completionThreshold="1"
                             android:hint="@string/select_coastal_city"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
+                        android:layout_marginTop="10dp"
                         android:hint="@string/beach_name_hint"
+                        app:boxCornerRadiusBottomEnd="8dp"
+                        app:boxCornerRadiusBottomStart="8dp"
+                        app:boxCornerRadiusTopEnd="8dp"
+                        app:boxCornerRadiusTopStart="8dp"
+                        app:boxStrokeColor="@color/divider"
                         app:startIconDrawable="@drawable/ic_search"
                         app:startIconTint="@color/primary">
 
@@ -85,16 +374,17 @@
                             android:id="@+id/searchEditText"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="text" />
+                            android:inputType="text"
+                            android:textSize="14sp" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="18dp"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="14dp"
+                        android:layout_marginBottom="7dp"
                         android:text="@string/radius_label"
-                        android:textAppearance="@style/TextAppearance.App.Caption" />
+                        android:textAppearance="@style/TextAppearance.App.TileLabel" />
 
                     <com.google.android.material.button.MaterialButtonToggleGroup
                         android:id="@+id/radiusToggleGroup"
@@ -105,104 +395,64 @@
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/radius5"
-                            style="@style/Widget.Material3.Button.OutlinedButton"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:insetTop="0dp"
-                            android:insetBottom="0dp"
-                            android:paddingHorizontal="0dp"
-                            android:text="5mi"
-                            android:textSize="12sp"
-                            app:cornerRadius="14dp"
-                            app:strokeColor="@color/divider" />
+                            style="@style/Widget.App.Button.Radius"
+                            android:text="5mi" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/radius10"
-                            style="@style/Widget.Material3.Button.OutlinedButton"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:insetTop="0dp"
-                            android:insetBottom="0dp"
-                            android:paddingHorizontal="0dp"
-                            android:text="10mi"
-                            android:textSize="12sp"
-                            app:cornerRadius="14dp"
-                            app:strokeColor="@color/divider" />
+                            style="@style/Widget.App.Button.Radius"
+                            android:text="10mi" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/radius25"
-                            style="@style/Widget.Material3.Button.OutlinedButton"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:insetTop="0dp"
-                            android:insetBottom="0dp"
-                            android:paddingHorizontal="0dp"
-                            android:text="25mi"
-                            android:textSize="12sp"
-                            app:cornerRadius="14dp"
-                            app:strokeColor="@color/divider" />
+                            style="@style/Widget.App.Button.Radius"
+                            android:text="25mi" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/radius50"
-                            style="@style/Widget.Material3.Button.OutlinedButton"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:insetTop="0dp"
-                            android:insetBottom="0dp"
-                            android:paddingHorizontal="0dp"
-                            android:text="50mi"
-                            android:textSize="12sp"
-                            app:cornerRadius="14dp"
-                            app:strokeColor="@color/divider" />
+                            style="@style/Widget.App.Button.Radius"
+                            android:text="50mi" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/radiusAll"
-                            style="@style/Widget.Material3.Button.OutlinedButton"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
+                            style="@style/Widget.App.Button.Radius"
                             android:checked="true"
-                            android:insetTop="0dp"
-                            android:insetBottom="0dp"
-                            android:paddingHorizontal="0dp"
-                            android:text="All"
-                            android:textSize="12sp"
-                            app:cornerRadius="14dp"
-                            app:strokeColor="@color/divider" />
-
+                            android:text="All" />
                     </com.google.android.material.button.MaterialButtonToggleGroup>
 
                     <TextView
                         android:id="@+id/radiusHint"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="7dp"
                         android:text="@string/radius_needs_location"
                         android:textAppearance="@style/TextAppearance.App.Subtitle"
-                        android:textSize="12sp" />
+                        android:textSize="11.5sp" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/citySearchButton"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
                         android:layout_width="match_parent"
-                        android:layout_height="54dp"
-                        android:layout_marginTop="18dp"
-                        android:backgroundTint="@color/primary"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="14dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:letterSpacing="0"
                         android:text="@string/find_nearby_beaches"
-                        android:textColor="@color/on_primary"
-                        app:cornerRadius="27dp"
-                        app:icon="@drawable/ic_location"
-                        app:iconTint="@color/on_primary" />
+                        android:textAllCaps="false"
+                        android:textColor="@color/primary"
+                        android:textSize="14sp"
+                        app:cornerRadius="8dp"
+                        app:icon="@drawable/ic_map_pin"
+                        app:iconTint="@color/primary"
+                        app:strokeColor="@color/primary" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
+            <!-- ══════ NEARBY BEACHES ══════ -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="24dp"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -211,17 +461,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/nearby_beaches"
-                    android:textAppearance="@style/TextAppearance.App.Title" />
+                    android:textAppearance="@style/TextAppearance.App.Caption" />
 
                 <TextView
                     android:id="@+id/beachCountBadge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/bg_pill_neutral"
-                    android:paddingHorizontal="12dp"
-                    android:paddingVertical="4dp"
-                    android:textAppearance="@style/TextAppearance.App.Caption"
-                    android:textAllCaps="false"
+                    android:textAppearance="@style/TextAppearance.App.Subtitle"
+                    android:textSize="12sp"
                     tools:text="12 beaches" />
             </LinearLayout>
 
@@ -236,25 +483,26 @@
                 android:id="@+id/emptyState"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/bg_surface_card"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:paddingHorizontal="32dp"
+                android:paddingHorizontal="24dp"
                 android:paddingVertical="28dp"
                 android:visibility="gone">
 
                 <ImageView
-                    android:layout_width="44dp"
-                    android:layout_height="44dp"
-                    android:alpha="0.5"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:alpha="0.45"
                     android:contentDescription="@null"
-                    android:src="@drawable/ic_location"
+                    android:src="@drawable/ic_map_pin"
                     app:tint="@color/text_secondary" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="10dp"
                     android:text="@string/empty_state_title"
                     android:textAppearance="@style/TextAppearance.App.Title" />
 
@@ -265,7 +513,6 @@
                     android:gravity="center"
                     android:text="@string/empty_state_subtitle"
                     android:textAppearance="@style/TextAppearance.App.Subtitle" />
-
             </LinearLayout>
 
         </LinearLayout>

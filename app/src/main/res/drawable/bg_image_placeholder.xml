@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Photo placeholder ground, matching the design's deep blue slab. -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <gradient
         android:type="linear"
-        android:angle="135"
-        android:startColor="@color/ocean_gradient_start"
-        android:endColor="@color/water_accent" />
+        android:angle="285"
+        android:startColor="#20344A"
+        android:endColor="#1A2437" />
 </shape>
