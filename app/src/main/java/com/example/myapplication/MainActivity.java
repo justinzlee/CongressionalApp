@@ -1,5 +1,9 @@
 package com.example.myapplication;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.Manifest;
@@ -112,6 +116,54 @@ public class MainActivity extends AppCompatActivity {
         repository.refreshAllData(() -> runOnUiThread(this::updateList));
 
         updateList(); // Initial update
+
+        setupWelcomeOverlay(savedInstanceState);
+    }
+
+    private void setupWelcomeOverlay(Bundle savedInstanceState) {
+        View welcomeOverlay = findViewById(R.id.welcomeOverlay);
+        View welcomeContent = findViewById(R.id.welcomeContent);
+        MosaicRevealOverlay revealView = findViewById(R.id.welcomeRevealView);
+        TextView tapToStartText = findViewById(R.id.welcomeTapToStart);
+
+        if (savedInstanceState != null) {
+            // Activity was recreated (e.g. rotation) - don't replay the intro.
+            welcomeOverlay.setVisibility(View.GONE);
+            return;
+        }
+
+        revealView.setFillColor(getColor(R.color.forest_green_translucent));
+
+        ObjectAnimator blink = ObjectAnimator.ofFloat(tapToStartText, View.ALPHA, 0.25f, 0.9f);
+        blink.setDuration(900);
+        blink.setStartDelay(400);
+        blink.setRepeatMode(ValueAnimator.REVERSE);
+        blink.setRepeatCount(ValueAnimator.INFINITE);
+        blink.start();
+
+        welcomeOverlay.setOnClickListener(v -> {
+            blink.cancel();
+            welcomeOverlay.setClickable(false);
+
+            // The green plate shatters into a grid of squares that shrink and
+            // fade away starting at the center and rippling outward in a
+            // circular wave, revealing the app underneath.
+            ValueAnimator revealAnimator = ValueAnimator.ofFloat(0f, 1f);
+            revealAnimator.setDuration(900);
+            revealAnimator.setInterpolator(new android.view.animation.AccelerateInterpolator(1.2f));
+            revealAnimator.addUpdateListener(anim -> revealView.setProgress((float) anim.getAnimatedValue()));
+            revealAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    welcomeOverlay.setVisibility(View.GONE);
+                }
+            });
+            revealAnimator.start();
+
+            // The logo and prompt fade out quickly so they don't linger once
+            // the hole has already swallowed them.
+            welcomeContent.animate().alpha(0f).setDuration(250).start();
+        });
     }
 
     @Override
@@ -187,8 +239,6 @@ public class MainActivity extends AppCompatActivity {
                     Address address = results.get(0);
                     isManualLocation = true;
                     updateUserLocation(address.getLatitude(), address.getLongitude());
-                    currentRadiusMiles = Double.MAX_VALUE; // Reset to "All"
-                    radiusToggleGroup.check(R.id.radiusAll);
                     Toast.makeText(this, "Searching near: " + cityName, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(this, "Location not found", Toast.LENGTH_SHORT).show();

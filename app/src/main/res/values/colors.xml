@@ -56,4 +56,8 @@
 
     <color name="chip_hazard_bg">#26E15252</color>
     <color name="chip_safe_bg">#262FAE84</color>
+
+    <!-- Home / welcome screen -->
+    <color name="forest_green">#1B4332</color>
+    <color name="forest_green_translucent">#FA1B4332</color>
 </resources>

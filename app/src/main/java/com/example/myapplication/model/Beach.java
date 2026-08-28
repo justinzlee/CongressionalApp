@@ -37,4 +37,8 @@ public class Beach {
     public Beach withConditions(BeachConditions newConditions) {
         return new Beach(id, name, latitude, longitude, hazards, newConditions, nearestHelp, imageUrl);
     }
+
+    public Beach withImageUrl(String newImageUrl) {
+        return new Beach(id, name, latitude, longitude, hazards, conditions, nearestHelp, newImageUrl);
+    }
 }

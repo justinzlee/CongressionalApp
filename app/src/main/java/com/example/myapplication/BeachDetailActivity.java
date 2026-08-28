@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.example.myapplication.ai.SafetyAdvisor;
 import com.example.myapplication.data.BeachRepository;
 import com.example.myapplication.model.Beach;
+import com.example.myapplication.network.PhotoClient;
 import com.example.myapplication.network.WeatherClient;
 import com.example.myapplication.util.EdgeToEdge;
 import com.example.myapplication.util.UnitConverter;
@@ -54,6 +55,19 @@ public class BeachDetailActivity extends AppCompatActivity {
 
         ImageView image = findViewById(R.id.beachDetailImage);
         Glide.with(this).load(beach.getImageUrl()).into(image);
+
+        // Swap in a real photo of this specific beach once it resolves; keep
+        // the stock-photo fallback above if none is found.
+        new PhotoClient().getBeachPhoto(beach.getName(), new PhotoClient.PhotoCallback() {
+            @Override
+            public void onSuccess(String imageUrl) {
+                runOnUiThread(() -> Glide.with(BeachDetailActivity.this).load(imageUrl).into(image));
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+            }
+        });
 
         TextView airTemp = findViewById(R.id.detailAirTemp);
         TextView waveHeight = findViewById(R.id.detailWaveHeight);

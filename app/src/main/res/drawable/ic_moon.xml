@@ -3,7 +3,14 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
+    <!-- Crescent: classic two-equal-circles construction (outer circle minus
+         an offset cutout circle of the same radius), matching a thick
+         reference crescent rather than a thin bracket sliver -->
     <path
         android:fillColor="#000000"
-        android:pathData="M12,3c-0.34,0 -0.68,0.02 -1,0.05c4.06,0.46 7.22,3.9 7.22,8.08s-3.16,7.62 -7.22,8.08c0.32,0.03 0.66,0.05 1,0.05c4.5,0 8.15,-3.65 8.15,-8.15S16.5,3 12,3z" />
+        android:pathData="M10.76,3.81A8.2,8.2 0,1 0,18.61 15.04A8.2,8.2 0,0 1,10.76 3.81Z" />
+    <!-- Sparkle accent, sitting in the crescent's notch like the stars in the reference -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M16.5,7.7L16.85,8.65L17.8,9L16.85,9.35L16.5,10.3L16.15,9.35L15.2,9L16.15,8.65Z" />
 </vector>

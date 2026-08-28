@@ -1,6 +1,7 @@
 package com.example.myapplication.data;
 
 import com.example.myapplication.model.*;
+import com.example.myapplication.network.PhotoClient;
 import com.example.myapplication.network.WeatherClient;
 import com.example.myapplication.util.UnitConverter;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.stream.Collectors;
 public class BeachRepository {
     private final List<Beach> beaches;
     private final WeatherClient weatherClient = new WeatherClient();
+    private final PhotoClient photoClient = new PhotoClient();
 
     public interface OnDataRefreshListener {
         void onDataRefreshed();
@@ -21,8 +23,10 @@ public class BeachRepository {
     public BeachRepository() {
         beaches = new ArrayList<>();
         
-        // Initializing with null conditions to ensure real-time data is used
-        beaches.add(new Beach("CA1", "La Jolla Shores", 32.8589, -117.2558, 
+        // Initializing with null conditions to ensure real-time data is used.
+        // The image URLs below are generic stock-photo fallbacks shown until
+        // refreshAllData() resolves a real photo of each specific beach.
+        beaches.add(new Beach("CA1", "La Jolla Shores", 32.8589, -117.2558,
             Collections.singletonList(new Hazard(HazardType.RIP_CURRENT, Severity.MODERATE, "Strong rips near the pier.", Collections.singletonList("Swim near lifeguard"))),
             null, 
             Collections.singletonList(new HelpLocation("La Jolla Lifeguard Station", HelpType.LIFEGUARD_TOWER, 32.8589, -117.2558)),
@@ -85,6 +89,22 @@ public class BeachRepository {
 
                 @Override
                 public void onFailure(Exception e) {
+                }
+            });
+
+            // Replace the generic stock photo with a real photo of this specific beach.
+            photoClient.getBeachPhoto(beach.getName(), new PhotoClient.PhotoCallback() {
+                @Override
+                public void onSuccess(String imageUrl) {
+                    synchronized (beaches) {
+                        beaches.set(index, beaches.get(index).withImageUrl(imageUrl));
+                    }
+                    if (listener != null) listener.onDataRefreshed();
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+                    // Keep the stock-photo fallback already set on the beach.
                 }
             });
         }
