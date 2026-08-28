@@ -79,6 +79,14 @@
     <string name="hazard_pollution">Pollution</string>
     <string name="hazard_rocks">Rocks and structures</string>
     <string name="hazard_uv_index">UV index</string>
+    <!-- Mid-sentence forms: lower-case except where the name is an initialism -->
+    <string name="hazard_rip_current_inline">rip current</string>
+    <string name="hazard_marine_life_inline">marine life</string>
+    <string name="hazard_water_quality_inline">water quality</string>
+    <string name="hazard_air_quality_inline">air quality</string>
+    <string name="hazard_pollution_inline">pollution</string>
+    <string name="hazard_rocks_inline">rocks and structures</string>
+    <string name="hazard_uv_index_inline">UV index</string>
 
     <!-- Tab bar -->
     <string name="tab_now">Now</string>

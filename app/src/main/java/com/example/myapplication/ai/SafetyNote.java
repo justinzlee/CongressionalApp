@@ -21,7 +21,7 @@ public class SafetyNote {
         StringBuilder note = new StringBuilder();
         note.append(describeSurf(beach.getConditions()));
 
-        String hazardText = describeHazards(beach.getHazards());
+        String hazardText = describeHazards(context, beach.getHazards());
         if (hazardText != null) {
             note.append(' ').append(hazardText);
         }
@@ -46,14 +46,17 @@ public class SafetyNote {
         return "A heavy swell is running.";
     }
 
-    private String describeHazards(List<Hazard> hazards) {
+    private String describeHazards(Context context, List<Hazard> hazards) {
         if (hazards.isEmpty()) return null;
-        // Locale.ROOT: these are internal enum names, not user language.
+        // Each type carries its own written label; deriving one from the enum
+        // name produced "uv index" mid-sentence.
         String names = hazards.stream()
-            .map(h -> h.getType().name().toLowerCase(Locale.ROOT).replace('_', ' '))
+            .map(h -> context.getString(h.getType().getInlineLabelRes()))
             .reduce((a, b) -> a + " and " + b)
             .orElse("");
-        return "Lifeguards have flagged " + names + " here.";
+        return hazards.size() == 1
+            ? "There is a " + names + " warning here."
+            : "There are warnings here for " + names + ".";
     }
 
     private String describeUv(BeachConditions conditions) {

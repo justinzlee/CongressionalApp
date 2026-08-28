@@ -82,10 +82,11 @@ public class BeachAlertTest {
     }
 
     @Test
-    public void everyHazardTypeHasALabel() {
+    public void everyHazardTypeHasBothLabelForms() {
         // A missing label would surface as a crash on the Alerts screen.
         for (HazardType type : HazardType.values()) {
-            assertTrue("no label for " + type, type.getLabelRes() != 0);
+            assertTrue("no title label for " + type, type.getLabelRes() != 0);
+            assertTrue("no inline label for " + type, type.getInlineLabelRes() != 0);
         }
     }
 }
