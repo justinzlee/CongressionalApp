@@ -49,13 +49,24 @@ public class SafetyLevelTest {
 
     @Test
     public void moderateSurf_isCaution() {
-        BeachConditions conditions = new BeachConditions(72.0, 3, 5.0, 3.5, 10.0);
+        BeachConditions conditions = new BeachConditions(72.0, 3, 5.0, 4.5, 10.0);
         assertEquals(SafetyLevel.CAUTION, SafetyLevel.evaluate(beach(conditions, null)));
     }
 
     @Test
     public void surfJustUnderCautionThreshold_staysSafe() {
-        BeachConditions conditions = new BeachConditions(72.0, 3, 5.0, 2.9, 10.0);
+        BeachConditions conditions = new BeachConditions(72.0, 3, 5.0, 3.9, 10.0);
+        assertEquals(SafetyLevel.SAFE, SafetyLevel.evaluate(beach(conditions, null)));
+    }
+
+    /**
+     * The case that prompted the thresholds being relaxed: a few feet of
+     * swell is an ordinary day at a good beach, and warning about it teaches
+     * people to ignore the verdict.
+     */
+    @Test
+    public void ordinaryThreeFootSwell_staysSafe() {
+        BeachConditions conditions = new BeachConditions(72.0, 3, 5.0, 3.1, 10.0);
         assertEquals(SafetyLevel.SAFE, SafetyLevel.evaluate(beach(conditions, null)));
     }
 
@@ -65,9 +76,20 @@ public class SafetyLevelTest {
         assertEquals(SafetyLevel.DANGER, SafetyLevel.evaluate(beach(conditions, null)));
     }
 
+    /**
+     * "Very high" UV is most sunny days at most beaches, and it is a
+     * sun-exposure hazard rather than a reason the water is unsafe, so it
+     * must not move the swim verdict on its own.
+     */
     @Test
-    public void veryHighUv_isCaution() {
+    public void veryHighUvAlone_doesNotWarnAboutSwimming() {
         BeachConditions conditions = new BeachConditions(72.0, 9, 5.0, 0.5, 10.0);
+        assertEquals(SafetyLevel.SAFE, SafetyLevel.evaluate(beach(conditions, null)));
+    }
+
+    @Test
+    public void extremeUv_isCaution() {
+        BeachConditions conditions = new BeachConditions(72.0, 11, 5.0, 0.5, 10.0);
         assertEquals(SafetyLevel.CAUTION, SafetyLevel.evaluate(beach(conditions, null)));
     }
 
