@@ -67,9 +67,12 @@ public final class TabBar {
 
         row.setOnClickListener(v -> {
             Intent intent = new Intent(activity, target);
-            // Reuse the existing screen rather than stacking another copy.
+            // SINGLE_TOP matters: CLEAR_TOP on its own destroys and recreates
+            // a standard-launchMode activity, which restarted the home screen
+            // (and replayed its intro) every time the Now tab was tapped.
             intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT
-                | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             activity.startActivity(intent);
             activity.overridePendingTransition(0, 0);
         });

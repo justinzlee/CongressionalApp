@@ -47,6 +47,9 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
+    /** Whether the welcome intro has run since the app process started. */
+    private static boolean hasPlayedIntro = false;
+
     private BeachRepository repository;
     private LocationService locationService;
     private BeachAdapter adapter;
@@ -159,11 +162,15 @@ public class MainActivity extends AppCompatActivity {
         View welcomeContent = findViewById(R.id.welcomeContent);
         WaveRevealOverlay revealView = findViewById(R.id.welcomeRevealView);
 
-        if (savedInstanceState != null) {
-            // Activity was recreated (e.g. rotation) - don't replay the intro.
+        // The intro belongs to launching the app, not to this activity being
+        // constructed: coming back from another tab, a rotation, or a
+        // low-memory recreation must not replay it. The flag is static so it
+        // lasts the whole process and resets only on a genuine cold start.
+        if (savedInstanceState != null || hasPlayedIntro) {
             welcomeOverlay.setVisibility(View.GONE);
             return;
         }
+        hasPlayedIntro = true;
 
         revealView.setWaterColors(
             getColor(R.color.wave_deep),

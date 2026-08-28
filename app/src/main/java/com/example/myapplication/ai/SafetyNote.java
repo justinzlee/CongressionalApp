@@ -39,9 +39,12 @@ public class SafetyNote {
         if (conditions == null || conditions.getWaveHeight() == null) {
             return "Live surf readings for this beach aren't in yet.";
         }
+        // Bands line up with SafetyLevel's thresholds so the wording never
+        // calls a swell "moderate" while the verdict above it says the beach
+        // is good to swim.
         double feet = conditions.getWaveHeight();
         if (feet < 1.0) return "The water is close to flat right now.";
-        if (feet < 3.0) return "Small, manageable waves are running.";
+        if (feet < 4.0) return "Small, manageable waves are running.";
         if (feet < 6.0) return "There is a moderate swell running.";
         return "A heavy swell is running.";
     }

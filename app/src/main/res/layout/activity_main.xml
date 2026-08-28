@@ -462,6 +462,8 @@
                         android:textSize="14sp"
                         app:cornerRadius="8dp"
                         app:icon="@drawable/ic_map_pin"
+                        app:iconGravity="textStart"
+                        app:iconPadding="8dp"
                         app:iconTint="@color/primary"
                         app:strokeColor="@color/primary" />
                 </LinearLayout>

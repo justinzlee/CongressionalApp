@@ -26,12 +26,31 @@ public enum SafetyLevel {
     DANGER(R.color.danger, R.color.danger_tint, R.drawable.ic_x_circle,
         R.string.verdict_danger, R.string.verdict_danger_short);
 
+    /*
+     * These thresholds are deliberately not trigger-happy. A verdict that
+     * cries "take care" at a perfectly good beach teaches people to ignore
+     * it, which costs more than it saves on the day the water is genuinely
+     * bad. Reported hazards still escalate a beach regardless of these
+     * numbers, and the note under the verdict always describes the swell in
+     * plain words, so a keen swimmer can judge for themselves.
+     */
+
     /** Surf at or above this (feet) reads as dangerous on its own. */
     private static final double DANGER_WAVE_FEET = 6.0;
-    /** Surf at or above this (feet) is worth a warning. */
-    private static final double CAUTION_WAVE_FEET = 3.0;
-    /** UV at or above this is "very high" on the app's own scale. */
-    private static final int CAUTION_UV = 8;
+    /**
+     * Surf at or above this (feet) is worth a warning. Around 4ft is where
+     * waves start to genuinely push an average swimmer around; below that is
+     * small-to-moderate and fine for most people, so it stays "good to swim".
+     */
+    private static final double CAUTION_WAVE_FEET = 4.0;
+    /**
+     * Only <em>extreme</em> UV moves the swim verdict. UV 8-10 ("very high")
+     * describes most sunny summer days at most beaches, so treating it as a
+     * warning flagged nearly everywhere at once — and UV is a sun-exposure
+     * hazard, not a reason the water is unsafe. The sunscreen advice still
+     * appears in the note under the verdict at "very high" and above.
+     */
+    private static final int CAUTION_UV = 11;
 
     @ColorRes private final int colorRes;
     @ColorRes private final int tintRes;
