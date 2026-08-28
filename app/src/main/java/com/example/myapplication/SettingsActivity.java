@@ -1,53 +1,60 @@
 package com.example.myapplication;
 
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import com.example.myapplication.util.EdgeToEdge;
-import com.google.android.material.appbar.MaterialToolbar;
-import com.google.android.material.switchmaterial.SwitchMaterial;
+import com.google.android.material.materialswitch.MaterialSwitch;
 
 public class SettingsActivity extends AppCompatActivity {
     public static final String PREFS_NAME = "BeachSafetyPrefs";
     public static final String KEY_USE_METRIC = "use_metric";
     public static final String KEY_DARK_MODE = "dark_mode";
 
+    /** Nocturne is a dark design system, so dark is the app's resting state. */
+    public static final boolean DEFAULT_DARK_MODE = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        MaterialToolbar toolbar = findViewById(R.id.settingsToolbar);
-        setSupportActionBar(toolbar);
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
-        toolbar.setNavigationOnClickListener(v -> finish());
-
         EdgeToEdge.applyTopInset(findViewById(R.id.settingsToolbarContainer));
-        EdgeToEdge.applyBottomInset(findViewById(R.id.settingsContent));
+        EdgeToEdge.applyBottomInset(findViewById(R.id.tabBar));
+
+        TabBar.setup(this, TabBar.Tab.MORE);
+
+        findViewById(R.id.guideRow).setOnClickListener(
+            v -> startActivity(new android.content.Intent(this, RipGuideActivity.class)));
 
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
-        SwitchMaterial metricSwitch = findViewById(R.id.metricUnitSwitch);
+        MaterialSwitch metricSwitch = findViewById(R.id.metricUnitSwitch);
         metricSwitch.setChecked(prefs.getBoolean(KEY_USE_METRIC, false));
-        metricSwitch.setOnCheckedChangeListener((view, isChecked) -> {
-            prefs.edit().putBoolean(KEY_USE_METRIC, isChecked).apply();
-        });
+        // The whole row is the target, per the design's settings list.
+        bindRow(findViewById(R.id.metricRow), metricSwitch, isChecked ->
+            prefs.edit().putBoolean(KEY_USE_METRIC, isChecked).apply());
 
-        SwitchMaterial darkModeSwitch = findViewById(R.id.darkModeSwitch);
-        darkModeSwitch.setChecked(prefs.getBoolean(KEY_DARK_MODE, isSystemInDarkMode()));
-        darkModeSwitch.setOnCheckedChangeListener((view, isChecked) -> {
+        MaterialSwitch darkModeSwitch = findViewById(R.id.darkModeSwitch);
+        darkModeSwitch.setChecked(prefs.getBoolean(KEY_DARK_MODE, DEFAULT_DARK_MODE));
+        bindRow(findViewById(R.id.darkModeRow), darkModeSwitch, isChecked -> {
             prefs.edit().putBoolean(KEY_DARK_MODE, isChecked).apply();
-            AppCompatDelegate.setDefaultNightMode(isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+            AppCompatDelegate.setDefaultNightMode(isChecked
+                ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
         });
     }
 
-    private boolean isSystemInDarkMode() {
-        int nightModeFlags = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        return nightModeFlags == Configuration.UI_MODE_NIGHT_YES;
+    private interface OnToggle {
+        void onToggled(boolean isChecked);
+    }
+
+    private void bindRow(View row, MaterialSwitch toggle, OnToggle callback) {
+        row.setOnClickListener(v -> {
+            boolean next = !toggle.isChecked();
+            toggle.setChecked(next);
+            callback.onToggled(next);
+        });
     }
 }

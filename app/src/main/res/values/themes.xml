@@ -4,13 +4,11 @@
     <style name="Theme.MyApplication" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorOnPrimary">@color/on_primary</item>
-        <item name="colorPrimaryVariant">@color/primary_variant</item>
         <item name="colorPrimaryContainer">@color/advisor_bg</item>
         <item name="colorOnPrimaryContainer">@color/primary_variant</item>
 
         <item name="colorSecondary">@color/secondary</item>
         <item name="colorOnSecondary">@color/on_secondary</item>
-        <item name="colorSecondaryVariant">@color/secondary_variant</item>
         <item name="colorSecondaryContainer">@color/surface_alt</item>
         <item name="colorOnSecondaryContainer">@color/text_primary</item>
         <item name="colorTertiary">@color/tertiary_gold</item>
@@ -22,30 +20,32 @@
         <item name="colorOnSurface">@color/text_primary</item>
         <item name="colorSurfaceVariant">@color/surface_alt</item>
         <item name="colorOnSurfaceVariant">@color/text_secondary</item>
-        <item name="colorSurfaceContainer">@color/surface_alt</item>
+        <item name="colorSurfaceContainer">@color/surface</item>
         <item name="colorSurfaceContainerLow">@color/surface</item>
-        <item name="colorSurfaceContainerLowest">@color/surface</item>
+        <item name="colorSurfaceContainerLowest">@color/background</item>
         <item name="colorSurfaceContainerHigh">@color/surface_alt</item>
         <item name="colorSurfaceContainerHighest">@color/surface_alt</item>
         <item name="colorOutline">@color/divider</item>
         <item name="colorOutlineVariant">@color/divider</item>
         <item name="colorError">@color/error</item>
 
-        <!-- Soft, rounded, Apple-leaning shape scale -->
+        <!-- Nocturne shape scale: radius-sm 4, md 8, lg 14 -->
         <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.App.Corner.ExtraSmall</item>
         <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.App.Corner.Small</item>
         <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.App.Corner.Medium</item>
         <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.App.Corner.Large</item>
         <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.App.Corner.ExtraLarge</item>
 
+        <!-- Nocturne sets Inter; Android ships Roboto, the nearest system
+             grotesque, so the weights map rather than the exact face. -->
         <item name="android:fontFamily">sans-serif</item>
         <item name="fontFamily">sans-serif</item>
 
-        <!-- Edge-to-edge: every screen has a color/gradient band under the
-             status bar, so status bar content is always light. -->
+        <!-- The header is a flat ground in this design, not a colored band,
+             so status bar content follows the theme. -->
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@color/background</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="23">false</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
 
         <item name="windowActionBar">false</item>
@@ -59,54 +59,155 @@
 
     <!-- Shape scale -->
     <style name="ShapeAppearance.App.Corner.ExtraSmall" parent="ShapeAppearance.Material3.Corner.ExtraSmall">
-        <item name="cornerSize">8dp</item>
+        <item name="cornerSize">4dp</item>
     </style>
     <style name="ShapeAppearance.App.Corner.Small" parent="ShapeAppearance.Material3.Corner.Small">
-        <item name="cornerSize">12dp</item>
+        <item name="cornerSize">8dp</item>
     </style>
     <style name="ShapeAppearance.App.Corner.Medium" parent="ShapeAppearance.Material3.Corner.Medium">
-        <item name="cornerSize">18dp</item>
+        <item name="cornerSize">8dp</item>
     </style>
     <style name="ShapeAppearance.App.Corner.Large" parent="ShapeAppearance.Material3.Corner.Large">
-        <item name="cornerSize">24dp</item>
+        <item name="cornerSize">12dp</item>
     </style>
     <style name="ShapeAppearance.App.Corner.ExtraLarge" parent="ShapeAppearance.Material3.Corner.ExtraLarge">
-        <item name="cornerSize">32dp</item>
+        <item name="cornerSize">14dp</item>
     </style>
 
-    <!-- Type -->
-    <style name="TextAppearance.App.Display" parent="TextAppearance.Material3.DisplaySmall">
-        <item name="android:textSize">32sp</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:letterSpacing">-0.01</item>
-        <item name="android:textColor">@color/on_hero</item>
-    </style>
-    <style name="TextAppearance.App.Title" parent="TextAppearance.Material3.TitleLarge">
-        <item name="android:fontFamily">sans-serif-medium</item>
+    <!-- Type — Nocturne scale. Headings are weight 500, body 400. -->
+    <style name="TextAppearance.App.Display" parent="TextAppearance.Material3.TitleLarge">
         <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">-0.015</item>
         <item name="android:textColor">@color/text_primary</item>
     </style>
-    <style name="TextAppearance.App.Subtitle" parent="TextAppearance.Material3.BodyMedium">
+    <!-- Screen headline, e.g. the beach name on the detail screen -->
+    <style name="TextAppearance.App.Headline" parent="TextAppearance.Material3.HeadlineSmall">
+        <item name="android:textSize">26sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">-0.015</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+    <style name="TextAppearance.App.Title" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+    <style name="TextAppearance.App.Subtitle" parent="TextAppearance.Material3.BodySmall">
         <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">12.5sp</item>
         <item name="android:textColor">@color/text_secondary</item>
     </style>
     <style name="TextAppearance.App.Body" parent="TextAppearance.Material3.BodyMedium">
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">13.5sp</item>
         <item name="android:textColor">@color/text_primary</item>
-        <item name="android:lineSpacingExtra">4sp</item>
+        <item name="android:lineSpacingMultiplier">1.5</item>
     </style>
-    <style name="TextAppearance.App.Caption" parent="TextAppearance.Material3.LabelMedium">
-        <item name="android:fontFamily">sans-serif-medium</item>
+    <!-- Section kickers: 11sp, uppercase, wide tracking, muted -->
+    <style name="TextAppearance.App.Caption" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:fontFamily">sans-serif</item>
         <item name="android:textSize">11sp</item>
-        <item name="android:letterSpacing">0.06</item>
+        <item name="android:letterSpacing">0.09</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textColor">@color/text_secondary</item>
     </style>
-    <style name="TextAppearance.App.StatValue" parent="TextAppearance.Material3.TitleLarge">
+    <!-- Stat tile labels sit a touch smaller than section kickers -->
+    <style name="TextAppearance.App.TileLabel" parent="TextAppearance.Material3.LabelSmall">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:textSize">10.5sp</item>
+        <item name="android:letterSpacing">0.09</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+    <style name="TextAppearance.App.StatValue" parent="TextAppearance.Material3.TitleMedium">
         <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textSize">19sp</item>
+        <item name="android:textSize">17sp</item>
         <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <!-- Widgets -->
+
+    <!-- Stat tile: label row over a value, on a hairline surface card -->
+    <style name="Widget.App.StatTile" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@drawable/bg_surface_card</item>
+        <!-- Split edges rather than padding{Horizontal,Vertical}: those are
+             API 26+, and in a style (unlike a layout) they are silently
+             dropped below that, which minSdk 24 would hit. -->
+        <item name="android:paddingLeft">12dp</item>
+        <item name="android:paddingRight">12dp</item>
+        <item name="android:paddingTop">11dp</item>
+        <item name="android:paddingBottom">11dp</item>
+    </style>
+    <style name="Widget.App.StatTileLabelRow" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+    <style name="Widget.App.StatTileIcon" parent="">
+        <item name="android:layout_width">13dp</item>
+        <item name="android:layout_height">13dp</item>
+        <item name="android:contentDescription">@null</item>
+        <item name="tint">@color/text_secondary</item>
+    </style>
+    <style name="Widget.App.StatTileLabel" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">6dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.App.TileLabel</item>
+    </style>
+    <style name="Widget.App.StatTileValue" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.App.StatValue</item>
+    </style>
+
+    <!-- Bottom tab bar -->
+    <style name="Widget.App.Tab" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+    <style name="Widget.App.TabIcon" parent="">
+        <item name="android:layout_width">21dp</item>
+        <item name="android:layout_height">21dp</item>
+        <item name="android:contentDescription">@null</item>
+        <item name="tint">@color/text_secondary</item>
+    </style>
+    <style name="Widget.App.TabLabel" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:textSize">9.5sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <!-- Search-radius segmented buttons -->
+    <style name="Widget.App.Button.Radius" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textSize">12sp</item>
+        <item name="cornerRadius">8dp</item>
+        <item name="strokeColor">@color/divider</item>
     </style>
 
 </resources>

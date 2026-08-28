@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Bottom tab bar, shared by every top-level screen. The design specifies five
+  tabs; Map is not built yet, so four are wired here.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tabBar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/divider" />
+
+    <!-- clipChildren: the unread badge sits on negative margins and would
+         otherwise be cut off at the icon's bounds. -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:orientation="horizontal"
+        android:paddingHorizontal="8dp"
+        android:paddingTop="7dp"
+        android:paddingBottom="7dp">
+
+        <LinearLayout
+            android:id="@+id/tabNow"
+            style="@style/Widget.App.Tab">
+
+            <ImageView
+                android:id="@+id/tabNowIcon"
+                style="@style/Widget.App.TabIcon"
+                android:src="@drawable/ic_wave" />
+
+            <TextView
+                android:id="@+id/tabNowLabel"
+                style="@style/Widget.App.TabLabel"
+                android:text="@string/tab_now" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tabAlerts"
+            style="@style/Widget.App.Tab"
+            android:clipChildren="false">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clipChildren="false">
+
+                <ImageView
+                    android:id="@+id/tabAlertsIcon"
+                    style="@style/Widget.App.TabIcon"
+                    android:src="@drawable/ic_warning_circle" />
+
+                <TextView
+                    android:id="@+id/tabAlertsBadge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="15dp"
+                    android:layout_gravity="top|end"
+                    android:layout_marginTop="-2dp"
+                    android:layout_marginEnd="-8dp"
+                    android:background="@drawable/bg_badge"
+                    android:gravity="center"
+                    android:minWidth="15dp"
+                    android:paddingHorizontal="4dp"
+                    android:textColor="@color/background"
+                    android:textSize="9.5sp"
+                    android:textStyle="bold"
+                    android:visibility="gone"
+                    tools:text="3"
+                    tools:visibility="visible" />
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tabAlertsLabel"
+                style="@style/Widget.App.TabLabel"
+                android:text="@string/tab_alerts" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tabSaved"
+            style="@style/Widget.App.Tab">
+
+            <ImageView
+                android:id="@+id/tabSavedIcon"
+                style="@style/Widget.App.TabIcon"
+                android:src="@drawable/ic_bookmark" />
+
+            <TextView
+                android:id="@+id/tabSavedLabel"
+                style="@style/Widget.App.TabLabel"
+                android:text="@string/tab_saved" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tabMore"
+            style="@style/Widget.App.Tab">
+
+            <ImageView
+                android:id="@+id/tabMoreIcon"
+                style="@style/Widget.App.TabIcon"
+                android:src="@drawable/ic_dots" />
+
+            <TextView
+                android:id="@+id/tabMoreLabel"
+                style="@style/Widget.App.TabLabel"
+                android:text="@string/tab_more" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

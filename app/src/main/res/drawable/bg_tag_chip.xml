@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Location tag under each alert; tinted in code to the alert's severity. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <solid android:color="@color/surface_alt" />
+    <corners android:radius="6dp" />
+</shape>

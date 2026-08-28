@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">BeachSafety US</string>
     <string name="app_tagline">Live conditions for the US coast</string>
-    <string name="tap_to_start">Click anywhere to start</string>
     <string name="ai_safety_advisor">Safety Advisor</string>
     <string name="weather_conditions">Weather Conditions</string>
     <string name="air_temp">Air Temp</string>
@@ -35,6 +34,120 @@
     <string name="display_section_title">Display</string>
     <string name="use_dark_mode_title">Dark Mode</string>
     <string name="use_dark_mode_subtitle">Switch the app between light and dark appearance.</string>
+    <string name="settings_learn">Learn</string>
+    <string name="settings_footnote">Conditions come from public coastal forecasts. Always follow the signs and flags at the beach.</string>
+
+    <!-- Swim verdict -->
+    <string name="verdict_safe">Good to swim</string>
+    <string name="verdict_safe_short">Good to swim</string>
+    <string name="verdict_caution">Take care</string>
+    <string name="verdict_caution_short">Take care</string>
+    <string name="verdict_danger">Not safe to swim</string>
+    <string name="verdict_danger_short">Not safe today</string>
+    <string name="verdict_unknown">Checking conditions</string>
+    <string name="verdict_unknown_note">Live conditions for this beach haven\'t loaded yet. Check the flags and signs on the beach before you swim.</string>
+    <string name="verdict_updated">%1$s · updated just now</string>
+    <string name="beach_details">Beach details</string>
+
+    <!-- Home header -->
+    <string name="header_kicker_near_you">Near you</string>
+    <string name="header_kicker_searching">Showing</string>
+    <string name="header_title_default">Beaches near you</string>
+
+    <!-- Section kickers -->
+    <string name="back">Back</string>
+    <string name="detail_meta">%1$s · %2$s away</string>
+    <string name="guarded_yes">Lifeguard tower nearby</string>
+    <string name="guarded_no">No patrol listed</string>
+    <string name="section_conditions">Conditions</string>
+    <string name="section_watch_for">What to watch for</string>
+    <string name="section_search">Find a beach</string>
+    <string name="lifeguards_title">Lifeguards</string>
+    <string name="lifeguards_none">No lifeguard station is listed for this beach. Never swim alone.</string>
+    <string name="lifeguards_nearest">%1$s is the nearest help on record.</string>
+    <string name="stat_surf">Surf</string>
+    <string name="stat_uv">UV</string>
+    <string name="stat_wind">Wind</string>
+    <string name="stat_water">Air temp</string>
+    <string name="surf_suffix">%1$s surf</string>
+
+    <!-- Hazard names -->
+    <string name="hazard_rip_current">Rip current</string>
+    <string name="hazard_marine_life">Marine life</string>
+    <string name="hazard_water_quality">Water quality</string>
+    <string name="hazard_air_quality">Air quality</string>
+    <string name="hazard_pollution">Pollution</string>
+    <string name="hazard_rocks">Rocks and structures</string>
+    <string name="hazard_uv_index">UV index</string>
+    <!-- Mid-sentence forms: lower-case except where the name is an initialism -->
+    <string name="hazard_rip_current_inline">rip current</string>
+    <string name="hazard_marine_life_inline">marine life</string>
+    <string name="hazard_water_quality_inline">water quality</string>
+    <string name="hazard_air_quality_inline">air quality</string>
+    <string name="hazard_pollution_inline">pollution</string>
+    <string name="hazard_rocks_inline">rocks and structures</string>
+    <string name="hazard_uv_index_inline">UV index</string>
+
+    <!-- Tab bar -->
+    <string name="tab_now">Now</string>
+    <string name="tab_alerts">Alerts</string>
+    <string name="tab_saved">Saved</string>
+    <string name="tab_more">More</string>
+
+    <!-- Alerts -->
+    <string name="alerts_active_warning">Active warning</string>
+    <string name="alerts_see_beach">See the beach</string>
+    <string name="alert_hero_title">%1$s at %2$s</string>
+    <string name="alerts_empty">No hazards are on record at any beach nearby. Conditions still change fast — check the flags when you arrive.</string>
+
+    <!-- Saved -->
+    <string name="saved_empty">No saved beaches yet. Save one from its page and it shows up here with its current status.</string>
+    <string name="save_beach">Save</string>
+    <string name="saved_beach">Saved</string>
+
+    <!-- Rip current guide -->
+    <string name="guide_entry_title">How to spot a rip current</string>
+    <string name="guide_entry_subtitle">Four things to look for, and what to do</string>
+    <string name="guide_title">Spot a rip current</string>
+    <string name="guide_intro">Stand on high ground and watch the water for a minute before you go in. Rips are the calm-looking lanes, not the breaking waves.</string>
+    <string name="guide_signs_heading">What to look for</string>
+    <string name="guide_sign_1_title">A darker, calmer lane</string>
+    <string name="guide_sign_1_body">Rips look deceptively flat and inviting. Waves break either side of them, not in them.</string>
+    <string name="guide_sign_2_title">Sand or foam heading out</string>
+    <string name="guide_sign_2_body">Look for churned brown water or foam moving away from the beach past the breakers.</string>
+    <string name="guide_sign_3_title">A gap in the breaking waves</string>
+    <string name="guide_sign_3_body">Where the white water stops, the water is deeper — that is the rip channel.</string>
+    <string name="guide_sign_4_title">Ripples in a straight line</string>
+    <string name="guide_sign_4_body">A rippled surface running seaward while the water beside it is smooth.</string>
+    <string name="guide_caught_title">Caught in one?</string>
+    <string name="guide_caught_body">Don\'t swim against it. Float, keep your head above water, raise an arm and shout. If you can swim, go sideways towards the breaking waves, then back to shore.</string>
+
+    <!-- Emergency sheet -->
+    <string name="sos_action">Emergency help</string>
+    <string name="sos_label">SOS</string>
+    <string name="sos_title">Get help</string>
+    <string name="emergency_number">911</string>
+    <string name="sos_where">You\'re nearest to %1$s. Have your location ready to share.</string>
+    <string name="sos_where_unknown">Have your location ready to share.</string>
+    <string name="sos_call_title">Call emergency services</string>
+    <string name="sos_call_body">Opens your dialler — you place the call</string>
+    <string name="sos_directions_title">Directions to nearest help</string>
+    <string name="sos_directions_none">No help location listed for this beach</string>
+    <string name="sos_share_title">Send my location</string>
+    <string name="sos_share_body">Share a map pin with someone</string>
+    <string name="sos_share_message">I\'m at %1$s. My location: https://maps.google.com/?q=%2$f,%3$f</string>
+    <string name="sos_share_unknown">I need help at the beach. Sending my location.</string>
+    <string name="sos_no_app">No app on this device can handle that.</string>
+
+    <plurals name="alert_count">
+        <item quantity="one">%1$d alert</item>
+        <item quantity="other">%1$d alerts</item>
+    </plurals>
+
+    <plurals name="saved_count">
+        <item quantity="one">%1$d saved beach</item>
+        <item quantity="other">%1$d saved beaches</item>
+    </plurals>
 
     <plurals name="beach_count">
         <item quantity="one">%1$d beach</item>
