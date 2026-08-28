@@ -149,6 +149,8 @@
                 android:textSize="14sp"
                 app:cornerRadius="8dp"
                 app:icon="@drawable/ic_bookmark"
+                app:iconGravity="textStart"
+                app:iconPadding="8dp"
                 app:iconTint="@color/text_primary"
                 app:strokeColor="@color/divider" />
 
