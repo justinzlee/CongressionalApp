@@ -135,6 +135,23 @@
                 android:layout_marginTop="12dp"
                 android:textAppearance="@style/TextAppearance.App.Body" />
 
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/detailSaveButton"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:fontFamily="sans-serif-medium"
+                android:letterSpacing="0"
+                android:text="@string/save_beach"
+                android:textAllCaps="false"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/ic_bookmark"
+                app:iconTint="@color/text_primary"
+                app:strokeColor="@color/divider" />
+
             <!-- Fading rule, a Nocturne signature -->
             <View
                 android:layout_width="match_parent"

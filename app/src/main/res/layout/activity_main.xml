@@ -63,6 +63,35 @@
                 android:textAppearance="@style/TextAppearance.App.Display" />
         </LinearLayout>
 
+        <!-- Emergency: every action behind this opens a real system app -->
+        <LinearLayout
+            android:id="@+id/sosButton"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/bg_sos_button"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="13dp">
+
+            <ImageView
+                android:layout_width="15dp"
+                android:layout_height="15dp"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_first_aid"
+                app:tint="@color/danger" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:fontFamily="sans-serif-medium"
+                android:letterSpacing="0.04"
+                android:text="@string/sos_label"
+                android:textColor="@color/danger"
+                android:textSize="13sp" />
+        </LinearLayout>
+
         <ImageButton
             android:id="@+id/myLocationButton"
             android:layout_width="38dp"
@@ -71,16 +100,6 @@
             android:contentDescription="@string/nearby_report_action"
             android:padding="9dp"
             android:src="@drawable/ic_location"
-            app:tint="@color/text_secondary" />
-
-        <ImageButton
-            android:id="@+id/settingsButton"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/settings_title"
-            android:padding="9dp"
-            android:src="@drawable/ic_gear"
             app:tint="@color/text_secondary" />
     </LinearLayout>
 
@@ -517,6 +536,8 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <include layout="@layout/view_tab_bar" />
 
 </LinearLayout>
 

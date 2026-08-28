@@ -22,9 +22,12 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         EdgeToEdge.applyTopInset(findViewById(R.id.settingsToolbarContainer));
-        EdgeToEdge.applyBottomInset(findViewById(R.id.settingsContent));
+        EdgeToEdge.applyBottomInset(findViewById(R.id.tabBar));
 
-        findViewById(R.id.settingsBackButton).setOnClickListener(v -> finish());
+        TabBar.setup(this, TabBar.Tab.MORE);
+
+        findViewById(R.id.guideRow).setOnClickListener(
+            v -> startActivity(new android.content.Intent(this, RipGuideActivity.class)));
 
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 

@@ -32,10 +32,30 @@
             android:exported="false"
             android:theme="@style/Theme.MyApplication" />
 
+        <!-- Tab roots stay in the one task; TabBar brings an existing screen
+             back to the front rather than stacking another copy. -->
         <activity
             android:name=".SettingsActivity"
             android:exported="false"
             android:label="@string/settings_title"
+            android:theme="@style/Theme.MyApplication" />
+
+        <activity
+            android:name=".AlertsActivity"
+            android:exported="false"
+            android:label="@string/tab_alerts"
+            android:theme="@style/Theme.MyApplication" />
+
+        <activity
+            android:name=".SavedActivity"
+            android:exported="false"
+            android:label="@string/tab_saved"
+            android:theme="@style/Theme.MyApplication" />
+
+        <activity
+            android:name=".RipGuideActivity"
+            android:exported="false"
+            android:label="@string/guide_title"
             android:theme="@style/Theme.MyApplication" />
 
     </application>

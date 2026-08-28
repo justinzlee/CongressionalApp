@@ -68,6 +68,8 @@ public class MainActivity extends AppCompatActivity {
     private Button verdictDetailsButton;
     private View statGrid;
     private TextView statSurfValue, statUvValue, statWindValue, statTempValue;
+    /** The beach the verdict card speaks for; what the SOS sheet reports. */
+    private Beach nearestBeach;
 
     private double currentLat = 34.0522; // Default LA
     private double currentLon = -118.2437;
@@ -125,9 +127,11 @@ public class MainActivity extends AppCompatActivity {
         statWindValue = findViewById(R.id.statWindValue);
         statTempValue = findViewById(R.id.statTempValue);
 
-        findViewById(R.id.settingsButton).setOnClickListener(
-            v -> startActivity(new Intent(this, SettingsActivity.class)));
         findViewById(R.id.myLocationButton).setOnClickListener(v -> useRealTimeLocation());
+        findViewById(R.id.sosButton).setOnClickListener(v -> SosSheet.show(this, nearestBeach));
+
+        EdgeToEdge.applyBottomInset(findViewById(R.id.tabBar));
+        TabBar.setup(this, TabBar.Tab.NOW);
 
         beachRecyclerView = findViewById(R.id.beachRecyclerView);
         beachRecyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -380,6 +384,7 @@ public class MainActivity extends AppCompatActivity {
      * beach, or hides them when there is nothing to report on.
      */
     private void bindVerdict(Beach beach) {
+        nearestBeach = beach;
         if (beach == null) {
             verdictCard.setVisibility(View.GONE);
             statGrid.setVisibility(View.GONE);

@@ -167,6 +167,33 @@
         <item name="android:textAppearance">@style/TextAppearance.App.StatValue</item>
     </style>
 
+    <!-- Bottom tab bar -->
+    <style name="Widget.App.Tab" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
+        <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+    </style>
+    <style name="Widget.App.TabIcon" parent="">
+        <item name="android:layout_width">21dp</item>
+        <item name="android:layout_height">21dp</item>
+        <item name="android:contentDescription">@null</item>
+        <item name="tint">@color/text_secondary</item>
+    </style>
+    <style name="Widget.App.TabLabel" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">3dp</item>
+        <item name="android:textSize">9.5sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
     <!-- Search-radius segmented buttons -->
     <style name="Widget.App.Button.Radius" parent="Widget.Material3.Button.OutlinedButton">
         <item name="android:layout_width">0dp</item>

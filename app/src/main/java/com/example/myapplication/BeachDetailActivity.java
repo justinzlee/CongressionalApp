@@ -14,6 +14,8 @@ import androidx.core.widget.ImageViewCompat;
 import com.bumptech.glide.Glide;
 import com.example.myapplication.ai.SafetyNote;
 import com.example.myapplication.data.BeachRepository;
+import com.example.myapplication.data.SavedBeachStore;
+import com.google.android.material.button.MaterialButton;
 import com.example.myapplication.model.Beach;
 import com.example.myapplication.model.BeachConditions;
 import com.example.myapplication.model.Hazard;
@@ -86,6 +88,7 @@ public class BeachDetailActivity extends AppCompatActivity {
         });
 
         ((TextView) findViewById(R.id.detailBeachName)).setText(beach.getName());
+        bindSaveButton();
         bindMeta();
         bindLifeguards();
         bindHazards();
@@ -97,6 +100,25 @@ public class BeachDetailActivity extends AppCompatActivity {
 
         weatherClient = new WeatherClient();
         fetchRealTimeData();
+    }
+
+    /** Save/unsave, persisted so the Saved tab picks it up immediately. */
+    private void bindSaveButton() {
+        SavedBeachStore store = new SavedBeachStore(this);
+        MaterialButton save = findViewById(R.id.detailSaveButton);
+        applySaveState(save, store.isSaved(beach.getId()));
+        save.setOnClickListener(v -> applySaveState(save, store.toggle(beach.getId())));
+    }
+
+    private void applySaveState(MaterialButton save, boolean isSaved) {
+        save.setText(isSaved ? R.string.saved_beach : R.string.save_beach);
+        save.setIconResource(isSaved ? R.drawable.ic_bookmark_filled : R.drawable.ic_bookmark);
+        int color = ContextCompat.getColor(this,
+            isSaved ? R.color.primary : R.color.text_primary);
+        save.setTextColor(color);
+        save.setIconTint(ColorStateList.valueOf(color));
+        save.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(this,
+            isSaved ? R.color.primary : R.color.divider)));
     }
 
     /** "Lifeguard tower nearby · 2.4 mi away" under the beach name. */
@@ -150,7 +172,7 @@ public class BeachDetailActivity extends AppCompatActivity {
             ImageViewCompat.setImageTintList(icon, ColorStateList.valueOf(color));
 
             ((TextView) row.findViewById(R.id.hazardTitle))
-                .setText(prettyHazardName(hazard));
+                .setText(hazard.getType().getLabelRes());
             ((TextView) row.findViewById(R.id.hazardBody))
                 .setText(hazard.getDescription());
             hazardList.addView(row);
@@ -161,12 +183,6 @@ public class BeachDetailActivity extends AppCompatActivity {
         if (severity == Severity.HIGH || severity == Severity.EXTREME) return R.color.danger;
         if (severity == Severity.MODERATE) return R.color.caution;
         return R.color.safe;
-    }
-
-    private static String prettyHazardName(Hazard hazard) {
-        // Locale.ROOT: enum identifiers, not user-facing language.
-        String raw = hazard.getType().name().toLowerCase(Locale.ROOT).replace('_', ' ');
-        return Character.toUpperCase(raw.charAt(0)) + raw.substring(1);
     }
 
     /** Colours the chip over the photo with the beach's swim verdict. */
