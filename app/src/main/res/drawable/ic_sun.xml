@@ -3,7 +3,33 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
+    <!-- Core -->
     <path
         android:fillColor="#000000"
-        android:pathData="M12,7c-2.76,0 -5,2.24 -5,5s2.24,5 5,5s5,-2.24 5,-5 -2.24,-5 -5,-5zM11,1L11,5L13,5L13,1L11,1zM11,19L11,23L13,23L13,19L11,19zM23,11L19,11L19,13L23,13L23,11zM5,11L1,11L1,13L5,13L5,11zM19.78,4.22L16.95,7.05L18.36,8.46L21.19,5.63L19.78,4.22zM5.64,18.36L2.81,21.19L4.22,22.61L7.05,19.78L5.64,18.36zM18.36,15.54L16.95,16.95L19.78,19.78L21.19,18.36L18.36,15.54zM7.05,4.22L4.22,5.63L5.64,7.05L8.46,5.63L7.05,4.22z" />
+        android:pathData="M7.7,12a4.3,4.3 0,1 0,8.6 0a4.3,4.3 0,1 0,-8.6 0Z" />
+    <!-- Rays: one shape rotated around the core -->
+    <group android:pivotX="12" android:pivotY="12" android:rotation="0">
+        <path android:fillColor="#000000" android:pathData="M11.2,4.6L11.2,2.1a0.8,0.8 0,0 1,1.6 0L12.8,4.6Z" />
+    </group>
+    <group android:pivotX="12" android:pivotY="12" android:rotation="45">
+        <path android:fillColor="#000000" android:pathData="M11.2,4.6L11.2,2.1a0.8,0.8 0,0 1,1.6 0L12.8,4.6Z" />
+    </group>
+    <group android:pivotX="12" android:pivotY="12" android:rotation="90">
+        <path android:fillColor="#000000" android:pathData="M11.2,4.6L11.2,2.1a0.8,0.8 0,0 1,1.6 0L12.8,4.6Z" />
+    </group>
+    <group android:pivotX="12" android:pivotY="12" android:rotation="135">
+        <path android:fillColor="#000000" android:pathData="M11.2,4.6L11.2,2.1a0.8,0.8 0,0 1,1.6 0L12.8,4.6Z" />
+    </group>
+    <group android:pivotX="12" android:pivotY="12" android:rotation="180">
+        <path android:fillColor="#000000" android:pathData="M11.2,4.6L11.2,2.1a0.8,0.8 0,0 1,1.6 0L12.8,4.6Z" />
+    </group>
+    <group android:pivotX="12" android:pivotY="12" android:rotation="225">
+        <path android:fillColor="#000000" android:pathData="M11.2,4.6L11.2,2.1a0.8,0.8 0,0 1,1.6 0L12.8,4.6Z" />
+    </group>
+    <group android:pivotX="12" android:pivotY="12" android:rotation="270">
+        <path android:fillColor="#000000" android:pathData="M11.2,4.6L11.2,2.1a0.8,0.8 0,0 1,1.6 0L12.8,4.6Z" />
+    </group>
+    <group android:pivotX="12" android:pivotY="12" android:rotation="315">
+        <path android:fillColor="#000000" android:pathData="M11.2,4.6L11.2,2.1a0.8,0.8 0,0 1,1.6 0L12.8,4.6Z" />
+    </group>
 </vector>
