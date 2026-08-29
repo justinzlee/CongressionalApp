@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Jellyfish that drifts across the wave card in high surf, traced from the
+  "Wave Height Card" design. Each tentacle is painted twice - a dark outline
+  first, then a pale core over it - which is what gives them their glassy look.
+  Drawn only inside WaveHeightView.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="104dp"
+    android:viewportWidth="100"
+    android:viewportHeight="104">
+
+    <!-- Tentacle outlines -->
+    <path
+        android:pathData="M 24 46 C 20 58 27 66 22 78 C 18 88 24 92 21 100"
+        android:strokeColor="#0E1420"
+        android:strokeWidth="3.6"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M 38 50 C 34 62 42 70 37 82 C 33 92 39 96 36 102"
+        android:strokeColor="#0E1420"
+        android:strokeWidth="3.6"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M 52 50 C 49 62 57 70 52 82 C 48 92 54 97 51 103"
+        android:strokeColor="#0E1420"
+        android:strokeWidth="3.6"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M 66 50 C 63 62 70 70 65 81 C 61 90 67 95 64 101"
+        android:strokeColor="#0E1420"
+        android:strokeWidth="3.6"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M 78 45 C 76 57 83 64 78 76 C 74 85 79 90 76 97"
+        android:strokeColor="#0E1420"
+        android:strokeWidth="3.6"
+        android:strokeLineCap="round" />
+
+    <!-- Tentacle cores -->
+    <path
+        android:pathData="M 24 46 C 20 58 27 66 22 78 C 18 88 24 92 21 100"
+        android:strokeColor="#9ECBE4"
+        android:strokeWidth="1.6"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M 38 50 C 34 62 42 70 37 82 C 33 92 39 96 36 102"
+        android:strokeColor="#9ECBE4"
+        android:strokeWidth="1.6"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M 52 50 C 49 62 57 70 52 82 C 48 92 54 97 51 103"
+        android:strokeColor="#9ECBE4"
+        android:strokeWidth="1.6"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M 66 50 C 63 62 70 70 65 81 C 61 90 67 95 64 101"
+        android:strokeColor="#9ECBE4"
+        android:strokeWidth="1.6"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M 78 45 C 76 57 83 64 78 76 C 74 85 79 90 76 97"
+        android:strokeColor="#9ECBE4"
+        android:strokeWidth="1.6"
+        android:strokeLineCap="round" />
+
+    <!-- Bell -->
+    <path
+        android:fillColor="#BFE0F2"
+        android:pathData="M 12 40 C 12 20 29 6 50 6 C 71 6 88 20 88 40 C 88 46 84 50 78 48 C 72 46 68 52 60 50 C 54 49 52 53 46 51 C 39 49 33 52 26 50 C 18 48 12 46 12 40 Z"
+        android:strokeColor="#0E1420"
+        android:strokeWidth="3"
+        android:strokeLineJoin="round" />
+
+    <!-- Specular highlights on the bell -->
+    <path
+        android:pathData="M 28 34 C 29 22 37 14 47 12"
+        android:strokeColor="#EAF6FD"
+        android:strokeAlpha="0.9"
+        android:strokeWidth="2.6"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M 40 16 C 47 12 55 12 61 15"
+        android:strokeColor="#EAF6FD"
+        android:strokeAlpha="0.9"
+        android:strokeWidth="2.6"
+        android:strokeLineCap="round" />
+
+    <!-- Ribs -->
+    <path
+        android:pathData="M 34 46 C 34 34 36 22 40 12"
+        android:strokeColor="#7FB2CF"
+        android:strokeAlpha="0.7"
+        android:strokeWidth="2"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M 50 48 C 50 34 50 22 50 10"
+        android:strokeColor="#7FB2CF"
+        android:strokeAlpha="0.7"
+        android:strokeWidth="2"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M 66 46 C 66 34 64 22 60 12"
+        android:strokeColor="#7FB2CF"
+        android:strokeAlpha="0.7"
+        android:strokeWidth="2"
+        android:strokeLineCap="round" />
+</vector>

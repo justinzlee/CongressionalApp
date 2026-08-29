@@ -32,17 +32,37 @@ public class UnitConverter {
         }
     }
 
+    /** True when the user has asked for metric units in Settings. */
+    public static boolean useMetric(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(SettingsActivity.PREFS_NAME, Context.MODE_PRIVATE);
+        return prefs.getBoolean(SettingsActivity.KEY_USE_METRIC, false);
+    }
+
+    /** Wave height in the user's unit, without the unit itself - for axis ticks. */
+    public static double waveHeightValue(Context context, double heightFeet) {
+        return useMetric(context) ? heightFeet / 3.28084 : heightFeet;
+    }
+
+    /** "m" or "ft", to label a value from {@link #waveHeightValue}. */
+    public static String waveHeightUnit(Context context) {
+        return useMetric(context) ? "m" : "ft";
+    }
+
+    /**
+     * Wave height for an axis tick or scale caption: "6" in feet, "1.8" in
+     * metres. A trailing ".0" is only noise at that size.
+     */
+    public static String waveHeightTick(Context context, double heightFeet) {
+        double value = Math.round(waveHeightValue(context, heightFeet) * 10d) / 10d;
+        return value == Math.rint(value)
+            ? String.format(Locale.US, "%.0f", value)
+            : String.format(Locale.US, "%.1f", value);
+    }
+
     public static String formatWaveHeight(Context context, Double heightFeet) {
         if (heightFeet == null) return "--";
-        SharedPreferences prefs = context.getSharedPreferences(SettingsActivity.PREFS_NAME, Context.MODE_PRIVATE);
-        boolean useMetric = prefs.getBoolean(SettingsActivity.KEY_USE_METRIC, false);
-        
-        if (useMetric) {
-            double heightMeters = heightFeet / 3.28084;
-            return String.format(Locale.US, "%.1f m", heightMeters);
-        } else {
-            return String.format(Locale.US, "%.1f ft", heightFeet);
-        }
+        return String.format(Locale.US, "%.1f %s",
+            waveHeightValue(context, heightFeet), waveHeightUnit(context));
     }
 
     public static String formatVisibility(Context context, Double visibilityMiles) {

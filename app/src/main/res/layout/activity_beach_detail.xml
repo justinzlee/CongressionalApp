@@ -168,35 +168,22 @@
                 android:text="@string/section_conditions"
                 android:textAppearance="@style/TextAppearance.App.Caption" />
 
+            <!-- Wave height gets a card of its own - the swell as a sea to
+                 look at - with the rest of the conditions as tiles under it. -->
+            <com.example.myapplication.WaveHeightCard
+                android:id="@+id/detailWaveCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
                     style="@style/Widget.App.StatTile"
                     android:layout_marginEnd="4.5dp">
-
-                    <LinearLayout style="@style/Widget.App.StatTileLabelRow">
-
-                        <ImageView
-                            style="@style/Widget.App.StatTileIcon"
-                            android:src="@drawable/ic_wave" />
-
-                        <TextView
-                            style="@style/Widget.App.StatTileLabel"
-                            android:text="@string/wave_height" />
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/detailWaveHeight"
-                        style="@style/Widget.App.StatTileValue"
-                        tools:text="3.5 ft" />
-                </LinearLayout>
-
-                <LinearLayout
-                    style="@style/Widget.App.StatTile"
-                    android:layout_marginStart="4.5dp">
 
                     <LinearLayout style="@style/Widget.App.StatTileLabelRow">
 
@@ -214,17 +201,10 @@
                         style="@style/Widget.App.StatTileValue"
                         tools:text="Low (0)" />
                 </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="9dp"
-                android:orientation="horizontal">
 
                 <LinearLayout
                     style="@style/Widget.App.StatTile"
-                    android:layout_marginEnd="4.5dp">
+                    android:layout_marginStart="4.5dp">
 
                     <LinearLayout style="@style/Widget.App.StatTileLabelRow">
 
@@ -243,9 +223,17 @@
                         tools:text="3.3 mph" />
                 </LinearLayout>
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:orientation="horizontal">
+
                 <LinearLayout
                     style="@style/Widget.App.StatTile"
-                    android:layout_marginStart="4.5dp">
+                    android:layout_marginEnd="4.5dp">
 
                     <LinearLayout style="@style/Widget.App.StatTileLabelRow">
 
@@ -265,15 +253,10 @@
                         style="@style/Widget.App.StatTileValue"
                         tools:text="75.8°F" />
                 </LinearLayout>
-            </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="9dp"
-                android:orientation="horizontal">
-
-                <LinearLayout style="@style/Widget.App.StatTile">
+                <LinearLayout
+                    style="@style/Widget.App.StatTile"
+                    android:layout_marginStart="4.5dp">
 
                     <LinearLayout style="@style/Widget.App.StatTileLabelRow">
 
