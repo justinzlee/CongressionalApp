@@ -40,6 +40,7 @@ public class BeachDetailActivity extends AppCompatActivity {
     private ImageView verdictIcon;
     private TextView verdictText, advisorSummary;
     private View verdictChip;
+    private WaveHeightCard waveCard;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +70,8 @@ public class BeachDetailActivity extends AppCompatActivity {
         verdictIcon = findViewById(R.id.detailVerdictIcon);
         verdictText = findViewById(R.id.detailVerdictText);
         advisorSummary = findViewById(R.id.advisorSummary);
+        waveCard = findViewById(R.id.detailWaveCard);
+        waveCard.setBeachName(beach.getName());
 
         ImageView image = findViewById(R.id.beachDetailImage);
         Glide.with(this).load(beach.getImageUrl()).centerCrop().into(image);
@@ -96,6 +99,10 @@ public class BeachDetailActivity extends AppCompatActivity {
 
         if (beach.getConditions() != null) {
             updateConditionsDisplay(beach.getConditions());
+        } else {
+            // Settle the sea at its resting level while the forecast is still
+            // in flight, rather than leaving the card blank until it lands.
+            waveCard.setReading(null);
         }
 
         weatherClient = new WeatherClient();
@@ -258,8 +265,7 @@ public class BeachDetailActivity extends AppCompatActivity {
             airTemp.setText("--");
         }
 
-        ((TextView) findViewById(R.id.detailWaveHeight))
-            .setText(UnitConverter.formatWaveHeight(this, conditions.getWaveHeight()));
+        waveCard.setReading(conditions.getWaveHeight());
         ((TextView) findViewById(R.id.detailUvIndex))
             .setText(conditions.getFormattedUvIndex());
         ((TextView) findViewById(R.id.detailVisibility))

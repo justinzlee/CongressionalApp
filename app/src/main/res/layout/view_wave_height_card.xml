@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Contents of WaveHeightCard, which supplies the vertical LinearLayout, the
+  card background and the padding around this. Laid out from the "Wave Height
+  Card" design: a kicker and title with a severity tag opposite, the water
+  panel with its scale, and the advice line under both.
+-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:parentTag="android.widget.LinearLayout"
+    tools:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/wave_height"
+                android:textAppearance="@style/TextAppearance.App.TileLabel" />
+
+            <TextView
+                android:id="@+id/waveCardTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.App.Title"
+                tools:text="La Jolla Shores — Today" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/waveCardTag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/bg_tag_chip"
+            android:letterSpacing="0.06"
+            android:paddingHorizontal="9dp"
+            android:paddingVertical="3dp"
+            android:textAllCaps="true"
+            android:textSize="10sp"
+            tools:text="Moderate" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="210dp"
+        android:layout_marginTop="16dp"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <com.example.myapplication.WaveHeightView
+            android:id="@+id/waveCardWater"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1" />
+
+        <com.example.myapplication.WaveScaleView
+            android:id="@+id/waveCardScale"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:importantForAccessibility="no" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:baselineAligned="false"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/waveCardAdvice"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAppearance="@style/TextAppearance.App.Subtitle"
+            tools:text="Moderate swell. Strong swimmers only." />
+
+        <TextView
+            android:id="@+id/waveCardScaleLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:textAppearance="@style/TextAppearance.App.Subtitle"
+            android:textSize="10.5sp"
+            tools:text="8 ft scale" />
+    </LinearLayout>
+</merge>

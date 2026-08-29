@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Shark that swims across the wave card when the surf is running high, traced
+  from the "Wave Height Card" design. It faces right, matching the direction
+  the creatures travel in. Drawn only inside WaveHeightView.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="124dp"
+    android:height="66dp"
+    android:viewportWidth="124"
+    android:viewportHeight="66">
+
+    <!-- Tail -->
+    <path
+        android:fillColor="#4E7288"
+        android:pathData="M 28 34 C 20 26 12 18 6 7 C 9 21 9 45 4 59 C 12 49 22 41 29 37 Z"
+        android:strokeColor="#0E1420"
+        android:strokeWidth="2.6"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <!-- Dorsal fin -->
+    <path
+        android:fillColor="#5D849B"
+        android:pathData="M 60 17 C 64 5 73 -1 79 1 C 76 8 78 13 83 19 C 76 16 67 16 60 17 Z"
+        android:strokeColor="#0E1420"
+        android:strokeWidth="2.6"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <!-- Pelvic fin -->
+    <path
+        android:fillColor="#3F6178"
+        android:pathData="M 58 47 C 60 56 56 61 49 63 C 53 57 54 52 54 46 Z"
+        android:strokeColor="#0E1420"
+        android:strokeWidth="2.6"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <!-- Pectoral fin -->
+    <path
+        android:fillColor="#3F6178"
+        android:pathData="M 84 44 C 89 54 88 60 82 63 C 81 56 80 50 79 44 Z"
+        android:strokeColor="#0E1420"
+        android:strokeWidth="2.6"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <!-- Body -->
+    <path
+        android:fillColor="#6B93AB"
+        android:pathData="M 28 34 C 35 22 51 14 71 14 C 91 14 109 22 117 34 C 108 45 92 51 71 51 C 51 51 35 45 28 34 Z"
+        android:strokeColor="#0E1420"
+        android:strokeWidth="2.6"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <!-- Pale belly -->
+    <path
+        android:fillColor="#E9EFF5"
+        android:fillAlpha="0.92"
+        android:pathData="M 36 38 C 52 47 78 48 100 42 C 82 50 56 50 36 38 Z" />
+    <!-- Gills -->
+    <path
+        android:pathData="M 88 22 C 86 27 86 33 88 39"
+        android:strokeColor="#0E1420"
+        android:strokeAlpha="0.65"
+        android:strokeWidth="1.7"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M 94 21 C 92 27 92 34 94 40"
+        android:strokeColor="#0E1420"
+        android:strokeAlpha="0.65"
+        android:strokeWidth="1.7"
+        android:strokeLineCap="round" />
+    <path
+        android:pathData="M 100 22 C 98 27 98 34 100 39"
+        android:strokeColor="#0E1420"
+        android:strokeAlpha="0.65"
+        android:strokeWidth="1.7"
+        android:strokeLineCap="round" />
+    <!-- Mouth -->
+    <path
+        android:pathData="M 117 34 C 112 39 106 42 100 43"
+        android:strokeColor="#0E1420"
+        android:strokeWidth="2.1"
+        android:strokeLineCap="round" />
+    <!-- Eye, with its catchlight -->
+    <path
+        android:fillColor="#0E1420"
+        android:pathData="M 104.4 29 a 2.6 2.6 0 1 0 5.2 0 a 2.6 2.6 0 1 0 -5.2 0 Z" />
+    <path
+        android:fillColor="#F2F5FB"
+        android:pathData="M 105.4 28.2 a 0.8 0.8 0 1 0 1.6 0 a 0.8 0.8 0 1 0 -1.6 0 Z" />
+</vector>
