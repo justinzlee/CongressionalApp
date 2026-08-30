@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One answer in the knowledge check. The mark on the right stays hidden
+     until the question is answered. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/bg_pill_neutral"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingHorizontal="12dp"
+    android:paddingTop="11dp"
+    android:paddingBottom="11dp">
+
+    <TextView
+        android:id="@+id/quizOptionLetter"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:background="@drawable/bg_number_chip"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:textColor="@color/primary"
+        android:textSize="11.5sp"
+        tools:text="A" />
+
+    <TextView
+        android:id="@+id/quizOptionText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:layout_weight="1"
+        android:lineSpacingMultiplier="1.4"
+        android:textColor="@color/text_primary"
+        android:textSize="13.5sp"
+        tools:text="Stay out of the water" />
+
+    <ImageView
+        android:id="@+id/quizOptionMark"
+        android:layout_width="17dp"
+        android:layout_height="17dp"
+        android:layout_marginStart="10dp"
+        android:contentDescription="@null"
+        android:visibility="invisible"
+        tools:src="@drawable/ic_check_circle"
+        tools:visibility="visible" />
+</LinearLayout>

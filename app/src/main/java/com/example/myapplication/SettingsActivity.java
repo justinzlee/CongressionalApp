@@ -29,6 +29,9 @@ public class SettingsActivity extends AppCompatActivity {
         findViewById(R.id.guideRow).setOnClickListener(
             v -> startActivity(new android.content.Intent(this, RipGuideActivity.class)));
 
+        findViewById(R.id.flagGuideRow).setOnClickListener(
+            v -> startActivity(new android.content.Intent(this, FlagGuideActivity.class)));
+
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
         MaterialSwitch metricSwitch = findViewById(R.id.metricUnitSwitch);

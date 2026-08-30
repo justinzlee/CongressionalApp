@@ -45,6 +45,14 @@
     <!-- Text/icons over photo scrims, which stay dark in both themes -->
     <color name="on_hero">#FFFFFF</color>
 
+    <!-- Beach warning flags. These are the physical colors of the flags
+         flying on the beach, so unlike everything above they are the same
+         in both themes - a red flag is red whichever way the app looks. -->
+    <color name="flag_red">#D8342A</color>
+    <color name="flag_yellow">#F0C420</color>
+    <color name="flag_green">#26A65B</color>
+    <color name="flag_purple">#7E45B5</color>
+
     <!-- UV Index scale -->
     <color name="uv_low">#2E8B68</color>
     <color name="uv_moderate">#A9752B</color>
