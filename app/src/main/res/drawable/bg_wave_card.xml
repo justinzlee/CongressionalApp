@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- The wave card takes Nocturne's radius-lg rather than the radius-md the
+<!-- The wave card takes the radius-lg corner rather than the radius-md the
      stat tiles use, matching the design. Hairline edge, no drop shadow. -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">

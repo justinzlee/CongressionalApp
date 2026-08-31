@@ -154,7 +154,7 @@
                 app:iconTint="@color/text_primary"
                 app:strokeColor="@color/divider" />
 
-            <!-- Fading rule, a Nocturne signature -->
+            <!-- Fading rule -->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"

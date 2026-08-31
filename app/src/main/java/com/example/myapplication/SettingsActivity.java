@@ -13,8 +13,11 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String KEY_USE_METRIC = "use_metric";
     public static final String KEY_DARK_MODE = "dark_mode";
 
-    /** Nocturne is a dark design system, so dark is the app's resting state. */
-    public static final boolean DEFAULT_DARK_MODE = true;
+    /**
+     * The Beach Safety Palette leads with sand and sunlight, so light is the
+     * app's resting state and dark is the night mode you opt into.
+     */
+    public static final boolean DEFAULT_DARK_MODE = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +31,9 @@ public class SettingsActivity extends AppCompatActivity {
 
         findViewById(R.id.guideRow).setOnClickListener(
             v -> startActivity(new android.content.Intent(this, RipGuideActivity.class)));
+
+        findViewById(R.id.flagGuideRow).setOnClickListener(
+            v -> startActivity(new android.content.Intent(this, FlagGuideActivity.class)));
 
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 

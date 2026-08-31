@@ -2,9 +2,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!--
-      Night is Nocturne's native mode; only the system-bar icon polarity
-      differs from the base theme, everything else resolves through the
-      night color palette.
+      Night mode differs from the base theme only in the system-bar icon
+      polarity; everything else resolves through the night color palette.
     -->
     <style name="Theme.MyApplication" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/primary</item>

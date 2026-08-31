@@ -136,6 +136,40 @@
     <string name="guide_caught_title">Caught in one?</string>
     <string name="guide_caught_body">Don\'t swim against it. Float, keep your head above water, raise an arm and shout. If you can swim, go sideways towards the breaking waves, then back to shore.</string>
 
+
+    <!-- Beach warning flags guide -->
+    <string name="flag_entry_title">What the beach flags mean</string>
+    <string name="flag_entry_subtitle">Five flags, and what each one is telling you</string>
+    <string name="flag_title">Beach warning flags</string>
+    <string name="flag_intro">Lifeguards fly these flags to say how safe the water is right now. Look for the flag board when you arrive, and check it again through the day — conditions change.</string>
+    <string name="flag_key_heading">The flags</string>
+    <string name="flag_double_red_title">Double red — Water closed</string>
+    <string name="flag_double_red_body">The water is closed to everyone. Swimming and all other water activity are prohibited until the flags come down.</string>
+    <string name="flag_red_title">Red — High hazard</string>
+    <string name="flag_red_body">High surf, strong currents, or both. Knee-deep water is already too deep to be safe, so stay out.</string>
+    <string name="flag_yellow_title">Yellow — Moderate surf or currents</string>
+    <string name="flag_yellow_body">Caution advised. Swim near a lifeguard, stay close to shore, and keep children within arm\'s reach.</string>
+    <string name="flag_green_title">Green — Calm conditions</string>
+    <string name="flag_green_body">Calm water and low hazard. Still swim near a lifeguard, and never swim alone.</string>
+    <string name="flag_purple_title">Purple — Dangerous marine life</string>
+    <string name="flag_purple_body">Jellyfish, stingrays or other marine pests have been spotted. Purple flies alongside another flag, never on its own — read that flag for the water conditions.</string>
+    <string name="flag_double_red_icon_desc">Two red flags</string>
+    <string name="flag_icon_desc">%1$s flag</string>
+    <string name="flag_color_red">Red</string>
+    <string name="flag_color_yellow">Yellow</string>
+    <string name="flag_color_green">Green</string>
+    <string name="flag_color_purple">Purple</string>
+    <string name="flag_no_flags_title">No flags flying?</string>
+    <string name="flag_no_flags_body">Absence of flags does not assure safe waters. Swim at your own risk. Not every beach is patrolled, and an empty flag board means nobody has assessed the water — not that it is safe.</string>
+    <string name="flag_quiz_heading">Knowledge check</string>
+    <string name="flag_quiz_question">You get to the beach and a single red flag is flying. What should you do?</string>
+    <string name="flag_quiz_option_a">Stay out of the water</string>
+    <string name="flag_quiz_option_b">Wade in, but only up to your knees</string>
+    <string name="flag_quiz_option_c">Swim, as long as you stay near a lifeguard tower</string>
+    <string name="flag_quiz_correct">That\'s right</string>
+    <string name="flag_quiz_incorrect">Not quite</string>
+    <string name="flag_quiz_explanation">Red means high hazard — high surf, strong currents, or both. Even knee-deep water is too deep to be safe, and a lifeguard nearby doesn\'t change that. Wait for the flag to change.</string>
+
     <!-- Emergency sheet -->
     <string name="sos_action">Emergency help</string>
     <string name="sos_label">SOS</string>
