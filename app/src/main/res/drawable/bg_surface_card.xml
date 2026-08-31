@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Nocturne shadow-sm: a hairline edge, not a drop shadow. radius-md 8dp. -->
+<!-- Cards are defined by a hairline edge, not a drop shadow. radius-md 8dp. -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <solid android:color="@color/surface" />

@@ -1,62 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Nocturne design-system tokens, verbatim from the design's styles.css:
-  bg #161826, surface #232532, text #e9e9ed, accent #9184d9, with the
-  safety scale safe #4fbf95 / caution #e6a84f / danger #e0685c. This is
-  the app's native look; values/colors.xml holds the derived light
-  counterpart.
+  Beach Safety Palette, dark mode. Night drops the sand entirely and sits
+  on deep sea: bg #0B1418, surface #122126, raised #172B31, border #22343A,
+  text #EAF1F0. Primary lifts to Sea 300 and the accents lighten one step
+  so they stay legible against the dark ground - all verbatim from the
+  design's dark theme row.
 -->
 <resources>
-    <!-- Accent: the product blurple -->
-    <color name="primary">#9184D9</color>
-    <color name="primary_variant">#D2CEFD</color>
-    <color name="on_primary">#161826</color>
-    <color name="accent_soft">#E7E5FE</color>
+    <!-- Sea, lifted: 300 is the primary here, 200 for outlined controls -->
+    <color name="primary">#61B4C1</color>
+    <color name="primary_variant">#9CD3DB</color>
+    <color name="on_primary">#08181C</color>
+    <color name="accent_soft">#CDEAEF</color>
 
     <!-- Grounds -->
-    <color name="background">#161826</color>
-    <color name="surface">#232532</color>
-    <color name="surface_alt">#2B2E3D</color>
-    <!-- shadow-sm in Nocturne is a hairline edge, not a drop shadow -->
-    <color name="divider">#3F424D</color>
-    <color name="text_primary">#E9E9ED</color>
-    <color name="text_secondary">#9397AB</color>
+    <color name="background">#0B1418</color>
+    <color name="surface">#122126</color>
+    <color name="surface_alt">#172B31</color>
+    <!-- Cards carry a hairline edge, not a drop shadow -->
+    <color name="divider">#22343A</color>
+    <color name="text_primary">#EAF1F0</color>
+    <color name="text_secondary">#9FB3B4</color>
 
-    <!-- Semantic safety scale -->
-    <color name="safe">#4FBF95</color>
-    <color name="caution">#E6A84F</color>
-    <color name="danger">#E0685C</color>
-    <color name="safe_tint">#244FBF95</color>
-    <color name="caution_tint">#24E6A84F</color>
-    <color name="danger_tint">#24E0685C</color>
-    <color name="accent_tint">#249184D9</color>
+    <!-- Semantic safety scale. Caution and danger are the design's dark
+         accent and alert; safe is the light green lifted to sit at the
+         same lightness beside them, since the design's dark row carries
+         no green of its own. Tints stay translucent so they read as a
+         wash over the surface rather than a second block of color. -->
+    <color name="safe">#55CE9B</color>
+    <color name="caution">#FACE6B</color>
+    <color name="danger">#F4947F</color>
+    <color name="safe_tint">#2455CE9B</color>
+    <color name="caution_tint">#24FACE6B</color>
+    <color name="danger_tint">#24F4947F</color>
+    <color name="accent_tint">#2461B4C1</color>
 
     <!-- Legacy aliases kept so existing layouts and code keep resolving -->
-    <color name="error">#E0685C</color>
-    <color name="safe_green">#4FBF95</color>
-    <color name="advisor_bg">#1D1F33</color>
-    <color name="water_accent">#9184D9</color>
-    <color name="secondary">#E6A84F</color>
-    <color name="secondary_variant">#F0C36D</color>
-    <color name="on_secondary">#161826</color>
-    <color name="tertiary_gold">#E6A84F</color>
-    <color name="ocean_gradient_start">#161826</color>
-    <color name="ocean_gradient_end">#161826</color>
+    <color name="error">#F4947F</color>
+    <color name="safe_green">#55CE9B</color>
+    <color name="advisor_bg">#172B31</color>
+    <color name="water_accent">#61B4C1</color>
+    <color name="secondary">#FACE6B</color>
+    <color name="secondary_variant">#FCE09B</color>
+    <color name="on_secondary">#08181C</color>
+    <color name="tertiary_gold">#FACE6B</color>
+    <color name="ocean_gradient_start">#0B1418</color>
+    <color name="ocean_gradient_end">#0B1418</color>
     <color name="on_hero">#FFFFFF</color>
 
-    <!-- UV Index scale -->
-    <color name="uv_low">#4FBF95</color>
-    <color name="uv_moderate">#E6A84F</color>
-    <color name="uv_high">#EC8B58</color>
-    <color name="uv_very_high">#E0685C</color>
-    <color name="uv_extreme">#B084C4</color>
+    <!-- UV Index scale, lifted to the dark ground. Extreme deepens into
+         Coral 500 rather than darkening, which would only disappear. -->
+    <color name="uv_low">#55CE9B</color>
+    <color name="uv_moderate">#FACE6B</color>
+    <color name="uv_high">#F5A96A</color>
+    <color name="uv_very_high">#F4947F</color>
+    <color name="uv_extreme">#EA5C41</color>
 
     <!-- Stat tile icons -->
-    <color name="icon_temp">#EC8B58</color>
-    <color name="icon_uv">#E6A84F</color>
-    <color name="icon_wind">#9397AB</color>
-    <color name="icon_wave">#9184D9</color>
-    <color name="icon_visibility">#9397AB</color>
+    <color name="icon_temp">#F5A96A</color>
+    <color name="icon_uv">#FACE6B</color>
+    <color name="icon_wind">#9FB3B4</color>
+    <color name="icon_wave">#61B4C1</color>
+    <color name="icon_visibility">#9FB3B4</color>
 
     <color name="tile_temp_bg">#00000000</color>
     <color name="tile_uv_bg">#00000000</color>
@@ -64,9 +69,10 @@
     <color name="tile_wave_bg">#00000000</color>
     <color name="tile_visibility_bg">#00000000</color>
 
-    <!-- Welcome intro keeps its light-blue beach palette (outside Nocturne) -->
-    <color name="wave_deep">#2E9EC4</color>
-    <color name="wave_shallow">#A9E4F2</color>
-    <color name="wave_foam">#FFFFFF</color>
-    <color name="on_wave">#08414E</color>
+    <!-- Welcome intro: the same Sea ramp as light mode, dimmed a step so
+         the reveal does not flash white on a night screen. -->
+    <color name="wave_deep">#0A4757</color>
+    <color name="wave_shallow">#2E93A3</color>
+    <color name="wave_foam">#CDEAEF</color>
+    <color name="on_wave">#EBF7F9</color>
 </resources>

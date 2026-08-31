@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- The Nocturne header is a flat ground, not a colored band. -->
+<!-- The header is a flat sand ground, not a colored band. -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
     <solid android:color="@color/background" />

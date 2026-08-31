@@ -1,71 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Light counterpart to the Nocturne design system. Nocturne itself is
-  dark-only (see values-night/colors.xml, which carries its exact tokens);
-  these values are derived from the system's own documented neutral and
-  accent tonal ramps so the Dark Mode toggle still has somewhere sane to
-  land. Status hues are darkened from the dark-theme versions to keep
-  contrast on a light ground.
+  Beach Safety Palette, light mode. Sun-bright warmth over muted coastal
+  neutrals: sand carries the page, sea teal carries the brand and every
+  interactive element, sun amber marks sunlight and UV, and coral is
+  reserved for warnings so it never appears decoratively.
+
+  Ramp values are verbatim from the design. Sand 00 is the app ground and
+  cards nest a step warmer on it (Sand 50), the direction the design's own
+  screen mockup nests its tiles.
 -->
 <resources>
-    <!-- Accent: blurple, accent-700 from the Nocturne ramp for light-ground contrast -->
-    <color name="primary">#5D5294</color>
-    <color name="primary_variant">#423A6A</color>
-    <color name="on_primary">#FFFFFF</color>
-    <color name="accent_soft">#E7E5FE</color>
+    <!-- Sea: brand, links, controls. 500 is the primary, 700 for pressed
+         states and for sea-colored text on sand. -->
+    <color name="primary">#147384</color>
+    <color name="primary_variant">#0A4757</color>
+    <color name="on_primary">#EBF7F9</color>
+    <color name="accent_soft">#EBF7F9</color>
 
-    <!-- Grounds: neutral ramp -->
-    <color name="background">#F3F5FE</color>
-    <color name="surface">#FFFFFF</color>
-    <color name="surface_alt">#E4E7F5</color>
-    <color name="divider">#CFD3E5</color>
-    <color name="text_primary">#292B31</color>
-    <color name="text_secondary">#75798C</color>
+    <!-- Sand: 00 ground, 50 card, 100 recessed, 200 hairline, 600 muted
+         text, Ink body text. -->
+    <color name="background">#FDFBF7</color>
+    <color name="surface">#F6F1E8</color>
+    <color name="surface_alt">#EDE6DA</color>
+    <color name="divider">#DCD3C4</color>
+    <color name="text_primary">#211F1B</color>
+    <color name="text_secondary">#6E6659</color>
 
-    <!-- Semantic safety scale -->
-    <color name="safe">#2E8B68</color>
-    <color name="caution">#A9752B</color>
-    <color name="danger">#C1504A</color>
-    <color name="safe_tint">#1F2E8B68</color>
-    <color name="caution_tint">#1FA9752B</color>
-    <color name="danger_tint">#1FC1504A</color>
-    <color name="accent_tint">#1F5D5294</color>
+    <!-- Semantic safety scale. The design pairs each state with a tint for
+         backgrounds; the tints below are its literal values.
+
+         Caution is the one deviation: the design's caution swatch is Sun
+         #F0A20A, but the app uses these tokens as text and icon colors,
+         and the design's own rules put amber at that lightness in
+         backgrounds only ("pair with Sun 800 text"). Caution therefore
+         takes Sun 700, which clears AA both on Sand 00 and on its tint -
+         which matters most in the sunlight this app is read in. -->
+    <color name="safe">#1DA46A</color>
+    <color name="caution">#BF730B</color>
+    <color name="danger">#E03C21</color>
+    <color name="safe_tint">#E2F6EC</color>
+    <color name="caution_tint">#FEF0D0</color>
+    <color name="danger_tint">#FEE1DA</color>
+    <color name="accent_tint">#EBF7F9</color>
 
     <!-- Legacy aliases kept so existing layouts and code keep resolving -->
-    <color name="error">#C1504A</color>
-    <color name="safe_green">#2E8B68</color>
-    <color name="advisor_bg">#ECEAFB</color>
-    <color name="water_accent">#5D5294</color>
-    <color name="secondary">#A9752B</color>
-    <color name="secondary_variant">#8A5D1F</color>
-    <color name="on_secondary">#FFFFFF</color>
-    <color name="tertiary_gold">#A9752B</color>
-    <color name="ocean_gradient_start">#F3F5FE</color>
-    <color name="ocean_gradient_end">#F3F5FE</color>
+    <color name="error">#E03C21</color>
+    <color name="safe_green">#1DA46A</color>
+    <color name="advisor_bg">#EBF7F9</color>
+    <color name="water_accent">#147384</color>
+    <color name="secondary">#BF730B</color>
+    <color name="secondary_variant">#8F5406</color>
+    <color name="on_secondary">#FFF8E6</color>
+    <color name="tertiary_gold">#BF730B</color>
+    <!-- The header is a flat sand ground, not a colored band. -->
+    <color name="ocean_gradient_start">#FDFBF7</color>
+    <color name="ocean_gradient_end">#FDFBF7</color>
     <!-- Text/icons over photo scrims, which stay dark in both themes -->
     <color name="on_hero">#FFFFFF</color>
 
     <!-- Beach warning flags. These are the physical colors of the flags
          flying on the beach, so unlike everything above they are the same
-         in both themes - a red flag is red whichever way the app looks. -->
+         in both themes - a red flag is red whichever way the app looks.
+         The design keeps them out of the brand set for the same reason:
+         a legal signal must never be mistaken for UI color. -->
     <color name="flag_red">#D8342A</color>
     <color name="flag_yellow">#F0C420</color>
     <color name="flag_green">#26A65B</color>
     <color name="flag_purple">#7E45B5</color>
 
-    <!-- UV Index scale -->
-    <color name="uv_low">#2E8B68</color>
-    <color name="uv_moderate">#A9752B</color>
-    <color name="uv_high">#B2622F</color>
-    <color name="uv_very_high">#C1504A</color>
-    <color name="uv_extreme">#7A4E8C</color>
+    <!-- UV Index scale: safe green, caution amber, then up the sun ramp
+         into coral. Extreme is Coral 800 rather than a violet, so the
+         scale never leaves the palette. -->
+    <color name="uv_low">#1DA46A</color>
+    <color name="uv_moderate">#BF730B</color>
+    <color name="uv_high">#DF6E1E</color>
+    <color name="uv_very_high">#E03C21</color>
+    <color name="uv_extreme">#85230F</color>
 
-    <!-- Stat tile icons -->
-    <color name="icon_temp">#B2622F</color>
-    <color name="icon_uv">#A9752B</color>
-    <color name="icon_wind">#75798C</color>
-    <color name="icon_wave">#5D5294</color>
-    <color name="icon_visibility">#75798C</color>
+    <!-- Stat tile icons, following the design's own tile treatment:
+         UV in Sun 800, surf in Sea 600, the rest muted sand. -->
+    <color name="icon_temp">#BF730B</color>
+    <color name="icon_uv">#8F5406</color>
+    <color name="icon_wind">#6E6659</color>
+    <color name="icon_wave">#0F5C6D</color>
+    <color name="icon_visibility">#6E6659</color>
 
     <color name="tile_temp_bg">#00000000</color>
     <color name="tile_uv_bg">#00000000</color>
@@ -73,11 +91,11 @@
     <color name="tile_wave_bg">#00000000</color>
     <color name="tile_visibility_bg">#00000000</color>
 
-    <!-- Home / welcome screen: shallow-water blues for the wave reveal.
-         The welcome intro is outside the Nocturne screen set, so it keeps
-         the light-blue beach palette it was designed with. -->
-    <color name="wave_deep">#2E9EC4</color>
-    <color name="wave_shallow">#A9E4F2</color>
-    <color name="wave_foam">#FFFFFF</color>
-    <color name="on_wave">#08414E</color>
+    <!-- Home / welcome screen: the wave reveal now rides the Sea ramp
+         rather than its own blues, so the intro hands off to a palette
+         the rest of the app shares. -->
+    <color name="wave_deep">#147384</color>
+    <color name="wave_shallow">#9CD3DB</color>
+    <color name="wave_foam">#FDFBF7</color>
+    <color name="on_wave">#06303D</color>
 </resources>

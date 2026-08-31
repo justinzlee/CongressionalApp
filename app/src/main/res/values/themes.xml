@@ -29,15 +29,15 @@
         <item name="colorOutlineVariant">@color/divider</item>
         <item name="colorError">@color/error</item>
 
-        <!-- Nocturne shape scale: radius-sm 4, md 8, lg 14 -->
+        <!-- Shape scale: radius-sm 4, md 8, lg 14 -->
         <item name="shapeAppearanceCornerExtraSmall">@style/ShapeAppearance.App.Corner.ExtraSmall</item>
         <item name="shapeAppearanceCornerSmall">@style/ShapeAppearance.App.Corner.Small</item>
         <item name="shapeAppearanceCornerMedium">@style/ShapeAppearance.App.Corner.Medium</item>
         <item name="shapeAppearanceCornerLarge">@style/ShapeAppearance.App.Corner.Large</item>
         <item name="shapeAppearanceCornerExtraLarge">@style/ShapeAppearance.App.Corner.ExtraLarge</item>
 
-        <!-- Nocturne sets Inter; Android ships Roboto, the nearest system
-             grotesque, so the weights map rather than the exact face. -->
+        <!-- The design sets Space Grotesk; Android ships Roboto, the nearest
+             system grotesque, so weights map rather than the exact face. -->
         <item name="android:fontFamily">sans-serif</item>
         <item name="fontFamily">sans-serif</item>
 
@@ -74,7 +74,7 @@
         <item name="cornerSize">14dp</item>
     </style>
 
-    <!-- Type — Nocturne scale. Headings are weight 500, body 400. -->
+    <!-- Type. Headings are weight 500, body 400. -->
     <style name="TextAppearance.App.Display" parent="TextAppearance.Material3.TitleLarge">
         <item name="android:textSize">20sp</item>
         <item name="android:fontFamily">sans-serif-medium</item>
