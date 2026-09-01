@@ -18,23 +18,35 @@
         android:paddingHorizontal="8dp"
         android:paddingVertical="6dp">
 
-        <ImageButton
+        <!-- Arrow and word are one target, so "Back" goes back like the arrow -->
+        <LinearLayout
             android:id="@+id/detailBackButton"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/back"
-            android:padding="9dp"
-            android:src="@drawable/ic_back"
-            app:tint="@color/primary" />
-
-        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
-            android:text="@string/back"
-            android:textColor="@color/primary"
-            android:textSize="12.5sp" />
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="0dp"
+            android:paddingEnd="10dp">
+
+            <ImageView
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:contentDescription="@null"
+                android:padding="9dp"
+                android:src="@drawable/ic_back"
+                app:tint="@color/primary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:text="@string/back"
+                android:textColor="@color/primary"
+                android:textSize="12.5sp" />
+        </LinearLayout>
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView
@@ -273,6 +285,71 @@
                         android:id="@+id/detailVisibility"
                         style="@style/Widget.App.StatTileValue"
                         tools:text="10.4 mi" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Tides sit on their own row under the rest: a pair of cubes for
+                 the next low and the next high, each with how far off it is. -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    style="@style/Widget.App.StatTile"
+                    android:layout_marginEnd="4.5dp">
+
+                    <LinearLayout style="@style/Widget.App.StatTileLabelRow">
+
+                        <ImageView
+                            style="@style/Widget.App.StatTileIcon"
+                            android:src="@drawable/ic_tide_low" />
+
+                        <TextView
+                            style="@style/Widget.App.StatTileLabel"
+                            android:text="@string/low_tide" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/detailLowTide"
+                        style="@style/Widget.App.StatTileValue"
+                        android:text="@string/placeholder_dashes"
+                        tools:text="5:04 AM" />
+
+                    <TextView
+                        android:id="@+id/detailLowTideCountdown"
+                        style="@style/Widget.App.StatTileCaption"
+                        android:text="@string/tide_checking"
+                        tools:text="in 3h 20m" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/Widget.App.StatTile"
+                    android:layout_marginStart="4.5dp">
+
+                    <LinearLayout style="@style/Widget.App.StatTileLabelRow">
+
+                        <ImageView
+                            style="@style/Widget.App.StatTileIcon"
+                            android:src="@drawable/ic_tide_high" />
+
+                        <TextView
+                            style="@style/Widget.App.StatTileLabel"
+                            android:text="@string/high_tide" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/detailHighTide"
+                        style="@style/Widget.App.StatTileValue"
+                        android:text="@string/placeholder_dashes"
+                        tools:text="11:18 AM" />
+
+                    <TextView
+                        android:id="@+id/detailHighTideCountdown"
+                        style="@style/Widget.App.StatTileCaption"
+                        android:text="@string/tide_checking"
+                        tools:text="in 9h 34m" />
                 </LinearLayout>
             </LinearLayout>
 
