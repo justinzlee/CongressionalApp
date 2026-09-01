@@ -288,6 +288,71 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- Tides sit on their own row under the rest: a pair of cubes for
+                 the next low and the next high, each with how far off it is. -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="9dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    style="@style/Widget.App.StatTile"
+                    android:layout_marginEnd="4.5dp">
+
+                    <LinearLayout style="@style/Widget.App.StatTileLabelRow">
+
+                        <ImageView
+                            style="@style/Widget.App.StatTileIcon"
+                            android:src="@drawable/ic_tide_low" />
+
+                        <TextView
+                            style="@style/Widget.App.StatTileLabel"
+                            android:text="@string/low_tide" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/detailLowTide"
+                        style="@style/Widget.App.StatTileValue"
+                        android:text="@string/placeholder_dashes"
+                        tools:text="5:04 AM" />
+
+                    <TextView
+                        android:id="@+id/detailLowTideCountdown"
+                        style="@style/Widget.App.StatTileCaption"
+                        android:text="@string/tide_checking"
+                        tools:text="in 3h 20m" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/Widget.App.StatTile"
+                    android:layout_marginStart="4.5dp">
+
+                    <LinearLayout style="@style/Widget.App.StatTileLabelRow">
+
+                        <ImageView
+                            style="@style/Widget.App.StatTileIcon"
+                            android:src="@drawable/ic_tide_high" />
+
+                        <TextView
+                            style="@style/Widget.App.StatTileLabel"
+                            android:text="@string/high_tide" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/detailHighTide"
+                        style="@style/Widget.App.StatTileValue"
+                        android:text="@string/placeholder_dashes"
+                        tools:text="11:18 AM" />
+
+                    <TextView
+                        android:id="@+id/detailHighTideCountdown"
+                        style="@style/Widget.App.StatTileCaption"
+                        android:text="@string/tide_checking"
+                        tools:text="in 9h 34m" />
+                </LinearLayout>
+            </LinearLayout>
+
             <!-- ══════ WHAT TO WATCH FOR ══════ -->
             <TextView
                 android:layout_width="wrap_content"

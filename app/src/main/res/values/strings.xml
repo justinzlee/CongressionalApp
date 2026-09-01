@@ -8,6 +8,15 @@
     <string name="wind_speed">Wind Speed</string>
     <string name="wave_height">Wave Height</string>
     <string name="visibility">Visibility</string>
+    <string name="low_tide">Low Tide</string>
+    <string name="high_tide">High Tide</string>
+    <!-- Countdown under a tide time, so "5:04" is never mistaken for today when it is tomorrow -->
+    <string name="tide_checking">Checking&#8230;</string>
+    <string name="tide_now">Turning now</string>
+    <string name="tide_in_minutes">in %1$dm</string>
+    <string name="tide_in_hours_minutes">in %1$dh %2$dm</string>
+    <string name="tide_unavailable">Not available</string>
+    <string name="placeholder_dashes">--</string>
     <string name="safety_alerts">Safety Alerts</string>
     <string name="no_major_hazards">No major hazards reported.</string>
     <string name="conditions_unavailable">Conditions unavailable</string>

@@ -23,17 +23,24 @@ import com.example.myapplication.model.HelpLocation;
 import com.example.myapplication.model.HelpType;
 import com.example.myapplication.model.SafetyLevel;
 import com.example.myapplication.model.Severity;
+import com.example.myapplication.model.Tide;
+import com.example.myapplication.model.TideForecast;
 import com.example.myapplication.network.PhotoClient;
+import com.example.myapplication.network.TideClient;
 import com.example.myapplication.network.WeatherClient;
 import com.example.myapplication.util.EdgeToEdge;
 import com.example.myapplication.util.UnitConverter;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
 
 public class BeachDetailActivity extends AppCompatActivity {
     public static final String EXTRA_BEACH_ID = "extra_beach_id";
     private WeatherClient weatherClient;
+    private TideClient tideClient;
 
     private Beach beach;
     private ViewGroup hazardList;
@@ -41,6 +48,7 @@ public class BeachDetailActivity extends AppCompatActivity {
     private TextView verdictText, advisorSummary;
     private View verdictChip;
     private WaveHeightCard waveCard;
+    private TextView lowTide, lowTideCountdown, highTide, highTideCountdown;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +80,10 @@ public class BeachDetailActivity extends AppCompatActivity {
         advisorSummary = findViewById(R.id.advisorSummary);
         waveCard = findViewById(R.id.detailWaveCard);
         waveCard.setBeachName(beach.getName());
+        lowTide = findViewById(R.id.detailLowTide);
+        lowTideCountdown = findViewById(R.id.detailLowTideCountdown);
+        highTide = findViewById(R.id.detailHighTide);
+        highTideCountdown = findViewById(R.id.detailHighTideCountdown);
 
         ImageView image = findViewById(R.id.beachDetailImage);
         Glide.with(this).load(beach.getImageUrl()).centerCrop().into(image);
@@ -106,7 +118,9 @@ public class BeachDetailActivity extends AppCompatActivity {
         }
 
         weatherClient = new WeatherClient();
+        tideClient = new TideClient();
         fetchRealTimeData();
+        fetchTides();
     }
 
     /** Save/unsave, persisted so the Saved tab picks it up immediately. */
@@ -215,6 +229,61 @@ public class BeachDetailActivity extends AppCompatActivity {
         } else {
             advisorSummary.setText(new SafetyNote().describe(this, beach, level));
         }
+    }
+
+    /**
+     * Tides ride on the same marine forecast as the surf, so the pair of tiles
+     * fills in alongside the rest of the conditions rather than on its own trip.
+     */
+    private void fetchTides() {
+        tideClient.getTideForecast(beach.getLatitude(), beach.getLongitude(), new TideClient.TideCallback() {
+            @Override
+            public void onSuccess(TideForecast forecast) {
+                runOnUiThread(() -> updateTideDisplay(forecast));
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+                runOnUiThread(() -> {
+                    bindTide(null, null, lowTide, lowTideCountdown);
+                    bindTide(null, null, highTide, highTideCountdown);
+                });
+            }
+        });
+    }
+
+    private void updateTideDisplay(TideForecast forecast) {
+        long now = System.currentTimeMillis();
+        TimeZone zone = forecast.getZone();
+        bindTide(forecast.getNextLow(now), zone, lowTide, lowTideCountdown);
+        bindTide(forecast.getNextHigh(now), zone, highTide, highTideCountdown);
+    }
+
+    /** One tide cube: the clock time on top, how long until it underneath. */
+    private void bindTide(Tide tide, TimeZone zone, TextView time, TextView countdown) {
+        if (tide == null) {
+            time.setText(R.string.placeholder_dashes);
+            countdown.setText(R.string.tide_unavailable);
+            return;
+        }
+
+        // The beach's clock, not the phone's - they differ on a trip - and the
+        // reader's 12/24-hour preference.
+        DateFormat format = android.text.format.DateFormat.getTimeFormat(this);
+        format.setTimeZone(zone);
+        time.setText(format.format(new Date(tide.getTimeMillis())));
+        countdown.setText(formatCountdown(tide.getTimeMillis() - System.currentTimeMillis()));
+    }
+
+    /**
+     * "in 3h 20m" under the time, so a tide at 5:04 tomorrow morning can't read
+     * as one this morning.
+     */
+    private String formatCountdown(long millisAway) {
+        long minutes = millisAway / 60000L;
+        if (minutes <= 0) return getString(R.string.tide_now);
+        if (minutes < 60) return getString(R.string.tide_in_minutes, minutes);
+        return getString(R.string.tide_in_hours_minutes, minutes / 60, minutes % 60);
     }
 
     private void fetchRealTimeData() {
