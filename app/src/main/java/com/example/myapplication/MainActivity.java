@@ -76,8 +76,11 @@ public class MainActivity extends AppCompatActivity {
 
     private double currentLat = 34.0522; // Default LA
     private double currentLon = -118.2437;
+    private double realLat = 34.0522;
+    private double realLon = -118.2437;
     private double currentRadiusMiles = Double.MAX_VALUE; // Default All
     private boolean hasLocation = false;
+    private boolean hasRealLocation = false;
     private boolean isManualLocation = false;
     private boolean shouldScrollToTop = false;
     private final ExecutorService geocoderExecutor = Executors.newSingleThreadExecutor();
@@ -322,8 +325,13 @@ public class MainActivity extends AppCompatActivity {
         locationService.getLastLocation(new LocationService.LocationUpdateListener() {
             @Override
             public void onLocationUpdated(double latitude, double longitude) {
+                realLat = latitude;
+                realLon = longitude;
+                hasRealLocation = true;
                 if (!isManualLocation) {
                     updateUserLocation(latitude, longitude);
+                } else {
+                    updateList();
                 }
             }
 
@@ -334,8 +342,13 @@ public class MainActivity extends AppCompatActivity {
         locationService.startLocationUpdates(new LocationService.LocationUpdateListener() {
             @Override
             public void onLocationUpdated(double latitude, double longitude) {
+                realLat = latitude;
+                realLon = longitude;
+                hasRealLocation = true;
                 if (!isManualLocation) {
                     updateUserLocation(latitude, longitude);
+                } else {
+                    updateList();
                 }
             }
 
@@ -352,7 +365,6 @@ public class MainActivity extends AppCompatActivity {
         currentLon = longitude;
         hasLocation = true;
         updateRadiusButtonsEnabled();
-        adapter.updateUserLocation(latitude, longitude);
         updateList();
     }
 
@@ -371,7 +383,11 @@ public class MainActivity extends AppCompatActivity {
             })
             .collect(Collectors.toList());
 
-        adapter.setBeaches(filteredBeaches, hasLocation, currentLat, currentLon);
+        boolean showDistance = isManualLocation ? hasRealLocation : hasLocation;
+        double displayLat = isManualLocation ? realLat : currentLat;
+        double displayLon = isManualLocation ? realLon : currentLon;
+
+        adapter.setBeaches(filteredBeaches, showDistance, displayLat, displayLon);
         emptyState.setVisibility(filteredBeaches.isEmpty() ? View.VISIBLE : View.GONE);
         beachCountBadge.setText(getResources().getQuantityString(
                 R.plurals.beach_count, filteredBeaches.size(), filteredBeaches.size()));

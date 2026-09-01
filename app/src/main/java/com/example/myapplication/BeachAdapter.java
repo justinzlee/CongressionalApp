@@ -45,13 +45,6 @@ public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHol
         notifyDataSetChanged();
     }
 
-    public void updateUserLocation(double lat, double lon) {
-        this.userLat = lat;
-        this.userLon = lon;
-        this.hasLocation = true;
-        notifyDataSetChanged();
-    }
-
     @NonNull
     @Override
     public BeachViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
