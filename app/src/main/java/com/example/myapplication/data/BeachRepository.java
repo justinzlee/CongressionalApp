@@ -3,7 +3,6 @@ package com.example.myapplication.data;
 import androidx.annotation.VisibleForTesting;
 
 import com.example.myapplication.model.*;
-import com.example.myapplication.network.PhotoClient;
 import com.example.myapplication.network.WeatherClient;
 import com.example.myapplication.util.UnitConverter;
 import java.util.ArrayList;
@@ -31,8 +30,8 @@ public class BeachRepository {
     private static volatile BeachRepository instance;
 
     /**
-     * The one repository for the process. Conditions and resolved photos are
-     * cached on it, so a screen opening second gets them immediately.
+     * The one repository for the process. Conditions fetched on one screen are
+     * cached on it, so a screen opening second already has them.
      */
     public static BeachRepository getInstance() {
         BeachRepository local = instance;
@@ -61,7 +60,6 @@ public class BeachRepository {
 
     private final List<Beach> beaches;
     private final WeatherClient weatherClient = new WeatherClient();
-    private final PhotoClient photoClient = new PhotoClient();
 
     /** Guards against a second screen kicking off a duplicate fan-out. */
     private final AtomicBoolean refreshing = new AtomicBoolean(false);
@@ -77,53 +75,65 @@ public class BeachRepository {
     private BeachRepository() {
         beaches = new ArrayList<>();
         
-        // Initializing with null conditions to ensure real-time data is used.
-        // The image URLs below are generic stock-photo fallbacks shown until
-        // refreshAllData() resolves a real photo of each specific beach.
+        // Conditions start null so the live fetch is what fills them.
+        //
+        // Photos are curated Wikimedia Commons files, one per beach, each
+        // checked by eye to be a picture of that beach. Beaches without one
+        // carry null and fall back to the drawn placeholder.
+        //
+        // They used to be generic stock photos, which showed an unrelated
+        // beach under the name of this one, and refreshAllData() then tried to
+        // improve on that by looking the beach name up on Wikipedia. That
+        // search is unreliable for exactly the names in this list: it returned
+        // the Hotel del Coronado for Coronado Beach, a car park for Huntington
+        // Beach, Ocean Drive for South Beach, and a cartographic *map* for
+        // Galveston Island. A wrong photo is worse than no photo on a screen
+        // people use to decide whether to get in the water, so the lookup no
+        // longer runs and the list below is the only source.
         beaches.add(new Beach("CA1", "La Jolla Shores", 32.8589, -117.2558,
             Collections.singletonList(new Hazard(HazardType.RIP_CURRENT, Severity.MODERATE, "Strong rips near the pier.", Collections.singletonList("Swim near lifeguard"))),
             null, 
             Collections.singletonList(new HelpLocation("La Jolla Lifeguard Station", HelpType.LIFEGUARD_TOWER, 32.8589, -117.2558)),
-            "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=800&q=80"));
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/La_Jolla_Shores_photo_Don_Ramey_Logan.jpg/1280px-La_Jolla_Shores_photo_Don_Ramey_Logan.jpg"));
         
         beaches.add(new Beach("CA2", "Coronado Beach", 32.6859, -117.1831, null, null, null, 
-            "https://images.unsplash.com/photo-1549488344-1f9b8d2bd1f3?auto=format&fit=crop&w=800&q=80"));
-        beaches.add(new Beach("CA3", "Ocean Beach", 32.7495, -117.2553, null, null, null, 
-            "https://images.unsplash.com/photo-1484666086787-6cd0ccd39860?auto=format&fit=crop&w=800&q=80"));
-        beaches.add(new Beach("CA4", "Carlsbad State Beach", 33.1506, -117.3551, null, null, null, 
-            "https://images.unsplash.com/photo-1624388300251-5d9c24097486?auto=format&fit=crop&w=800&q=80"));
-        beaches.add(new Beach("CA5", "Moonlight State Beach", 33.0484, -117.2981, null, null, null, 
-            "https://images.unsplash.com/photo-1439460127823-30ad2f7da420?auto=format&fit=crop&w=800&q=80"));
+            null));
+        beaches.add(new Beach("CA3", "Ocean Beach", 32.7495, -117.2553, null, null, null,
+            "https://upload.wikimedia.org/wikipedia/commons/9/9f/Sunset_pier.jpg"));
+        beaches.add(new Beach("CA4", "Carlsbad State Beach", 33.1506, -117.3551, null, null, null,
+            "https://upload.wikimedia.org/wikipedia/commons/c/ca/Carlsbad_State_Beach.jpg"));
+        beaches.add(new Beach("CA5", "Moonlight State Beach", 33.0484, -117.2981, null, null, null,
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Moonlight_Beach%2C_view_from_the_south.JPG/1280px-Moonlight_Beach%2C_view_from_the_south.JPG"));
 
         beaches.add(new Beach("LA1", "Santa Monica Pier", 34.0099, -118.4960, null, null, null,
-            "https://images.unsplash.com/photo-1505245208761-ba872912fac0?auto=format&fit=crop&w=800&q=80"));
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Santa_monica_pier_entrance_evening.jpg/1280px-Santa_monica_pier_entrance_evening.jpg"));
         beaches.add(new Beach("LA2", "Huntington Beach", 33.6599, -117.9992, null, null, null,
-            "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?auto=format&fit=crop&w=800&q=80"));
+            null));
         beaches.add(new Beach("LA3", "Malibu Lagoon", 34.0322, -118.6775, null, null, null,
-            "https://images.unsplash.com/photo-1588665798939-269e9e8f49a2?auto=format&fit=crop&w=800&q=80"));
+            null));
         beaches.add(new Beach("LA4", "Venice Beach", 33.9850, -118.4695, null, null, null,
-            "https://images.unsplash.com/photo-1502920917128-1aa500764cbd?auto=format&fit=crop&w=800&q=80"));
+            null));
         
         beaches.add(new Beach("FL1", "South Beach", 25.7826, -80.1285, 
             Collections.singletonList(new Hazard(HazardType.UV_INDEX, Severity.EXTREME, "High UV today.", Arrays.asList("Apply SPF 50", "Reapply every 2h"))),
             null,
             Collections.singletonList(new HelpLocation("Miami Beach Rescue", HelpType.HOSPITAL, 25.7826, -80.1285)),
-            "https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&w=800&q=80"));
+            null));
         
-        beaches.add(new Beach("FL2", "Haulover Beach", 25.9035, -80.1213, null, null, null, 
-            "https://images.unsplash.com/photo-1739097746183-514d8236d246?auto=format&fit=crop&w=800&q=80"));
-        beaches.add(new Beach("FL4", "Clearwater Beach", 27.9765, -82.8318, null, null, null, 
-            "https://images.unsplash.com/photo-1626189913063-441366b96e6a?auto=format&fit=crop&w=800&q=80"));
-        beaches.add(new Beach("NY1", "Rockaway Beach", 40.5843, -73.8197, null, null, null, 
-            "https://images.unsplash.com/photo-1596752765363-255018659d81?auto=format&fit=crop&w=800&q=80"));
+        beaches.add(new Beach("FL2", "Haulover Beach", 25.9035, -80.1213, null, null, null,
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Haulover-beach-2.JPG/1280px-Haulover-beach-2.JPG"));
+        beaches.add(new Beach("FL4", "Clearwater Beach", 27.9765, -82.8318, null, null, null,
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Clearwater_Beach_%2854357452307%29.jpg/1280px-Clearwater_Beach_%2854357452307%29.jpg"));
+        beaches.add(new Beach("NY1", "Rockaway Beach", 40.5843, -73.8197, null, null, null,
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Rockaway_Beach_Queens.JPG/1280px-Rockaway_Beach_Queens.JPG"));
         beaches.add(new Beach("NY2", "Jones Beach State Park", 40.5909, -73.5121, null, null, null, 
-            "https://images.unsplash.com/photo-1663435136894-3a521e10ed50?auto=format&fit=crop&w=800&q=80"));
+            null));
         beaches.add(new Beach("TX1", "Galveston Island", 29.2991, -94.7946, null, null, null, 
-            "https://images.unsplash.com/photo-1701968531518-e7d698e57608?auto=format&fit=crop&w=800&q=80"));
+            null));
         beaches.add(new Beach("TX2", "South Padre Island", 26.1118, -97.1681, null, null, null, 
-            "https://images.unsplash.com/photo-1544196036-3f1e110d9af5?auto=format&fit=crop&w=800&q=80"));
-        beaches.add(new Beach("OR1", "Cannon Beach", 45.8918, -123.9615, null, null, null, 
-            "https://images.unsplash.com/photo-1534067783941-51c9c23eccfd?auto=format&fit=crop&w=800&q=80"));
+            null));
+        beaches.add(new Beach("OR1", "Cannon Beach", 45.8918, -123.9615, null, null, null,
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Haystack_Rock%2C_Oregon_%28drone_photograph%29.jpg/1280px-Haystack_Rock%2C_Oregon_%28drone_photograph%29.jpg"));
     }
 
     /**
@@ -153,9 +163,9 @@ public class BeachRepository {
         }
 
         List<Beach> snapshot = getBeaches();
-        // Two requests per beach, and the refresh is done when the last of
-        // them reports one way or the other.
-        outstanding.set(snapshot.size() * 2);
+        // One request per beach — photos are curated rather than fetched — and
+        // the refresh is done when the last one reports either way.
+        outstanding.set(snapshot.size());
 
         for (int i = 0; i < snapshot.size(); i++) {
             final int index = i;
@@ -179,22 +189,6 @@ public class BeachRepository {
                     }
                 });
 
-            // Replace the generic stock photo with a real photo of this specific beach.
-            photoClient.getBeachPhoto(beach.getName(), new PhotoClient.PhotoCallback() {
-                @Override
-                public void onSuccess(String imageUrl) {
-                    synchronized (beaches) {
-                        beaches.set(index, beaches.get(index).withImageUrl(imageUrl));
-                    }
-                    settle(true);
-                }
-
-                @Override
-                public void onFailure(Exception e) {
-                    // Keep the stock-photo fallback already set on the beach.
-                    settle(false);
-                }
-            });
         }
     }
 

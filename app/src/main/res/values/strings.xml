@@ -43,7 +43,9 @@
     <string name="display_section_title">Display</string>
     <string name="use_dark_mode_title">Dark Mode</string>
     <string name="use_dark_mode_subtitle">Switch the app between light and dark appearance.</string>
-    <string name="settings_footnote">Conditions come from public coastal forecasts. Always follow the signs and flags at the beach.</string>
+    <!-- Beach photos come from Wikimedia Commons under free licences, which
+         ask to be credited wherever the pictures are shown. -->
+    <string name="settings_footnote">Conditions come from public coastal forecasts. Beach photos are from Wikimedia Commons. Always follow the signs and flags at the beach.</string>
 
     <!-- Swim verdict -->
     <string name="verdict_safe">Good to swim</string>

@@ -69,6 +69,14 @@
     <color name="tile_wave_bg">#00000000</color>
     <color name="tile_visibility_bg">#00000000</color>
 
+    <!-- Beach-photo placeholder, after dark: the same shoreline under a night
+         sky, so it sits on the dark card instead of glaring off it. -->
+    <color name="placeholder_sky">#172B31</color>
+    <color name="placeholder_sea">#0A4757</color>
+    <color name="placeholder_swell">#2E93A3</color>
+    <color name="placeholder_sand_wet">#15272D</color>
+    <color name="placeholder_sand_dry">#122126</color>
+
     <!-- Welcome intro: the same Sea ramp as light mode, dimmed a step so
          the reveal does not flash white on a night screen. -->
     <color name="wave_deep">#0A4757</color>

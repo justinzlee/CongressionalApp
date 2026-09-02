@@ -102,4 +102,12 @@
     <!-- Brand mark. Sun amber is the one colour the Sandbar mark keeps in
          both themes, so it is defined here only and inherited by night. -->
     <color name="brand_sun">#F7A828</color>
+
+    <!-- Beach-photo placeholder. A flat daylight shoreline drawn from the
+         palette, shown where there is no verified photo of that beach. -->
+    <color name="placeholder_sky">#EDE6DA</color>
+    <color name="placeholder_sea">#147384</color>
+    <color name="placeholder_swell">#9CD3DB</color>
+    <color name="placeholder_sand_wet">#DCD3C4</color>
+    <color name="placeholder_sand_dry">#F6F1E8</color>
 </resources>
