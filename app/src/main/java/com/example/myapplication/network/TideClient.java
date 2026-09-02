@@ -12,10 +12,6 @@ import java.text.SimpleDateFormat;
 import java.util.Locale;
 import java.util.SimpleTimeZone;
 import java.util.TimeZone;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
-import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
@@ -25,22 +21,19 @@ public class TideClient {
     /** Two days always covers the next of each turn, whatever the hour. */
     private static final int FORECAST_DAYS = 2;
 
-    private final OkHttpClient client = new OkHttpClient();
-    private final ExecutorService executor = Executors.newSingleThreadExecutor();
-
     public interface TideCallback {
         void onSuccess(TideForecast forecast);
         void onFailure(Exception e);
     }
 
     public void getTideForecast(double lat, double lon, TideCallback callback) {
-        executor.execute(() -> {
+        Http.IO.execute(() -> {
             String url = String.format(Locale.US,
                 "https://marine-api.open-meteo.com/v1/marine?latitude=%.4f&longitude=%.4f"
                     + "&hourly=sea_level_height_msl&timezone=auto&forecast_days=%d",
                 lat, lon, FORECAST_DAYS);
 
-            try (Response response = client.newCall(new Request.Builder().url(url).build()).execute()) {
+            try (Response response = Http.CLIENT.newCall(new Request.Builder().url(url).build()).execute()) {
                 if (!response.isSuccessful() || response.body() == null) {
                     callback.onFailure(new IOException("Tide request failed: " + response.code()));
                     return;
