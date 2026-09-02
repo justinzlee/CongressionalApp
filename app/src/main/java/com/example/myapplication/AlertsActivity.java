@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
 
+import com.example.myapplication.data.AlertSeenStore;
 import com.example.myapplication.data.BeachRepository;
 import com.example.myapplication.model.Beach;
 import com.example.myapplication.model.BeachAlert;
@@ -30,6 +31,8 @@ import java.util.Locale;
  */
 public class AlertsActivity extends AppCompatActivity {
 
+    private AlertSeenStore seenStore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,8 +41,19 @@ public class AlertsActivity extends AppCompatActivity {
         EdgeToEdge.applyTopInset(findViewById(R.id.alertsHeader));
         EdgeToEdge.applyBottomInset(findViewById(R.id.tabBar));
 
+        seenStore = new AlertSeenStore(this);
+
         TabBar.setup(this, TabBar.Tab.ALERTS);
         bindAlerts();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Reading this screen is what clears the badge: every hazard on record
+        // right now counts as seen, and the tab bar redraws without its count.
+        seenStore.markSeen(BeachAlert.from(new BeachRepository().getBeaches()));
+        TabBar.refreshAlertBadge(this);
     }
 
     private void bindAlerts() {

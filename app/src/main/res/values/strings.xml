@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">BeachSafety US</string>
-    <string name="app_tagline">Live conditions for the US coast</string>
+    <string name="app_name">Sandbar</string>
+    <string name="app_tagline">Beach safety</string>
     <string name="ai_safety_advisor">Safety Advisor</string>
     <string name="weather_conditions">Weather Conditions</string>
     <string name="air_temp">Air Temp</string>
@@ -43,7 +43,6 @@
     <string name="display_section_title">Display</string>
     <string name="use_dark_mode_title">Dark Mode</string>
     <string name="use_dark_mode_subtitle">Switch the app between light and dark appearance.</string>
-    <string name="settings_learn">Learn</string>
     <string name="settings_footnote">Conditions come from public coastal forecasts. Always follow the signs and flags at the beach.</string>
 
     <!-- Swim verdict -->
@@ -115,6 +114,7 @@
     <string name="tab_now">Now</string>
     <string name="tab_alerts">Alerts</string>
     <string name="tab_saved">Saved</string>
+    <string name="tab_learn">Learn</string>
     <string name="tab_more">More</string>
 
     <!-- Alerts -->
@@ -127,6 +127,11 @@
     <string name="saved_empty">No saved beaches yet. Save one from its page and it shows up here with its current status.</string>
     <string name="save_beach">Save</string>
     <string name="saved_beach">Saved</string>
+
+    <!-- Learn tab -->
+    <string name="learn_intro">Short lessons on reading the water, so you know what you are looking at before you get in.</string>
+    <string name="learn_lessons_heading">Lessons</string>
+    <string name="learn_footnote">These lessons are general beach safety guidance. The lifeguards and signs at your beach know today\'s water — follow them first.</string>
 
     <!-- Rip current guide -->
     <string name="guide_entry_title">How to spot a rip current</string>

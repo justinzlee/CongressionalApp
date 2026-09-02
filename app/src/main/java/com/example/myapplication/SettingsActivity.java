@@ -29,11 +29,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         TabBar.setup(this, TabBar.Tab.MORE);
 
-        findViewById(R.id.guideRow).setOnClickListener(
-            v -> startActivity(new android.content.Intent(this, RipGuideActivity.class)));
-
-        findViewById(R.id.flagGuideRow).setOnClickListener(
-            v -> startActivity(new android.content.Intent(this, FlagGuideActivity.class)));
+        // The lessons that used to sit here now have their own Learn tab.
 
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
@@ -50,6 +46,13 @@ public class SettingsActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(isChecked
                 ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Alerts may have been read since this screen was last in front.
+        TabBar.refreshAlertBadge(this);
     }
 
     private interface OnToggle {

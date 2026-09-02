@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
 
+import com.example.myapplication.data.AlertSeenStore;
 import com.example.myapplication.data.BeachRepository;
 import com.example.myapplication.model.BeachAlert;
 
@@ -20,7 +21,7 @@ import com.example.myapplication.model.BeachAlert;
  */
 public final class TabBar {
 
-    public enum Tab { NOW, ALERTS, SAVED, MORE }
+    public enum Tab { NOW, ALERTS, SAVED, LEARN, MORE }
 
     private TabBar() {
     }
@@ -36,10 +37,12 @@ public final class TabBar {
             R.drawable.ic_warning_circle, AlertsActivity.class);
         bind(activity, current, Tab.SAVED, R.id.tabSaved, R.id.tabSavedIcon, R.id.tabSavedLabel,
             R.drawable.ic_bookmark, SavedActivity.class);
+        bind(activity, current, Tab.LEARN, R.id.tabLearn, R.id.tabLearnIcon, R.id.tabLearnLabel,
+            R.drawable.ic_book, LearnActivity.class);
         bind(activity, current, Tab.MORE, R.id.tabMore, R.id.tabMoreIcon, R.id.tabMoreLabel,
             R.drawable.ic_dots, SettingsActivity.class);
 
-        updateAlertBadge(activity);
+        refreshAlertBadge(activity);
     }
 
     private static void bind(Activity activity, Tab current, Tab tab,
@@ -78,12 +81,17 @@ public final class TabBar {
         });
     }
 
-    /** Shows how many hazards are on record across all beaches. */
-    private static void updateAlertBadge(Activity activity) {
+    /**
+     * Shows how many hazards the user has not read yet. Tabs are brought back
+     * to the front rather than recreated, so every top-level screen calls this
+     * again from onResume to pick up alerts that have since been read.
+     */
+    public static void refreshAlertBadge(Activity activity) {
         TextView badge = activity.findViewById(R.id.tabAlertsBadge);
         if (badge == null) return;
 
-        int count = BeachAlert.from(new BeachRepository().getBeaches()).size();
+        int count = new AlertSeenStore(activity)
+            .countUnseen(BeachAlert.from(new BeachRepository().getBeaches()));
         if (count == 0) {
             badge.setVisibility(View.GONE);
         } else {

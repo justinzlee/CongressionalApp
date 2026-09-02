@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
   Bottom tab bar, shared by every top-level screen. The design specifies five
-  tabs; Map is not built yet, so four are wired here.
+  tabs; Map is not built yet, so Learn — the app's own section of lessons —
+  takes the fifth slot.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -97,6 +98,21 @@
                 android:id="@+id/tabSavedLabel"
                 style="@style/Widget.App.TabLabel"
                 android:text="@string/tab_saved" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tabLearn"
+            style="@style/Widget.App.Tab">
+
+            <ImageView
+                android:id="@+id/tabLearnIcon"
+                style="@style/Widget.App.TabIcon"
+                android:src="@drawable/ic_book" />
+
+            <TextView
+                android:id="@+id/tabLearnLabel"
+                style="@style/Widget.App.TabLabel"
+                android:text="@string/tab_learn" />
         </LinearLayout>
 
         <LinearLayout

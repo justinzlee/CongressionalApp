@@ -564,20 +564,38 @@
             android:orientation="vertical"
             android:translationY="-64dp">
 
+            <!-- The bare mark, not the icon tile: the opening screen already
+                 has a brand ground of its own to sit on. -->
             <ImageView
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:contentDescription="@null"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@drawable/ic_sandbar_mark" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="sans-serif-medium"
+                android:letterSpacing="-0.035"
                 android:text="@string/app_name"
                 android:textColor="@color/on_wave"
-                android:textSize="28sp" />
+                android:textSize="40sp" />
+
+            <!-- Descriptor, set quiet in mono under the wordmark -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:alpha="0.65"
+                android:fontFamily="monospace"
+                android:letterSpacing="0.24"
+                android:paddingStart="3dp"
+                android:paddingEnd="0dp"
+                android:text="@string/app_tagline"
+                android:textAllCaps="true"
+                android:textColor="@color/on_wave"
+                android:textSize="12sp" />
 
         </LinearLayout>
 
