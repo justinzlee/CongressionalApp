@@ -56,7 +56,7 @@ public class BeachDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_beach_detail);
 
         String beachId = getIntent().getStringExtra(EXTRA_BEACH_ID);
-        BeachRepository repository = new BeachRepository();
+        BeachRepository repository = BeachRepository.getInstance();
         beach = repository.getBeaches().stream()
                 .filter(b -> Objects.equals(b.getId(), beachId))
                 .findFirst()

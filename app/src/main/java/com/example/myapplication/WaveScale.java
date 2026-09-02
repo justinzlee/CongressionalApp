@@ -2,6 +2,8 @@ package com.example.myapplication;
 
 import androidx.core.graphics.ColorUtils;
 
+import com.example.myapplication.model.SafetyLevel;
+
 /**
  * The height ramp behind the wave card. A swell height turns into two things:
  * a continuous colour blend for the water itself, so the sea shifts from green
@@ -21,9 +23,13 @@ public final class WaveScale {
     /** Top of the scale, in feet. Every position on the card is height / MAX_FT. */
     public static final float MAX_FT = 8f;
 
-    /** The three bands the card labels a height with. */
+    /**
+     * The three bands the card labels a height with. The lowest band runs to
+     * {@link SafetyLevel#CAUTION_WAVE_FEET}, which is small-to-moderate surf
+     * rather than flat water — hence "small", not "calm".
+     */
     public enum Level {
-        CALM(R.string.wave_level_calm, R.string.wave_advice_calm,
+        SMALL(R.string.wave_level_small, R.string.wave_advice_small,
             R.color.safe, R.color.safe_tint),
         MODERATE(R.string.wave_level_moderate, R.string.wave_advice_moderate,
             R.color.caution, R.color.caution_tint),
@@ -47,15 +53,24 @@ public final class WaveScale {
         public int getTintRes() { return tintRes; }
     }
 
+    /**
+     * The band a height falls in, on the same thresholds the swim verdict
+     * uses. The card sits directly under that verdict, so borrowing
+     * {@link SafetyLevel}'s numbers is what keeps the two from describing one
+     * reading in contradictory terms.
+     */
     public static Level levelFor(float feet) {
-        if (feet < 2f) return Level.CALM;
-        if (feet < 5f) return Level.MODERATE;
+        if (feet < SafetyLevel.CAUTION_WAVE_FEET) return Level.SMALL;
+        if (feet < SafetyLevel.DANGER_WAVE_FEET) return Level.MODERATE;
         return Level.HAZARDOUS;
     }
 
     // Ramp stops, in feet, with the two colours the water is built from: the
-    // bright crest highlight and the body of the swell just under it.
-    private static final float[] STOP_FT = {0f, 2.2f, 3.6f, 5.2f, 7f};
+    // bright crest highlight and the body of the swell just under it. The
+    // middle stops sit on the band edges so the water turns amber exactly
+    // where the card starts saying "moderate", and red where it says
+    // "hazardous", rather than shifting colour a foot early.
+    private static final float[] STOP_FT = {0f, 2.5f, 4f, 6f, 7.5f};
     private static final int[] STOP_CREST = {
         0xFF9FE7C4, 0xFFC4E6A8, 0xFFF2CA7A, 0xFFF8BB92, 0xFFF7A493};
     private static final int[] STOP_BODY = {

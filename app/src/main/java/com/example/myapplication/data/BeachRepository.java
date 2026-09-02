@@ -1,5 +1,7 @@
 package com.example.myapplication.data;
 
+import androidx.annotation.VisibleForTesting;
+
 import com.example.myapplication.model.*;
 import com.example.myapplication.network.PhotoClient;
 import com.example.myapplication.network.WeatherClient;
@@ -9,18 +11,70 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class BeachRepository {
+
+    /**
+     * How long fetched conditions are treated as current. Every screen used to
+     * build its own repository and refetch all seventeen beaches on entry, so
+     * conditions reset to "--" each time you came back to a tab and the wait
+     * started over. One shared instance keeps what it has already learned;
+     * this window then stops rapid tab-switching from re-hitting the network
+     * for readings that only move every fifteen minutes upstream anyway.
+     */
+    private static final long FRESH_FOR_MS = 5 * 60 * 1000L;
+
+    private static volatile BeachRepository instance;
+
+    /**
+     * The one repository for the process. Conditions and resolved photos are
+     * cached on it, so a screen opening second gets them immediately.
+     */
+    public static BeachRepository getInstance() {
+        BeachRepository local = instance;
+        if (local == null) {
+            synchronized (BeachRepository.class) {
+                local = instance;
+                if (local == null) {
+                    local = new BeachRepository();
+                    instance = local;
+                }
+            }
+        }
+        return local;
+    }
+
+    /**
+     * A standalone repository with its own copy of the beach list, for tests
+     * that filter and search without touching — or being touched by — the
+     * shared instance. Production code goes through {@link #getInstance()}, so
+     * that conditions fetched on one screen are already there on the next.
+     */
+    @VisibleForTesting
+    public static BeachRepository newForTesting() {
+        return new BeachRepository();
+    }
+
     private final List<Beach> beaches;
     private final WeatherClient weatherClient = new WeatherClient();
     private final PhotoClient photoClient = new PhotoClient();
+
+    /** Guards against a second screen kicking off a duplicate fan-out. */
+    private final AtomicBoolean refreshing = new AtomicBoolean(false);
+    /** Listeners waiting on the in-flight refresh; cleared when it finishes. */
+    private final List<OnDataRefreshListener> listeners = new CopyOnWriteArrayList<>();
+    private final AtomicInteger outstanding = new AtomicInteger();
+    private volatile long refreshedAt;
 
     public interface OnDataRefreshListener {
         void onDataRefreshed();
     }
 
-    public BeachRepository() {
+    private BeachRepository() {
         beaches = new ArrayList<>();
         
         // Initializing with null conditions to ensure real-time data is used.
@@ -72,25 +126,58 @@ public class BeachRepository {
             "https://images.unsplash.com/photo-1534067783941-51c9c23eccfd?auto=format&fit=crop&w=800&q=80"));
     }
 
+    /**
+     * Brings every beach's conditions and photo up to date, then reports back
+     * as each one lands so the list fills in progressively.
+     *
+     * <p>Cheap to call from anywhere: if the data is still fresh the listener
+     * is told immediately and nothing touches the network, and if a refresh is
+     * already running the listener simply joins it rather than starting a
+     * second copy.
+     */
     public void refreshAllData(OnDataRefreshListener listener) {
-        for (int i = 0; i < beaches.size(); i++) {
-            final int index = i;
-            Beach beach = beaches.get(i);
-            
-            // Refresh Weather
-            weatherClient.getBeachConditions(beach.getLatitude(), beach.getLongitude(), new WeatherClient.WeatherCallback() {
-                @Override
-                public void onSuccess(BeachConditions conditions) {
-                    synchronized (beaches) {
-                        beaches.set(index, beaches.get(index).withConditions(conditions));
-                    }
-                    if (listener != null) listener.onDataRefreshed();
-                }
+        if (listener != null) {
+            listeners.add(listener);
+        }
 
-                @Override
-                public void onFailure(Exception e) {
-                }
-            });
+        boolean fresh = System.currentTimeMillis() - refreshedAt < FRESH_FOR_MS;
+        if (fresh || !refreshing.compareAndSet(false, true)) {
+            // Already current, or someone else's fan-out is in flight. Hand
+            // back what is cached now; an in-flight refresh will call again as
+            // its results arrive.
+            if (listener != null) {
+                listener.onDataRefreshed();
+                if (fresh) listeners.remove(listener);
+            }
+            return;
+        }
+
+        List<Beach> snapshot = getBeaches();
+        // Two requests per beach, and the refresh is done when the last of
+        // them reports one way or the other.
+        outstanding.set(snapshot.size() * 2);
+
+        for (int i = 0; i < snapshot.size(); i++) {
+            final int index = i;
+            Beach beach = snapshot.get(i);
+
+            weatherClient.getBeachConditions(beach.getLatitude(), beach.getLongitude(),
+                new WeatherClient.WeatherCallback() {
+                    @Override
+                    public void onSuccess(BeachConditions conditions) {
+                        synchronized (beaches) {
+                            beaches.set(index, beaches.get(index).withConditions(conditions));
+                        }
+                        settle(true);
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+                        // Leave the beach without conditions: SafetyLevel reads
+                        // that as "no verdict yet" rather than inventing one.
+                        settle(false);
+                    }
+                });
 
             // Replace the generic stock photo with a real photo of this specific beach.
             photoClient.getBeachPhoto(beach.getName(), new PhotoClient.PhotoCallback() {
@@ -99,15 +186,40 @@ public class BeachRepository {
                     synchronized (beaches) {
                         beaches.set(index, beaches.get(index).withImageUrl(imageUrl));
                     }
-                    if (listener != null) listener.onDataRefreshed();
+                    settle(true);
                 }
 
                 @Override
                 public void onFailure(Exception e) {
                     // Keep the stock-photo fallback already set on the beach.
+                    settle(false);
                 }
             });
         }
+    }
+
+    /**
+     * Records one finished request: tells the waiting screens when it changed
+     * something, and closes the refresh out once the last one is in.
+     */
+    private void settle(boolean changed) {
+        if (changed) {
+            for (OnDataRefreshListener waiting : listeners) {
+                waiting.onDataRefreshed();
+            }
+        }
+        if (outstanding.decrementAndGet() <= 0) {
+            refreshedAt = System.currentTimeMillis();
+            refreshing.set(false);
+            // Screens that have since been left must not be retained until the
+            // next refresh happens to come along.
+            listeners.clear();
+        }
+    }
+
+    /** Drops the freshness window so the next call refetches. */
+    public void invalidate() {
+        refreshedAt = 0L;
     }
 
     public List<Beach> getBeaches() {

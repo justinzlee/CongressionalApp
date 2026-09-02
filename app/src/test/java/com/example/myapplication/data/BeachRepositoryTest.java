@@ -32,13 +32,13 @@ public class BeachRepositoryTest {
 
     @Test
     public void repository_loadsAllExpectedBeaches() {
-        List<Beach> beaches = new BeachRepository().getBeaches();
+        List<Beach> beaches = BeachRepository.newForTesting().getBeaches();
         assertEquals(17, beaches.size());
     }
 
     @Test
     public void sanDiegoBeaches_presentWithCorrectCoordinates() {
-        List<Beach> beaches = new BeachRepository().getBeaches();
+        List<Beach> beaches = BeachRepository.newForTesting().getBeaches();
 
         Beach laJolla = find(beaches, "La Jolla Shores");
         assertEquals("CA1", laJolla.getId());
@@ -59,7 +59,7 @@ public class BeachRepositoryTest {
 
     @Test
     public void carlsbadBeaches_presentWithCorrectCoordinates() {
-        List<Beach> beaches = new BeachRepository().getBeaches();
+        List<Beach> beaches = BeachRepository.newForTesting().getBeaches();
 
         Beach carlsbad = find(beaches, "Carlsbad State Beach");
         assertEquals("CA4", carlsbad.getId());
@@ -74,7 +74,7 @@ public class BeachRepositoryTest {
 
     @Test
     public void eastCoastBeaches_presentWithCorrectCoordinates() {
-        List<Beach> beaches = new BeachRepository().getBeaches();
+        List<Beach> beaches = BeachRepository.newForTesting().getBeaches();
 
         Beach southBeach = find(beaches, "South Beach");
         assertEquals("FL1", southBeach.getId());
@@ -98,14 +98,14 @@ public class BeachRepositoryTest {
 
     @Test
     public void allBeachIdsAreUnique() {
-        List<Beach> beaches = new BeachRepository().getBeaches();
+        List<Beach> beaches = BeachRepository.newForTesting().getBeaches();
         long distinctIds = beaches.stream().map(Beach::getId).distinct().count();
         assertEquals(beaches.size(), distinctIds);
     }
 
     @Test
     public void search_isCaseInsensitiveSubstringMatch() {
-        BeachRepository repo = new BeachRepository();
+        BeachRepository repo = BeachRepository.newForTesting();
         List<Beach> results = repo.searchBeaches("carlsbad");
         assertEquals(1, results.size());
         assertEquals("Carlsbad State Beach", results.get(0).getName());
@@ -117,20 +117,20 @@ public class BeachRepositoryTest {
 
     @Test
     public void search_emptyOrNullQuery_returnsAllBeaches() {
-        BeachRepository repo = new BeachRepository();
+        BeachRepository repo = BeachRepository.newForTesting();
         assertEquals(17, repo.searchBeaches("").size());
         assertEquals(17, repo.searchBeaches(null).size());
     }
 
     @Test
     public void search_noMatch_returnsEmptyList() {
-        BeachRepository repo = new BeachRepository();
+        BeachRepository repo = BeachRepository.newForTesting();
         assertTrue(repo.searchBeaches("NoSuchBeachXYZ").isEmpty());
     }
 
     @Test
     public void getBeaches_returnsDefensiveCopy() {
-        BeachRepository repo = new BeachRepository();
+        BeachRepository repo = BeachRepository.newForTesting();
         List<Beach> beaches = repo.getBeaches();
         beaches.clear();
         assertEquals(17, repo.getBeaches().size());

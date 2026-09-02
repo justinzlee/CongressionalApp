@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.applyTopInset(findViewById(R.id.appBarLayout));
         EdgeToEdge.applyBottomInset(findViewById(R.id.mainScrollView));
 
-        repository = new BeachRepository();
+        repository = BeachRepository.getInstance();
         locationService = new LocationService(this);
 
         searchEditText = findViewById(R.id.searchEditText);

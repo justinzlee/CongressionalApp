@@ -52,12 +52,12 @@ public class AlertsActivity extends AppCompatActivity {
         super.onResume();
         // Reading this screen is what clears the badge: every hazard on record
         // right now counts as seen, and the tab bar redraws without its count.
-        seenStore.markSeen(BeachAlert.from(new BeachRepository().getBeaches()));
+        seenStore.markSeen(BeachAlert.from(BeachRepository.getInstance().getBeaches()));
         TabBar.refreshAlertBadge(this);
     }
 
     private void bindAlerts() {
-        List<BeachAlert> alerts = BeachAlert.from(new BeachRepository().getBeaches());
+        List<BeachAlert> alerts = BeachAlert.from(BeachRepository.getInstance().getBeaches());
 
         View hero = findViewById(R.id.alertHero);
         View empty = findViewById(R.id.alertsEmpty);

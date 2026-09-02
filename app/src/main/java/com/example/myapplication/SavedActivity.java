@@ -42,7 +42,7 @@ public class SavedActivity extends AppCompatActivity {
         EdgeToEdge.applyTopInset(findViewById(R.id.savedHeader));
         EdgeToEdge.applyBottomInset(findViewById(R.id.tabBar));
 
-        repository = new BeachRepository();
+        repository = BeachRepository.getInstance();
         store = new SavedBeachStore(this);
 
         TabBar.setup(this, TabBar.Tab.SAVED);
