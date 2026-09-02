@@ -448,6 +448,8 @@ public class MainActivity extends AppCompatActivity {
             adapter.notifyDataSetChanged();
         }
         updateList();
+        // Alerts may have been read since this screen was last in front.
+        TabBar.refreshAlertBadge(this);
     }
 
     private void updateRadiusButtonLabels() {

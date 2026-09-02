@@ -53,6 +53,12 @@
             android:theme="@style/Theme.MyApplication" />
 
         <activity
+            android:name=".LearnActivity"
+            android:exported="false"
+            android:label="@string/tab_learn"
+            android:theme="@style/Theme.MyApplication" />
+
+        <activity
             android:name=".RipGuideActivity"
             android:exported="false"
             android:label="@string/guide_title"

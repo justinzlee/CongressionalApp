@@ -57,6 +57,8 @@ public class SavedActivity extends AppCompatActivity {
         super.onResume();
         // A beach may have been saved or unsaved on the detail screen.
         bindSaved();
+        // Alerts may have been read since this screen was last in front.
+        TabBar.refreshAlertBadge(this);
     }
 
     private void bindSaved() {
