@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Sandbar mark on its own, centred stack - the design's lockup for the opening
+  screen, where the mark sits above the wordmark rather than beside it.
+
+  On the welcome screen the mark sits on teal water rather than on a flat
+  brand tile, so the water and sand bands take @color/on_wave: dark ink on the
+  light swell, and light on the dimmed night one. The sun band keeps the
+  brand's own amber in both themes - it is the mark's one fixed colour.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="64dp"
+    android:height="64dp"
+    android:viewportWidth="64"
+    android:viewportHeight="64">
+    <!-- Water -->
+    <path
+        android:fillColor="@color/on_wave"
+        android:pathData="M10.5,18 H53.5 A4.5,4.5 0 0 1 53.5,27 H10.5 A4.5,4.5 0 0 1 10.5,18 Z" />
+    <!-- Sun -->
+    <path
+        android:fillColor="@color/brand_sun"
+        android:pathData="M15.5,32 H48.5 A4.5,4.5 0 0 1 48.5,41 H15.5 A4.5,4.5 0 0 1 15.5,32 Z" />
+    <!-- Sand -->
+    <path
+        android:fillColor="@color/on_wave"
+        android:fillAlpha="0.5"
+        android:pathData="M21,46 H43 A4.5,4.5 0 0 1 43,55 H21 A4.5,4.5 0 0 1 21,46 Z" />
+</vector>
