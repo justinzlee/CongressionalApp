@@ -35,14 +35,22 @@ public enum SafetyLevel {
      * plain words, so a keen swimmer can judge for themselves.
      */
 
-    /** Surf at or above this (feet) reads as dangerous on its own. */
-    private static final double DANGER_WAVE_FEET = 6.0;
+    /**
+     * Surf at or above this (feet) reads as dangerous on its own.
+     *
+     * <p>Public because the wave-height card bands on the same numbers. They
+     * were separate once, and drifted: the card called 3ft "Moderate — strong
+     * swimmers only" while the verdict directly above it called the same
+     * reading "Good to swim". One source of truth, so the two can never
+     * disagree about the same water again.
+     */
+    public static final double DANGER_WAVE_FEET = 6.0;
     /**
      * Surf at or above this (feet) is worth a warning. Around 4ft is where
      * waves start to genuinely push an average swimmer around; below that is
      * small-to-moderate and fine for most people, so it stays "good to swim".
      */
-    private static final double CAUTION_WAVE_FEET = 4.0;
+    public static final double CAUTION_WAVE_FEET = 4.0;
     /**
      * Only <em>extreme</em> UV moves the swim verdict. UV 8-10 ("very high")
      * describes most sunny summer days at most beaches, so treating it as a
