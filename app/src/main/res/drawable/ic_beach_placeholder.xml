@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Stands in for a beach photo when there is no verified picture of that
+  particular beach.
+
+  Deliberately a flat drawing rather than a stock photograph: a generic photo
+  in this slot would read as a picture *of this beach*, which is a claim the
+  app cannot make. An illustration reads as "no photo yet" at a glance, and
+  the three bands echo the Sandbar mark, so an unphotographed beach still
+  looks like part of the app rather than a hole in it.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="160dp"
+    android:height="100dp"
+    android:viewportWidth="160"
+    android:viewportHeight="100">
+
+    <!-- Sky -->
+    <path
+        android:fillColor="@color/placeholder_sky"
+        android:pathData="M0,0h160v100h-160z" />
+
+    <!-- Sun -->
+    <path
+        android:fillColor="@color/brand_sun"
+        android:fillAlpha="0.85"
+        android:pathData="M121,26m-11,0a11,11 0,1 1,22 0a11,11 0,1 1,-22 0" />
+
+    <!-- Sea -->
+    <path
+        android:fillColor="@color/placeholder_sea"
+        android:pathData="M0,44H160V72H0Z" />
+
+    <!-- Swell lines -->
+    <path
+        android:strokeColor="@color/placeholder_swell"
+        android:strokeWidth="2"
+        android:strokeAlpha="0.8"
+        android:strokeLineCap="round"
+        android:pathData="M8,54C18,50 28,58 38,54C48,50 58,58 68,54" />
+    <path
+        android:strokeColor="@color/placeholder_swell"
+        android:strokeWidth="2"
+        android:strokeAlpha="0.8"
+        android:strokeLineCap="round"
+        android:pathData="M92,62C102,58 112,66 122,62C132,58 142,66 152,62" />
+    <path
+        android:strokeColor="@color/placeholder_swell"
+        android:strokeWidth="2"
+        android:strokeAlpha="0.6"
+        android:strokeLineCap="round"
+        android:pathData="M40,66C50,62 60,70 70,66C80,62 90,70 100,66" />
+
+    <!-- Wet sand, then dry -->
+    <path
+        android:fillColor="@color/placeholder_sand_wet"
+        android:pathData="M0,72C26,68 52,76 80,72C108,68 134,76 160,72L160,78L0,78Z" />
+    <path
+        android:fillColor="@color/placeholder_sand_dry"
+        android:pathData="M0,77C26,73 52,81 80,77C108,73 134,81 160,77L160,100L0,100Z" />
+</vector>

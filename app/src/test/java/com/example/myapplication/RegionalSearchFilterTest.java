@@ -38,7 +38,7 @@ public class RegionalSearchFilterTest {
 
     @Test
     public void sanDiego_25mileRadius_returnsLocalBeachesClosestFirst() {
-        BeachRepository repo = new BeachRepository();
+        BeachRepository repo = BeachRepository.newForTesting();
         double sanDiegoLat = 32.7157, sanDiegoLon = -117.1611;
 
         List<Beach> results = filterAndSort(repo, sanDiegoLat, sanDiegoLon, 25.0);
@@ -57,7 +57,7 @@ public class RegionalSearchFilterTest {
 
     @Test
     public void carlsbad_25mileRadius_returnsLocalBeachesClosestFirst() {
-        BeachRepository repo = new BeachRepository();
+        BeachRepository repo = BeachRepository.newForTesting();
         double carlsbadLat = 33.1581, carlsbadLon = -117.3506;
 
         List<Beach> results = filterAndSort(repo, carlsbadLat, carlsbadLon, 25.0);
@@ -73,7 +73,7 @@ public class RegionalSearchFilterTest {
 
     @Test
     public void eastCoast_25mileRadiusFromMiami_returnsOnlyNearbyFloridaBeaches() {
-        BeachRepository repo = new BeachRepository();
+        BeachRepository repo = BeachRepository.newForTesting();
         double miamiLat = 25.7826, miamiLon = -80.1285; // South Beach coordinates
 
         List<Beach> results = filterAndSort(repo, miamiLat, miamiLon, 25.0);
@@ -90,7 +90,7 @@ public class RegionalSearchFilterTest {
 
     @Test
     public void allRadius_disablesDistanceFilterFromAnyRegion() {
-        BeachRepository repo = new BeachRepository();
+        BeachRepository repo = BeachRepository.newForTesting();
         // "All" is represented in MainActivity by Double.MAX_VALUE.
         List<Beach> fromSanDiego = filterAndSort(repo, 32.7157, -117.1611, Double.MAX_VALUE);
         List<Beach> fromMiami = filterAndSort(repo, 25.7826, -80.1285, Double.MAX_VALUE);
@@ -101,7 +101,7 @@ public class RegionalSearchFilterTest {
 
     @Test
     public void searchQuery_combinesWithRegion_forCarlsbad() {
-        BeachRepository repo = new BeachRepository();
+        BeachRepository repo = BeachRepository.newForTesting();
         List<Beach> matches = repo.searchBeaches("state beach").stream()
             .filter(b -> UnitConverter.calculateDistance(33.1581, -117.3506, b.getLatitude(), b.getLongitude()) <= 25.0)
             .collect(Collectors.toList());

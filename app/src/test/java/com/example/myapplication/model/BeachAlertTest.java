@@ -11,7 +11,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * The Alerts screen leads with whatever {@link BeachAlert#from} puts first,
+ * The Alerts screen leads with whatever {@link BeachAlert#recordedFor} puts first,
  * so the ordering here decides which warning a user sees before any other.
  */
 public class BeachAlertTest {
@@ -27,7 +27,7 @@ public class BeachAlertTest {
     @Test
     public void noHazards_produceNoAlerts() {
         List<Beach> beaches = Collections.singletonList(beachWith("a", "Calm Bay"));
-        assertTrue(BeachAlert.from(beaches).isEmpty());
+        assertTrue(BeachAlert.recordedFor(beaches).isEmpty());
     }
 
     @Test
@@ -37,7 +37,7 @@ public class BeachAlertTest {
             beachWith("b", "Two",
                 hazard(HazardType.UV_INDEX, Severity.LOW),
                 hazard(HazardType.POLLUTION, Severity.HIGH)));
-        assertEquals(3, BeachAlert.from(beaches).size());
+        assertEquals(3, BeachAlert.recordedFor(beaches).size());
     }
 
     @Test
@@ -47,7 +47,7 @@ public class BeachAlertTest {
             beachWith("b", "Worst", hazard(HazardType.RIP_CURRENT, Severity.EXTREME)),
             beachWith("c", "Middling", hazard(HazardType.POLLUTION, Severity.MODERATE)));
 
-        List<BeachAlert> alerts = BeachAlert.from(beaches);
+        List<BeachAlert> alerts = BeachAlert.recordedFor(beaches);
         assertEquals(Severity.EXTREME, alerts.get(0).getSeverity());
         assertEquals("Worst", alerts.get(0).getBeach().getName());
     }
@@ -60,7 +60,7 @@ public class BeachAlertTest {
             beachWith("c", "C", hazard(HazardType.POLLUTION, Severity.HIGH)),
             beachWith("d", "D", hazard(HazardType.AIR_QUALITY, Severity.EXTREME)));
 
-        List<BeachAlert> alerts = BeachAlert.from(beaches);
+        List<BeachAlert> alerts = BeachAlert.recordedFor(beaches);
         for (int i = 1; i < alerts.size(); i++) {
             assertTrue("alerts must not get more severe further down the list",
                 alerts.get(i - 1).getSeverity().ordinal() >= alerts.get(i).getSeverity().ordinal());
@@ -73,12 +73,12 @@ public class BeachAlertTest {
         Beach two = beachWith("gannet", "Gannet", hazard(HazardType.RIP_CURRENT, Severity.HIGH));
 
         List<Beach> both = new ArrayList<>(Arrays.asList(one, two));
-        List<BeachAlert> alerts = BeachAlert.from(both);
+        List<BeachAlert> alerts = BeachAlert.recordedFor(both);
 
         // Same hazard type at two beaches must not collapse to one id.
         assertEquals(2, alerts.stream().map(BeachAlert::getId).distinct().count());
         // And the id must not change between runs.
-        assertEquals(BeachAlert.from(both).get(0).getId(), alerts.get(0).getId());
+        assertEquals(BeachAlert.recordedFor(both).get(0).getId(), alerts.get(0).getId());
     }
 
     @Test

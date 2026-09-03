@@ -43,7 +43,9 @@
     <string name="display_section_title">Display</string>
     <string name="use_dark_mode_title">Dark Mode</string>
     <string name="use_dark_mode_subtitle">Switch the app between light and dark appearance.</string>
-    <string name="settings_footnote">Conditions come from public coastal forecasts. Always follow the signs and flags at the beach.</string>
+    <!-- Beach photos come from Wikimedia Commons under free licences, which
+         ask to be credited wherever the pictures are shown. -->
+    <string name="settings_footnote">Conditions come from public coastal forecasts. Beach photos are from Wikimedia Commons. Always follow the signs and flags at the beach.</string>
 
     <!-- Swim verdict -->
     <string name="verdict_safe">Good to swim</string>
@@ -75,10 +77,10 @@
     <string name="wave_card_scale">%1$s %2$s scale</string>
     <string name="wave_card_reading">Wave height %1$s</string>
     <string name="wave_card_reading_unknown">Wave height unavailable</string>
-    <string name="wave_level_calm">Calm</string>
+    <string name="wave_level_small">Small</string>
     <string name="wave_level_moderate">Moderate</string>
     <string name="wave_level_hazardous">Hazardous</string>
-    <string name="wave_advice_calm">Small surf. Safe for swimming.</string>
+    <string name="wave_advice_small">Small to moderate surf. Fine for most swimmers.</string>
     <string name="wave_advice_moderate">Moderate swell. Strong swimmers only.</string>
     <string name="wave_advice_hazardous">Large surf and rip currents. Stay out of the water.</string>
     <string name="wave_advice_unknown">No surf reading for this beach yet. Check the flags on the beach before you swim.</string>

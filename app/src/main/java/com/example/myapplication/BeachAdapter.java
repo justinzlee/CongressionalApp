@@ -45,13 +45,6 @@ public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHol
         notifyDataSetChanged();
     }
 
-    public void updateUserLocation(double lat, double lon) {
-        this.userLat = lat;
-        this.userLon = lon;
-        this.hasLocation = true;
-        notifyDataSetChanged();
-    }
-
     @NonNull
     @Override
     public BeachViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -67,10 +60,14 @@ public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHol
         holder.name.setText(beach.getName());
         row.setOnClickListener(v -> listener.onBeachClick(beach));
 
+        // A beach with no verified photo, or whose photo will not load, shows
+        // the drawn shoreline rather than a stock picture of somewhere else.
         Glide.with(row.getContext())
             .load(beach.getImageUrl())
             .centerCrop()
-            .placeholder(R.drawable.bg_image_placeholder)
+            .placeholder(R.drawable.ic_beach_placeholder)
+            .fallback(R.drawable.ic_beach_placeholder)
+            .error(R.drawable.ic_beach_placeholder)
             .into(holder.beachImage);
 
         // Verdict drives the row's chip colour and its one-line summary.

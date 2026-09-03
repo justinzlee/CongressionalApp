@@ -6,7 +6,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import com.example.myapplication.R;
-import com.example.myapplication.WaveScale;
 
 import java.util.List;
 
@@ -37,13 +36,15 @@ public enum SafetyLevel {
      */
 
     /**
-     * Surf at or above this (feet) reads as dangerous on its own. It is the
-     * same number the wave card calls "hazardous", read from {@link WaveScale}
-     * rather than repeated here: when the two were separate constants a 5ft
-     * swell showed a red "Hazardous" wave card above an amber "Take care"
-     * verdict, which is exactly the contradiction this screen exists to avoid.
+     * Surf at or above this (feet) reads as dangerous on its own.
+     *
+     * <p>Public because the wave-height card bands on the same numbers. They
+     * were separate once, and drifted: the card called 3ft "Moderate — strong
+     * swimmers only" while the verdict directly above it called the same
+     * reading "Good to swim". One source of truth, so the two can never
+     * disagree about the same water again.
      */
-    public static final double DANGER_WAVE_FEET = WaveScale.HAZARDOUS_FT;
+    public static final double DANGER_WAVE_FEET = 6.0;
     /**
      * Surf at or above this (feet) is worth a warning. Around 4ft is where
      * waves start to genuinely push an average swimmer around; below that is
@@ -56,6 +57,10 @@ public enum SafetyLevel {
      * warning flagged nearly everywhere at once — and UV is a sun-exposure
      * hazard, not a reason the water is unsafe. The sunscreen advice still
      * appears in the note under the verdict at "very high" and above.
+     *
+     * <p>Public for the same reason the surf thresholds are: ConditionHazards
+     * writes the UV hazard the beach screen lists, and it has to appear at
+     * exactly the reading that moves the verdict, not one of its own.
      */
     public static final int CAUTION_UV = 11;
 

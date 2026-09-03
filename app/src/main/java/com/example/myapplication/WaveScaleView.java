@@ -96,7 +96,10 @@ public class WaveScaleView extends View {
             float length = labelled ? majorLen : minorLen;
             canvas.drawLine(w - length, y, w, y, tickPaint);
             if (!labelled) continue;
-            if (hasReading && Math.abs(y - markerY) < halo) continue;
+            // Inclusive, because at the ends the marker is clamped to exactly
+            // a halo's width from the edge, which is where the 0 and top-of-
+            // scale labels sit.
+            if (hasReading && Math.abs(y - markerY) <= halo) continue;
 
             // Centred on its tick, nudged in at the two ends so the top and
             // bottom labels are not sliced by the edge of the view.

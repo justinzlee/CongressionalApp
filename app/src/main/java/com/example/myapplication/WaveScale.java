@@ -2,6 +2,8 @@ package com.example.myapplication;
 
 import androidx.core.graphics.ColorUtils;
 
+import com.example.myapplication.model.SafetyLevel;
+
 /**
  * The height ramp behind the wave card. A swell height turns into two things:
  * a continuous colour blend for the water itself, so the sea shifts from green
@@ -23,15 +25,20 @@ public final class WaveScale {
      * so this is the only place the card's range is stated — the ruler beside
      * it takes its tick count from here too.
      *
-     * <p>Raising this changes how tall the card can draw, and nothing else: the
-     * band thresholds below and the colour ramp are both in real feet, so a
-     * five-foot swell is the same "hazardous", in the same red, on any scale.
+     * <p>Raising this changes how tall the card can draw, and nothing else.
+     * The bands come from {@link SafetyLevel} and the colour ramp is in real
+     * feet, so a six-foot swell is the same "hazardous", in the same red, on
+     * any scale.
      */
     public static final float MAX_FT = 10f;
 
-    /** The three bands the card labels a height with. */
+    /**
+     * The three bands the card labels a height with. The lowest band runs to
+     * {@link SafetyLevel#CAUTION_WAVE_FEET}, which is small-to-moderate surf
+     * rather than flat water — hence "small", not "calm".
+     */
     public enum Level {
-        CALM(R.string.wave_level_calm, R.string.wave_advice_calm,
+        SMALL(R.string.wave_level_small, R.string.wave_advice_small,
             R.color.safe, R.color.safe_tint),
         MODERATE(R.string.wave_level_moderate, R.string.wave_advice_moderate,
             R.color.caution, R.color.caution_tint),
@@ -56,34 +63,30 @@ public final class WaveScale {
     }
 
     /**
-     * Bottom of the moderate band, in feet. Below this the water is calm.
+     * The band a height falls in, on the same thresholds the swim verdict
+     * uses. The card sits directly under that verdict, so borrowing
+     * {@link SafetyLevel}'s numbers is what keeps the two from describing one
+     * reading in contradictory terms.
      */
-    public static final float MODERATE_FT = 2f;
-    /**
-     * Bottom of the hazardous band, in feet. This is the one number that
-     * decides whether the app calls the surf dangerous, so the swim verdict
-     * reads it from here rather than keeping a second copy — the two drifting
-     * apart is what let a beach show "Hazardous" surf under a "Take care"
-     * verdict.
-     */
-    public static final float HAZARDOUS_FT = 5f;
-
     public static Level levelFor(float feet) {
-        if (feet < MODERATE_FT) return Level.CALM;
-        if (feet < HAZARDOUS_FT) return Level.MODERATE;
+        if (feet < SafetyLevel.CAUTION_WAVE_FEET) return Level.SMALL;
+        if (feet < SafetyLevel.DANGER_WAVE_FEET) return Level.MODERATE;
         return Level.HAZARDOUS;
     }
 
     // Ramp stops, in feet, with the two colours the water is built from: the
-    // bright crest highlight and the body of the swell just under it.
+    // bright crest highlight and the body of the swell just under it. The
+    // middle stops sit on the band edges so the water turns amber exactly
+    // where the card starts saying "moderate", and red where it says
+    // "hazardous", rather than shifting colour a foot early.
     //
-    // These are heights, not positions on the card, so they are deliberately
-    // untouched by the scale's range: the sea at five feet looks the same
-    // whether the ruler beside it runs to eight or to ten. The last stop is
-    // the exception - the design's ramp ended at 7ft, the top of an 8ft card,
-    // and a 10ft card would have left its whole top third flat. It carries on
-    // in the direction the ramp was already going, one step deeper.
-    private static final float[] STOP_FT = {0f, 2.2f, 3.6f, 5.2f, 7f, 10f};
+    // They are heights rather than positions on the card, so widening the
+    // scale leaves them where they are and the water at six feet looks the
+    // same on an eight-foot ruler or a ten. The last stop is the exception: it
+    // sat near the top of an 8ft card, and a 10ft one would have left its
+    // whole top quarter flat, so the ramp carries on to the top of the scale
+    // in the direction it was already going.
+    private static final float[] STOP_FT = {0f, 2.5f, 4f, 6f, 7.5f, 10f};
     private static final int[] STOP_CREST = {
         0xFF9FE7C4, 0xFFC4E6A8, 0xFFF2CA7A, 0xFFF8BB92, 0xFFF7A493, 0xFFEC8574};
     private static final int[] STOP_BODY = {

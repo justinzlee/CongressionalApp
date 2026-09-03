@@ -26,7 +26,6 @@ import com.example.myapplication.model.SafetyLevel;
 import com.example.myapplication.model.Severity;
 import com.example.myapplication.model.Tide;
 import com.example.myapplication.model.TideForecast;
-import com.example.myapplication.network.PhotoClient;
 import com.example.myapplication.network.TideClient;
 import com.example.myapplication.network.WeatherClient;
 import com.example.myapplication.util.EdgeToEdge;
@@ -86,22 +85,20 @@ public class BeachDetailActivity extends AppCompatActivity {
         highTide = findViewById(R.id.detailHighTide);
         highTideCountdown = findViewById(R.id.detailHighTideCountdown);
 
+        // The photo is the curated one for this beach, or the drawn shoreline
+        // where there is none. Looking the name up on Wikipedia used to run
+        // here and overwrite it, but that search returns the wrong subject too
+        // often to trust — a car park for Huntington Beach, a map for
+        // Galveston Island — and a wrong photo is worse than an honest
+        // placeholder on a screen about whether the water is safe.
         ImageView image = findViewById(R.id.beachDetailImage);
-        Glide.with(this).load(beach.getImageUrl()).centerCrop().into(image);
-
-        // Swap in a real photo of this specific beach once it resolves; keep
-        // the stock-photo fallback above if none is found.
-        new PhotoClient().getBeachPhoto(beach.getName(), new PhotoClient.PhotoCallback() {
-            @Override
-            public void onSuccess(String imageUrl) {
-                runOnUiThread(() -> Glide.with(BeachDetailActivity.this)
-                    .load(imageUrl).centerCrop().into(image));
-            }
-
-            @Override
-            public void onFailure(Exception e) {
-            }
-        });
+        Glide.with(this)
+            .load(beach.getImageUrl())
+            .centerCrop()
+            .placeholder(R.drawable.ic_beach_placeholder)
+            .fallback(R.drawable.ic_beach_placeholder)
+            .error(R.drawable.ic_beach_placeholder)
+            .into(image);
 
         ((TextView) findViewById(R.id.detailBeachName)).setText(beach.getName());
         bindSaveButton();
