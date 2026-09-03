@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Sea urchin: the test in the middle with its spines radiating out, which
+     is the part that ends up in your foot. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:pathData="M12,12 m-3.9,0 a3.9,3.9 0,1 0,7.8 0 a3.9,3.9 0,1 0,-7.8 0"
+        android:strokeColor="#000000"
+        android:strokeWidth="1.6" />
+    <group>
+        <path
+            android:pathData="M12,7.6 L12,3.6 M12,16.4 L12,20.4 M7.6,12 L3.6,12 M16.4,12 L20.4,12"
+            android:strokeColor="#000000"
+            android:strokeWidth="1.6"
+            android:strokeLineCap="round" />
+        <path
+            android:pathData="M8.9,8.9 L6.1,6.1 M15.1,8.9 L17.9,6.1 M8.9,15.1 L6.1,17.9 M15.1,15.1 L17.9,17.9"
+            android:strokeColor="#000000"
+            android:strokeWidth="1.6"
+            android:strokeLineCap="round" />
+    </group>
+</vector>

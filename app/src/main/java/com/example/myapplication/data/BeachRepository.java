@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -221,6 +222,23 @@ public class BeachRepository {
             return new ArrayList<>(beaches);
         }
     }
+
+    /**
+     * Stores conditions fetched for a single beach, so a screen that refreshes
+     * one beach on its own — the detail screen does — hands the reading back
+     * to the rest of the app instead of keeping it to itself.
+     */
+    public void updateConditions(String beachId, BeachConditions conditions) {
+        synchronized (beaches) {
+            for (int i = 0; i < beaches.size(); i++) {
+                if (Objects.equals(beaches.get(i).getId(), beachId)) {
+                    beaches.set(i, beaches.get(i).withConditions(conditions));
+                    return;
+                }
+            }
+        }
+    }
+
 
     public List<Beach> searchBeaches(String query) {
         synchronized (beaches) {

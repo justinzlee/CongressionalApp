@@ -39,13 +39,14 @@ public class SafetyNote {
         if (conditions == null || conditions.getWaveHeight() == null) {
             return "Live surf readings for this beach aren't in yet.";
         }
-        // Bands line up with SafetyLevel's thresholds so the wording never
-        // calls a swell "moderate" while the verdict above it says the beach
-        // is good to swim.
+        // Read off SafetyLevel's own thresholds rather than copied numbers, so
+        // the wording can never call a swell "heavy" while the card above it
+        // says "Moderate" and the verdict says "Take care". Copies of these
+        // two numbers are exactly what drifted apart before.
         double feet = conditions.getWaveHeight();
         if (feet < 1.0) return "The water is close to flat right now.";
-        if (feet < 4.0) return "Small, manageable waves are running.";
-        if (feet < 6.0) return "There is a moderate swell running.";
+        if (feet < SafetyLevel.CAUTION_WAVE_FEET) return "Small, manageable waves are running.";
+        if (feet < SafetyLevel.DANGER_WAVE_FEET) return "There is a moderate swell running.";
         return "A heavy swell is running.";
     }
 

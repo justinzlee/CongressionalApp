@@ -49,7 +49,11 @@ public class SavedActivity extends AppCompatActivity {
 
         // Conditions arrive asynchronously; redraw once they land so the
         // verdicts here are not stuck on "Checking conditions".
-        repository.refreshAllData(() -> runOnUiThread(this::bindSaved));
+        repository.refreshAllData(() -> runOnUiThread(() -> {
+            bindSaved();
+            // Alerts derived from these readings only exist once they land.
+            TabBar.refreshAlertBadge(this);
+        }));
     }
 
     @Override

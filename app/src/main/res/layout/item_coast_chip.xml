@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One coast in the picker at the top of the wildlife guide. Selected and
+     unselected are painted in code so the pair stays one drawable. -->
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coastChip"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginEnd="8dp"
+    android:background="@drawable/bg_pill_neutral"
+    android:clickable="true"
+    android:focusable="true"
+    android:fontFamily="sans-serif-medium"
+    android:paddingHorizontal="13dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:textSize="12.5sp"
+    tools:text="Southern California" />
