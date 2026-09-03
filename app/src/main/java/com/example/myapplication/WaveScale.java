@@ -47,9 +47,22 @@ public final class WaveScale {
         public int getTintRes() { return tintRes; }
     }
 
+    /**
+     * Bottom of the moderate band, in feet. Below this the water is calm.
+     */
+    public static final float MODERATE_FT = 2f;
+    /**
+     * Bottom of the hazardous band, in feet. This is the one number that
+     * decides whether the app calls the surf dangerous, so the swim verdict
+     * reads it from here rather than keeping a second copy - the two drifting
+     * apart is what let a beach show "Hazardous" surf under a "Take care"
+     * verdict.
+     */
+    public static final float HAZARDOUS_FT = 5f;
+
     public static Level levelFor(float feet) {
-        if (feet < 2f) return Level.CALM;
-        if (feet < 5f) return Level.MODERATE;
+        if (feet < MODERATE_FT) return Level.CALM;
+        if (feet < HAZARDOUS_FT) return Level.MODERATE;
         return Level.HAZARDOUS;
     }
 

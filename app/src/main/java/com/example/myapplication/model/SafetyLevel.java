@@ -6,6 +6,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import com.example.myapplication.R;
+import com.example.myapplication.WaveScale;
 
 import java.util.List;
 
@@ -35,14 +36,20 @@ public enum SafetyLevel {
      * plain words, so a keen swimmer can judge for themselves.
      */
 
-    /** Surf at or above this (feet) reads as dangerous on its own. */
-    private static final double DANGER_WAVE_FEET = 6.0;
+    /**
+     * Surf at or above this (feet) reads as dangerous on its own. It is the
+     * same number the wave card calls "hazardous", read from {@link WaveScale}
+     * rather than repeated here: when the two were separate constants a 5ft
+     * swell showed a red "Hazardous" wave card above an amber "Take care"
+     * verdict, which is exactly the contradiction this screen exists to avoid.
+     */
+    public static final double DANGER_WAVE_FEET = WaveScale.HAZARDOUS_FT;
     /**
      * Surf at or above this (feet) is worth a warning. Around 4ft is where
      * waves start to genuinely push an average swimmer around; below that is
      * small-to-moderate and fine for most people, so it stays "good to swim".
      */
-    private static final double CAUTION_WAVE_FEET = 4.0;
+    public static final double CAUTION_WAVE_FEET = 4.0;
     /**
      * Only <em>extreme</em> UV moves the swim verdict. UV 8-10 ("very high")
      * describes most sunny summer days at most beaches, so treating it as a
@@ -50,7 +57,7 @@ public enum SafetyLevel {
      * hazard, not a reason the water is unsafe. The sunscreen advice still
      * appears in the note under the verdict at "very high" and above.
      */
-    private static final int CAUTION_UV = 11;
+    public static final int CAUTION_UV = 11;
 
     @ColorRes private final int colorRes;
     @ColorRes private final int tintRes;

@@ -9,18 +9,56 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class BeachRepository {
+
+    /**
+     * How long fetched conditions are treated as current. Surf, UV and wind
+     * forecasts are published hourly, so refetching them every time a tab is
+     * opened costs two requests per beach and tells us nothing new.
+     */
+    private static final long REFRESH_INTERVAL_MS = 10 * 60 * 1000L;
+
+    /**
+     * The one beach list in the app.
+     *
+     * <p>Each screen used to build its own repository, which meant the live
+     * conditions the home screen fetched were invisible everywhere else: the
+     * Alerts tab and its badge read a list where every beach still had null
+     * conditions, so anything derived from live readings could never appear
+     * there. Sharing one instance also means opening a second tab reuses the
+     * forecast already in hand rather than fetching all of it again.
+     *
+     * <p>Holds no Context, so keeping it for the life of the process is safe.
+     */
+    private static volatile BeachRepository instance;
+
     private final List<Beach> beaches;
     private final WeatherClient weatherClient = new WeatherClient();
     private final PhotoClient photoClient = new PhotoClient();
+    private volatile long lastRefreshStartedAt;
 
     public interface OnDataRefreshListener {
         void onDataRefreshed();
     }
 
-    public BeachRepository() {
+    public static BeachRepository getInstance() {
+        BeachRepository local = instance;
+        if (local == null) {
+            synchronized (BeachRepository.class) {
+                local = instance;
+                if (local == null) {
+                    local = new BeachRepository();
+                    instance = local;
+                }
+            }
+        }
+        return local;
+    }
+
+    private BeachRepository() {
         beaches = new ArrayList<>();
         
         // Initializing with null conditions to ensure real-time data is used.
@@ -72,7 +110,24 @@ public class BeachRepository {
             "https://images.unsplash.com/photo-1534067783941-51c9c23eccfd?auto=format&fit=crop&w=800&q=80"));
     }
 
+    /**
+     * Fetches conditions and photos for every beach, unless that already
+     * happened recently enough to still be current.
+     *
+     * <p>The freshness check needs conditions actually in hand, not just a
+     * recent attempt: if the first fetch failed there is nothing to reuse, and
+     * skipping the retry would leave the app on "Checking conditions" until the
+     * interval elapsed.
+     */
     public void refreshAllData(OnDataRefreshListener listener) {
+        if (System.currentTimeMillis() - lastRefreshStartedAt < REFRESH_INTERVAL_MS
+                && hasAnyConditions()) {
+            // Already current — tell the caller so it draws with what we have.
+            if (listener != null) listener.onDataRefreshed();
+            return;
+        }
+        lastRefreshStartedAt = System.currentTimeMillis();
+
         for (int i = 0; i < beaches.size(); i++) {
             final int index = i;
             Beach beach = beaches.get(i);
@@ -114,6 +169,34 @@ public class BeachRepository {
         synchronized (beaches) {
             return new ArrayList<>(beaches);
         }
+    }
+
+    /**
+     * Stores conditions fetched for a single beach, so a screen that refreshes
+     * one beach on its own — the detail screen does — hands the reading back
+     * to the rest of the app instead of keeping it to itself.
+     */
+    public void updateConditions(String beachId, BeachConditions conditions) {
+        synchronized (beaches) {
+            for (int i = 0; i < beaches.size(); i++) {
+                if (Objects.equals(beaches.get(i).getId(), beachId)) {
+                    beaches.set(i, beaches.get(i).withConditions(conditions));
+                    return;
+                }
+            }
+        }
+    }
+
+    /** Whether any beach has live conditions yet, i.e. a fetch has landed. */
+    private boolean hasAnyConditions() {
+        synchronized (beaches) {
+            for (Beach beach : beaches) {
+                if (beach.getConditions() != null) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public List<Beach> searchBeaches(String query) {

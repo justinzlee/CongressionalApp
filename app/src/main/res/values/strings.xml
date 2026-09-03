@@ -94,6 +94,7 @@
     <string name="surf_suffix">%1$s surf</string>
 
     <!-- Hazard names -->
+    <string name="hazard_high_surf">High surf</string>
     <string name="hazard_rip_current">Rip current</string>
     <string name="hazard_marine_life">Marine life</string>
     <string name="hazard_water_quality">Water quality</string>
@@ -102,6 +103,7 @@
     <string name="hazard_rocks">Rocks and structures</string>
     <string name="hazard_uv_index">UV index</string>
     <!-- Mid-sentence forms: lower-case except where the name is an initialism -->
+    <string name="hazard_high_surf_inline">high surf</string>
     <string name="hazard_rip_current_inline">rip current</string>
     <string name="hazard_marine_life_inline">marine life</string>
     <string name="hazard_water_quality_inline">water quality</string>
@@ -109,6 +111,16 @@
     <string name="hazard_pollution_inline">pollution</string>
     <string name="hazard_rocks_inline">rocks and structures</string>
     <string name="hazard_uv_index_inline">UV index</string>
+
+    <!-- Hazards the app works out from today's readings -->
+    <string name="hazard_surf_high_body">Waves are running about %1$s. Surf that size knocks people off their feet in the shallows and drives strong rip currents.</string>
+    <string name="hazard_surf_moderate_body">Waves are running about %1$s. Big enough to push an average swimmer around, especially in the shore break.</string>
+    <string name="hazard_surf_step_stay_out">Stay out of the water</string>
+    <string name="hazard_surf_step_shallow">Stay in your depth</string>
+    <string name="hazard_surf_step_check_flags">Check the flags on the beach</string>
+    <string name="hazard_uv_extreme_body">The UV index is %1$d. Unprotected skin can burn in minutes, and sand and water bounce more of it back at you.</string>
+    <string name="hazard_uv_step_cover">Cover up and reapply sunscreen</string>
+    <string name="hazard_uv_step_shade">Take shade in the middle of the day</string>
 
     <!-- Tab bar -->
     <string name="tab_now">Now</string>

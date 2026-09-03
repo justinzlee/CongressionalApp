@@ -1,5 +1,7 @@
 package com.example.myapplication.model;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -9,8 +11,9 @@ import java.util.List;
  * flattened out of the beach list so the user can see everything worth
  * knowing about without opening each beach in turn.
  *
- * <p>These are the hazards the app already holds — nothing is invented, and a
- * beach with nothing on record contributes no alerts.
+ * <p>These are the hazards the app already holds plus the ones its live
+ * readings imply — nothing beyond that is invented, and a beach with calm
+ * water and nothing on record contributes no alerts.
  */
 public class BeachAlert {
     private final Beach beach;
@@ -30,11 +33,16 @@ public class BeachAlert {
         return beach.getId() + ":" + hazard.getType().name();
     }
 
-    /** Most severe first, so the worst warning leads the screen. */
-    public static List<BeachAlert> from(List<Beach> beaches) {
+    /**
+     * Most severe first, so the worst warning leads the screen. Each beach
+     * contributes the hazards on record for it plus the ones today's readings
+     * imply, so a beach the home screen calls unsafe also turns up here
+     * instead of the two screens disagreeing.
+     */
+    public static List<BeachAlert> from(Context context, List<Beach> beaches) {
         List<BeachAlert> alerts = new ArrayList<>();
         for (Beach beach : beaches) {
-            for (Hazard hazard : beach.getHazards()) {
+            for (Hazard hazard : ConditionHazards.merged(context, beach)) {
                 alerts.add(new BeachAlert(beach, hazard));
             }
         }

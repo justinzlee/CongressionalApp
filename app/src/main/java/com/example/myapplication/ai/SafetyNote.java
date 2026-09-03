@@ -45,7 +45,7 @@ public class SafetyNote {
         double feet = conditions.getWaveHeight();
         if (feet < 1.0) return "The water is close to flat right now.";
         if (feet < 4.0) return "Small, manageable waves are running.";
-        if (feet < 6.0) return "There is a moderate swell running.";
+        if (feet < 5.0) return "There is a moderate swell running.";
         return "A heavy swell is running.";
     }
 

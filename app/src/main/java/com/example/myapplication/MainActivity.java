@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.applyTopInset(findViewById(R.id.appBarLayout));
         EdgeToEdge.applyBottomInset(findViewById(R.id.mainScrollView));
 
-        repository = new BeachRepository();
+        repository = BeachRepository.getInstance();
         locationService = new LocationService(this);
 
         searchEditText = findViewById(R.id.searchEditText);
@@ -150,7 +150,13 @@ public class MainActivity extends AppCompatActivity {
         setupCitySearch();
         updateRadiusButtonsEnabled();
 
-        repository.refreshAllData(() -> runOnUiThread(this::updateList));
+        repository.refreshAllData(() -> runOnUiThread(() -> {
+            updateList();
+            // Some alerts are worked out from these readings, so the badge is
+            // only right once they have landed — it counted the hand-recorded
+            // hazards alone until this ran.
+            TabBar.refreshAlertBadge(this);
+        }));
 
         updateList(); // Initial update
 
