@@ -30,8 +30,12 @@ public class WaveHeightCard extends LinearLayout {
 
     private static final long RISE_MS = 900L;
     private static final long UPDATE_MS = 700L;
-    /** Where the sea rests when there is no reading to show. */
-    private static final float NO_READING_FT = 0.8f;
+    /**
+     * Where the sea rests when there is no reading to show — a tenth of the
+     * way up, so the card looks like calm water rather than an empty panel.
+     * It is a look, not a measurement, so it tracks the scale's range.
+     */
+    private static final float NO_READING_FT = WaveScale.MAX_FT / 10f;
 
     private final TextView title;
     private final TextView tag;

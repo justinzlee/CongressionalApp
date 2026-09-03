@@ -90,8 +90,13 @@ public class WaveHeightView extends View {
     private static final float SPAWN_INTERVAL_S = 1.1f;
     private static final float SPAWN_CHANCE = 0.3f;
     private static final float CREATURE_FADE_S = 0.45f;
-    /** Creatures stay this much scale below the waterline, never in mid-air. */
-    private static final float CREATURE_CLEARANCE_FT = 1.5f;
+    /**
+     * Creatures stay this far below the waterline, never in mid-air, as a
+     * percentage of the panel. It was written as 1.5ft and divided by the
+     * scale's range, which reads like a depth but is really a gap on screen —
+     * so widening the scale quietly shrank it. Stated as the gap it is.
+     */
+    private static final float CREATURE_CLEARANCE_PCT = 18.75f;
     /** The travel a creature makes across the panel, in the design's pixels. */
     private static final float CREATURE_FROM_X = -34f;
     private static final float CREATURE_TO_X = 268f;
@@ -431,11 +436,10 @@ public class WaveHeightView extends View {
     }
 
     private void updateCreatures(float t, float ratio, float crest) {
-        // Keep every creature under the waterline with a foot and a half of
-        // scale to spare, so a rising sea pulls them out rather than stranding
-        // them above the surface.
-        float clearance = CREATURE_CLEARANCE_FT / WaveScale.MAX_FT * 100f;
-        float ceiling = Math.max(crest / VB_H * 100f + 6f, (1f - ratio) * 100f + clearance);
+        // Keep every creature under the waterline with a clear gap to spare, so
+        // a rising sea pulls them out rather than stranding them above it.
+        float ceiling = Math.max(crest / VB_H * 100f + 6f,
+            (1f - ratio) * 100f + CREATURE_CLEARANCE_PCT);
 
         for (Creature c : creatures) {
             if (!c.active) continue;
