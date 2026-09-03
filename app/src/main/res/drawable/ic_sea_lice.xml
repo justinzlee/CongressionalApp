@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Sea lice: the animal is a pinhead, so the mark is what you actually see -
+     the scatter of raised spots the larvae leave under a swimsuit. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- The patch of skin the rash sits in -->
+    <path
+        android:pathData="M12,12 m-8,0 a8,8 0,1 0,16 0 a8,8 0,1 0,-16 0"
+        android:strokeColor="#000000"
+        android:strokeWidth="1.6" />
+    <path
+        android:pathData="M9.1,8.6 m-1.1,0 a1.1,1.1 0,1 0,2.2 0 a1.1,1.1 0,1 0,-2.2 0"
+        android:fillColor="#000000" />
+    <path
+        android:pathData="M14.6,9.4 m-1.1,0 a1.1,1.1 0,1 0,2.2 0 a1.1,1.1 0,1 0,-2.2 0"
+        android:fillColor="#000000" />
+    <path
+        android:pathData="M11.4,12.6 m-1.1,0 a1.1,1.1 0,1 0,2.2 0 a1.1,1.1 0,1 0,-2.2 0"
+        android:fillColor="#000000" />
+    <path
+        android:pathData="M15.4,14.4 m-1.1,0 a1.1,1.1 0,1 0,2.2 0 a1.1,1.1 0,1 0,-2.2 0"
+        android:fillColor="#000000" />
+    <path
+        android:pathData="M8.6,15.2 m-1.1,0 a1.1,1.1 0,1 0,2.2 0 a1.1,1.1 0,1 0,-2.2 0"
+        android:fillColor="#000000" />
+</vector>
