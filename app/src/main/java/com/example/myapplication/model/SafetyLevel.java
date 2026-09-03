@@ -57,8 +57,12 @@ public enum SafetyLevel {
      * warning flagged nearly everywhere at once — and UV is a sun-exposure
      * hazard, not a reason the water is unsafe. The sunscreen advice still
      * appears in the note under the verdict at "very high" and above.
+     *
+     * <p>Public for the same reason the surf thresholds are: ConditionHazards
+     * writes the UV hazard the beach screen lists, and it has to appear at
+     * exactly the reading that moves the verdict, not one of its own.
      */
-    private static final int CAUTION_UV = 11;
+    public static final int CAUTION_UV = 11;
 
     @ColorRes private final int colorRes;
     @ColorRes private final int tintRes;

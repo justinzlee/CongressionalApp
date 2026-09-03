@@ -18,6 +18,7 @@ import com.example.myapplication.data.SavedBeachStore;
 import com.google.android.material.button.MaterialButton;
 import com.example.myapplication.model.Beach;
 import com.example.myapplication.model.BeachConditions;
+import com.example.myapplication.model.ConditionHazards;
 import com.example.myapplication.model.Hazard;
 import com.example.myapplication.model.HelpLocation;
 import com.example.myapplication.model.HelpType;
@@ -163,12 +164,16 @@ public class BeachDetailActivity extends AppCompatActivity {
     }
 
     /**
-     * Renders one card per hazard on record. With none, the section says so
-     * rather than leaving an empty gap.
+     * Renders one card per hazard: the ones on record for this beach, plus the
+     * ones today's readings imply. Reading only the recorded list left this
+     * section claiming "no major hazards" under a wave card calling the surf
+     * hazardous, which is the one contradiction the screen must never show.
+     * With genuinely nothing to report the section says so rather than leaving
+     * an empty gap.
      */
     private void bindHazards() {
         hazardList.removeAllViews();
-        List<Hazard> hazards = beach.getHazards();
+        List<Hazard> hazards = ConditionHazards.merged(this, beach);
         LayoutInflater inflater = LayoutInflater.from(this);
 
         if (hazards.isEmpty()) {
@@ -289,9 +294,18 @@ public class BeachDetailActivity extends AppCompatActivity {
             public void onSuccess(BeachConditions conditions) {
                 runOnUiThread(() -> {
                     updateConditionsDisplay(conditions);
-                    // Re-judge with live numbers in hand.
+                    // Re-judge with live numbers in hand. The hazard list is
+                    // rebuilt too: it is partly derived from these readings,
+                    // and leaving it on the empty state it was built with is
+                    // what left "no major hazards" sitting under six-foot surf.
                     beach = beach.withConditions(conditions);
+                    // Hand the reading back to the shared list so the Alerts
+                    // tab and its badge see it too, rather than this screen
+                    // being the only place that knows.
+                    BeachRepository.getInstance()
+                        .updateConditions(beach.getId(), conditions);
                     bindVerdict();
+                    bindHazards();
                 });
             }
 

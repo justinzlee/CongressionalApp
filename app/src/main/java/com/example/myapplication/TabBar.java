@@ -91,7 +91,7 @@ public final class TabBar {
         if (badge == null) return;
 
         int count = new AlertSeenStore(activity)
-            .countUnseen(BeachAlert.from(BeachRepository.getInstance().getBeaches()));
+            .countUnseen(BeachAlert.from(activity, BeachRepository.getInstance().getBeaches()));
         if (count == 0) {
             badge.setVisibility(View.GONE);
         } else {

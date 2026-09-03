@@ -5,6 +5,7 @@ import androidx.annotation.StringRes;
 import com.example.myapplication.R;
 
 public enum HazardType {
+    HIGH_SURF(R.string.hazard_high_surf, R.string.hazard_high_surf_inline),
     RIP_CURRENT(R.string.hazard_rip_current, R.string.hazard_rip_current_inline),
     MARINE_LIFE(R.string.hazard_marine_life, R.string.hazard_marine_life_inline),
     WATER_QUALITY(R.string.hazard_water_quality, R.string.hazard_water_quality_inline),
