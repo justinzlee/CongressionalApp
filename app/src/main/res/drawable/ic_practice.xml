@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Daily practice: a check inside a circle of progress, drawn in the same
+  single-weight outline as the other Learn icons. The gap in the ring is
+  what makes it read as "today's round" rather than a plain tick.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Ring, open at the top right -->
+    <path
+        android:pathData="M18.4,7.2 A8,8 0,1 0,20 12"
+        android:strokeColor="#000000"
+        android:strokeWidth="1.7"
+        android:strokeLineCap="round" />
+    <!-- Check -->
+    <path
+        android:pathData="M8.4,11.9 L11.2,14.7 L16.6,8.4"
+        android:strokeColor="#000000"
+        android:strokeWidth="1.7"
+        android:strokeLineJoin="round"
+        android:strokeLineCap="round" />
+</vector>

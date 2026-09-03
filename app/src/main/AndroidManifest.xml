@@ -70,6 +70,24 @@
             android:label="@string/flag_title"
             android:theme="@style/Theme.MyApplication" />
 
+        <activity
+            android:name=".PracticeActivity"
+            android:exported="false"
+            android:label="@string/practice_title"
+            android:theme="@style/Theme.MyApplication" />
+
+        <activity
+            android:name=".WildlifeGuideActivity"
+            android:exported="false"
+            android:label="@string/wildlife_title"
+            android:theme="@style/Theme.MyApplication" />
+
+        <activity
+            android:name=".StingGuideActivity"
+            android:exported="false"
+            android:label="@string/sting_title"
+            android:theme="@style/Theme.MyApplication" />
+
     </application>
 
 </manifest>

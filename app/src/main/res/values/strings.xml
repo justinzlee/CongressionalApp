@@ -143,8 +143,7 @@
     <string name="saved_beach">Saved</string>
 
     <!-- Learn tab -->
-    <string name="learn_intro">Short lessons on reading the water, so you know what you are looking at before you get in.</string>
-    <string name="learn_lessons_heading">Lessons</string>
+    <string name="learn_intro">Short lessons on reading the water and knowing what lives in it, so you know what you are looking at before you get in.</string>
     <string name="learn_footnote">These lessons are general beach safety guidance. The lifeguards and signs at your beach know today\'s water — follow them first.</string>
 
     <!-- Rip current guide -->
@@ -198,6 +197,345 @@
     <string name="flag_quiz_incorrect">Not quite</string>
     <string name="flag_quiz_explanation">Red means high hazard — high surf, strong currents, or both. Even knee-deep water is too deep to be safe, and a lifeguard nearby doesn\'t change that. Wait for the flag to change.</string>
 
+
+
+    <!-- Daily practice -->
+    <string name="practice_entry_title">Today\'s practice</string>
+    <string name="practice_entry_subtitle">Three quick questions, new every day</string>
+    <string name="practice_entry_streak_one">Done today · 1 day in a row</string>
+    <string name="practice_entry_streak">Done today · %1$d days in a row</string>
+    <string name="practice_title">Today\'s practice</string>
+    <string name="practice_intro">Three questions, different every day. Nothing to revise for — these are the things worth knowing by heart before you are standing on the sand deciding.</string>
+    <string name="practice_progress">Question %1$d of %2$d</string>
+    <string name="practice_done_title">That\'s today\'s three</string>
+    <string name="practice_done_body">Three more tomorrow. The questions cycle through everything the lessons on this tab cover, so they keep coming back around until they stick.</string>
+    <string name="practice_score">You got %1$d of %2$d</string>
+
+    <!-- The question pool. Kept general on purpose: these should be gettable by
+         someone who has never opened a lesson, and teach on a wrong answer. -->
+    <string name="practice_q_rip_escape_q">You are swimming and realise a current is pulling you away from the beach. What do you do?</string>
+    <string name="practice_q_rip_escape_a">Stay calm, float, and swim sideways along the beach</string>
+    <string name="practice_q_rip_escape_b">Swim straight back towards the sand as hard as you can</string>
+    <string name="practice_q_rip_escape_c">Dive down and try to swim under it</string>
+    <string name="practice_q_rip_escape_x">A rip is a river heading out, and it is faster than you are. Swimming straight at the beach exhausts you against it. Go sideways until you are out of the pull, then come in — or just float and wave for help.</string>
+
+    <string name="practice_q_rip_look_q">What does a rip current usually look like from the beach?</string>
+    <string name="practice_q_rip_look_a">A calm, flat gap where the waves aren\'t breaking</string>
+    <string name="practice_q_rip_look_b">The choppiest, biggest breaking waves</string>
+    <string name="practice_q_rip_look_c">Nothing — they are invisible from land</string>
+    <string name="practice_q_rip_look_x">Rips look like the nicest spot to swim: a smooth, calm lane with waves breaking on either side of it. That inviting gap is deeper water heading out.</string>
+
+    <string name="practice_q_red_flag_q">A single red flag is flying. What does it mean?</string>
+    <string name="practice_q_red_flag_a">High hazard — stay out of the water</string>
+    <string name="practice_q_red_flag_b">Lifeguards are on duty today</string>
+    <string name="practice_q_red_flag_c">Jellyfish have been spotted</string>
+    <string name="practice_q_red_flag_x">Red means high surf, strong currents, or both. Even knee-deep water is too deep to be safe. Two red flags means the water is closed altogether.</string>
+
+    <string name="practice_q_purple_flag_q">What is the purple flag warning you about?</string>
+    <string name="practice_q_purple_flag_a">Dangerous marine life, like jellyfish or rays</string>
+    <string name="practice_q_purple_flag_b">Thunderstorms on the way</string>
+    <string name="practice_q_purple_flag_c">Poor water quality after rain</string>
+    <string name="practice_q_purple_flag_x">Purple is for marine life. It flies alongside another flag rather than on its own, so read the other flag for what the water itself is doing.</string>
+
+    <string name="practice_q_no_flags_q">You get to a beach and there are no flags flying at all. What does that tell you?</string>
+    <string name="practice_q_no_flags_a">Nothing — nobody has assessed the water, so judge it yourself</string>
+    <string name="practice_q_no_flags_b">The water has been checked and it is safe</string>
+    <string name="practice_q_no_flags_c">The beach is closed</string>
+    <string name="practice_q_no_flags_x">An empty flag board is not a green flag. It usually means the beach is unpatrolled, so there is no one watching the water and no one watching you.</string>
+
+    <string name="practice_q_shuffle_q">What is the "stingray shuffle"?</string>
+    <string name="practice_q_shuffle_a">Sliding your feet along the sand as you wade in</string>
+    <string name="practice_q_shuffle_b">Stamping hard to scare rays away</string>
+    <string name="practice_q_shuffle_c">Swimming in a zigzag over sandy patches</string>
+    <string name="practice_q_shuffle_x">Rays bury themselves in the shallows and sting when stepped on from above. Sliding your feet sends a vibration ahead of you and the ray simply leaves.</string>
+
+    <string name="practice_q_jelly_rinse_q">A jellyfish has left a burning welt on your arm. What do you rinse it with?</string>
+    <string name="practice_q_jelly_rinse_a">Vinegar, or sea water if you have none</string>
+    <string name="practice_q_jelly_rinse_b">Cold fresh water from a beach shower</string>
+    <string name="practice_q_jelly_rinse_c">Nothing — rub the sand off first</string>
+    <string name="practice_q_jelly_rinse_x">Fresh water and rubbing both set off stingers that had not fired yet, which is why a beach shower makes it worse. Vinegar stops them; sea water at least does no harm.</string>
+
+    <string name="practice_q_jelly_pee_q">True or false: urinating on a jellyfish sting helps.</string>
+    <string name="practice_q_jelly_pee_a">False — it can make the sting worse</string>
+    <string name="practice_q_jelly_pee_b">True, if you do it straight away</string>
+    <string name="practice_q_jelly_pee_c">True, but only for man o\' war stings</string>
+    <string name="practice_q_jelly_pee_x">It is closer to fresh water than to vinegar, so it sets off more stingers. This one is pure television. Vinegar then hot water is the real answer.</string>
+
+    <string name="practice_q_hot_water_q">What actually takes the pain out of a stingray or jellyfish sting?</string>
+    <string name="practice_q_hot_water_a">Soaking it in hot water for 30 to 90 minutes</string>
+    <string name="practice_q_hot_water_b">An ice pack held on it</string>
+    <string name="practice_q_hot_water_c">Keeping it raised above your heart</string>
+    <string name="practice_q_hot_water_x">Heat breaks the venom down. Water as hot as you can hold a hand in without scalding, about 110–113°F, does more than any painkiller. Cold makes it worse.</string>
+
+    <string name="practice_q_manowar_sand_q">You find a Portuguese man o\' war washed up on dry sand. Is it safe to touch?</string>
+    <string name="practice_q_manowar_sand_a">No — it stings for days after it dies</string>
+    <string name="practice_q_manowar_sand_b">Yes, once it is out of the water it is harmless</string>
+    <string name="practice_q_manowar_sand_c">Yes, as long as you only touch the blue float</string>
+    <string name="practice_q_manowar_sand_x">The stingers fire mechanically, not by decision, so a stranded or shrivelled one is still loaded. Keep children and dogs off it too.</string>
+
+    <string name="practice_q_swim_alone_q">The beach has no lifeguard on duty. What is the single most useful thing you can do?</string>
+    <string name="practice_q_swim_alone_a">Don\'t swim alone — go in with someone</string>
+    <string name="practice_q_swim_alone_b">Stay in water no deeper than your chest</string>
+    <string name="practice_q_swim_alone_c">Swim earlier in the day</string>
+    <string name="practice_q_swim_alone_x">All three help, but nobody drowning can call for their own help. Someone on the beach who knows you are in the water is the difference between a scare and a statistic.</string>
+
+    <string name="practice_q_child_reach_q">How close should a small child in the water be to an adult?</string>
+    <string name="practice_q_child_reach_a">Within arm\'s reach, always</string>
+    <string name="practice_q_child_reach_b">Close enough to shout to</string>
+    <string name="practice_q_child_reach_c">Anywhere between the flags</string>
+    <string name="practice_q_child_reach_x">Drowning is quiet and fast — usually no splashing and no shouting. Arm\'s reach is the only distance you can act from in time.</string>
+
+    <string name="practice_q_thunder_q">You hear thunder while you are on the beach. When is it safe to go back in?</string>
+    <string name="practice_q_thunder_a">30 minutes after the last rumble</string>
+    <string name="practice_q_thunder_b">As soon as the rain stops</string>
+    <string name="practice_q_thunder_c">As soon as you can see blue sky again</string>
+    <string name="practice_q_thunder_x">Lightning strikes miles from the storm it belongs to, and open water and open sand are the two worst places to be. If you can hear it, you are close enough to be hit.</string>
+
+    <string name="practice_q_rain_water_q">It rained hard yesterday. What is the usual advice about swimming today?</string>
+    <string name="practice_q_rain_water_a">Stay out for about 72 hours — runoff carries pollution</string>
+    <string name="practice_q_rain_water_b">Go in as normal, rain only affects the sand</string>
+    <string name="practice_q_rain_water_c">Wait an hour for the water to settle</string>
+    <string name="practice_q_rain_water_x">Storm drains empty the streets into the surf. Health advisories in most coastal counties say give it three days, and the water often looks completely normal while it is worst.</string>
+
+    <string name="practice_q_sunscreen_q">How often should sunscreen go back on at the beach?</string>
+    <string name="practice_q_sunscreen_a">Every two hours, and after every swim</string>
+    <string name="practice_q_sunscreen_b">Once in the morning is enough if it is high SPF</string>
+    <string name="practice_q_sunscreen_c">Only when your skin starts to feel hot</string>
+    <string name="practice_q_sunscreen_x">No sunscreen lasts a day, and water and towels take most of it off. By the time skin feels hot the burn has already happened — it just hasn\'t shown up yet.</string>
+
+    <string name="practice_q_uv_cloud_q">It is overcast and cool. What is the UV doing?</string>
+    <string name="practice_q_uv_cloud_a">Most of it still gets through — you can burn</string>
+    <string name="practice_q_uv_cloud_b">Cloud blocks it, so sunscreen can wait</string>
+    <string name="practice_q_uv_cloud_c">It drops to nothing below about 70°F</string>
+    <string name="practice_q_uv_cloud_x">Thin cloud lets through most UV, and it has nothing to do with temperature. Some of the worst burns happen on grey, breezy days when nobody feels hot.</string>
+
+    <string name="practice_q_float_q">You are tired and out of your depth with no help nearby. What is the first thing to do?</string>
+    <string name="practice_q_float_a">Roll onto your back and float to get your breath</string>
+    <string name="practice_q_float_b">Swim as fast as you can for shore</string>
+    <string name="practice_q_float_c">Tread water with your arms above your head</string>
+    <string name="practice_q_float_x">Floating costs almost nothing and buys you the thing panic takes away — breath. Get that back first, then signal, then swim.</string>
+
+    <string name="practice_q_help_signal_q">What is the recognised way to signal a lifeguard that you need help?</string>
+    <string name="practice_q_help_signal_a">Raise one arm straight up and wave it</string>
+    <string name="practice_q_help_signal_b">Splash as much as you can</string>
+    <string name="practice_q_help_signal_c">Shout and go under repeatedly</string>
+    <string name="practice_q_help_signal_x">One arm straight up, waved side to side, is the signal lifeguards scan for. Splashing looks like play from the tower, which is exactly when it gets missed.</string>
+
+    <string name="practice_q_seal_pup_q">There is a seal pup alone on the sand. What should you do?</string>
+    <string name="practice_q_seal_pup_a">Leave it alone and keep well back</string>
+    <string name="practice_q_seal_pup_b">Carry it down to the water</string>
+    <string name="practice_q_seal_pup_c">Cover it with a wet towel</string>
+    <string name="practice_q_seal_pup_x">Mothers leave pups on the beach for hours while they feed. A pup alone is not abandoned, and moving one is both illegal and usually fatal. Call a stranding hotline if it looks injured.</string>
+
+    <string name="practice_q_feed_wildlife_q">A dolphin comes close to shore while you are swimming. What is the right move?</string>
+    <string name="practice_q_feed_wildlife_a">Keep your distance and let it pass</string>
+    <string name="practice_q_feed_wildlife_b">Swim over for a closer look</string>
+    <string name="practice_q_feed_wildlife_c">Offer it food so it stays around</string>
+    <string name="practice_q_feed_wildlife_x">Feeding or chasing marine mammals is a federal offence, and it teaches them to approach boats and people — which is what gets them killed. Watch from where you are.</string>
+
+    <string name="practice_q_urchin_spine_q">You stand on a sea urchin and spines break off in your foot. What should you not do?</string>
+    <string name="practice_q_urchin_spine_a">Dig them out with a needle</string>
+    <string name="practice_q_urchin_spine_b">Soak the foot in hot water</string>
+    <string name="practice_q_urchin_spine_c">Pull out the ones you can grip with tweezers</string>
+    <string name="practice_q_urchin_spine_x">Digging crushes the spines and leaves fragments deeper in, which is what causes the infections weeks later. Soak, take out what you can grip, and see a doctor for the rest.</string>
+
+    <string name="practice_q_swim_between_q">Why do lifeguards ask you to swim between the flags?</string>
+    <string name="practice_q_swim_between_a">It is the patch they have judged safest and are watching</string>
+    <string name="practice_q_swim_between_b">It keeps swimmers away from surfers only</string>
+    <string name="practice_q_swim_between_c">It marks where the water is shallowest</string>
+    <string name="practice_q_swim_between_x">The flags get moved through the day as the sandbanks and rips shift. Inside them is the water a professional has looked at this hour and is actively watching.</string>
+    <!-- Learn tab groups -->
+    <string name="learn_group_before">Before you get in</string>
+    <string name="learn_group_water">In the water</string>
+    <string name="learn_group_marine_life">Marine life</string>
+
+    <!-- Stings and bites guide -->
+    <string name="sting_title">Stings and bites</string>
+    <string name="sting_911_title">Call 911 first if</string>
+    <string name="sting_911_body">Breathing is hard, the face or throat is swelling, the chest hurts, or the person is faint or confused. Call too for a sting to the face, neck or torso, a barb still in the body, a sting across a large part of a child, or bleeding you cannot stop.</string>
+    <string name="sting_feels_heading">How you know</string>
+    <string name="sting_do_heading">Do this</string>
+    <string name="sting_dont_heading">Don\'t</string>
+
+    <string name="sting_ray_title">Stingray</string>
+    <string name="sting_ray_subtitle">Sudden deep pain in the foot or ankle</string>
+    <string name="sting_ray_feels">You almost never see it coming. A ray buried in shallow sand whips its tail when you step on it, leaving a ragged puncture that bleeds and a pain that keeps climbing for the first hour.</string>
+    <string-array name="sting_ray_do">
+        <item>Get out of the water and sit down. Rinse the wound with sea water and let it bleed for a moment — that flushes it out.</item>
+        <item>Soak it in the hottest water you can hold a hand in without scalding, about 110–113°F (43–45°C), for 30 to 90 minutes. Heat breaks the venom down and is the fastest way to stop the pain.</item>
+        <item>Lift out spine fragments you can see and grip. Leave anything deeply embedded exactly where it is.</item>
+        <item>Get it looked at. Ray wounds are dirty, infect easily, and usually need cleaning and a tetanus shot.</item>
+    </string-array>
+    <string-array name="sting_ray_dont">
+        <item>Don\'t pull a barb out of the chest, neck or abdomen. Call 911 and leave it in place.</item>
+        <item>Don\'t use ice, and don\'t seal the wound under a tight bandage. Cold makes this pain worse, not better.</item>
+    </string-array>
+
+    <string name="sting_jelly_title">Jellyfish</string>
+    <string name="sting_jelly_subtitle">A burning line or welt where a tentacle brushed you</string>
+    <string name="sting_jelly_feels">A sting like a hot whip, then a raised red print of the tentacle. Moon jellies barely register. Sea nettles and lion\'s mane sting hard, and tentacle pieces left on the skin keep firing for as long as they sit there.</string>
+    <string-array name="sting_jelly_do">
+        <item>Get out of the water and keep the area still. Movement fires more stingers.</item>
+        <item>Rinse with vinegar for 30 seconds if you have it, or with sea water if you don\'t.</item>
+        <item>Lift tentacles off with tweezers or the edge of a card, never bare fingers.</item>
+        <item>Soak the skin in hot water, about 110–113°F (43–45°C), for 20 to 45 minutes, then use hydrocortisone cream for the itch that follows.</item>
+    </string-array>
+    <string-array name="sting_jelly_dont">
+        <item>Don\'t rinse with fresh water and don\'t rub with sand or a towel. All three set off stingers that had not gone off yet.</item>
+        <item>Urine does not help. It is closer to fresh water than to vinegar, so it can make the sting worse.</item>
+    </string-array>
+
+    <string name="sting_manowar_title">Portuguese man o\' war</string>
+    <string name="sting_manowar_subtitle">Blue float on the sand, long threads trailing behind</string>
+    <string name="sting_manowar_feels">Not one animal but a colony, and the blue balloon you can see is the harmless part. The threads behind it run up to 30 feet, sting instantly and severely, and go on stinging on dry sand for days after the animal dies.</string>
+    <string-array name="sting_manowar_do">
+        <item>Get out of the water and pick the threads off with tweezers or a card edge, not your fingers.</item>
+        <item>Rinse with sea water. Vinegar is the standard jellyfish rinse but is still argued over for man o\' war, so sea water is the safe choice if you are unsure.</item>
+        <item>Soak in hot water, about 110–113°F (43–45°C), for 20 to 45 minutes. This is the step with the best evidence behind it.</item>
+        <item>Stay with the person for an hour. Cramps, nausea, chest tightness or trouble breathing mean call 911.</item>
+    </string-array>
+    <string-array name="sting_manowar_dont">
+        <item>Don\'t touch one washed up on the beach, however shrivelled it looks. It is still loaded.</item>
+        <item>Don\'t use fresh water, sand, or a pressure bandage.</item>
+    </string-array>
+
+    <string name="sting_urchin_title">Sea urchin</string>
+    <string name="sting_urchin_subtitle">Brittle spines left in the foot after a step on rock</string>
+    <string name="sting_urchin_feels">Sharp pain the instant you stand on one, then dark purple dots in the skin where the spines snapped off. Some species also leave tiny pincers behind that keep releasing venom.</string>
+    <string-array name="sting_urchin_do">
+        <item>Soak the foot in hot water, about 110–113°F (43–45°C), for 30 to 90 minutes. It eases the pain and softens the spines.</item>
+        <item>Pull out spines you can grip with tweezers, one at a time.</item>
+        <item>See a doctor for spines that are deep, near a joint, or too many to count. Buried spines cause infections weeks later.</item>
+    </string-array>
+    <string-array name="sting_urchin_dont">
+        <item>Don\'t dig for spines with a needle or crush them under the skin. That only leaves fragments deeper in.</item>
+    </string-array>
+
+    <string name="sting_sealice_title">Sea lice</string>
+    <string name="sting_sealice_subtitle">An itchy rash under your swimsuit, hours after you swam</string>
+    <string name="sting_sealice_feels">Not lice at all, but pinhead jellyfish larvae that get trapped under fabric and sting where the suit presses. The rash appears four to twenty-four hours later, only where the suit covered you. Common in Florida and the Gulf in spring.</string>
+    <string-array name="sting_sealice_do">
+        <item>Take the swimsuit off before you shower. Showering in it presses the larvae into your skin.</item>
+        <item>Rinse the skin with sea water or vinegar, then shower and dry off.</item>
+        <item>Wash and dry the suit on hot. Larvae survive in damp fabric and sting again the next time you wear it.</item>
+        <item>Use hydrocortisone cream or an antihistamine for the itch. It settles in two to four days.</item>
+    </string-array>
+    <string-array name="sting_sealice_dont">
+        <item>Don\'t scratch. Broken skin here infects easily in warm salt water.</item>
+    </string-array>
+
+    <string name="sting_prevent_title">Most of this is avoidable</string>
+    <string name="sting_prevent_body">Shuffle your feet as you wade in rather than lifting them — a ray feels the vibration and leaves. Check the flag board for purple before you get in, scan the tide line for washed-up jellies, and wear water shoes anywhere there is rock or reef.</string>
+    <string name="sting_footnote">This is general first aid, not medical advice. If you are unsure, or the person gets worse, call 911 or Poison Help on 1-800-222-1222.</string>
+
+
+    <!-- Beach wildlife guide -->
+    <string name="wildlife_entry_title">Wildlife at your beach</string>
+    <string name="wildlife_entry_subtitle">Who turns up on each coast, and who to give room</string>
+    <string name="wildlife_title">Beach wildlife</string>
+    <string name="wildlife_intro">Nearly everything you meet at the beach wants nothing to do with you. These are the animals that actually turn up at the beaches in this app, coast by coast — the harmless, the ones that sting, and the ones the law says to leave alone.</string>
+    <string name="wildlife_coast_heading">Pick a coast</string>
+    <string name="wildlife_key_heading">What the tags mean</string>
+    <string name="wildlife_beaches_label">In this app: %1$s</string>
+    <string name="wildlife_species_heading">Who you\'ll meet</string>
+    <string name="wildlife_first_aid_link">First aid</string>
+    <string name="wildlife_footnote">Seasons and sightings shift year to year. The lifeguards on duty know what came in this week — ask them.</string>
+
+    <string name="wildlife_risk_harmless">Harmless</string>
+    <string name="wildlife_risk_room">Give it room</string>
+    <string name="wildlife_risk_sting">Can sting</string>
+    <string name="wildlife_risk_protected">Protected</string>
+    <string name="wildlife_risk_harmless_key">No reason to get out of the water.</string>
+    <string name="wildlife_risk_room_key">Safe so long as you keep your distance.</string>
+    <string name="wildlife_risk_sting_key">Know the first aid before you go in.</string>
+    <string name="wildlife_risk_protected_key">Federal law — stay back, never touch or feed.</string>
+
+    <!-- Southern California -->
+    <string name="wildlife_region_socal">Southern California</string>
+    <string name="wildlife_socal_ray_title">Round stingray</string>
+    <string name="wildlife_socal_ray_body">Buried in the sand in knee-deep water, and the reason Southern California lifeguards treat thousands of stings a summer. It stings only when trodden on. Shuffle your feet in and it swims off.</string>
+    <string name="wildlife_socal_leopard_title">Leopard shark</string>
+    <string name="wildlife_socal_leopard_body">Hundreds of them gather in the warm shallows off La Jolla Shores from June to October. They are three to five feet long, eat crabs and fish eggs, and have never bitten a swimmer there.</string>
+    <string name="wildlife_socal_sealion_title">California sea lion</string>
+    <string name="wildlife_socal_sealion_body">Loud, curious and all over the La Jolla bluffs. They are wild animals that bite when crowded, so stay 50 feet back and never get between one and the water.</string>
+    <string name="wildlife_socal_seal_title">Harbor seal</string>
+    <string name="wildlife_socal_seal_body">Pups are left alone on the sand for hours while the mother feeds. A pup on its own has not been abandoned. Keep back, keep dogs away, and tell a lifeguard if it looks hurt.</string>
+    <string name="wildlife_socal_jelly_title">Purple-striped jellyfish</string>
+    <string name="wildlife_socal_jelly_body">A big jelly with dark stripes down the bell, pushed in by late-summer swell. The sting burns for an hour or two and rarely needs more than hot water.</string>
+    <string name="wildlife_socal_velella_title">By-the-wind sailor</string>
+    <string name="wildlife_socal_velella_body">Thousands of small blue discs with a clear sail, stranded along the tide line on spring winds. They barely sting skin, but don\'t rub your eyes after handling one.</string>
+    <string name="wildlife_socal_grunion_title">Grunion</string>
+    <string name="wildlife_socal_grunion_body">Silver fish that spawn on the sand itself at night on spring and summer high tides. Watching a run is free; catching them needs a licence and is closed through April and May.</string>
+    <string name="wildlife_socal_note_title">After it rains</string>
+    <string name="wildlife_socal_note_body">Storm drains flush the streets straight into the surf. County health advisories say stay out of the water for 72 hours after rain, whatever the wildlife is doing.</string>
+
+    <!-- Florida, Atlantic side -->
+    <string name="wildlife_region_florida">Florida Atlantic</string>
+    <string name="wildlife_fl_manowar_title">Portuguese man o\' war</string>
+    <string name="wildlife_fl_manowar_body">Blown ashore on east winds from November to May. Blue float, threads up to 30 feet, and it stings just as hard lying on dry sand as it does in the water.</string>
+    <string name="wildlife_fl_moon_title">Moon jelly</string>
+    <string name="wildlife_fl_moon_body">A clear saucer with four pale rings inside it. This is the jelly you can usually swim past — the sting is mild and often goes unnoticed.</string>
+    <string name="wildlife_fl_sealice_title">Sea lice</string>
+    <string name="wildlife_fl_sealice_body">Pinhead jellyfish larvae, worst from March to July. You feel nothing in the water, then wake up with an itchy rash exactly where your swimsuit sat.</string>
+    <string name="wildlife_fl_ray_title">Southern stingray</string>
+    <string name="wildlife_fl_ray_body">Flat, sand-coloured and resting in the shallows over sand flats. Shuffle your feet and it will move before you reach it.</string>
+    <string name="wildlife_fl_turtle_title">Sea turtle nests</string>
+    <string name="wildlife_fl_turtle_body">Loggerheads nest along these beaches from March to October. Never touch a nest, a marked stake or a hatchling, and keep white lights off the sand at night — they steer hatchlings inland instead of out to sea.</string>
+    <string name="wildlife_fl_blacktip_title">Blacktip shark</string>
+    <string name="wildlife_fl_blacktip_body">Thousands migrate down this coast each winter and stay close in. Bites are rare and nearly always mistakes: stay out of bait balls with birds diving on them, out of murky water, and off the water at dawn and dusk.</string>
+    <string name="wildlife_fl_note_title">When you hear thunder</string>
+    <string name="wildlife_fl_note_body">Florida is the lightning capital of the country and summer storms build fast over the water. At the first rumble get off the sand, and wait 30 minutes after the last one before going back.</string>
+
+    <!-- Gulf Coast -->
+    <string name="wildlife_region_gulf">Gulf Coast</string>
+    <string name="wildlife_gulf_dolphin_title">Bottlenose dolphin</string>
+    <string name="wildlife_gulf_dolphin_body">Resident all year and often within a hundred yards of the beach. It is illegal to feed them or swim towards them, so watch from where you are.</string>
+    <string name="wildlife_gulf_ray_title">Atlantic stingray</string>
+    <string name="wildlife_gulf_ray_body">Warm, shallow, gently shelving water is stingray country, and this is the best of it. The shuffle matters more here than anywhere else in this app.</string>
+    <string name="wildlife_gulf_manowar_title">Portuguese man o\' war</string>
+    <string name="wildlife_gulf_manowar_body">Spring winds strand them in long lines on the Texas sand. Look before you drop a towel, and keep children and dogs away from the blue floats.</string>
+    <string name="wildlife_gulf_sargassum_title">Sargassum weed</string>
+    <string name="wildlife_gulf_sargassum_body">Brown seaweed that piles into rafts through spring and summer. It is harmless and full of tiny crabs, but the hydroids growing on it can leave an itchy rash, so don\'t roll around in it.</string>
+    <string name="wildlife_gulf_manatee_title">Manatee</string>
+    <string name="wildlife_gulf_manatee_body">Slow, grey and often just under the surface in warm shallows and passes. Don\'t touch, feed or follow one — watch and give it the channel.</string>
+    <string name="wildlife_gulf_turtle_title">Kemp\'s ridley sea turtle</string>
+    <string name="wildlife_gulf_turtle_body">The rarest sea turtle in the world nests on Texas beaches from April to July. Report a nesting or stranded turtle to the beach patrol rather than going near it.</string>
+    <string name="wildlife_gulf_note_title">Red tide</string>
+    <string name="wildlife_gulf_note_body">A bloom of Karenia brevis turns the water rusty, kills fish, and puts a toxin into the sea spray that makes people cough and stings the eyes — worst on the Florida Gulf in late summer and autumn. Dead fish on the sand and a sharp smell mean pick another beach, especially with asthma.</string>
+
+    <!-- Northeast Atlantic -->
+    <string name="wildlife_region_northeast">Northeast Atlantic</string>
+    <string name="wildlife_ne_lionsmane_title">Lion\'s mane jellyfish</string>
+    <string name="wildlife_ne_lionsmane_body">Big, rust-red and shaggy, drifting in from late summer. The sting is sharp and lasts, and broken tentacle pieces in the surf sting on their own.</string>
+    <string name="wildlife_ne_nettle_title">Atlantic sea nettle</string>
+    <string name="wildlife_ne_nettle_body">Smaller and paler than a lion\'s mane, common through the warm months in bays and inlets. Hot water settles the sting.</string>
+    <string name="wildlife_ne_horseshoe_title">Horseshoe crab</string>
+    <string name="wildlife_ne_horseshoe_body">A living fossil, not a crab, and completely harmless. The pointed tail is a lever for righting itself, not a stinger — if you find one upside down, flip it back by the shell, never by the tail.</string>
+    <string name="wildlife_ne_seal_title">Harbor seal</string>
+    <string name="wildlife_ne_seal_body">Hauls out on these beaches from November through April. Keep 150 feet back, leash the dog, and call a stranding hotline rather than pushing one back into the water.</string>
+    <string name="wildlife_ne_dogfish_title">Sand shark</string>
+    <string name="wildlife_ne_dogfish_body">Smooth dogfish cruise the trough a few yards off the beach all summer. They eat crabs and shellfish and take no interest in swimmers.</string>
+    <string name="wildlife_ne_bluefish_title">Bluefish blitz</string>
+    <string name="wildlife_ne_bluefish_body">Autumn drives bait right up onto the beach and bluefish bite at anything in the froth. If the water is boiling with bait and birds, get out until it moves on.</string>
+    <string name="wildlife_ne_note_title">The water is colder than it looks</string>
+    <string name="wildlife_ne_note_body">The Atlantic here is still in the low 60s°F into June. Cold water takes your strength and your breath faster than you expect, so wade in before you swim out.</string>
+
+    <!-- Pacific Northwest -->
+    <string name="wildlife_region_pnw">Pacific Northwest</string>
+    <string name="wildlife_pnw_seal_title">Harbor seal pup</string>
+    <string name="wildlife_pnw_seal_body">Pups are parked on the sand while the mother feeds, and are not abandoned. Picking one up is illegal and usually kills it. Stay 100 yards back and call the stranding network.</string>
+    <string name="wildlife_pnw_puffin_title">Tufted puffin and common murre</string>
+    <string name="wildlife_pnw_puffin_body">Haystack Rock is a nesting colony from April to July. The rock is closed above the barnacle line, and the birds are best watched from the sand at low tide.</string>
+    <string name="wildlife_pnw_tidepool_title">Sea stars and anemones</string>
+    <string name="wildlife_pnw_tidepool_body">The pools around Haystack Rock are a protected Marine Garden. Look, don\'t pry: a sea star pulled off its rock rarely survives, and a stepped-on anemone dies.</string>
+    <string name="wildlife_pnw_eagle_title">Bald eagle</string>
+    <string name="wildlife_pnw_eagle_body">Nests overlook the beach and raid the seabird colony most mornings. Watch from below and keep clear of the nest trees.</string>
+    <string name="wildlife_pnw_jelly_title">Fried-egg and lion\'s mane jellyfish</string>
+    <string name="wildlife_pnw_jelly_body">Both wash up in late summer. The fried-egg jelly is a mild sting; the lion\'s mane is not, and both still sting once they are stranded.</string>
+    <string name="wildlife_pnw_whale_title">Gray whale</string>
+    <string name="wildlife_pnw_whale_body">They migrate past in December and January and again from March to June, and a few feed off the headlands all summer. Look for the blow from the viewpoints above the beach.</string>
+    <string name="wildlife_pnw_note_title">Sneaker waves</string>
+    <string name="wildlife_pnw_note_body">This coast throws waves far up the beach with no warning and drags logs with them. Never turn your back on the water, never sit on a beach log, and keep off rocks the tide can cut off.</string>
     <!-- Emergency sheet -->
     <string name="sos_action">Emergency help</string>
     <string name="sos_label">SOS</string>

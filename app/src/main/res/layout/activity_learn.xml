@@ -2,9 +2,14 @@
 <!--
   The Learn tab: every lesson the app teaches, in one place. Lessons live here
   now rather than tucked into Settings, so they are one tap from any screen.
+  Today's practice sits above them all, because the whole point of it is that
+  it gets done without going looking. The groups and their rows are inflated
+  by LearnActivity, so adding a lesson is one entry in its table rather than
+  another copy of this markup.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
@@ -48,130 +53,77 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="14dp"
+                android:layout_marginBottom="18dp"
                 android:lineSpacingMultiplier="1.5"
                 android:text="@string/learn_intro"
                 android:textAppearance="@style/TextAppearance.App.Body"
                 android:textColor="@color/text_secondary" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="9dp"
-                android:text="@string/learn_lessons_heading"
-                android:textAppearance="@style/TextAppearance.App.Caption" />
-
-            <!-- Two lessons for now; each is its own full-screen guide. -->
+            <!-- Today's practice: the one card on this screen that changes -->
             <LinearLayout
+                android:id="@+id/learnPracticeCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_surface_card"
-                android:orientation="vertical"
-                android:paddingVertical="4dp">
+                android:layout_marginBottom="22dp"
+                android:background="@drawable/bg_accent_note"
+                android:foreground="?attr/selectableItemBackground"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="15dp">
+
+                <ImageView
+                    android:id="@+id/learnPracticeIcon"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_practice"
+                    app:tint="@color/primary" />
 
                 <LinearLayout
-                    android:id="@+id/learnRipRow"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="13dp"
-                    android:paddingVertical="12dp">
+                    android:layout_marginStart="13dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_wave"
-                        app:tint="@color/primary" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
+                    <TextView
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="11dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/practice_entry_title"
+                        android:textColor="@color/primary"
+                        android:textSize="16sp" />
 
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-medium"
-                            android:text="@string/guide_entry_title"
-                            android:textColor="@color/text_primary"
-                            android:textSize="15sp" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="@string/guide_entry_subtitle"
-                            android:textAppearance="@style/TextAppearance.App.Subtitle" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:alpha="0.45"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_chevron_right"
-                        app:tint="@color/text_secondary" />
+                    <TextView
+                        android:id="@+id/learnPracticeSubtitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:lineSpacingMultiplier="1.4"
+                        android:textAppearance="@style/TextAppearance.App.Subtitle"
+                        tools:text="Three quick questions, new every day" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:id="@+id/learnFlagRow"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="?attr/selectableItemBackground"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="13dp"
-                    android:paddingVertical="12dp">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_flag"
-                        app:tint="@color/primary" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="11dp"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="sans-serif-medium"
-                            android:text="@string/flag_entry_title"
-                            android:textColor="@color/text_primary"
-                            android:textSize="15sp" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:text="@string/flag_entry_subtitle"
-                            android:textAppearance="@style/TextAppearance.App.Subtitle" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"
-                        android:alpha="0.45"
-                        android:contentDescription="@null"
-                        android:src="@drawable/ic_chevron_right"
-                        app:tint="@color/text_secondary" />
-                </LinearLayout>
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:layout_marginStart="10dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_chevron_right"
+                    app:tint="@color/primary" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/learnGroups"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
                 android:lineSpacingMultiplier="1.5"
                 android:text="@string/learn_footnote"
                 android:textAppearance="@style/TextAppearance.App.Subtitle"

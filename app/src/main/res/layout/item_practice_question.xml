@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- One of today's questions: the number, the question, its answers, and the
+     explanation that appears once it has been answered either way. -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="22dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/practiceProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="7dp"
+        android:textAppearance="@style/TextAppearance.App.Caption"
+        tools:text="Question 1 of 3" />
+
+    <TextView
+        android:id="@+id/practiceQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="11dp"
+        android:lineSpacingMultiplier="1.5"
+        android:textAppearance="@style/TextAppearance.App.Title"
+        tools:text="You are swimming and realise a current is pulling you away from the beach. What do you do?" />
+
+    <LinearLayout
+        android:id="@+id/practiceOptions"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+
+    <LinearLayout
+        android:id="@+id/practiceAnswer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/bg_accent_note"
+        android:orientation="vertical"
+        android:padding="14dp"
+        android:visibility="gone"
+        tools:visibility="visible">
+
+        <TextView
+            android:id="@+id/practiceAnswerTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/primary"
+            android:textSize="15sp"
+            tools:text="That's right" />
+
+        <TextView
+            android:id="@+id/practiceExplanation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:lineSpacingMultiplier="1.5"
+            android:textAppearance="@style/TextAppearance.App.Body"
+            tools:text="A rip is a river heading out, and it is faster than you are." />
+    </LinearLayout>
+</LinearLayout>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  A fish for the wildlife lesson, drawn in the same single-weight outline as
+  ic_book so app:tint paints the whole mark in one colour.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Body, nose to the right -->
+    <path
+        android:pathData="M6.4,12 C8.3,8.3 11.2,6.5 14.2,6.5 C17.3,6.5 19.7,8.6 21,12 C19.7,15.4 17.3,17.5 14.2,17.5 C11.2,17.5 8.3,15.7 6.4,12 Z"
+        android:strokeColor="#000000"
+        android:strokeWidth="1.6"
+        android:strokeLineJoin="round"
+        android:strokeLineCap="round" />
+    <!-- Tail fin -->
+    <path
+        android:pathData="M6.4,12 L3,8.9 L3.7,12 L3,15.1 Z"
+        android:strokeColor="#000000"
+        android:strokeWidth="1.6"
+        android:strokeLineJoin="round"
+        android:strokeLineCap="round" />
+    <!-- Gill -->
+    <path
+        android:pathData="M16.6,7.4 C15.7,9 15.7,15 16.6,16.6"
+        android:strokeColor="#000000"
+        android:strokeWidth="1.6"
+        android:strokeLineCap="round" />
+    <!-- Eye -->
+    <path
+        android:pathData="M18.1,10.6 m-0.85,0 a0.85,0.85 0,1 0,1.7 0 a0.85,0.85 0,1 0,-1.7 0"
+        android:fillColor="#000000" />
+</vector>

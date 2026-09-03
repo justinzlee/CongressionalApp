@@ -61,9 +61,6 @@ public class FlagGuideActivity extends AppCompatActivity {
 
     private static final int CORRECT_OPTION = 0;
 
-    private final View[] optionRows = new View[QUIZ_OPTIONS.length];
-    private boolean answered;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,9 +72,10 @@ public class FlagGuideActivity extends AppCompatActivity {
         findViewById(R.id.flagGuideBackButton).setOnClickListener(
             v -> getOnBackPressedDispatcher().onBackPressed());
 
-        LayoutInflater inflater = LayoutInflater.from(this);
-        buildFlagKey(inflater);
-        buildQuiz(inflater);
+        buildFlagKey(LayoutInflater.from(this));
+
+        KnowledgeCheck.install(this, R.id.flagQuizOptions, R.id.flagQuizAnswer,
+            R.id.flagQuizAnswerTitle, QUIZ_OPTIONS, CORRECT_OPTION);
     }
 
     private void buildFlagKey(LayoutInflater inflater) {
@@ -108,47 +106,4 @@ public class FlagGuideActivity extends AppCompatActivity {
         }
     }
 
-    private void buildQuiz(LayoutInflater inflater) {
-        ViewGroup options = findViewById(R.id.flagQuizOptions);
-        for (int i = 0; i < QUIZ_OPTIONS.length; i++) {
-            View row = inflater.inflate(R.layout.item_quiz_option, options, false);
-            ((TextView) row.findViewById(R.id.quizOptionLetter))
-                .setText(String.valueOf((char) ('A' + i)));
-            ((TextView) row.findViewById(R.id.quizOptionText)).setText(QUIZ_OPTIONS[i]);
-
-            final int chosen = i;
-            row.setOnClickListener(v -> reveal(chosen));
-
-            optionRows[i] = row;
-            options.addView(row);
-        }
-    }
-
-    /** Marks the right answer either way, so a wrong tap still teaches it. */
-    private void reveal(int chosen) {
-        if (answered) {
-            return;
-        }
-        answered = true;
-
-        mark(optionRows[CORRECT_OPTION], R.drawable.ic_check_circle, R.color.safe);
-        if (chosen != CORRECT_OPTION) {
-            mark(optionRows[chosen], R.drawable.ic_x_circle, R.color.danger);
-        }
-        for (View row : optionRows) {
-            row.setClickable(false);
-        }
-
-        ((TextView) findViewById(R.id.flagQuizAnswerTitle)).setText(chosen == CORRECT_OPTION
-            ? R.string.flag_quiz_correct : R.string.flag_quiz_incorrect);
-        findViewById(R.id.flagQuizAnswer).setVisibility(View.VISIBLE);
-    }
-
-    private void mark(View row, int iconRes, int colorRes) {
-        ImageView markView = row.findViewById(R.id.quizOptionMark);
-        markView.setImageResource(iconRes);
-        ImageViewCompat.setImageTintList(markView,
-            ColorStateList.valueOf(ContextCompat.getColor(this, colorRes)));
-        markView.setVisibility(View.VISIBLE);
-    }
 }
