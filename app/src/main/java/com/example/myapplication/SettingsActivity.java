@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,10 +16,28 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String KEY_DARK_MODE = "dark_mode";
 
     /**
-     * The Beach Safety Palette leads with sand and sunlight, so light is the
-     * app's resting state and dark is the night mode you opt into.
+     * Puts the app in whichever appearance the user last picked, and leaves it
+     * following the phone's own light/dark setting until they pick one. A phone
+     * already in dark mode should open a dark app, and the same the other way.
      */
-    public static final boolean DEFAULT_DARK_MODE = false;
+    public static void applyStoredNightMode(Context context) {
+        SharedPreferences prefs =
+            context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        if (!prefs.contains(KEY_DARK_MODE)) {
+            AppCompatDelegate.setDefaultNightMode(
+                AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
+            return;
+        }
+        AppCompatDelegate.setDefaultNightMode(prefs.getBoolean(KEY_DARK_MODE, false)
+            ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+    }
+
+    /** True when the app is drawing itself dark right now, however it got there. */
+    private static boolean isShowingDark(Context context) {
+        int nightFlags = context.getResources().getConfiguration().uiMode
+            & Configuration.UI_MODE_NIGHT_MASK;
+        return nightFlags == Configuration.UI_MODE_NIGHT_YES;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +60,9 @@ public class SettingsActivity extends AppCompatActivity {
             prefs.edit().putBoolean(KEY_USE_METRIC, isChecked).apply());
 
         MaterialSwitch darkModeSwitch = findViewById(R.id.darkModeSwitch);
-        darkModeSwitch.setChecked(prefs.getBoolean(KEY_DARK_MODE, DEFAULT_DARK_MODE));
+        // With no choice stored we are following the system, so the switch
+        // reports the appearance actually on screen, not a hardcoded default.
+        darkModeSwitch.setChecked(isShowingDark(this));
         bindRow(findViewById(R.id.darkModeRow), darkModeSwitch, isChecked -> {
             prefs.edit().putBoolean(KEY_DARK_MODE, isChecked).apply();
             AppCompatDelegate.setDefaultNightMode(isChecked

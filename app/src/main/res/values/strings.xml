@@ -42,7 +42,7 @@
     <string name="use_metric_subtitle">Converts temperature to °C, wind to km/h, and waves to meters.</string>
     <string name="display_section_title">Display</string>
     <string name="use_dark_mode_title">Dark Mode</string>
-    <string name="use_dark_mode_subtitle">Switch the app between light and dark appearance.</string>
+    <string name="use_dark_mode_subtitle">Follows your phone until you switch it here.</string>
     <!-- Beach photos come from Wikimedia Commons under free licences, which
          ask to be credited wherever the pictures are shown. -->
     <string name="settings_footnote">Conditions come from public coastal forecasts. Beach photos are from Wikimedia Commons. Always follow the signs and flags at the beach.</string>
