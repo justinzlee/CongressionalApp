@@ -20,8 +20,17 @@ import com.example.myapplication.model.SafetyLevel;
  */
 public final class WaveScale {
 
-    /** Top of the scale, in feet. Every position on the card is height / MAX_FT. */
-    public static final float MAX_FT = 8f;
+    /**
+     * Top of the scale, in feet. Every position on the card is height / MAX_FT,
+     * so this is the only place the card's range is stated — the ruler beside
+     * it takes its tick count from here too.
+     *
+     * <p>Raising this changes how tall the card can draw, and nothing else.
+     * The bands come from {@link SafetyLevel} and the colour ramp is in real
+     * feet, so a six-foot swell is the same "hazardous", in the same red, on
+     * any scale.
+     */
+    public static final float MAX_FT = 10f;
 
     /**
      * The three bands the card labels a height with. The lowest band runs to
@@ -70,11 +79,18 @@ public final class WaveScale {
     // middle stops sit on the band edges so the water turns amber exactly
     // where the card starts saying "moderate", and red where it says
     // "hazardous", rather than shifting colour a foot early.
-    private static final float[] STOP_FT = {0f, 2.5f, 4f, 6f, 7.5f};
+    //
+    // They are heights rather than positions on the card, so widening the
+    // scale leaves them where they are and the water at six feet looks the
+    // same on an eight-foot ruler or a ten. The last stop is the exception: it
+    // sat near the top of an 8ft card, and a 10ft one would have left its
+    // whole top quarter flat, so the ramp carries on to the top of the scale
+    // in the direction it was already going.
+    private static final float[] STOP_FT = {0f, 2.5f, 4f, 6f, 7.5f, 10f};
     private static final int[] STOP_CREST = {
-        0xFF9FE7C4, 0xFFC4E6A8, 0xFFF2CA7A, 0xFFF8BB92, 0xFFF7A493};
+        0xFF9FE7C4, 0xFFC4E6A8, 0xFFF2CA7A, 0xFFF8BB92, 0xFFF7A493, 0xFFEC8574};
     private static final int[] STOP_BODY = {
-        0xFF1F8F74, 0xFF4F9F60, 0xFFB6802C, 0xFFC2643A, 0xFFB8453F};
+        0xFF1F8F74, 0xFF4F9F60, 0xFFB6802C, 0xFFC2643A, 0xFFB8453F, 0xFF93302D};
 
     public static int crestColor(float feet) { return sample(STOP_CREST, feet); }
 
