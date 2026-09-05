@@ -87,10 +87,17 @@
                         android:contentDescription="@string/beach_image_desc"
                         android:scaleType="centerCrop" />
 
+                    <!-- Darkens the foot of a real photograph so the verdict
+                         chip stays readable on it. Hidden when the drawn
+                         placeholder is showing: that artwork is already
+                         low-contrast behind the chip, and a scrim over it just
+                         reads as the illustration being dimmed. -->
                     <View
+                        android:id="@+id/detailHeroScrim"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@drawable/bg_hero_scrim" />
+                        android:background="@drawable/bg_hero_scrim"
+                        android:visibility="gone" />
 
                     <LinearLayout
                         android:id="@+id/detailVerdictChip"

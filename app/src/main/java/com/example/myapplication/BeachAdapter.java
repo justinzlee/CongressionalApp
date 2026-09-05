@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.example.myapplication.model.Beach;
 import com.example.myapplication.model.BeachConditions;
 import com.example.myapplication.model.HelpType;
 import com.example.myapplication.model.SafetyLevel;
+import com.example.myapplication.util.BeachPlaceholder;
 import com.example.myapplication.util.UnitConverter;
 import java.util.List;
 
@@ -61,13 +63,15 @@ public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHol
         row.setOnClickListener(v -> listener.onBeachClick(beach));
 
         // A beach with no verified photo, or whose photo will not load, shows
-        // the drawn shoreline rather than a stock picture of somewhere else.
+        // the drawn shoreline rather than a stock picture of somewhere else,
+        // in daylight or after dark according to the sun at that beach.
+        Drawable placeholder = BeachPlaceholder.forBeach(row.getContext(), beach);
         Glide.with(row.getContext())
             .load(beach.getImageUrl())
             .centerCrop()
-            .placeholder(R.drawable.ic_beach_placeholder)
-            .fallback(R.drawable.ic_beach_placeholder)
-            .error(R.drawable.ic_beach_placeholder)
+            .placeholder(placeholder)
+            .fallback(placeholder)
+            .error(placeholder)
             .into(holder.beachImage);
 
         // Verdict drives the row's chip colour and its one-line summary.
