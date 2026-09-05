@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +13,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.example.myapplication.ai.SafetyNote;
 import com.example.myapplication.data.BeachRepository;
 import com.example.myapplication.data.SavedBeachStore;
@@ -28,6 +33,7 @@ import com.example.myapplication.model.Tide;
 import com.example.myapplication.model.TideForecast;
 import com.example.myapplication.network.TideClient;
 import com.example.myapplication.network.WeatherClient;
+import com.example.myapplication.util.BeachPlaceholder;
 import com.example.myapplication.util.EdgeToEdge;
 import com.example.myapplication.util.UnitConverter;
 import java.text.DateFormat;
@@ -92,12 +98,32 @@ public class BeachDetailActivity extends AppCompatActivity {
         // Galveston Island — and a wrong photo is worse than an honest
         // placeholder on a screen about whether the water is safe.
         ImageView image = findViewById(R.id.beachDetailImage);
+        View heroScrim = findViewById(R.id.detailHeroScrim);
+        Drawable placeholder = BeachPlaceholder.forBeach(this, beach);
         Glide.with(this)
             .load(beach.getImageUrl())
             .centerCrop()
-            .placeholder(R.drawable.ic_beach_placeholder)
-            .fallback(R.drawable.ic_beach_placeholder)
-            .error(R.drawable.ic_beach_placeholder)
+            .placeholder(placeholder)
+            .fallback(placeholder)
+            .error(placeholder)
+            // The scrim exists to keep the verdict chip readable on a
+            // photograph, so it only comes on once a photograph is actually
+            // there. Over the drawn shoreline it just dims the drawing.
+            .listener(new RequestListener<Drawable>() {
+                @Override
+                public boolean onLoadFailed(GlideException e, Object model,
+                        Target<Drawable> target, boolean isFirstResource) {
+                    heroScrim.setVisibility(View.GONE);
+                    return false;
+                }
+
+                @Override
+                public boolean onResourceReady(Drawable resource, Object model,
+                        Target<Drawable> target, DataSource source, boolean isFirstResource) {
+                    heroScrim.setVisibility(View.VISIBLE);
+                    return false;
+                }
+            })
             .into(image);
 
         ((TextView) findViewById(R.id.detailBeachName)).setText(beach.getName());

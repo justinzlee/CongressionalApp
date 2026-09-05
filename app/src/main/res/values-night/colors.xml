@@ -69,13 +69,44 @@
     <color name="tile_wave_bg">#00000000</color>
     <color name="tile_visibility_bg">#00000000</color>
 
-    <!-- Beach-photo placeholder, after dark: the same shoreline under a night
-         sky, so it sits on the dark card instead of glaring off it. -->
-    <color name="placeholder_sky">#172B31</color>
-    <color name="placeholder_sea">#0A4757</color>
-    <color name="placeholder_swell">#2E93A3</color>
-    <color name="placeholder_sand_wet">#15272D</color>
-    <color name="placeholder_sand_dry">#122126</color>
+    <!-- Beach-photo placeholder, after dark. Note that these are NOT the dark
+         theme's colours: BeachPlaceholder resolves the drawable through a
+         configuration whose night bit comes from sunrise and sunset at the
+         beach, so this set is what a beach looks like after the sun has gone
+         down there, whatever appearance the phone is in. The sun cools all the
+         way to a moon rather than staying amber, because a warm disc is the one
+         element that cannot simply be dimmed into this sky. -->
+    <color name="placeholder_sky">#0E2C3E</color>
+    <color name="placeholder_sky_mid">#14415A</color>
+    <color name="placeholder_sky_low">#1E5A72</color>
+    <color name="placeholder_sky_haze">#2C7286</color>
+
+    <color name="placeholder_sun_core">#F4F7FF</color>
+    <color name="placeholder_sun_mid">#DCE6F2</color>
+    <color name="placeholder_sun_edge">#B8CBDD</color>
+    <color name="placeholder_sun_glow">#4DDCE6F2</color>
+    <color name="placeholder_sun_glow_fade">#00DCE6F2</color>
+
+    <color name="placeholder_light">#A8C4D0</color>
+    <color name="placeholder_bird">#08202B</color>
+    <color name="placeholder_kite_tail">#0A1418</color>
+
+    <color name="placeholder_sea_shore">#1D6A7C</color>
+    <color name="placeholder_sea">#12495C</color>
+    <color name="placeholder_sea_mid">#0C3547</color>
+    <color name="placeholder_sea_deep">#071F2C</color>
+    <color name="placeholder_swell_near">#6FA3B2</color>
+    <color name="placeholder_horizon_core">#B3CFE3EC</color>
+    <color name="placeholder_horizon_edge">#33CFE3EC</color>
+
+    <color name="placeholder_sand_wet">#3A4A4E</color>
+    <color name="placeholder_sand_dry">#2A383D</color>
+    <color name="placeholder_shade">#1C282C</color>
+
+    <color name="placeholder_pole">#4A3C30</color>
+    <color name="placeholder_canopy">#B9CBD4</color>
+    <color name="placeholder_accent">#A8452A</color>
+    <color name="placeholder_accent_edge">#7A2F1B</color>
 
     <!-- Welcome intro: the same Sea ramp as light mode, dimmed a step so
          the reveal does not flash white on a night screen. -->
