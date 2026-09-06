@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
     // Header + verdict card, the design's answer to "can I swim right now?"
     private TextView headerKicker, headerTitle;
+    private View headerKickerRow;
     private MaterialCardView verdictCard;
     private View verdictBand;
     private ImageView verdictIcon;
@@ -119,6 +120,7 @@ public class MainActivity extends AppCompatActivity {
         beachCountBadge = findViewById(R.id.beachCountBadge);
 
         headerKicker = findViewById(R.id.headerKicker);
+        headerKickerRow = findViewById(R.id.headerKickerRow);
         headerTitle = findViewById(R.id.headerTitle);
         verdictCard = findViewById(R.id.verdictCard);
         verdictBand = findViewById(R.id.verdictBand);
@@ -417,6 +419,8 @@ public class MainActivity extends AppCompatActivity {
         if (beach == null) {
             verdictCard.setVisibility(View.GONE);
             statGrid.setVisibility(View.GONE);
+            // Nothing to name yet, so the kicker would only repeat the title.
+            headerKickerRow.setVisibility(View.GONE);
             headerTitle.setText(R.string.header_title_default);
             return;
         }
@@ -424,6 +428,7 @@ public class MainActivity extends AppCompatActivity {
         verdictCard.setVisibility(View.VISIBLE);
         statGrid.setVisibility(View.VISIBLE);
 
+        headerKickerRow.setVisibility(View.VISIBLE);
         headerKicker.setText(isManualLocation
             ? R.string.header_kicker_searching : R.string.header_kicker_near_you);
         headerTitle.setText(beach.getName());

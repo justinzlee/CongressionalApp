@@ -11,28 +11,34 @@
     android:background="@color/background"
     android:orientation="vertical">
 
-    <!-- Header: location kicker over the screen title, actions on the right -->
+    <!--
+      Header: the beach this screen is reporting on, named at headline size on
+      a line of its own. The name is the answer to "which beach is this?", so
+      it gets the full width rather than sharing a row with the buttons and
+      being cut short - the kicker and the actions sit above it instead.
+    -->
     <LinearLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:paddingStart="16dp"
-        android:paddingTop="10dp"
+        android:paddingTop="2dp"
         android:paddingEnd="8dp"
-        android:paddingBottom="10dp">
+        android:paddingBottom="12dp">
 
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:id="@+id/headerKickerRow"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -52,55 +58,66 @@
                     android:textAppearance="@style/TextAppearance.App.Caption" />
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/headerTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                android:text="@string/header_title_default"
-                android:textAppearance="@style/TextAppearance.App.Display" />
-        </LinearLayout>
-
-        <!-- Emergency: every action behind this opens a real system app -->
-        <LinearLayout
-            android:id="@+id/sosButton"
-            android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:layout_marginEnd="4dp"
-            android:background="@drawable/bg_sos_button"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingHorizontal="13dp">
-
-            <ImageView
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_first_aid"
-                app:tint="@color/danger" />
-
-            <TextView
+            <!-- Emergency: every action behind this opens a real system app -->
+            <LinearLayout
+                android:id="@+id/sosButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="6dp"
-                android:fontFamily="sans-serif-medium"
-                android:letterSpacing="0.04"
-                android:text="@string/sos_label"
-                android:textColor="@color/danger"
-                android:textSize="13sp" />
+                android:layout_height="38dp"
+                android:layout_marginEnd="4dp"
+                android:background="@drawable/bg_sos_button"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="13dp">
+
+                <ImageView
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_first_aid"
+                    app:tint="@color/danger" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:letterSpacing="0.04"
+                    android:text="@string/sos_label"
+                    android:textColor="@color/danger"
+                    android:textSize="13sp" />
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/myLocationButton"
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="@string/nearby_report_action"
+                android:padding="9dp"
+                android:src="@drawable/ic_location"
+                app:tint="@color/text_secondary" />
         </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/myLocationButton"
-            android:layout_width="38dp"
-            android:layout_height="38dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="@string/nearby_report_action"
-            android:padding="9dp"
-            android:src="@drawable/ic_location"
-            app:tint="@color/text_secondary" />
+        <!--
+          Long names wrap rather than ellipsize: a name cut to "Jones Beach
+          Sta..." is exactly the confusion this row exists to clear up.
+
+          The headline font reserves space above its ascent, which at this size
+          reads as a gap under the kicker rather than as leading, so the name
+          sits directly beneath it with that padding turned off. The pin icon
+          is taller than the kicker text and sets that row's height, so the
+          last of the gap is pulled out with a negative margin.
+        -->
+        <TextView
+            android:id="@+id/headerTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-6dp"
+            android:layout_marginEnd="8dp"
+            android:includeFontPadding="false"
+            android:text="@string/header_title_default"
+            android:textAppearance="@style/TextAppearance.App.Headline"
+            tools:text="Malibu Lagoon State Beach" />
     </LinearLayout>
 
     <androidx.core.widget.NestedScrollView

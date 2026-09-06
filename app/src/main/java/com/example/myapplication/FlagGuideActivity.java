@@ -15,8 +15,10 @@ import androidx.core.widget.ImageViewCompat;
 import com.example.myapplication.util.EdgeToEdge;
 
 /**
- * What each lifeguard warning flag means, and a one-question check at the end.
- * Static safety guidance, like the rip-current guide — no live data.
+ * What each lifeguard warning flag means. Static safety guidance, like the
+ * rip-current guide — no live data. The knowledge check that used to close
+ * this screen now lives only in the daily practice, which asks about flags
+ * anyway, so the guide fits on one screen without scrolling.
  */
 public class FlagGuideActivity extends AppCompatActivity {
 
@@ -53,14 +55,6 @@ public class FlagGuideActivity extends AppCompatActivity {
             R.color.flag_purple, R.string.flag_color_purple, false),
     };
 
-    private static final int[] QUIZ_OPTIONS = {
-        R.string.flag_quiz_option_a,
-        R.string.flag_quiz_option_b,
-        R.string.flag_quiz_option_c,
-    };
-
-    private static final int CORRECT_OPTION = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,9 +67,6 @@ public class FlagGuideActivity extends AppCompatActivity {
             v -> getOnBackPressedDispatcher().onBackPressed());
 
         buildFlagKey(LayoutInflater.from(this));
-
-        KnowledgeCheck.install(this, R.id.flagQuizOptions, R.id.flagQuizAnswer,
-            R.id.flagQuizAnswerTitle, QUIZ_OPTIONS, CORRECT_OPTION);
     }
 
     private void buildFlagKey(LayoutInflater inflater) {

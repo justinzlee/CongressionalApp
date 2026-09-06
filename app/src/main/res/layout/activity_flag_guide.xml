@@ -70,27 +70,11 @@
                 android:text="@string/flag_title"
                 android:textAppearance="@style/TextAppearance.App.Headline" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="6dp"
-                android:lineSpacingMultiplier="1.5"
-                android:text="@string/flag_intro"
-                android:textAppearance="@style/TextAppearance.App.Body"
-                android:textColor="@color/text_secondary" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
-                android:layout_marginBottom="10dp"
-                android:text="@string/flag_key_heading"
-                android:textAppearance="@style/TextAppearance.App.Caption" />
-
             <LinearLayout
                 android:id="@+id/flagList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:orientation="vertical" />
 
             <!-- The disclaimer that goes on every real flag board -->
@@ -116,56 +100,6 @@
                     android:layout_marginTop="6dp"
                     android:lineSpacingMultiplier="1.5"
                     android:text="@string/flag_no_flags_body"
-                    android:textAppearance="@style/TextAppearance.App.Body" />
-            </LinearLayout>
-
-            <!-- Knowledge check -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="22dp"
-                android:layout_marginBottom="10dp"
-                android:text="@string/flag_quiz_heading"
-                android:textAppearance="@style/TextAppearance.App.Caption" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="11dp"
-                android:lineSpacingMultiplier="1.5"
-                android:text="@string/flag_quiz_question"
-                android:textAppearance="@style/TextAppearance.App.Title" />
-
-            <LinearLayout
-                android:id="@+id/flagQuizOptions"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" />
-
-            <LinearLayout
-                android:id="@+id/flagQuizAnswer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:background="@drawable/bg_accent_note"
-                android:orientation="vertical"
-                android:padding="14dp"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/flagQuizAnswerTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
-                    android:textColor="@color/primary"
-                    android:textSize="15sp" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="6dp"
-                    android:lineSpacingMultiplier="1.5"
-                    android:text="@string/flag_quiz_explanation"
                     android:textAppearance="@style/TextAppearance.App.Body" />
             </LinearLayout>
 

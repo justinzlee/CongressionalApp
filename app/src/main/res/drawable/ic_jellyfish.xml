@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Jellyfish as a lesson icon: bell over three trailing tentacles. This is
-     the flat outline mark for lists; ic_wave_jelly is the painted illustration
-     that drifts across the wave card. -->
+<!-- Jellyfish as a lesson icon: bell over three trailing tentacles. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"

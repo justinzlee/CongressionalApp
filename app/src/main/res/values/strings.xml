@@ -143,43 +143,36 @@
     <string name="saved_beach">Saved</string>
 
     <!-- Learn tab -->
-    <string name="learn_intro">Short lessons on reading the water and knowing what lives in it, so you know what you are looking at before you get in.</string>
-    <string name="learn_footnote">These lessons are general beach safety guidance. The lifeguards and signs at your beach know today\'s water — follow them first.</string>
+    <string name="learn_footnote">The lifeguards and signs at your beach know today\'s water. Follow them first.</string>
 
     <!-- Rip current guide -->
     <string name="guide_entry_title">How to spot a rip current</string>
-    <string name="guide_entry_subtitle">Four things to look for, and what to do</string>
     <string name="guide_title">Spot a rip current</string>
-    <string name="guide_intro">Stand on high ground and watch the water for a minute before you go in. Rips are the calm-looking lanes, not the breaking waves.</string>
-    <string name="guide_signs_heading">What to look for</string>
     <string name="guide_sign_1_title">A darker, calmer lane</string>
-    <string name="guide_sign_1_body">Rips look deceptively flat and inviting. Waves break either side of them, not in them.</string>
+    <string name="guide_sign_1_body">Flat and inviting. Waves break either side of it, not in it.</string>
     <string name="guide_sign_2_title">Sand or foam heading out</string>
-    <string name="guide_sign_2_body">Look for churned brown water or foam moving away from the beach past the breakers.</string>
+    <string name="guide_sign_2_body">Churned brown water or foam moving out past the breakers.</string>
     <string name="guide_sign_3_title">A gap in the breaking waves</string>
-    <string name="guide_sign_3_body">Where the white water stops, the water is deeper — that is the rip channel.</string>
+    <string name="guide_sign_3_body">Where the white water stops, the water is deeper.</string>
     <string name="guide_sign_4_title">Ripples in a straight line</string>
-    <string name="guide_sign_4_body">A rippled surface running seaward while the water beside it is smooth.</string>
+    <string name="guide_sign_4_body">A rippled lane running seaward through smooth water.</string>
     <string name="guide_caught_title">Caught in one?</string>
-    <string name="guide_caught_body">Don\'t swim against it. Float, keep your head above water, raise an arm and shout. If you can swim, go sideways towards the breaking waves, then back to shore.</string>
+    <string name="guide_caught_body">Don\'t swim against it. Float, keep your head up, raise an arm and shout. If you can swim, go sideways towards the breaking waves, then in.</string>
 
 
     <!-- Beach warning flags guide -->
     <string name="flag_entry_title">What the beach flags mean</string>
-    <string name="flag_entry_subtitle">Five flags, and what each one is telling you</string>
     <string name="flag_title">Beach warning flags</string>
-    <string name="flag_intro">Lifeguards fly these flags to say how safe the water is right now. Look for the flag board when you arrive, and check it again through the day — conditions change.</string>
-    <string name="flag_key_heading">The flags</string>
     <string name="flag_double_red_title">Double red — Water closed</string>
-    <string name="flag_double_red_body">The water is closed to everyone. Swimming and all other water activity are prohibited until the flags come down.</string>
+    <string name="flag_double_red_body">Closed to everyone, for every water activity.</string>
     <string name="flag_red_title">Red — High hazard</string>
-    <string name="flag_red_body">High surf, strong currents, or both. Knee-deep water is already too deep to be safe, so stay out.</string>
+    <string name="flag_red_body">Stay out. Knee-deep is already too deep to be safe.</string>
     <string name="flag_yellow_title">Yellow — Moderate surf or currents</string>
-    <string name="flag_yellow_body">Caution advised. Swim near a lifeguard, stay close to shore, and keep children within arm\'s reach.</string>
+    <string name="flag_yellow_body">Swim near a lifeguard and stay close to shore.</string>
     <string name="flag_green_title">Green — Calm conditions</string>
-    <string name="flag_green_body">Calm water and low hazard. Still swim near a lifeguard, and never swim alone.</string>
+    <string name="flag_green_body">Low hazard. Still swim near a lifeguard, never alone.</string>
     <string name="flag_purple_title">Purple — Dangerous marine life</string>
-    <string name="flag_purple_body">Jellyfish, stingrays or other marine pests have been spotted. Purple flies alongside another flag, never on its own — read that flag for the water conditions.</string>
+    <string name="flag_purple_body">Jellyfish or stingrays about. Read the flag flying with it.</string>
     <string name="flag_double_red_icon_desc">Two red flags</string>
     <string name="flag_icon_desc">%1$s flag</string>
     <string name="flag_color_red">Red</string>
@@ -187,28 +180,21 @@
     <string name="flag_color_green">Green</string>
     <string name="flag_color_purple">Purple</string>
     <string name="flag_no_flags_title">No flags flying?</string>
-    <string name="flag_no_flags_body">Absence of flags does not assure safe waters. Swim at your own risk. Not every beach is patrolled, and an empty flag board means nobody has assessed the water — not that it is safe.</string>
-    <string name="flag_quiz_heading">Knowledge check</string>
-    <string name="flag_quiz_question">You get to the beach and a single red flag is flying. What should you do?</string>
-    <string name="flag_quiz_option_a">Stay out of the water</string>
-    <string name="flag_quiz_option_b">Wade in, but only up to your knees</string>
-    <string name="flag_quiz_option_c">Swim, as long as you stay near a lifeguard tower</string>
-    <string name="flag_quiz_correct">That\'s right</string>
-    <string name="flag_quiz_incorrect">Not quite</string>
-    <string name="flag_quiz_explanation">Red means high hazard — high surf, strong currents, or both. Even knee-deep water is too deep to be safe, and a lifeguard nearby doesn\'t change that. Wait for the flag to change.</string>
+    <string name="flag_no_flags_body">No flags does not mean safe. It usually means nobody is watching the water.</string>
 
 
 
     <!-- Daily practice -->
+    <!-- Shared by every knowledge check: the flag guide no longer has one, the daily practice does -->
+    <string name="quiz_correct">That\'s right</string>
+    <string name="quiz_incorrect">Not quite</string>
     <string name="practice_entry_title">Today\'s practice</string>
-    <string name="practice_entry_subtitle">Three quick questions, new every day</string>
     <string name="practice_entry_streak_one">Done today · 1 day in a row</string>
     <string name="practice_entry_streak">Done today · %1$d days in a row</string>
     <string name="practice_title">Today\'s practice</string>
-    <string name="practice_intro">Three questions, different every day. Nothing to revise for — these are the things worth knowing by heart before you are standing on the sand deciding.</string>
     <string name="practice_progress">Question %1$d of %2$d</string>
     <string name="practice_done_title">That\'s today\'s three</string>
-    <string name="practice_done_body">Three more tomorrow. The questions cycle through everything the lessons on this tab cover, so they keep coming back around until they stick.</string>
+    <string name="practice_done_body">Three more tomorrow.</string>
     <string name="practice_score">You got %1$d of %2$d</string>
 
     <!-- The question pool. Kept general on purpose: these should be gettable by
@@ -352,103 +338,91 @@
     <!-- Stings and bites guide -->
     <string name="sting_title">Stings and bites</string>
     <string name="sting_911_title">Call 911 first if</string>
-    <string name="sting_911_body">Breathing is hard, the face or throat is swelling, the chest hurts, or the person is faint or confused. Call too for a sting to the face, neck or torso, a barb still in the body, a sting across a large part of a child, or bleeding you cannot stop.</string>
+    <string name="sting_911_body">Trouble breathing, swelling of the face or throat, chest pain, faintness or confusion. Call too for a sting to the face, neck or torso, a barb still in the body, or bleeding you cannot stop.</string>
     <string name="sting_feels_heading">How you know</string>
     <string name="sting_do_heading">Do this</string>
     <string name="sting_dont_heading">Don\'t</string>
 
     <string name="sting_ray_title">Stingray</string>
     <string name="sting_ray_subtitle">Sudden deep pain in the foot or ankle</string>
-    <string name="sting_ray_feels">You almost never see it coming. A ray buried in shallow sand whips its tail when you step on it, leaving a ragged puncture that bleeds and a pain that keeps climbing for the first hour.</string>
+    <string name="sting_ray_feels">A ray buried in shallow sand whips its tail when you step on it, leaving a ragged puncture and a pain that climbs for an hour.</string>
     <string-array name="sting_ray_do">
-        <item>Get out of the water and sit down. Rinse the wound with sea water and let it bleed for a moment — that flushes it out.</item>
-        <item>Soak it in the hottest water you can hold a hand in without scalding, about 110–113°F (43–45°C), for 30 to 90 minutes. Heat breaks the venom down and is the fastest way to stop the pain.</item>
-        <item>Lift out spine fragments you can see and grip. Leave anything deeply embedded exactly where it is.</item>
-        <item>Get it looked at. Ray wounds are dirty, infect easily, and usually need cleaning and a tetanus shot.</item>
+        <item>Get out of the water, sit down, rinse with sea water and let it bleed for a moment.</item>
+        <item>Soak it in the hottest water you can hold a hand in without scalding, about 110–113°F (43–45°C), for 30 to 90 minutes. Heat breaks the venom down.</item>
+        <item>Lift out spine fragments you can see and grip. Leave anything deeply embedded where it is.</item>
+        <item>Get it looked at — ray wounds infect easily and usually need a tetanus shot.</item>
     </string-array>
     <string-array name="sting_ray_dont">
         <item>Don\'t pull a barb out of the chest, neck or abdomen. Call 911 and leave it in place.</item>
-        <item>Don\'t use ice, and don\'t seal the wound under a tight bandage. Cold makes this pain worse, not better.</item>
+        <item>Don\'t use ice or a tight bandage. Cold makes this pain worse.</item>
     </string-array>
 
     <string name="sting_jelly_title">Jellyfish</string>
     <string name="sting_jelly_subtitle">A burning line or welt where a tentacle brushed you</string>
-    <string name="sting_jelly_feels">A sting like a hot whip, then a raised red print of the tentacle. Moon jellies barely register. Sea nettles and lion\'s mane sting hard, and tentacle pieces left on the skin keep firing for as long as they sit there.</string>
+    <string name="sting_jelly_feels">A sting like a hot whip, then a raised red print of the tentacle. Pieces left on the skin keep firing while they sit there.</string>
     <string-array name="sting_jelly_do">
         <item>Get out of the water and keep the area still. Movement fires more stingers.</item>
-        <item>Rinse with vinegar for 30 seconds if you have it, or with sea water if you don\'t.</item>
-        <item>Lift tentacles off with tweezers or the edge of a card, never bare fingers.</item>
-        <item>Soak the skin in hot water, about 110–113°F (43–45°C), for 20 to 45 minutes, then use hydrocortisone cream for the itch that follows.</item>
+        <item>Rinse with vinegar for 30 seconds, or sea water if you have none.</item>
+        <item>Lift tentacles off with tweezers or a card edge, never bare fingers.</item>
+        <item>Soak in hot water, about 110–113°F (43–45°C), for 20 to 45 minutes, then hydrocortisone cream for the itch.</item>
     </string-array>
     <string-array name="sting_jelly_dont">
-        <item>Don\'t rinse with fresh water and don\'t rub with sand or a towel. All three set off stingers that had not gone off yet.</item>
-        <item>Urine does not help. It is closer to fresh water than to vinegar, so it can make the sting worse.</item>
+        <item>Don\'t rinse with fresh water, and don\'t rub with sand or a towel. All three set off stingers.</item>
+        <item>Urine does not help and can make the sting worse.</item>
     </string-array>
 
     <string name="sting_manowar_title">Portuguese man o\' war</string>
     <string name="sting_manowar_subtitle">Blue float on the sand, long threads trailing behind</string>
-    <string name="sting_manowar_feels">Not one animal but a colony, and the blue balloon you can see is the harmless part. The threads behind it run up to 30 feet, sting instantly and severely, and go on stinging on dry sand for days after the animal dies.</string>
+    <string name="sting_manowar_feels">The blue balloon is the harmless part. The threads behind it run up to 30 feet and go on stinging on dry sand for days.</string>
     <string-array name="sting_manowar_do">
-        <item>Get out of the water and pick the threads off with tweezers or a card edge, not your fingers.</item>
-        <item>Rinse with sea water. Vinegar is the standard jellyfish rinse but is still argued over for man o\' war, so sea water is the safe choice if you are unsure.</item>
-        <item>Soak in hot water, about 110–113°F (43–45°C), for 20 to 45 minutes. This is the step with the best evidence behind it.</item>
-        <item>Stay with the person for an hour. Cramps, nausea, chest tightness or trouble breathing mean call 911.</item>
+        <item>Get out of the water and pick the threads off with tweezers or a card edge.</item>
+        <item>Rinse with sea water. Vinegar is still argued over for man o\' war, so sea water is the safe choice.</item>
+        <item>Soak in hot water, about 110–113°F (43–45°C), for 20 to 45 minutes.</item>
+        <item>Stay with the person for an hour. Cramps, nausea or trouble breathing mean call 911.</item>
     </string-array>
     <string-array name="sting_manowar_dont">
-        <item>Don\'t touch one washed up on the beach, however shrivelled it looks. It is still loaded.</item>
+        <item>Don\'t touch one washed up on the beach, however shrivelled. It is still loaded.</item>
         <item>Don\'t use fresh water, sand, or a pressure bandage.</item>
     </string-array>
 
     <string name="sting_urchin_title">Sea urchin</string>
     <string name="sting_urchin_subtitle">Brittle spines left in the foot after a step on rock</string>
-    <string name="sting_urchin_feels">Sharp pain the instant you stand on one, then dark purple dots in the skin where the spines snapped off. Some species also leave tiny pincers behind that keep releasing venom.</string>
+    <string name="sting_urchin_feels">Sharp pain the instant you stand on one, then dark purple dots where the spines snapped off in the skin.</string>
     <string-array name="sting_urchin_do">
         <item>Soak the foot in hot water, about 110–113°F (43–45°C), for 30 to 90 minutes. It eases the pain and softens the spines.</item>
         <item>Pull out spines you can grip with tweezers, one at a time.</item>
-        <item>See a doctor for spines that are deep, near a joint, or too many to count. Buried spines cause infections weeks later.</item>
+        <item>See a doctor for spines that are deep, near a joint, or too many to count.</item>
     </string-array>
     <string-array name="sting_urchin_dont">
-        <item>Don\'t dig for spines with a needle or crush them under the skin. That only leaves fragments deeper in.</item>
+        <item>Don\'t dig with a needle or crush spines under the skin. That leaves fragments deeper in.</item>
     </string-array>
 
     <string name="sting_sealice_title">Sea lice</string>
     <string name="sting_sealice_subtitle">An itchy rash under your swimsuit, hours after you swam</string>
-    <string name="sting_sealice_feels">Not lice at all, but pinhead jellyfish larvae that get trapped under fabric and sting where the suit presses. The rash appears four to twenty-four hours later, only where the suit covered you. Common in Florida and the Gulf in spring.</string>
+    <string name="sting_sealice_feels">Pinhead jellyfish larvae trapped under fabric, stinging where the suit presses. The rash shows up four to twenty-four hours later.</string>
     <string-array name="sting_sealice_do">
-        <item>Take the swimsuit off before you shower. Showering in it presses the larvae into your skin.</item>
-        <item>Rinse the skin with sea water or vinegar, then shower and dry off.</item>
-        <item>Wash and dry the suit on hot. Larvae survive in damp fabric and sting again the next time you wear it.</item>
-        <item>Use hydrocortisone cream or an antihistamine for the itch. It settles in two to four days.</item>
+        <item>Take the swimsuit off before you shower. Showering in it presses the larvae in.</item>
+        <item>Rinse with sea water or vinegar, then shower and dry off.</item>
+        <item>Wash and dry the suit on hot. Larvae survive in damp fabric and sting again.</item>
+        <item>Hydrocortisone cream or an antihistamine for the itch. It settles in two to four days.</item>
     </string-array>
     <string-array name="sting_sealice_dont">
-        <item>Don\'t scratch. Broken skin here infects easily in warm salt water.</item>
+        <item>Don\'t scratch. Broken skin infects easily in warm salt water.</item>
     </string-array>
 
-    <string name="sting_prevent_title">Most of this is avoidable</string>
-    <string name="sting_prevent_body">Shuffle your feet as you wade in rather than lifting them — a ray feels the vibration and leaves. Check the flag board for purple before you get in, scan the tide line for washed-up jellies, and wear water shoes anywhere there is rock or reef.</string>
     <string name="sting_footnote">This is general first aid, not medical advice. If you are unsure, or the person gets worse, call 911 or Poison Help on 1-800-222-1222.</string>
 
 
     <!-- Beach wildlife guide -->
     <string name="wildlife_entry_title">Wildlife at your beach</string>
-    <string name="wildlife_entry_subtitle">Who turns up on each coast, and who to give room</string>
     <string name="wildlife_title">Beach wildlife</string>
-    <string name="wildlife_intro">Nearly everything you meet at the beach wants nothing to do with you. These are the animals that actually turn up at the beaches in this app, coast by coast — the harmless, the ones that sting, and the ones the law says to leave alone.</string>
-    <string name="wildlife_coast_heading">Pick a coast</string>
-    <string name="wildlife_key_heading">What the tags mean</string>
     <string name="wildlife_beaches_label">In this app: %1$s</string>
-    <string name="wildlife_species_heading">Who you\'ll meet</string>
     <string name="wildlife_first_aid_link">First aid</string>
-    <string name="wildlife_footnote">Seasons and sightings shift year to year. The lifeguards on duty know what came in this week — ask them.</string>
 
     <string name="wildlife_risk_harmless">Harmless</string>
     <string name="wildlife_risk_room">Give it room</string>
     <string name="wildlife_risk_sting">Can sting</string>
     <string name="wildlife_risk_protected">Protected</string>
-    <string name="wildlife_risk_harmless_key">No reason to get out of the water.</string>
-    <string name="wildlife_risk_room_key">Safe so long as you keep your distance.</string>
-    <string name="wildlife_risk_sting_key">Know the first aid before you go in.</string>
-    <string name="wildlife_risk_protected_key">Federal law — stay back, never touch or feed.</string>
 
     <!-- Southern California -->
     <string name="wildlife_region_socal">Southern California</string>

@@ -50,15 +50,6 @@
             android:paddingTop="6dp"
             android:paddingBottom="24dp">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="18dp"
-                android:lineSpacingMultiplier="1.5"
-                android:text="@string/learn_intro"
-                android:textAppearance="@style/TextAppearance.App.Body"
-                android:textColor="@color/text_secondary" />
-
             <!-- Today's practice: the one card on this screen that changes -->
             <LinearLayout
                 android:id="@+id/learnPracticeCard"
