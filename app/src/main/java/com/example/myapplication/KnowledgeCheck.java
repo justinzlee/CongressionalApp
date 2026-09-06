@@ -124,7 +124,7 @@ public final class KnowledgeCheck {
         }
 
         answerTitle.setText(chosen == correctOption
-            ? R.string.flag_quiz_correct : R.string.flag_quiz_incorrect);
+            ? R.string.quiz_correct : R.string.quiz_incorrect);
         answerPanel.setVisibility(View.VISIBLE);
 
         if (listener != null) {

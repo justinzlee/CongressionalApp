@@ -28,6 +28,7 @@ public class LearnActivity extends AppCompatActivity {
     /** One lesson: a row on this screen, and a full screen of its own. */
     private static final class Lesson {
         @StringRes final int titleRes;
+        /** A line the title does not already say, or 0 for none. */
         @StringRes final int subtitleRes;
         @DrawableRes final int iconRes;
         final Class<? extends Activity> target;
@@ -69,17 +70,17 @@ public class LearnActivity extends AppCompatActivity {
         // The flag board is on the sand, not in the water, so it belongs with
         // what you check on the way down rather than with rip currents.
         new Group(R.string.learn_group_before, new Lesson[] {
-            new Lesson(R.string.flag_entry_title, R.string.flag_entry_subtitle,
+            new Lesson(R.string.flag_entry_title, 0,
                 R.drawable.ic_flag, FlagGuideActivity.class),
         }),
         new Group(R.string.learn_group_water, new Lesson[] {
-            new Lesson(R.string.guide_entry_title, R.string.guide_entry_subtitle,
+            new Lesson(R.string.guide_entry_title, 0,
                 R.drawable.ic_wave, RipGuideActivity.class),
         }),
         // Each animal is its own lesson: someone who has just been stung wants
         // that one set of steps, not a list of five to pick through.
         new Group(R.string.learn_group_marine_life, new Lesson[] {
-            new Lesson(R.string.wildlife_entry_title, R.string.wildlife_entry_subtitle,
+            new Lesson(R.string.wildlife_entry_title, 0,
                 R.drawable.ic_fish, WildlifeGuideActivity.class),
             Lesson.of(Sting.STINGRAY),
             Lesson.of(Sting.JELLYFISH),
@@ -115,7 +116,15 @@ public class LearnActivity extends AppCompatActivity {
             for (Lesson lesson : group.lessons) {
                 View row = inflater.inflate(R.layout.item_learn_row, rows, false);
                 ((TextView) row.findViewById(R.id.learnRowTitle)).setText(lesson.titleRes);
-                ((TextView) row.findViewById(R.id.learnRowSubtitle)).setText(lesson.subtitleRes);
+                // The stings carry a symptom line, which is how you find the
+                // right one; the guides say it all in the title, so their row
+                // is the title alone rather than a restatement under it.
+                TextView subtitle = row.findViewById(R.id.learnRowSubtitle);
+                if (lesson.subtitleRes != 0) {
+                    subtitle.setText(lesson.subtitleRes);
+                } else {
+                    subtitle.setVisibility(View.GONE);
+                }
                 ((ImageView) row.findViewById(R.id.learnRowIcon)).setImageResource(lesson.iconRes);
                 row.setOnClickListener(v -> startActivity(lesson.sting != null
                     ? StingGuideActivity.intentFor(this, lesson.sting)
@@ -131,16 +140,21 @@ public class LearnActivity extends AppCompatActivity {
      * The practice card is the one thing on this screen that changes, so its
      * subtitle is written fresh each time the tab comes forward — including
      * after finishing a round, which happens while this screen is behind it.
+     *
+     * Until today's round is done there is nothing to say that "Today's
+     * practice" does not, so the card is the title alone and the subtitle
+     * appears only once it has a streak to report.
      */
     private void bindPracticeCard() {
         PracticeStore store = new PracticeStore(this);
         TextView subtitle = findViewById(R.id.learnPracticeSubtitle);
 
         if (!store.isDoneToday()) {
-            subtitle.setText(R.string.practice_entry_subtitle);
+            subtitle.setVisibility(View.GONE);
             return;
         }
 
+        subtitle.setVisibility(View.VISIBLE);
         int streak = store.getStreak();
         if (streak <= 1) {
             subtitle.setText(R.string.practice_entry_streak_one);

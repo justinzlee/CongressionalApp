@@ -11,17 +11,13 @@ import android.graphics.Path;
 import android.graphics.RadialGradient;
 import android.graphics.Shader;
 import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 
-import androidx.core.content.ContextCompat;
-
 import com.example.myapplication.util.UnitConverter;
 
 import java.util.Locale;
-import java.util.Random;
 
 /**
  * The water half of the wave-height card: a live sea whose surface sits at the
@@ -30,15 +26,13 @@ import java.util.Random;
  * Three swells roll across at different speeds so the water has depth, the
  * whole sheet breathes up and down, and the front crest carries a foam line
  * that runs along it. The colour of the water is the reading, blending from
- * green through amber to red as the surf builds (see {@link WaveScale}), and
- * once the surf is over four feet sharks and jellyfish start crossing the frame
- * below the waterline.
+ * green through amber to red as the surf builds (see {@link WaveScale}).
  *
  * Geometry is transcribed from the "Wave Height Card" design, which draws into
  * a 224x250 box stretched to fill the panel. Rather than convert every number,
  * the canvas is scaled to that box and the sea below is drawn in the design's
- * own units; the reading, the crest guide and the creatures are HTML rather
- * than SVG in the design, so those are drawn in view pixels instead.
+ * own units; the reading and the crest guide are HTML rather than SVG in the
+ * design, so those are drawn in view pixels instead.
  */
 public class WaveHeightView extends View {
 
@@ -83,24 +77,6 @@ public class WaveHeightView extends View {
     private static final int UNIT_COLOR = 0xFFB2B6CA;
     private static final int NUMBER_SHADOW = 0xB3060A14;
 
-    /** Panel width the design's pixel sizes assume, used to scale them here. */
-    private static final float PANEL_REF_W = 254f;
-    private static final int CREATURE_SLOTS = 3;
-    private static final float CREATURE_MIN_FT = 4f;
-    private static final float SPAWN_INTERVAL_S = 1.1f;
-    private static final float SPAWN_CHANCE = 0.3f;
-    private static final float CREATURE_FADE_S = 0.45f;
-    /**
-     * Creatures stay this far below the waterline, never in mid-air, as a
-     * percentage of the panel. It was written as 1.5ft and divided by the
-     * scale's range, which reads like a depth but is really a gap on screen —
-     * so widening the scale quietly shrank it. Stated as the gap it is.
-     */
-    private static final float CREATURE_CLEARANCE_PCT = 18.75f;
-    /** The travel a creature makes across the panel, in the design's pixels. */
-    private static final float CREATURE_FROM_X = -34f;
-    private static final float CREATURE_TO_X = 268f;
-
     private final Paint fillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint strokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint glowPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -111,13 +87,8 @@ public class WaveHeightView extends View {
     private final Paint unitPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     private final Path wavePath = new Path();
-    private final Random random = new Random();
     private final float density;
     private final float cornerPx;
-
-    private final Drawable shark;
-    private final Drawable jelly;
-    private final Creature[] creatures = new Creature[CREATURE_SLOTS];
 
     private Shader backShader;
     private Shader midShader;
@@ -127,8 +98,6 @@ public class WaveHeightView extends View {
     private float shaderGradEnd = -1f;
 
     private long startNanos;
-    private float nextSpawnT;
-    private boolean nextIsShark;
 
     private float heightFt;
     private boolean hasReading;
@@ -137,12 +106,6 @@ public class WaveHeightView extends View {
         super(context, attrs);
         density = context.getResources().getDisplayMetrics().density;
         cornerPx = 10f * density;
-
-        shark = ContextCompat.getDrawable(context, R.drawable.ic_wave_shark);
-        jelly = ContextCompat.getDrawable(context, R.drawable.ic_wave_jelly);
-        for (int i = 0; i < creatures.length; i++) {
-            creatures[i] = new Creature();
-        }
 
         strokePaint.setStyle(Paint.Style.STROKE);
         strokePaint.setStrokeCap(Paint.Cap.ROUND);
@@ -220,8 +183,6 @@ public class WaveHeightView extends View {
         // The guide points at a height on the scale, so like the marker beside
         // it, it stays away until there is a reading to point at.
         if (hasReading) drawGuide(canvas, w, crestPx);
-        updateCreatures(t, ratio, crest);
-        drawCreatures(canvas, w, h, t);
         drawReading(canvas, h, crestPx);
         canvas.drawRoundRect(0.5f * density, 0.5f * density,
             w - 0.5f * density, h - 0.5f * density, cornerPx, cornerPx, edgePaint);
@@ -419,89 +380,5 @@ public class WaveHeightView extends View {
         canvas.drawText(value, x, baseline, numberPaint);
         canvas.drawText(UnitConverter.waveHeightUnit(getContext()),
             x + numberPaint.measureText(value) + 4f * density, baseline, unitPaint);
-    }
-
-    // -- creatures ----------------------------------------------------------
-
-    /** One reusable slot: which animal is in it, where, and how long it has. */
-    private static final class Creature {
-        boolean active;
-        boolean isShark;
-        float top;       // fraction of the panel height, of the drawing's top edge
-        float bornT;
-        float durS;
-        float widthRef;  // width in the design's panel pixels
-        float alpha;
-        float retiredT = -1f;
-    }
-
-    private void updateCreatures(float t, float ratio, float crest) {
-        // Keep every creature under the waterline with a clear gap to spare, so
-        // a rising sea pulls them out rather than stranding them above it.
-        float ceiling = Math.max(crest / VB_H * 100f + 6f,
-            (1f - ratio) * 100f + CREATURE_CLEARANCE_PCT);
-
-        for (Creature c : creatures) {
-            if (!c.active) continue;
-            if (t - c.bornT >= c.durS) {
-                c.active = false;
-            } else if (c.retiredT < 0f && c.top * 100f < ceiling) {
-                c.retiredT = t;
-            } else if (c.retiredT >= 0f && t - c.retiredT >= CREATURE_FADE_S) {
-                c.active = false;
-            }
-        }
-
-        if (t < nextSpawnT) return;
-        nextSpawnT = t + SPAWN_INTERVAL_S;
-        if (!hasReading || heightFt <= CREATURE_MIN_FT) return;
-        if (random.nextFloat() > SPAWN_CHANCE) return;
-
-        int slot = -1;
-        for (int i = 0; i < creatures.length; i++) {
-            if (!creatures[i].active) {
-                slot = i;
-                break;
-            }
-        }
-        if (slot < 0) return;
-
-        // Alternate the two species so both actually turn up.
-        nextIsShark = !nextIsShark;
-        Creature c = creatures[slot];
-        c.active = true;
-        c.isShark = nextIsShark;
-        c.bornT = t;
-        c.retiredT = -1f;
-        c.top = (ceiling + random.nextFloat() * Math.max(4f, 96f - ceiling)) / 100f;
-        c.durS = c.isShark ? 6f + random.nextFloat() * 4f : 12f + random.nextFloat() * 7f;
-        c.widthRef = c.isShark ? 50f + random.nextFloat() * 14f : 30f + random.nextFloat() * 10f;
-        c.alpha = 0.55f + random.nextFloat() * 0.35f;
-    }
-
-    private void drawCreatures(Canvas canvas, int w, int h, float t) {
-        float scale = w / PANEL_REF_W;
-        float travel = CREATURE_TO_X - CREATURE_FROM_X;
-        for (Creature c : creatures) {
-            if (!c.active) continue;
-            Drawable drawable = c.isShark ? shark : jelly;
-            if (drawable == null) continue;
-
-            float width = c.widthRef * scale;
-            float height = width * drawable.getIntrinsicHeight() / drawable.getIntrinsicWidth();
-            float x = (CREATURE_FROM_X + (t - c.bornT) / c.durS * travel) * scale;
-            float fade = c.retiredT < 0f
-                ? 1f : Math.max(0f, 1f - (t - c.retiredT) / CREATURE_FADE_S);
-            // A slow roll as it swims, the same one the design gives them.
-            double bob = 2 * Math.PI * (t - c.bornT) / 4.8;
-
-            canvas.save();
-            canvas.translate(x, c.top * h + 2.5f * (float) Math.sin(bob) * scale);
-            canvas.rotate(2f * (float) Math.sin(bob), width / 2f, height / 2f);
-            drawable.setBounds(0, 0, Math.round(width), Math.round(height));
-            drawable.setAlpha(Math.round(c.alpha * fade * 255f));
-            drawable.draw(canvas);
-            canvas.restore();
-        }
     }
 }

@@ -38,23 +38,17 @@ public class WildlifeGuideActivity extends AppCompatActivity {
      * because it answers the same question: how close can I get?
      */
     private enum Risk {
-        HARMLESS(R.string.wildlife_risk_harmless, R.string.wildlife_risk_harmless_key,
-            R.color.safe, R.color.safe_tint),
-        GIVE_ROOM(R.string.wildlife_risk_room, R.string.wildlife_risk_room_key,
-            R.color.caution, R.color.caution_tint),
-        CAN_STING(R.string.wildlife_risk_sting, R.string.wildlife_risk_sting_key,
-            R.color.danger, R.color.danger_tint),
-        PROTECTED(R.string.wildlife_risk_protected, R.string.wildlife_risk_protected_key,
-            R.color.primary, R.color.accent_tint);
+        HARMLESS(R.string.wildlife_risk_harmless, R.color.safe, R.color.safe_tint),
+        GIVE_ROOM(R.string.wildlife_risk_room, R.color.caution, R.color.caution_tint),
+        CAN_STING(R.string.wildlife_risk_sting, R.color.danger, R.color.danger_tint),
+        PROTECTED(R.string.wildlife_risk_protected, R.color.primary, R.color.accent_tint);
 
         @StringRes final int labelRes;
-        @StringRes final int keyRes;
         @ColorRes final int colorRes;
         @ColorRes final int tintRes;
 
-        Risk(int labelRes, int keyRes, int colorRes, int tintRes) {
+        Risk(int labelRes, int colorRes, int tintRes) {
             this.labelRes = labelRes;
-            this.keyRes = keyRes;
             this.colorRes = colorRes;
             this.tintRes = tintRes;
         }
@@ -216,8 +210,6 @@ public class WildlifeGuideActivity extends AppCompatActivity {
 
         LayoutInflater inflater = LayoutInflater.from(this);
         buildCoastChips(inflater);
-        buildRiskKey(inflater);
-
         if (savedInstanceState != null) {
             selectedCoast = savedInstanceState.getInt(STATE_COAST, 0);
         }
@@ -305,16 +297,6 @@ public class WildlifeGuideActivity extends AppCompatActivity {
             GradientDrawable shape = (GradientDrawable) background.mutate();
             shape.setColor(color);
             shape.setStroke(Math.round(getResources().getDisplayMetrics().density), edge);
-        }
-    }
-
-    private void buildRiskKey(LayoutInflater inflater) {
-        ViewGroup list = findViewById(R.id.wildlifeRiskKey);
-        for (Risk risk : Risk.values()) {
-            View row = inflater.inflate(R.layout.item_risk_key, list, false);
-            paintTag(row.findViewById(R.id.riskKeyChip), risk, risk.labelRes);
-            ((TextView) row.findViewById(R.id.riskKeyText)).setText(risk.keyRes);
-            list.addView(row);
         }
     }
 
