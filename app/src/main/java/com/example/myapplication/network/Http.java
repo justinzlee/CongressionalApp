@@ -15,14 +15,17 @@ import okhttp3.OkHttpClient;
  * pool and its own dispatcher threads per instance, so separate clients meant
  * no connection reuse between the weather, tide and photo calls that all go to
  * the same two hosts. And a single thread per client meant the repository's
- * seventeen beaches were fetched strictly one after another — each weather
- * fetch being two sequential round trips, that is thirty-four in a row before
- * the last beach has any data.
+ * beaches were fetched strictly one after another — each weather fetch being
+ * two sequential round trips, that is twice the beach count in a row before
+ * the last one has any data.
  *
- * <p>{@link #WORKERS} is sized for that fan-out: enough to bring the first
- * screen's data in within a few seconds, while staying polite to a free public
- * API. The threads are daemons so a pool sitting idle can never hold the
- * process open.
+ * <p>{@link #WORKERS} is sized for the fan-out that remains. It no longer has
+ * to scale with the beach list: {@code WeatherClient} asks Open-Meteo for a
+ * batch of coordinates at a time, so a refresh of the whole coastline is a
+ * handful of tasks rather than one per beach. That leaves this pool wide
+ * enough to run those batches alongside the tide call a detail screen makes,
+ * while staying polite to a free public API. The threads are daemons so a pool
+ * sitting idle can never hold the process open.
  */
 final class Http {
 

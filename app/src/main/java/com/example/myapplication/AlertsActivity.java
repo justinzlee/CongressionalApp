@@ -56,6 +56,9 @@ public class AlertsActivity extends AppCompatActivity {
         TabBar.refreshAlertBadge(this);
     }
 
+    /** How many alert rows the screen will draw, worst first. */
+    private static final int MAX_LISTED_ALERTS = 40;
+
     private void bindAlerts() {
         List<BeachAlert> alerts = BeachAlert.from(this, BeachRepository.getInstance().getBeaches());
 
@@ -95,8 +98,13 @@ public class AlertsActivity extends AppCompatActivity {
             hero.setVisibility(View.GONE);
         }
 
+        // The heading counts every alert, but only the worst of them are drawn.
+        // These rows go into a plain container inside the page scroll, so each
+        // one is inflated and kept - and now that the app covers every coast, a
+        // hot, high-UV afternoon can raise a hazard at most beaches at once.
+        // The list is worst-first, so the tail this drops is the mildest.
         LayoutInflater inflater = LayoutInflater.from(this);
-        for (BeachAlert alert : alerts) {
+        for (BeachAlert alert : alerts.subList(0, Math.min(alerts.size(), MAX_LISTED_ALERTS))) {
             list.addView(buildRow(inflater, list, alert));
         }
     }

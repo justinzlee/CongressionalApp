@@ -6,8 +6,12 @@ import com.google.gson.JsonParser;
 
 import org.junit.Test;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 /**
  * Pins how a live response is turned into {@link BeachConditions}.
@@ -97,5 +101,75 @@ public class WeatherClientTest {
 
         assertNull(c.getAirTemperature());
         assertEquals(8.2, c.getWindSpeed(), 0.001);
+    }
+/**
+     * Open-Meteo answers one coordinate with an object and several with an
+     * array, and the whole beach list is now fetched a batch at a time. The
+     * array has to be unpacked in request order, because the caller matches
+     * each entry back to a beach by position — an off-by-one here would put
+     * Maine’s surf report under a beach in Hawaii.
+     */
+    @Test
+    public void readsBatchedResponseInRequestOrder() {
+        List<JsonObject> currents = WeatherClient.readCurrents(
+            "[{\"current\":{\"temperature_2m\":50.0}},"
+                + "{\"current\":{\"temperature_2m\":80.0}},"
+                + "{\"current\":{\"temperature_2m\":60.0}}]", 3);
+
+        assertEquals(3, currents.size());
+        assertEquals(50.0, WeatherClient.buildConditions(currents.get(0), null)
+            .getAirTemperature(), 0.001);
+        assertEquals(80.0, WeatherClient.buildConditions(currents.get(1), null)
+            .getAirTemperature(), 0.001);
+        assertEquals(60.0, WeatherClient.buildConditions(currents.get(2), null)
+            .getAirTemperature(), 0.001);
+    }
+
+    @Test
+    public void singleCoordinateStillAnswersAsOneObject() {
+        List<JsonObject> currents = WeatherClient.readCurrents(
+            "{\"current\":{\"temperature_2m\":71.4}}", 1);
+
+        assertEquals(1, currents.size());
+        assertNotNull(currents.get(0));
+        assertEquals(71.4, WeatherClient.buildConditions(currents.get(0), null)
+            .getAirTemperature(), 0.001);
+    }
+
+    /**
+     * A short answer must leave the tail of the batch unknown rather than
+     * shifting later beaches onto earlier readings.
+     */
+    @Test
+    public void shortBatchLeavesTheRemainingPointsUnknown() {
+        List<JsonObject> currents = WeatherClient.readCurrents(
+            "[{\"current\":{\"temperature_2m\":50.0}}]", 3);
+
+        assertEquals(3, currents.size());
+        assertNotNull(currents.get(0));
+        assertNull(currents.get(1));
+        assertNull(currents.get(2));
+    }
+
+    @Test
+    public void unparseableBatchYieldsNothingRatherThanThrowing() {
+        assertTrue(WeatherClient.readCurrents("<html>502 Bad Gateway</html>", 3).isEmpty());
+        assertTrue(WeatherClient.readCurrents("", 3).isEmpty());
+    }
+
+    /**
+     * An entry Open-Meteo could not model has no {@code current} block. That
+     * point is unknown; the rest of the batch is still good.
+     */
+    @Test
+    public void entryWithoutCurrentIsUnknownButDoesNotSinkTheBatch() {
+        List<JsonObject> currents = WeatherClient.readCurrents(
+            "[{\"error\":true,\"reason\":\"No data\"},"
+                + "{\"current\":{\"temperature_2m\":80.0}}]", 2);
+
+        assertEquals(2, currents.size());
+        assertNull(currents.get(0));
+        assertEquals(80.0, WeatherClient.buildConditions(currents.get(1), null)
+            .getAirTemperature(), 0.001);
     }
 }

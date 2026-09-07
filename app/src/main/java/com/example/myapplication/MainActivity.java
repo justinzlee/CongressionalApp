@@ -50,6 +50,19 @@ public class MainActivity extends AppCompatActivity {
     /** Whether the welcome intro has run since the app process started. */
     private static boolean hasPlayedIntro = false;
 
+    /**
+     * How many beaches the list will draw at once.
+     *
+     * <p>The list sits inside the page's scroll view with its own scrolling
+     * turned off, so it lays out every row it is given rather than recycling
+     * them — fine for a screenful, expensive once the dataset covers every
+     * coast. The list is distance-sorted, so this keeps the nearest beaches and
+     * drops the far tail, which only "All" can reach anyway: no radius setting
+     * matches this many beaches, and a search that does was never going to be
+     * read to the end.
+     */
+    private static final int MAX_LISTED_BEACHES = 60;
+
     private BeachRepository repository;
     private LocationService locationService;
     private BeachAdapter adapter;
@@ -88,17 +101,35 @@ public class MainActivity extends AppCompatActivity {
 
     private final String[] US_COASTAL_CITIES = {
         "San Diego, CA", "Carlsbad, CA", "Encinitas, CA", "Oceanside, CA", "La Jolla, CA",
-        "Los Angeles, CA", "Santa Monica, CA", "Malibu, CA", "Venice, CA", "Huntington Beach, CA",
-        "Newport Beach, CA", "Laguna Beach, CA", "San Francisco, CA", "Monterey, CA", "Santa Barbara, CA",
-        "Miami, FL", "Fort Lauderdale, FL", "Miami Beach, FL", "Key West, FL", "Clearwater, FL",
-        "Tampa, FL", "Sarasota, FL", "Destin, FL", "Panama City Beach, FL", "Jacksonville, FL",
-        "New York, NY", "Brooklyn, NY", "Queens, NY", "Montauk, NY", "Jones Beach, NY",
+        "Del Mar, CA", "Imperial Beach, CA", "Los Angeles, CA", "Santa Monica, CA", "Malibu, CA",
+        "Venice, CA", "Manhattan Beach, CA", "Redondo Beach, CA", "Long Beach, CA", "Seal Beach, CA",
+        "Huntington Beach, CA", "Newport Beach, CA", "Laguna Beach, CA", "Santa Barbara, CA",
+        "Pismo Beach, CA", "Carmel-by-the-Sea, CA", "Monterey, CA", "Santa Cruz, CA",
+        "Half Moon Bay, CA", "San Francisco, CA", "Stinson Beach, CA",
+        "Miami, FL", "Miami Beach, FL", "Fort Lauderdale, FL", "Key West, FL", "Naples, FL",
+        "Fort Myers Beach, FL", "Sanibel, FL", "Clearwater, FL", "Tampa, FL", "Sarasota, FL",
+        "Siesta Key, FL", "Destin, FL", "Panama City Beach, FL", "Pensacola, FL",
+        "Jacksonville, FL", "St. Augustine, FL", "Daytona Beach, FL", "Cocoa Beach, FL",
+        "New York, NY", "Brooklyn, NY", "Queens, NY", "Coney Island, NY", "Long Beach, NY",
+        "Montauk, NY", "Jones Beach, NY", "Rochester, NY",
         "Galveston, TX", "South Padre Island, TX", "Corpus Christi, TX", "Port Aransas, TX",
+        "Grand Isle, LA", "Biloxi, MS", "Gulf Shores, AL", "Orange Beach, AL",
         "Atlantic City, NJ", "Cape May, NJ", "Asbury Park, NJ", "Ocean City, NJ",
-        "Virginia Beach, VA", "Myrtle Beach, SC", "Hilton Head, SC", "Charleston, SC",
+        "Point Pleasant Beach, NJ", "Rehoboth Beach, DE", "Bethany Beach, DE",
+        "Ocean City, MD", "Assateague Island, MD", "Virginia Beach, VA", "Sandbridge, VA",
+        "Myrtle Beach, SC", "Hilton Head, SC", "Charleston, SC", "Folly Beach, SC",
         "Wilmington, NC", "Wrightsville Beach, NC", "Nags Head, NC", "Outer Banks, NC",
-        "Savannah, GA", "Tybee Island, GA", "Portland, ME", "Cannon Beach, OR", "Seaside, OR",
-        "Ocean Shores, WA", "Seattle, WA", "Ruby Beach, WA"
+        "Cape Hatteras, NC", "Atlantic Beach, NC", "Savannah, GA", "Tybee Island, GA",
+        "St. Simons Island, GA",
+        "Madison, CT", "Narragansett, RI", "Westerly, RI", "Boston, MA", "Revere, MA",
+        "Gloucester, MA", "Cape Cod, MA", "Orleans, MA", "Hampton Beach, NH",
+        "Portland, ME", "Old Orchard Beach, ME", "Ogunquit, ME", "Phippsburg, ME",
+        "Chicago, IL", "Milwaukee, WI", "Duluth, MN", "Grand Haven, MI", "Empire, MI",
+        "Gary, IN", "Mentor, OH",
+        "Cannon Beach, OR", "Seaside, OR", "Pacific City, OR", "Bandon, OR",
+        "Ocean Shores, WA", "Seattle, WA", "Ruby Beach, WA", "Long Beach, WA",
+        "Honolulu, HI", "Waikiki, HI", "Haleiwa, HI", "Lahaina, HI", "Koloa, HI", "Waimea, HI",
+        "San Juan, PR", "Culebra, PR"
     };
 
     @Override
@@ -389,6 +420,7 @@ public class MainActivity extends AppCompatActivity {
                 double d2 = UnitConverter.calculateDistance(currentLat, currentLon, b2.getLatitude(), b2.getLongitude());
                 return Double.compare(d1, d2);
             })
+            .limit(MAX_LISTED_BEACHES)
             .collect(Collectors.toList());
 
         boolean showDistance = isManualLocation ? hasRealLocation : hasLocation;

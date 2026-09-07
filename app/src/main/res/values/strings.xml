@@ -417,6 +417,7 @@
     <string name="wildlife_entry_title">Wildlife at your beach</string>
     <string name="wildlife_title">Beach wildlife</string>
     <string name="wildlife_beaches_label">In this app: %1$s</string>
+    <string name="wildlife_beaches_and_more">%1$s + %2$d more</string>
     <string name="wildlife_first_aid_link">First aid</string>
 
     <string name="wildlife_risk_harmless">Harmless</string>
