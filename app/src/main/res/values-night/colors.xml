@@ -108,6 +108,28 @@
     <color name="placeholder_accent">#A8452A</color>
     <color name="placeholder_accent_edge">#7A2F1B</color>
 
+    <!-- The other four scenes after dark. Same reasoning as the tokens above:
+         moonlight, not the dark theme. Greens go to near-black teal because
+         foliage keeps almost no hue at night, and the sand-built things follow
+         the sand tokens down rather than staying warm. -->
+    <color name="placeholder_palm_trunk">#4A3524</color>
+    <color name="placeholder_palm_trunk_edge">#241708</color>
+    <color name="placeholder_frond_light">#2A5A48</color>
+    <color name="placeholder_frond_mid">#245040</color>
+    <color name="placeholder_frond_dark">#1E4638</color>
+    <color name="placeholder_frond_deep">#17372D</color>
+    <color name="placeholder_frond_edge">#0C1F18</color>
+    <color name="placeholder_coconut">#544026</color>
+
+    <color name="placeholder_sand_edge">#53412A</color>
+    <color name="placeholder_towel_fold">#A9BDC6</color>
+
+    <color name="placeholder_castle">#32424B</color>
+    <color name="placeholder_castle_shade">#26313A</color>
+
+    <!-- Held well above the night sea and sky so the kite still reads. -->
+    <color name="placeholder_kite_sail">#4E93A8</color>
+
     <!-- Welcome intro: the same Sea ramp as light mode, dimmed a step so
          the reveal does not flash white on a night screen. -->
     <color name="wave_deep">#0A4757</color>

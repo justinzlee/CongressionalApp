@@ -3,6 +3,7 @@ package com.example.myapplication.util;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.drawable.Drawable;
+import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.content.res.AppCompatResources;
 import com.example.myapplication.R;
 import com.example.myapplication.model.Beach;
@@ -20,8 +21,26 @@ import com.example.myapplication.model.Beach;
  * one. To get that, the drawable is resolved through a Context built from a
  * copy of the configuration with the night bit set from the sunrise
  * calculation rather than from the theme.
+ *
+ * <p>There are five scenes rather than one. They share a shoreline and differ
+ * in what stands on the sand — an umbrella, a palm, a surfboard and towel, a
+ * lifeguard tower, a sandcastle. Most beaches in this app have no photograph,
+ * so a single drawing would tile the whole list with the same picture and read
+ * as a rendering fault rather than as an illustration.
  */
 public final class BeachPlaceholder {
+
+    /**
+     * The five scenes, in no particular order — {@link #sceneFor} indexes into
+     * this, so reordering it silently reshuffles which beach shows what.
+     */
+    private static final int[] SCENES = {
+        R.drawable.ic_beach_placeholder,
+        R.drawable.ic_beach_placeholder_palm,
+        R.drawable.ic_beach_placeholder_surf,
+        R.drawable.ic_beach_placeholder_tower,
+        R.drawable.ic_beach_placeholder_castle,
+    };
 
     private static Context daylightContext;
     private static Context afterDarkContext;
@@ -34,7 +53,27 @@ public final class BeachPlaceholder {
             beach.getLatitude(), beach.getLongitude(), System.currentTimeMillis());
         return AppCompatResources.getDrawable(
             resolveIn(context.getApplicationContext(), daylight),
-            R.drawable.ic_beach_placeholder);
+            sceneFor(beach));
+    }
+
+    /**
+     * Which of the five scenes this beach is drawn as.
+     *
+     * <p>Derived from the beach's id, so a beach keeps the same scene forever:
+     * the list, the detail screen and the saved tab all agree, scrolling past a
+     * row and back does not redraw it as somewhere else, and the choice
+     * survives restarts without being stored. {@code String.hashCode} is
+     * specified by the language rather than left to the runtime, so the
+     * assignment is also stable across devices and releases.
+     *
+     * <p>{@code Math.floorMod} rather than {@code %}: ids hashing negative
+     * would otherwise index out of the array.
+     */
+    @VisibleForTesting
+    static int sceneFor(Beach beach) {
+        String id = beach.getId();
+        if (id == null) return SCENES[0];
+        return SCENES[Math.floorMod(id.hashCode(), SCENES.length)];
     }
 
     /**

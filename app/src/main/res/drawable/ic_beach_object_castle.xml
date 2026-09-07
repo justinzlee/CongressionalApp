@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  A sandcastle and its bucket, a sailboat offshore, under a banded blue kite.
+
+  Drawn over ic_beach_scene_base in the same 260x100 frame, so the two line up
+  exactly. The kite belongs to this layer rather than the base: Round 8 flies a
+  different one over every scene, so it changes with the props.
+
+  Sizes come from the design directly: the frame's height matches the design
+  card's, so one percent of the card's width is two units here. Only the ground
+  line is moved - props stand at y 89 rather than the design's y 98, to stay
+  inside the band that survives a centreCrop into a 3:1 list row.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="260dp"
+    android:height="100dp"
+    android:viewportWidth="260"
+    android:viewportHeight="100">
+
+    <!-- The kite this scene flies -->
+    <group
+        android:translateX="191"
+        android:translateY="10"
+        android:scaleX="0.2889"
+        android:scaleY="0.2889">
+        <path
+            android:fillColor="@color/placeholder_kite_sail"
+            android:pathData="M45,4 L66,20 L66,56 L45,72 L24,56 L24,20 Z" />
+        <path
+            android:fillColor="@color/placeholder_light"
+            android:pathData="M24,20 L66,20 L66,32 L24,32 Z M24,44 L66,44 L66,56 L24,56 Z" />
+        <path
+            android:strokeColor="@color/placeholder_sea_deep"
+            android:strokeWidth="1.6"
+            android:pathData="M45,4 L66,20 L66,56 L45,72 L24,56 L24,20 Z" />
+        <path
+            android:strokeColor="@color/placeholder_sea_deep"
+            android:strokeWidth="1.3"
+            android:pathData="M45,4 L45,72" />
+        <path
+            android:strokeColor="@color/placeholder_accent"
+            android:strokeWidth="3"
+            android:strokeLineCap="round"
+            android:pathData="M45,72 C52,84 38,92 46,104" />
+    </group>
+
+    <group
+        android:translateX="150"
+        android:translateY="57.1"
+        android:scaleX="0.478"
+        android:scaleY="0.478">
+        <path
+            android:fillColor="@color/placeholder_light"
+            android:pathData="M6,20 L40,20 L33,27 L13,27 Z" />
+        <path
+            android:strokeColor="@color/placeholder_sea_deep"
+            android:strokeWidth="1.2"
+            android:pathData="M6,20 L40,20 L33,27 L13,27 Z" />
+        <path
+            android:fillColor="@color/placeholder_accent"
+            android:pathData="M23,20 L23,3 L37,19 Z" />
+        <path
+            android:fillColor="@color/placeholder_canopy"
+            android:strokeColor="@color/placeholder_sea_deep"
+            android:strokeWidth="1"
+            android:pathData="M21,20 L21,6 L10,19 Z" />
+        <path
+            android:strokeColor="@color/placeholder_light"
+            android:strokeWidth="1.6"
+            android:strokeAlpha="0.8"
+            android:pathData="M2,29 q9,-4 18,0" />
+    </group>
+    <group
+        android:translateX="40.2"
+        android:translateY="63.3"
+        android:scaleX="0.42"
+        android:scaleY="0.42">
+        <path
+            android:fillColor="@color/placeholder_shade"
+            android:fillAlpha="0.45"
+            android:pathData="M20,60 a32,3,0,1,0,64,0 a32,3,0,1,0,-64,0 Z" />
+        <path
+            android:fillColor="@color/placeholder_castle"
+            android:pathData="M12,26 H30 V58 H12 Z M70,26 H88 V58 H70 Z M32,36 H68 V58 H32 Z" />
+        <path
+            android:fillColor="@color/placeholder_castle"
+            android:pathData="M12,26 h4 v-6 h4 v6 h2 v-6 h4 v6 h4 v-6 h0 v6 z" />
+        <path
+            android:fillColor="@color/placeholder_castle"
+            android:pathData="M70,26 h4 v-6 h4 v6 h2 v-6 h4 v6 h4 v-6 h0 v6 z" />
+        <path
+            android:fillColor="@color/placeholder_castle"
+            android:pathData="M32,36 h5 v-5 h5 v5 h5 v-5 h5 v5 h5 v-5 h5 v5 h5 v-5 h5 v5 z" />
+        <path
+            android:fillColor="@color/placeholder_castle_shade"
+            android:pathData="M24,26 H30 V58 H24 Z M70,26 H76 V58 H70 Z" />
+        <path
+            android:fillColor="@color/placeholder_castle_shade"
+            android:pathData="M44,46 a6,6,0,0,1,12,0 V58 H44 Z" />
+        <path
+            android:strokeColor="@color/placeholder_sand_edge"
+            android:strokeWidth="1.4"
+            android:pathData="M12,26 H30 V58 H12 Z M70,26 H88 V58 H70 Z M32,36 H68 V58 H32 Z" />
+        <path
+            android:strokeColor="@color/placeholder_pole"
+            android:strokeWidth="2"
+            android:pathData="M21,20 L21,2" />
+        <path
+            android:fillColor="@color/placeholder_accent"
+            android:pathData="M21,3 q11,4 0,9 Z" />
+        <path
+            android:strokeColor="@color/placeholder_pole"
+            android:strokeWidth="2"
+            android:pathData="M79,20 L79,6" />
+        <path
+            android:fillColor="@color/placeholder_sea"
+            android:pathData="M79,7 q9,3 0,7 Z" />
+    </group>
+    <group
+        android:translateX="89.6"
+        android:translateY="72.8"
+        android:scaleX="0.4"
+        android:scaleY="0.4">
+        <path
+            android:fillColor="@color/placeholder_shade"
+            android:fillAlpha="0.45"
+            android:pathData="M10,38 a11,2.4,0,1,0,22,0 a11,2.4,0,1,0,-22,0 Z" />
+        <path
+            android:fillColor="@color/placeholder_accent"
+            android:pathData="M8,14 h24 l-3.5,22 h-17 Z" />
+        <path
+            android:strokeColor="@color/placeholder_accent_edge"
+            android:strokeWidth="1.6"
+            android:pathData="M8,14 h24 l-3.5,22 h-17 Z" />
+        <path
+            android:strokeColor="@color/placeholder_accent_edge"
+            android:strokeWidth="1.8"
+            android:pathData="M8,14 q12,-12 24,0" />
+        <path
+            android:fillColor="@color/placeholder_light"
+            android:fillAlpha="0.7"
+            android:pathData="M8,11 H32 A2,2,0,0,1,32,15 H8 A2,2,0,0,1,8,11 Z" />
+    </group>
+</vector>

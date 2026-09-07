@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Beach photo placeholder: a sandcastle and its bucket, with a sailboat offshore.
+
+  Stands in for a beach photo when there is no verified picture of that
+  particular beach. Deliberately a drawing rather than a stock photograph: a
+  generic photo in this slot would read as a picture *of this beach*, which is a
+  claim the app cannot make. An illustration reads as "no photo yet" at a
+  glance, and being drawn entirely from the palette it makes an unphotographed
+  beach look like part of the app rather than a hole in it.
+
+  One of five scenes sharing ic_beach_scene_base, so that a list of beaches with
+  no photographs does not read as the same picture repeated down the screen.
+  BeachPlaceholder decides which beach gets which.
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_beach_scene_base" />
+    <item android:drawable="@drawable/ic_beach_object_castle" />
+</layer-list>
