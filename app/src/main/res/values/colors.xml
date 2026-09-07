@@ -147,4 +147,30 @@
     <color name="placeholder_canopy">#FFF1DA</color>
     <color name="placeholder_accent">#F2643C</color>
     <color name="placeholder_accent_edge">#C74A26</color>
+
+    <!-- Objects belonging to the other four placeholder scenes. The umbrella
+         scene needs none of these; the palm, surfboard, tower and sandcastle
+         reuse the tokens above wherever the design let them, and add only what
+         genuinely has no equivalent in the daylight palette. -->
+    <color name="placeholder_palm_trunk">#B07A45</color>
+    <color name="placeholder_palm_trunk_edge">#5A3A1E</color>
+    <color name="placeholder_frond_light">#5CB489</color>
+    <color name="placeholder_frond_mid">#4FA97F</color>
+    <color name="placeholder_frond_dark">#3E9C77</color>
+    <color name="placeholder_frond_deep">#2E7A5E</color>
+    <color name="placeholder_frond_edge">#1E4A38</color>
+    <color name="placeholder_coconut">#C88A43</color>
+
+    <!-- Drawn edge for things made of sand or canvas: the towel hem, the tower
+         deck, the castle walls. Darker than the dry sand it outlines. -->
+    <color name="placeholder_sand_edge">#C48A3E</color>
+    <color name="placeholder_towel_fold">#FFE9AF</color>
+
+    <color name="placeholder_castle">#E8B778</color>
+    <color name="placeholder_castle_shade">#D19A55</color>
+
+    <!-- A kite sail. The same teal as the sea by day, which is the design’s
+         intent, but its own token because after dark the sea darkens into the
+         night sky and a kite painted in it disappears. -->
+    <color name="placeholder_kite_sail">#26A6C1</color>
 </resources>

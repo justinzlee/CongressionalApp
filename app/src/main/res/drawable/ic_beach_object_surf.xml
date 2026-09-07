@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  A surfboard planted in the sand beside a striped towel, under a quartered kite.
+
+  Drawn over ic_beach_scene_base in the same 260x100 frame, so the two line up
+  exactly. The kite belongs to this layer rather than the base: Round 8 flies a
+  different one over every scene, so it changes with the props.
+
+  Sizes come from the design directly: the frame's height matches the design
+  card's, so one percent of the card's width is two units here. Only the ground
+  line is moved - props stand at y 89 rather than the design's y 98, to stay
+  inside the band that survives a centreCrop into a 3:1 list row.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="260dp"
+    android:height="100dp"
+    android:viewportWidth="260"
+    android:viewportHeight="100">
+
+    <!-- The kite this scene flies -->
+    <group
+        android:translateX="191"
+        android:translateY="10"
+        android:scaleX="0.2889"
+        android:scaleY="0.2889">
+        <path
+            android:fillColor="@color/placeholder_light"
+            android:strokeColor="@color/placeholder_sea_deep"
+            android:strokeWidth="1.6"
+            android:pathData="M45,6 L69,38 L45,70 L21,38 Z" />
+        <path
+            android:fillColor="@color/placeholder_sea"
+            android:pathData="M45,6 L69,38 L45,38 Z" />
+        <path
+            android:fillColor="@color/placeholder_accent"
+            android:pathData="M45,38 L21,38 L45,70 Z" />
+        <path
+            android:strokeColor="@color/placeholder_kite_tail"
+            android:strokeWidth="1.6"
+            android:strokeAlpha="0.5"
+            android:pathData="M45,70 q11,13 -4,20 q15,7 4,15" />
+    </group>
+
+    <group
+        android:translateX="41"
+        android:translateY="38.5"
+        android:scaleX="0.5"
+        android:scaleY="0.5">
+        <path
+            android:fillColor="@color/placeholder_shade"
+            android:fillAlpha="0.5"
+            android:pathData="M15,101 a13,3,0,1,0,26,0 a13,3,0,1,0,-26,0 Z" />
+        <group
+            android:rotation="7"
+            android:pivotX="22"
+            android:pivotY="100">
+            <path
+                android:fillColor="@color/placeholder_light"
+                android:strokeColor="@color/placeholder_accent_edge"
+                android:strokeWidth="2"
+                android:pathData="M22,4 C34,22 38,54 34,82 C32,94 27,100 22,100 C17,100 12,94 10,82 C6,54 10,22 22,4 Z" />
+            <path
+                android:fillColor="@color/placeholder_accent"
+                android:pathData="M22,4 C30,16 34,34 34,50 C30,44 26,40 22,38 Z" />
+            <path
+                android:fillColor="@color/placeholder_sea"
+                android:pathData="M22,62 C27,62 31,64 33,68 C32,78 30,88 27,95 C25,92 23,88 22,82 Z" />
+            <path
+                android:strokeColor="@color/placeholder_accent_edge"
+                android:strokeWidth="1.2"
+                android:strokeAlpha="0.45"
+                android:pathData="M22,4 C22,30 22,70 22,100" />
+        </group>
+    </group>
+    <group
+        android:translateX="77.2"
+        android:translateY="66.85"
+        android:scaleX="0.423"
+        android:scaleY="0.423">
+        <path
+            android:fillColor="@color/placeholder_shade"
+            android:fillAlpha="0.4"
+            android:pathData="M12,50 a42,5,0,1,0,84,0 a42,5,0,1,0,-84,0 Z" />
+        <group
+            android:rotation="-3"
+            android:pivotX="52"
+            android:pivotY="30">
+            <path
+                android:fillColor="@color/placeholder_sun_edge"
+                android:pathData="M10,18 L96,12 L100,42 L14,48 Z" />
+            <path
+                android:strokeColor="@color/placeholder_accent"
+                android:strokeWidth="9"
+                android:pathData="M28,16.7 L32,46.4 M50,15.2 L54,44.9 M72,13.6 L76,43.4" />
+            <path
+                android:strokeColor="@color/placeholder_sand_edge"
+                android:strokeWidth="1.6"
+                android:pathData="M10,18 L96,12 L100,42 L14,48 Z" />
+            <path
+                android:strokeColor="@color/placeholder_light"
+                android:strokeWidth="3"
+                android:strokeAlpha="0.7"
+                android:pathData="M10.6,22.5 L96.6,16.5" />
+            <path
+                android:strokeColor="@color/placeholder_sand_edge"
+                android:strokeWidth="1.4"
+                android:strokeLineCap="round"
+                android:pathData="M10,18 l-5,-1 M11,25 l-5,-1 M12,32 l-5,-1 M13,39 l-5,-1 M14,46 l-5,-1" />
+            <path
+                android:strokeColor="@color/placeholder_sand_edge"
+                android:strokeWidth="1.4"
+                android:strokeLineCap="round"
+                android:pathData="M96,12 l5,-1 M97,19 l5,-1 M98,26 l5,-1 M99,33 l5,-1 M100,40 l5,-1" />
+            <path
+                android:fillColor="@color/placeholder_towel_fold"
+                android:strokeColor="@color/placeholder_sand_edge"
+                android:strokeWidth="1.4"
+                android:pathData="M96,12 L100,42 L82,30 Z" />
+        </group>
+    </group>
+</vector>

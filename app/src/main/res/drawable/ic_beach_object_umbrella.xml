@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  A striped umbrella with a beach ball beside it, under an orange kite.
+
+  Drawn over ic_beach_scene_base in the same 260x100 frame, so the two line up
+  exactly. The kite belongs to this layer rather than the base: Round 8 flies a
+  different one over every scene, so it changes with the props.
+
+  Sizes come from the design directly: the frame's height matches the design
+  card's, so one percent of the card's width is two units here. Only the ground
+  line is moved - props stand at y 89 rather than the design's y 98, to stay
+  inside the band that survives a centreCrop into a 3:1 list row.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="260dp"
+    android:height="100dp"
+    android:viewportWidth="260"
+    android:viewportHeight="100">
+
+    <!-- The kite this scene flies -->
+    <group
+        android:translateX="191"
+        android:translateY="10"
+        android:scaleX="0.2889"
+        android:scaleY="0.2889">
+        <path
+            android:fillColor="@color/placeholder_accent"
+            android:pathData="M45,6 L69,38 L45,70 L21,38 Z" />
+        <path
+            android:strokeColor="@color/placeholder_canopy"
+            android:strokeWidth="2.2"
+            android:pathData="M45,6 L45,70 M21,38 L69,38" />
+        <path
+            android:strokeColor="@color/placeholder_kite_tail"
+            android:strokeWidth="1.6"
+            android:strokeAlpha="0.5"
+            android:pathData="M45,70 q11,13 -4,20 q15,7 4,15" />
+    </group>
+
+    <group
+        android:translateX="42.1"
+        android:translateY="61.9"
+        android:scaleX="0.4375"
+        android:scaleY="0.4375">
+        <path
+            android:fillColor="@color/placeholder_shade"
+            android:fillAlpha="0.55"
+            android:pathData="M36,62 a19,3.2,0,1,0,38,0 a19,3.2,0,1,0,-38,0 Z" />
+        <path
+            android:strokeColor="@color/placeholder_pole"
+            android:strokeWidth="3"
+            android:strokeLineCap="round"
+            android:pathData="M50,28 C51,40 53,52 54,61" />
+        <group>
+            <clip-path
+                android:pathData="M12,30 Q14,12 50,4 Q86,12 88,30 q-6.34,5 -12.67,0 q-6.33,5 -12.66,0 q-6.34,5 -12.67,0 q-6.33,5 -12.66,0 q-6.34,5 -12.67,0 q-6.33,5 -12.67,0 Z" />
+            <path
+                android:fillColor="@color/placeholder_canopy"
+                android:pathData="M0,0 H96 V40 H0 Z" />
+            <path
+                android:fillColor="@color/placeholder_accent"
+                android:pathData="M50,4 L12,34 L24.7,34 Z" />
+            <path
+                android:fillColor="@color/placeholder_accent"
+                android:pathData="M50,4 L37.3,34 L50,34 Z" />
+            <path
+                android:fillColor="@color/placeholder_accent"
+                android:pathData="M50,4 L62.7,34 L75.3,34 Z" />
+            <path
+                android:fillColor="@color/placeholder_accent"
+                android:pathData="M50,4 L88,34 L96,34 Z" />
+        </group>
+        <path
+            android:strokeColor="@color/placeholder_accent_edge"
+            android:strokeWidth="1.5"
+            android:strokeLineJoin="round"
+            android:pathData="M12,30 Q14,12 50,4 Q86,12 88,30 q-6.34,5 -12.67,0 q-6.33,5 -12.66,0 q-6.34,5 -12.67,0 q-6.33,5 -12.66,0 q-6.34,5 -12.67,0 q-6.33,5 -12.67,0 Z" />
+        <path
+            android:fillColor="@color/placeholder_pole"
+            android:pathData="M47.6,4 a2.4,2.4,0,1,0,4.8,0 a2.4,2.4,0,1,0,-4.8,0 Z" />
+    </group>
+    <group
+        android:translateX="97.5"
+        android:translateY="71.6"
+        android:scaleX="0.375"
+        android:scaleY="0.375">
+        <path
+            android:fillColor="@color/placeholder_shade"
+            android:fillAlpha="0.5"
+            android:pathData="M8,41 a13,2.6,0,1,0,26,0 a13,2.6,0,1,0,-26,0 Z" />
+        <path
+            android:fillColor="@color/placeholder_light"
+            android:pathData="M2,20 a18,18,0,1,0,36,0 a18,18,0,1,0,-36,0 Z" />
+        <path
+            android:fillColor="@color/placeholder_accent"
+            android:pathData="M20,20 L20,2 A18,18,0,0,1,34.5,10.5 Z" />
+        <path
+            android:fillColor="@color/placeholder_sea"
+            android:pathData="M20,20 L34.5,29.5 A18,18,0,0,1,20,38 Z" />
+        <path
+            android:fillColor="@color/placeholder_sun_edge"
+            android:pathData="M20,20 L5.5,29.5 A18,18,0,0,1,5.5,10.5 Z" />
+        <path
+            android:fillColor="@color/placeholder_light"
+            android:strokeColor="@color/placeholder_accent_edge"
+            android:strokeWidth="1.2"
+            android:pathData="M16.6,20 a3.4,3.4,0,1,0,6.8,0 a3.4,3.4,0,1,0,-6.8,0 Z" />
+        <path
+            android:strokeColor="@color/placeholder_accent_edge"
+            android:strokeWidth="1.2"
+            android:strokeAlpha="0.5"
+            android:pathData="M2,20 a18,18,0,1,0,36,0 a18,18,0,1,0,-36,0 Z" />
+        <path
+            android:strokeColor="@color/placeholder_light"
+            android:strokeWidth="2.4"
+            android:strokeAlpha="0.8"
+            android:strokeLineCap="round"
+            android:pathData="M13,8 A18,18,0,0,0,8,15" />
+    </group>
+</vector>

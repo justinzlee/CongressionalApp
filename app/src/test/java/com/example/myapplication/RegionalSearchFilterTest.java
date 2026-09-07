@@ -46,9 +46,14 @@ public class RegionalSearchFilterTest {
 
         assertEquals("Coronado Beach", names.get(0));
         assertEquals("Ocean Beach", names.get(1));
-        assertEquals("La Jolla Shores", names.get(2));
-        assertEquals("Moonlight State Beach", names.get(3));
-        assertEquals(4, names.size());
+        assertEquals("Mission Beach", names.get(2));
+        assertEquals("Pacific Beach", names.get(3));
+        assertEquals("Imperial Beach", names.get(4));
+        assertEquals("La Jolla Shores", names.get(5));
+        assertEquals("Torrey Pines State Beach", names.get(6));
+        assertEquals("Del Mar City Beach", names.get(7));
+        assertEquals("Moonlight State Beach", names.get(8));
+        assertEquals(9, names.size());
         assertTrue("Carlsbad State Beach (~32mi) should be outside a 25mi San Diego search",
             !names.contains("Carlsbad State Beach"));
         assertTrue("No East Coast beach should ever appear in a 25mi San Diego search",
@@ -64,9 +69,12 @@ public class RegionalSearchFilterTest {
         List<String> names = results.stream().map(Beach::getName).collect(Collectors.toList());
 
         assertEquals("Carlsbad State Beach", names.get(0));
-        assertEquals("Moonlight State Beach", names.get(1));
-        assertEquals("La Jolla Shores", names.get(2));
-        assertEquals(3, names.size());
+        assertEquals("Oceanside Beach", names.get(1));
+        assertEquals("Moonlight State Beach", names.get(2));
+        assertEquals("Del Mar City Beach", names.get(3));
+        assertEquals("Torrey Pines State Beach", names.get(4));
+        assertEquals("La Jolla Shores", names.get(5));
+        assertEquals(6, names.size());
         assertTrue("Coronado/Ocean Beach (~30-34mi) should be outside a 25mi Carlsbad search",
             !names.contains("Coronado Beach") && !names.contains("Ocean Beach"));
     }
@@ -81,7 +89,8 @@ public class RegionalSearchFilterTest {
 
         assertEquals("South Beach", names.get(0));
         assertEquals("Haulover Beach", names.get(1));
-        assertEquals(2, names.size());
+        assertEquals("Fort Lauderdale Beach", names.get(2));
+        assertEquals(3, names.size());
         assertTrue("Clearwater (~225mi) should be outside a 25mi Miami search",
             !names.contains("Clearwater Beach"));
         assertTrue("No West Coast beach should ever appear in a 25mi Miami search",
@@ -95,8 +104,43 @@ public class RegionalSearchFilterTest {
         List<Beach> fromSanDiego = filterAndSort(repo, 32.7157, -117.1611, Double.MAX_VALUE);
         List<Beach> fromMiami = filterAndSort(repo, 25.7826, -80.1285, Double.MAX_VALUE);
 
-        assertEquals(17, fromSanDiego.size());
-        assertEquals(17, fromMiami.size());
+        assertEquals(repo.getBeaches().size(), fromSanDiego.size());
+        assertEquals(repo.getBeaches().size(), fromMiami.size());
+    }
+
+    /**
+     * The dataset reaches beyond the two ocean coasts now, so the radius
+     * filter has to hold up in places it never used to see: an inland city on
+     * a lake, and an island two thousand miles from anywhere else.
+     */
+    @Test
+    public void chicago_50mileRadius_returnsLakeMichiganBeachesOnly() {
+        BeachRepository repo = BeachRepository.newForTesting();
+
+        List<Beach> results = filterAndSort(repo, 41.8781, -87.6298, 50.0);
+        List<String> names = results.stream().map(Beach::getName).collect(Collectors.toList());
+
+        assertEquals("North Avenue Beach", names.get(0));
+        assertEquals("West Beach, Indiana Dunes", names.get(1));
+        assertEquals("The lakefront is all there is within 50mi of Chicago", 2, names.size());
+        assertTrue("Milwaukee is a further 40mi up the same shore",
+            !names.contains("Bradford Beach"));
+        assertTrue("No ocean beach is anywhere near Chicago",
+            !names.contains("La Jolla Shores") && !names.contains("South Beach"));
+    }
+
+    @Test
+    public void honolulu_25mileRadius_returnsOahuBeachesOnly() {
+        BeachRepository repo = BeachRepository.newForTesting();
+
+        List<Beach> results = filterAndSort(repo, 21.3069, -157.8583, 25.0);
+        List<String> names = results.stream().map(Beach::getName).collect(Collectors.toList());
+
+        assertEquals("Waikiki Beach", names.get(0));
+        assertTrue("Hanauma Bay is on the same island", names.contains("Hanauma Bay"));
+        assertTrue("The other islands are a flight away",
+            !names.contains("Poipu Beach") && !names.contains("Hapuna Beach"));
+        assertTrue("So is the mainland", !names.contains("Ocean Beach, San Francisco"));
     }
 
     @Test
@@ -109,6 +153,7 @@ public class RegionalSearchFilterTest {
         List<String> names = matches.stream().map(Beach::getName).collect(Collectors.toList());
         assertTrue(names.contains("Carlsbad State Beach"));
         assertTrue(names.contains("Moonlight State Beach"));
-        assertEquals(2, names.size());
+        assertTrue(names.contains("Torrey Pines State Beach"));
+        assertEquals(3, names.size());
     }
 }

@@ -20,6 +20,12 @@ public class BeachRepositoryTest {
 
     private static final double COORD_DELTA = 0.0001;
 
+    /**
+     * The size of the hardcoded dataset. Pinned so that a beach cannot be lost
+     * to a bad merge unnoticed; bump it deliberately when the list grows.
+     */
+    private static final int EXPECTED_BEACH_COUNT = 114;
+
     private Beach find(List<Beach> beaches, String name) {
         Optional<Beach> match = beaches.stream()
             .filter(b -> b.getName().equals(name))
@@ -33,7 +39,7 @@ public class BeachRepositoryTest {
     @Test
     public void repository_loadsAllExpectedBeaches() {
         List<Beach> beaches = BeachRepository.newForTesting().getBeaches();
-        assertEquals(17, beaches.size());
+        assertEquals(EXPECTED_BEACH_COUNT, beaches.size());
     }
 
     @Test
@@ -104,6 +110,50 @@ public class BeachRepositoryTest {
     }
 
     @Test
+    public void allBeachNamesAreUnique() {
+        List<Beach> beaches = BeachRepository.newForTesting().getBeaches();
+        long distinctNames = beaches.stream().map(Beach::getName).distinct().count();
+        assertEquals("Two beaches sharing a name are indistinguishable in the list and in "
+            + "search - where two real places share one, the name has to say which is which",
+            beaches.size(), distinctNames);
+    }
+
+    /**
+     * The dataset used to be Southern California with three other states for
+     * company. It reaches every coast now, so this pins one beach in each
+     * region that had none: if a region is dropped, the app quietly stops
+     * covering that coastline and nothing else would say so.
+     */
+    @Test
+    public void everyCoastlineIsRepresented() {
+        List<Beach> beaches = BeachRepository.newForTesting().getBeaches();
+
+        Beach waikiki = find(beaches, "Waikiki Beach");
+        assertEquals("HI1", waikiki.getId());
+        assertEquals(21.2760, waikiki.getLatitude(), COORD_DELTA);
+        assertEquals(-157.8270, waikiki.getLongitude(), COORD_DELTA);
+
+        Beach flamenco = find(beaches, "Flamenco Beach");
+        assertEquals("PR1", flamenco.getId());
+
+        // No marine model covers the Great Lakes, so this one carries no surf
+        // reading. It belongs here all the same - people drown in Lake
+        // Michigan every summer.
+        Beach northAvenue = find(beaches, "North Avenue Beach");
+        assertEquals("IL1", northAvenue.getId());
+
+        find(beaches, "Ruby Beach");                  // Washington
+        find(beaches, "Ocean Beach, San Francisco");  // Northern California
+        find(beaches, "Grand Isle State Park");       // Louisiana
+        find(beaches, "Myrtle Beach");                // South Carolina
+        find(beaches, "Cape Hatteras");               // North Carolina
+        find(beaches, "Rehoboth Beach");              // Delaware
+        find(beaches, "Cape May Beach");              // New Jersey
+        find(beaches, "Nauset Beach");                // Massachusetts
+        find(beaches, "Popham Beach");                // Maine
+    }
+
+    @Test
     public void search_isCaseInsensitiveSubstringMatch() {
         BeachRepository repo = BeachRepository.newForTesting();
         List<Beach> results = repo.searchBeaches("carlsbad");
@@ -118,8 +168,8 @@ public class BeachRepositoryTest {
     @Test
     public void search_emptyOrNullQuery_returnsAllBeaches() {
         BeachRepository repo = BeachRepository.newForTesting();
-        assertEquals(17, repo.searchBeaches("").size());
-        assertEquals(17, repo.searchBeaches(null).size());
+        assertEquals(EXPECTED_BEACH_COUNT, repo.searchBeaches("").size());
+        assertEquals(EXPECTED_BEACH_COUNT, repo.searchBeaches(null).size());
     }
 
     @Test
@@ -133,6 +183,6 @@ public class BeachRepositoryTest {
         BeachRepository repo = BeachRepository.newForTesting();
         List<Beach> beaches = repo.getBeaches();
         beaches.clear();
-        assertEquals(17, repo.getBeaches().size());
+        assertEquals(EXPECTED_BEACH_COUNT, repo.getBeaches().size());
     }
 }

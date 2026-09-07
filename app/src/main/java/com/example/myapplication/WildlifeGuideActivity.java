@@ -99,7 +99,9 @@ public class WildlifeGuideActivity extends AppCompatActivity {
 
     private static final Coast[] COASTS = {
         new Coast(R.string.wildlife_region_socal,
-            new String[] { "CA1", "CA2", "CA3", "CA4", "CA5", "LA1", "LA2", "LA3", "LA4" },
+            new String[] {
+                "CA1", "CA2", "CA3", "CA4", "CA5", "CA6", "CA7", "CA8", "CA9", "CA10", "CA11",
+                "LA1", "LA2", "LA3", "LA4", "LA5", "LA6", "LA7", "LA8", "LA9", "LA10" },
             R.string.wildlife_socal_note_title, R.string.wildlife_socal_note_body,
             new Species[] {
                 new Species(R.string.wildlife_socal_ray_title,
@@ -119,7 +121,8 @@ public class WildlifeGuideActivity extends AppCompatActivity {
             }),
 
         new Coast(R.string.wildlife_region_florida,
-            new String[] { "FL1", "FL2" },
+            new String[] {
+                "FL1", "FL2", "FL3", "FL8", "FL9", "FL10", "FL11", "FL14" },
             R.string.wildlife_fl_note_title, R.string.wildlife_fl_note_body,
             new Species[] {
                 new Species(R.string.wildlife_fl_manowar_title,
@@ -137,7 +140,9 @@ public class WildlifeGuideActivity extends AppCompatActivity {
             }),
 
         new Coast(R.string.wildlife_region_gulf,
-            new String[] { "FL4", "TX1", "TX2" },
+            new String[] {
+                "FL4", "FL5", "FL6", "FL7", "FL12", "FL13", "FL15",
+                "TX1", "TX2", "TX3", "TX4", "LOU1", "MS1", "AL1", "AL2" },
             R.string.wildlife_gulf_note_title, R.string.wildlife_gulf_note_body,
             new Species[] {
                 new Species(R.string.wildlife_gulf_ray_title,
@@ -155,7 +160,10 @@ public class WildlifeGuideActivity extends AppCompatActivity {
             }),
 
         new Coast(R.string.wildlife_region_northeast,
-            new String[] { "NY1", "NY2" },
+            new String[] {
+                "NY1", "NY2", "NY3", "NY4", "NY5", "NY6",
+                "NJ1", "NJ2", "NJ3", "NJ4", "NJ5",
+                "CT1", "RI1", "RI2", "MA1", "MA2", "MA3", "MA4", "NH1", "ME1", "ME2", "ME3" },
             R.string.wildlife_ne_note_title, R.string.wildlife_ne_note_body,
             new Species[] {
                 new Species(R.string.wildlife_ne_lionsmane_title,
@@ -173,7 +181,8 @@ public class WildlifeGuideActivity extends AppCompatActivity {
             }),
 
         new Coast(R.string.wildlife_region_pnw,
-            new String[] { "OR1" },
+            new String[] {
+                "OR1", "OR2", "OR3", "OR4", "WA1", "WA2", "WA3", "WA4" },
             R.string.wildlife_pnw_note_title, R.string.wildlife_pnw_note_body,
             new Species[] {
                 new Species(R.string.wildlife_pnw_jelly_title,
@@ -312,10 +321,16 @@ public class WildlifeGuideActivity extends AppCompatActivity {
         }
     }
 
+    /** Beaches named outright before the label falls back to counting them. */
+    private static final int NAMED_BEACHES = 4;
+
     /**
      * Beach names for the coast, in the repository's own order. Ids that are
      * no longer in the repository simply drop out, so removing a beach from
      * the app cannot leave this guide naming one that isn't there.
+     *
+     * <p>A coast can cover twenty beaches, and twenty names is a paragraph
+     * where a line will do, so past a handful the rest are counted instead.
      */
     private String namesOf(String[] beachIds) {
         List<String> wanted = Arrays.asList(beachIds);
@@ -325,6 +340,11 @@ public class WildlifeGuideActivity extends AppCompatActivity {
                 names.add(beach.getName());
             }
         }
-        return TextUtils.join(", ", names);
+        if (names.size() <= NAMED_BEACHES) {
+            return TextUtils.join(", ", names);
+        }
+        return getString(R.string.wildlife_beaches_and_more,
+            TextUtils.join(", ", names.subList(0, NAMED_BEACHES)),
+            names.size() - NAMED_BEACHES);
     }
 }
