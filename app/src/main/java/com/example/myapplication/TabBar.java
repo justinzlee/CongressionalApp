@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
 
+import com.example.myapplication.data.AlertScope;
 import com.example.myapplication.data.AlertSeenStore;
 import com.example.myapplication.data.BeachRepository;
 import com.example.myapplication.model.BeachAlert;
@@ -90,8 +91,11 @@ public final class TabBar {
         TextView badge = activity.findViewById(R.id.tabAlertsBadge);
         if (badge == null) return;
 
-        int count = new AlertSeenStore(activity)
-            .countUnseen(BeachAlert.from(activity, BeachRepository.getInstance().getBeaches()));
+        // Counted over the same beaches the Alerts tab will list. Counting them
+        // all instead would put a number on the badge that opening that tab
+        // could never clear.
+        int count = new AlertSeenStore(activity).countUnseen(BeachAlert.from(activity,
+            AlertScope.inScope(activity, BeachRepository.getInstance().getBeaches())));
         if (count == 0) {
             badge.setVisibility(View.GONE);
         } else {

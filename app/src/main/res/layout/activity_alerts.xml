@@ -140,7 +140,11 @@
                 android:paddingBottom="26dp"
                 android:visibility="gone">
 
+                <!-- Icon and wording are set in code: an empty tab because
+                     nothing is wrong is all-clear news, an empty tab because
+                     no beach is being watched is not. -->
                 <ImageView
+                    android:id="@+id/alertsEmptyIcon"
                     android:layout_width="26dp"
                     android:layout_height="26dp"
                     android:alpha="0.4"
@@ -149,6 +153,7 @@
                     app:tint="@color/safe" />
 
                 <TextView
+                    android:id="@+id/alertsEmptyText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"

@@ -14,6 +14,7 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String PREFS_NAME = "BeachSafetyPrefs";
     public static final String KEY_USE_METRIC = "use_metric";
     public static final String KEY_DARK_MODE = "dark_mode";
+    public static final String KEY_ALERTS_SAVED_ONLY = "alerts_saved_only";
 
     /**
      * Puts the app in whichever appearance the user last picked, and leaves it
@@ -58,6 +59,17 @@ public class SettingsActivity extends AppCompatActivity {
         // The whole row is the target, per the design's settings list.
         bindRow(findViewById(R.id.metricRow), metricSwitch, isChecked ->
             prefs.edit().putBoolean(KEY_USE_METRIC, isChecked).apply());
+
+        // Narrows the Alerts tab to the user's own beaches. Off, it still only
+        // covers what is near them or saved — this drops the distance half.
+        MaterialSwitch savedAlertsSwitch = findViewById(R.id.savedAlertsSwitch);
+        savedAlertsSwitch.setChecked(prefs.getBoolean(KEY_ALERTS_SAVED_ONLY, false));
+        bindRow(findViewById(R.id.savedAlertsRow), savedAlertsSwitch, isChecked -> {
+            prefs.edit().putBoolean(KEY_ALERTS_SAVED_ONLY, isChecked).apply();
+            // The badge counts what the Alerts tab would show, so it has to be
+            // re-counted here rather than waiting for that tab to be opened.
+            TabBar.refreshAlertBadge(this);
+        });
 
         MaterialSwitch darkModeSwitch = findViewById(R.id.darkModeSwitch);
         // With no choice stored we are following the system, so the switch

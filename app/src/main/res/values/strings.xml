@@ -136,6 +136,12 @@
     <string name="alerts_see_beach">See the beach</string>
     <string name="alert_hero_title">%1$s at %2$s</string>
     <string name="alerts_empty">No hazards are on record at any beach nearby. Conditions still change fast — check the flags when you arrive.</string>
+    <string name="alerts_empty_saved">No hazards are on record at your saved beaches. Conditions still change fast — check the flags when you arrive.</string>
+    <string name="alerts_empty_no_saved">Save a beach to see its alerts here.</string>
+    <string name="alerts_empty_no_location">Turn on location to hear about beaches near you, or save the ones you care about.</string>
+    <string name="alerts_section_title">Alerts</string>
+    <string name="alerts_saved_only_title">Saved beaches only</string>
+    <string name="alerts_saved_only_subtitle">Otherwise, beaches within 50 miles are included too.</string>
 
     <!-- Saved -->
     <string name="saved_empty">No saved beaches yet. Save one from its page and it shows up here with its current status.</string>
