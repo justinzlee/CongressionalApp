@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
 
+import com.example.myapplication.data.AlertScope;
 import com.example.myapplication.data.AlertSeenStore;
 import com.example.myapplication.data.BeachRepository;
 import com.example.myapplication.model.Beach;
@@ -26,8 +27,9 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * Every hazard on record across all beaches, worst first, so a swimmer can
- * see what is going on nearby without opening each beach in turn.
+ * The hazards on record at the beaches this user has reason to care about,
+ * worst first, so a swimmer can see what is going on without opening each
+ * beach in turn. Which beaches those are is {@link AlertScope}'s decision.
  */
 public class AlertsActivity extends AppCompatActivity {
 
@@ -44,23 +46,39 @@ public class AlertsActivity extends AppCompatActivity {
         seenStore = new AlertSeenStore(this);
 
         TabBar.setup(this, TabBar.Tab.ALERTS);
-        bindAlerts();
+        // The list itself is built in onResume, which runs on the way in as
+        // well as on the way back, so there is one place that draws it.
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        // Reading this screen is what clears the badge: every hazard on record
+        // Coming back here after saving a beach, or after changing the
+        // saved-only setting, changes which beaches are in scope, so the list
+        // is rebuilt rather than left as it was drawn on the way in.
+        bindAlerts();
+        // Reading this screen is what clears the badge: every hazard in scope
         // right now counts as seen, and the tab bar redraws without its count.
-        seenStore.markSeen(BeachAlert.from(this, BeachRepository.getInstance().getBeaches()));
+        // The same scope as the list, or the badge would keep counting warnings
+        // this screen never showed and reading it would never clear them.
+        seenStore.markSeen(BeachAlert.from(this, alertBeaches()));
         TabBar.refreshAlertBadge(this);
     }
 
     /** How many alert rows the screen will draw, worst first. */
     private static final int MAX_LISTED_ALERTS = 40;
 
+    /**
+     * The beaches this tab speaks for: the ones near the user and the ones they
+     * have saved, or only the saved ones if they have asked for that.
+     */
+    private List<Beach> alertBeaches() {
+        return AlertScope.inScope(this, BeachRepository.getInstance().getBeaches());
+    }
+
     private void bindAlerts() {
-        List<BeachAlert> alerts = BeachAlert.from(this, BeachRepository.getInstance().getBeaches());
+        List<Beach> scoped = alertBeaches();
+        List<BeachAlert> alerts = BeachAlert.from(this, scoped);
 
         View hero = findViewById(R.id.alertHero);
         View empty = findViewById(R.id.alertsEmpty);
@@ -72,6 +90,7 @@ public class AlertsActivity extends AppCompatActivity {
             hero.setVisibility(View.GONE);
             empty.setVisibility(View.VISIBLE);
             heading.setVisibility(View.GONE);
+            bindEmptyState(scoped);
             return;
         }
 
@@ -107,6 +126,43 @@ public class AlertsActivity extends AppCompatActivity {
         for (BeachAlert alert : alerts.subList(0, Math.min(alerts.size(), MAX_LISTED_ALERTS))) {
             list.addView(buildRow(inflater, list, alert));
         }
+    }
+
+    /**
+     * Says why the screen is empty, which is not one thing.
+     *
+     * <p>Watching beaches and finding nothing wrong at them is good news, and
+     * gets the green all-clear. Watching no beaches at all is not news — it
+     * means the tab cannot tell the user anything — so it gets a muted mark and
+     * says what would fix it. Reading the same blank screen either way would
+     * let someone with location off believe the coast was clear.
+     */
+    private void bindEmptyState(List<Beach> scoped) {
+        boolean watchingSomething = !scoped.isEmpty();
+        boolean savedOnly = AlertScope.savedOnly(this);
+
+        int message;
+        if (watchingSomething) {
+            message = savedOnly ? R.string.alerts_empty_saved : R.string.alerts_empty;
+        } else if (savedOnly) {
+            message = R.string.alerts_empty_no_saved;
+        } else if (AlertScope.knowsWhereYouAre(this)) {
+            // We know where they are; there is simply no beach within range and
+            // none saved, which is the same all-clear as having nothing wrong.
+            message = R.string.alerts_empty;
+            watchingSomething = true;
+        } else {
+            message = R.string.alerts_empty_no_location;
+        }
+
+        ((TextView) findViewById(R.id.alertsEmptyText)).setText(message);
+
+        ImageView icon = findViewById(R.id.alertsEmptyIcon);
+        icon.setImageResource(watchingSomething
+            ? R.drawable.ic_check_circle : R.drawable.ic_bookmark);
+        ImageViewCompat.setImageTintList(icon, ColorStateList.valueOf(
+            ContextCompat.getColor(this,
+                watchingSomething ? R.color.safe : R.color.text_secondary)));
     }
 
     private View buildRow(LayoutInflater inflater, ViewGroup parent, BeachAlert alert) {

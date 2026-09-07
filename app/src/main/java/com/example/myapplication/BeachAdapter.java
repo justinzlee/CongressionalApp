@@ -13,6 +13,7 @@ import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import android.content.res.ColorStateList;
 import com.bumptech.glide.Glide;
+import com.example.myapplication.data.BeachPhotoStore;
 import com.example.myapplication.model.Beach;
 import com.example.myapplication.model.BeachConditions;
 import com.example.myapplication.model.HelpType;
@@ -31,6 +32,13 @@ public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHol
     private double userLon;
     private boolean hasLocation;
     private final OnBeachClickListener listener;
+
+    /**
+     * Built from the first row's context rather than passed in, so the adapter
+     * keeps its existing constructor. It only reads preferences, so one for the
+     * whole list is enough and it costs nothing to hold.
+     */
+    private BeachPhotoStore photoStore;
 
     public BeachAdapter(List<Beach> beaches, double userLat, double userLon, OnBeachClickListener listener) {
         this.beaches = beaches;
@@ -62,12 +70,16 @@ public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHol
         holder.name.setText(beach.getName());
         row.setOnClickListener(v -> listener.onBeachClick(beach));
 
-        // A beach with no verified photo, or whose photo will not load, shows
-        // the drawn shoreline rather than a stock picture of somewhere else,
-        // in daylight or after dark according to the sun at that beach.
+        // A photo somebody added themselves wins, then the curated one. A beach
+        // with neither, or whose photo will not load, shows the drawn shoreline
+        // rather than a stock picture of somewhere else, in daylight or after
+        // dark according to the sun at that beach.
+        if (photoStore == null) {
+            photoStore = new BeachPhotoStore(row.getContext());
+        }
         Drawable placeholder = BeachPlaceholder.forBeach(row.getContext(), beach);
         Glide.with(row.getContext())
-            .load(beach.getImageUrl())
+            .load(photoStore.imageSourceFor(beach))
             .centerCrop()
             .placeholder(placeholder)
             .fallback(placeholder)

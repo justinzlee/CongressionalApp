@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.ai.SafetyNote;
 import com.example.myapplication.data.BeachRepository;
+import com.example.myapplication.data.LastKnownLocation;
 import com.example.myapplication.location.LocationService;
 import com.example.myapplication.model.Beach;
 import com.example.myapplication.model.BeachConditions;
@@ -364,14 +365,7 @@ public class MainActivity extends AppCompatActivity {
         locationService.getLastLocation(new LocationService.LocationUpdateListener() {
             @Override
             public void onLocationUpdated(double latitude, double longitude) {
-                realLat = latitude;
-                realLon = longitude;
-                hasRealLocation = true;
-                if (!isManualLocation) {
-                    updateUserLocation(latitude, longitude);
-                } else {
-                    updateList();
-                }
+                onRealFix(latitude, longitude);
             }
 
             @Override
@@ -381,14 +375,7 @@ public class MainActivity extends AppCompatActivity {
         locationService.startLocationUpdates(new LocationService.LocationUpdateListener() {
             @Override
             public void onLocationUpdated(double latitude, double longitude) {
-                realLat = latitude;
-                realLon = longitude;
-                hasRealLocation = true;
-                if (!isManualLocation) {
-                    updateUserLocation(latitude, longitude);
-                } else {
-                    updateList();
-                }
+                onRealFix(latitude, longitude);
             }
 
             @Override
@@ -397,6 +384,31 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, error, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    /**
+     * A real position from the device, as opposed to the coastal city the user
+     * may have picked to browse. Both the first fix and every later update land
+     * here.
+     *
+     * <p>It is written down as well as held in fields: this is the only screen
+     * that asks for location, and the Alerts tab and its badge need the same
+     * answer to work out which beaches are within range of the user. The badge
+     * is refreshed straight after, because a first fix can bring beaches into
+     * alert range that were not in it a moment ago.
+     */
+    private void onRealFix(double latitude, double longitude) {
+        realLat = latitude;
+        realLon = longitude;
+        hasRealLocation = true;
+        new LastKnownLocation(this).remember(latitude, longitude);
+
+        if (!isManualLocation) {
+            updateUserLocation(latitude, longitude);
+        } else {
+            updateList();
+        }
+        TabBar.refreshAlertBadge(this);
     }
 
     private void updateUserLocation(double latitude, double longitude) {

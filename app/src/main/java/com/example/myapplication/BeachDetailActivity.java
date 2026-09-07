@@ -1,16 +1,25 @@
 package com.example.myapplication;
 
+import android.content.ActivityNotFoundException;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.PickVisualMediaRequest;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.core.widget.ImageViewCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -18,6 +27,7 @@ import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.myapplication.ai.SafetyNote;
+import com.example.myapplication.data.BeachPhotoStore;
 import com.example.myapplication.data.BeachRepository;
 import com.example.myapplication.data.SavedBeachStore;
 import com.google.android.material.button.MaterialButton;
@@ -36,6 +46,8 @@ import com.example.myapplication.network.WeatherClient;
 import com.example.myapplication.util.BeachPlaceholder;
 import com.example.myapplication.util.EdgeToEdge;
 import com.example.myapplication.util.UnitConverter;
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
@@ -45,6 +57,15 @@ import java.util.TimeZone;
 
 public class BeachDetailActivity extends AppCompatActivity {
     public static final String EXTRA_BEACH_ID = "extra_beach_id";
+
+    /**
+     * Where a camera capture is being written. Held across a save/restore
+     * because the camera is another app in front of ours, and a phone short on
+     * memory is free to kill this process while it is there — losing the path
+     * would strand the photo the user just took in our cache.
+     */
+    private static final String STATE_PENDING_CAPTURE = "pending_capture";
+
     private WeatherClient weatherClient;
     private TideClient tideClient;
 
@@ -55,6 +76,13 @@ public class BeachDetailActivity extends AppCompatActivity {
     private View verdictChip;
     private WaveHeightCard waveCard;
     private TextView lowTide, lowTideCountdown, highTide, highTideCountdown;
+
+    private ImageView heroImage;
+    private View heroScrim;
+    private BeachPhotoStore photoStore;
+    private ActivityResultLauncher<PickVisualMediaRequest> photoPicker;
+    private ActivityResultLauncher<Uri> photoCamera;
+    private File pendingCapture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,17 +119,53 @@ public class BeachDetailActivity extends AppCompatActivity {
         highTide = findViewById(R.id.detailHighTide);
         highTideCountdown = findViewById(R.id.detailHighTideCountdown);
 
-        // The photo is the curated one for this beach, or the drawn shoreline
-        // where there is none. Looking the name up on Wikipedia used to run
-        // here and overwrite it, but that search returns the wrong subject too
-        // often to trust — a car park for Huntington Beach, a map for
-        // Galveston Island — and a wrong photo is worse than an honest
-        // placeholder on a screen about whether the water is safe.
-        ImageView image = findViewById(R.id.beachDetailImage);
-        View heroScrim = findViewById(R.id.detailHeroScrim);
+        heroImage = findViewById(R.id.beachDetailImage);
+        heroScrim = findViewById(R.id.detailHeroScrim);
+        photoStore = new BeachPhotoStore(this);
+        if (savedInstanceState != null) {
+            String pending = savedInstanceState.getString(STATE_PENDING_CAPTURE);
+            if (pending != null) pendingCapture = new File(pending);
+        }
+        registerPhotoLaunchers();
+        bindHeroPhoto();
+        bindPhotoButton();
+
+        ((TextView) findViewById(R.id.detailBeachName)).setText(beach.getName());
+        bindSaveButton();
+        bindMeta();
+        bindLifeguards();
+        bindHazards();
+        bindVerdict();
+
+        if (beach.getConditions() != null) {
+            updateConditionsDisplay(beach.getConditions());
+        } else {
+            // Settle the sea at its resting level while the forecast is still
+            // in flight, rather than leaving the card blank until it lands.
+            waveCard.setReading(null);
+        }
+
+        weatherClient = new WeatherClient();
+        tideClient = new TideClient();
+        fetchRealTimeData();
+        fetchTides();
+    }
+
+    /**
+     * The hero: this beach's submitted photo if someone has added one, else the
+     * curated photograph, else the drawn shoreline.
+     *
+     * <p>Looking the name up on Wikipedia used to run here and overwrite the
+     * curated one, but that search returns the wrong subject too often to trust
+     * — a car park for Huntington Beach, a map for Galveston Island — and a
+     * wrong photo is worse than an honest placeholder on a screen about whether
+     * the water is safe. A photo somebody took standing on the sand is the
+     * opposite case, which is why it outranks everything else here.
+     */
+    private void bindHeroPhoto() {
         Drawable placeholder = BeachPlaceholder.forBeach(this, beach);
         Glide.with(this)
-            .load(beach.getImageUrl())
+            .load(photoStore.imageSourceFor(beach))
             .centerCrop()
             .placeholder(placeholder)
             .fallback(placeholder)
@@ -124,27 +188,132 @@ public class BeachDetailActivity extends AppCompatActivity {
                     return false;
                 }
             })
-            .into(image);
+            .into(heroImage);
+    }
 
-        ((TextView) findViewById(R.id.detailBeachName)).setText(beach.getName());
-        bindSaveButton();
-        bindMeta();
-        bindLifeguards();
-        bindHazards();
-        bindVerdict();
+    /** The camera button on the hero, and the sheet of choices behind it. */
+    private void bindPhotoButton() {
+        ImageView button = findViewById(R.id.detailPhotoButton);
+        boolean hasPhoto = photoStore.hasPhoto(beach.getId());
+        button.setContentDescription(
+            getString(hasPhoto ? R.string.photo_change : R.string.photo_add));
 
-        if (beach.getConditions() != null) {
-            updateConditionsDisplay(beach.getConditions());
-        } else {
-            // Settle the sea at its resting level while the forecast is still
-            // in flight, rather than leaving the card blank until it lands.
-            waveCard.setReading(null);
+        button.setOnClickListener(v -> BeachPhotoSheet.show(this, beach.getName(), hasPhoto,
+            new BeachPhotoSheet.Choice() {
+                @Override
+                public void onTakePhoto() {
+                    takePhoto();
+                }
+
+                @Override
+                public void onChoosePhoto() {
+                    photoPicker.launch(new PickVisualMediaRequest.Builder()
+                        .setMediaType(ActivityResultContracts.PickVisualMedia.ImageOnly.INSTANCE)
+                        .build());
+                }
+
+                @Override
+                public void onRemovePhoto() {
+                    photoStore.remove(beach.getId());
+                    bindHeroPhoto();
+                    bindPhotoButton();
+                }
+            }));
+    }
+
+    /**
+     * Both ways in from another app. Registered in {@code onCreate} because
+     * that is the contract: a launcher created any later than the activity
+     * being started cannot be delivered a result.
+     */
+    private void registerPhotoLaunchers() {
+        // The system photo picker: it hands back one image and nothing else, so
+        // it needs no storage permission and cannot see the rest of the library.
+        photoPicker = registerForActivityResult(
+            new ActivityResultContracts.PickVisualMedia(),
+            uri -> {
+                if (uri != null) submitPhoto(uri, null);
+            });
+
+        photoCamera = registerForActivityResult(
+            new ActivityResultContracts.TakePicture(),
+            taken -> {
+                File capture = pendingCapture;
+                pendingCapture = null;
+                if (capture == null) return;
+                if (Boolean.TRUE.equals(taken)) {
+                    submitPhoto(Uri.fromFile(capture), capture);
+                } else {
+                    // Backed out of the camera: the file it was given is empty
+                    // or half-written, and nothing will come back for it.
+                    capture.delete();
+                }
+            });
+    }
+
+    /**
+     * Hands the camera app a file of ours to write into. No CAMERA permission
+     * is declared or asked for — this starts whichever camera app the phone
+     * already has and takes the result, rather than driving the sensor itself.
+     */
+    private void takePhoto() {
+        File capture = null;
+        try {
+            File dir = new File(getCacheDir(), "camera");
+            if (!dir.isDirectory() && !dir.mkdirs()) {
+                throw new IOException("Could not create " + dir);
+            }
+            capture = File.createTempFile("capture-", ".jpg", dir);
+            Uri target = FileProvider.getUriForFile(
+                this, getPackageName() + ".fileprovider", capture);
+            pendingCapture = capture;
+            photoCamera.launch(target);
+        } catch (ActivityNotFoundException e) {
+            pendingCapture = null;
+            if (capture != null) capture.delete();
+            Toast.makeText(this, R.string.photo_no_camera, Toast.LENGTH_SHORT).show();
+        } catch (IOException | IllegalArgumentException e) {
+            pendingCapture = null;
+            if (capture != null) capture.delete();
+            Toast.makeText(this, R.string.photo_failed, Toast.LENGTH_SHORT).show();
         }
+    }
 
-        weatherClient = new WeatherClient();
-        tideClient = new TideClient();
-        fetchRealTimeData();
-        fetchTides();
+    /**
+     * @param cleanup a scratch file to delete once the photo is safely stored;
+     *                null when the image came from the picker and is not ours
+     *                to delete.
+     */
+    private void submitPhoto(Uri source, @Nullable File cleanup) {
+        photoStore.submit(beach.getId(), source, new BeachPhotoStore.SaveCallback() {
+            @Override
+            public void onSaved(File photo) {
+                if (cleanup != null) cleanup.delete();
+                // The import runs off the main thread, so this screen may be
+                // gone by the time it lands; Glide refuses a destroyed
+                // activity. The photo is stored either way and will be there
+                // the next time the beach is opened.
+                if (isFinishing() || isDestroyed()) return;
+                bindHeroPhoto();
+                bindPhotoButton();
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+                if (cleanup != null) cleanup.delete();
+                if (isFinishing() || isDestroyed()) return;
+                Toast.makeText(BeachDetailActivity.this,
+                    R.string.photo_failed, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (pendingCapture != null) {
+            outState.putString(STATE_PENDING_CAPTURE, pendingCapture.getAbsolutePath());
+        }
     }
 
     /** Save/unsave, persisted so the Saved tab picks it up immediately. */

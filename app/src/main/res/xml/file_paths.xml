@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The one directory the camera app is handed a Uri into: a scratch folder in
+  our cache where a capture lands before it is scaled down and copied into
+  private storage. Nothing else in the app is shared through the provider.
+-->
+<paths>
+    <cache-path name="camera_captures" path="camera/" />
+</paths>
