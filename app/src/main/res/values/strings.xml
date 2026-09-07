@@ -511,6 +511,17 @@
     <string name="wildlife_pnw_whale_body">They migrate past in December and January and again from March to June, and a few feed off the headlands all summer. Look for the blow from the viewpoints above the beach.</string>
     <string name="wildlife_pnw_note_title">Sneaker waves</string>
     <string name="wildlife_pnw_note_body">This coast throws waves far up the beach with no warning and drags logs with them. Never turn your back on the water, never sit on a beach log, and keep off rocks the tide can cut off.</string>
+    <!-- Your own photo of a beach. The hero changing is the confirmation that
+         one landed or was taken away, so only the failures need words. -->
+    <string name="photo_add">Add a photo</string>
+    <string name="photo_change">Change the photo</string>
+    <string name="photo_sheet_note">Stays on this phone.</string>
+    <string name="photo_take">Take a photo</string>
+    <string name="photo_choose">Choose a photo</string>
+    <string name="photo_remove">Remove photo</string>
+    <string name="photo_failed">Couldn\'t add that photo.</string>
+    <string name="photo_no_camera">No camera app on this device.</string>
+
     <!-- Emergency sheet -->
     <string name="sos_action">Emergency help</string>
     <string name="sos_label">SOS</string>

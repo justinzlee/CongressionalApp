@@ -99,6 +99,22 @@
                         android:background="@drawable/bg_hero_scrim"
                         android:visibility="gone" />
 
+                    <!-- Opposite corner from the verdict chip, so the two
+                         things sitting on the picture never collide. -->
+                    <ImageView
+                        android:id="@+id/detailPhotoButton"
+                        android:layout_width="34dp"
+                        android:layout_height="34dp"
+                        android:layout_gravity="top|end"
+                        android:layout_margin="11dp"
+                        android:background="@drawable/bg_hero_button"
+                        android:clickable="true"
+                        android:contentDescription="@string/photo_add"
+                        android:focusable="true"
+                        android:padding="8dp"
+                        android:src="@drawable/ic_camera"
+                        app:tint="@color/on_hero" />
+
                     <LinearLayout
                         android:id="@+id/detailVerdictChip"
                         android:layout_width="wrap_content"
