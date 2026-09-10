@@ -1,5 +1,11 @@
 package com.example.myapplication.model;
 
+import android.content.Context;
+
+import androidx.annotation.ColorRes;
+
+import com.example.myapplication.R;
+
 public class BeachConditions {
     private final Double airTemperature; // °F
     private final Integer uvIndex;
@@ -21,26 +27,24 @@ public class BeachConditions {
     public Double getWaveHeight() { return waveHeight; }
     public Double getVisibility() { return visibility; }
 
-    public String getFormattedUvIndex() {
-        if (uvIndex == null) return "--";
-        return String.format(java.util.Locale.US, "%s (%d)", getUvLabel(), uvIndex);
+    public String getFormattedUvIndex(Context context) {
+        if (uvIndex == null) return context.getString(R.string.placeholder_dashes);
+        return context.getString(R.string.uv_reading, getUvLabel(context), uvIndex);
     }
 
-    public String getUvLabel() {
-        if (uvIndex == null) return "Unknown";
-        if (uvIndex <= 2) return "Low";
-        if (uvIndex <= 5) return "Moderate";
-        if (uvIndex <= 7) return "Higher";
-        if (uvIndex <= 10) return "Very High";
-        return "Extreme";
+    /**
+     * What this reading is called — "Very high" and the rest. The band names
+     * live in {@link UvLevel} so this reading and the UV lesson in the Learn
+     * tab always use the same word for the same number.
+     */
+    public String getUvLabel(Context context) {
+        if (uvIndex == null) return context.getString(R.string.uv_level_unknown);
+        return context.getString(UvLevel.of(uvIndex).getLabelRes());
     }
 
+    @ColorRes
     public int getUvColorResId() {
         if (uvIndex == null) return android.R.color.darker_gray;
-        if (uvIndex <= 2) return com.example.myapplication.R.color.uv_low;
-        if (uvIndex <= 5) return com.example.myapplication.R.color.uv_moderate;
-        if (uvIndex <= 7) return com.example.myapplication.R.color.uv_high;
-        if (uvIndex <= 10) return com.example.myapplication.R.color.uv_very_high;
-        return com.example.myapplication.R.color.uv_extreme;
+        return UvLevel.of(uvIndex).getColorRes();
     }
 }

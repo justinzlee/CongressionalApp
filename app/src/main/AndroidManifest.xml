@@ -71,6 +71,12 @@
             android:theme="@style/Theme.MyApplication" />
 
         <activity
+            android:name=".UvGuideActivity"
+            android:exported="false"
+            android:label="@string/uv_title"
+            android:theme="@style/Theme.MyApplication" />
+
+        <activity
             android:name=".PracticeActivity"
             android:exported="false"
             android:label="@string/practice_title"

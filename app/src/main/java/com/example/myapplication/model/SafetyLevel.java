@@ -61,8 +61,11 @@ public enum SafetyLevel {
      * <p>Public for the same reason the surf thresholds are: ConditionHazards
      * writes the UV hazard the beach screen lists, and it has to appear at
      * exactly the reading that moves the verdict, not one of its own.
+     *
+     * <p>The number comes from the band table, so "extreme" here and the
+     * "Extreme" band the UV lesson teaches always mean the same reading.
      */
-    public static final int CAUTION_UV = 11;
+    public static final int CAUTION_UV = UvLevel.EXTREME.getMin();
 
     @ColorRes private final int colorRes;
     @ColorRes private final int tintRes;

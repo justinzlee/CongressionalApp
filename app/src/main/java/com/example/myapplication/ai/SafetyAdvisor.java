@@ -23,7 +23,7 @@ public class SafetyAdvisor {
             
             summary.append("Weather: The air temperature is ")
                    .append(tempText).append(" with a UV index of ")
-                   .append(conditions.getFormattedUvIndex()).append(". ");
+                   .append(conditions.getFormattedUvIndex(context)).append(". ");
             summary.append("Sea conditions show ")
                    .append(waveText).append(" waves and wind at ")
                    .append(windText).append(". ");
@@ -79,7 +79,7 @@ public class SafetyAdvisor {
             if (conditions != null) {
                 report.append("   Air: ").append(UnitConverter.formatTemperature(context, conditions.getAirTemperature()))
                       .append(" | Waves: ").append(UnitConverter.formatWaveHeight(context, conditions.getWaveHeight()))
-                      .append(" | UV: ").append(conditions.getFormattedUvIndex()).append("\n");
+                      .append(" | UV: ").append(conditions.getFormattedUvIndex(context)).append("\n");
             }
 
             List<Hazard> hazards = beach.getHazards();
