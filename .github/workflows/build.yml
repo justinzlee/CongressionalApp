@@ -11,6 +11,27 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Android Studio refuses to sync a project whose Android Gradle plugin is
+      # newer than the version that Studio release supports; the team is on
+      # Studio 2026.1, which tops out at AGP 9.2.1. `./gradlew build` enforces
+      # no such ceiling, so an AGP bump looks perfectly fine to whoever makes it
+      # and shows up as "Gradle sync failed: incompatible version" on everyone
+      # else's machine. That has already happened three times (9.3.1, 9.3.2,
+      # 9.4.0), so check it here rather than rediscovering it by hand.
+      - name: Check AGP stays within what Android Studio can sync
+        run: |
+          MAX=9.2.1
+          AGP=$(sed -n 's/^agp = "\(.*\)"/\1/p' gradle/libs.versions.toml)
+          if [ -z "$AGP" ]; then
+            echo "::error file=gradle/libs.versions.toml::Could not read the 'agp' version. Did the [versions] format change?"
+            exit 1
+          fi
+          if [ "$(printf '%s\n%s\n' "$MAX" "$AGP" | sort -V | tail -1)" != "$MAX" ]; then
+            echo "::error file=gradle/libs.versions.toml::AGP $AGP is newer than $MAX, the newest Android Gradle plugin that Android Studio 2026.1 can sync. Gradle will build it, but Sync fails for everyone on that Studio. Have the whole team upgrade Android Studio first, then raise MAX here and 'agp' in gradle/libs.versions.toml in the same commit."
+            exit 1
+          fi
+          echo "AGP $AGP is within the $MAX ceiling."
+
       # Fails the build if gradlew has been tampered with or lost its
       # executable bit, instead of leaving it for someone to hit locally.
       - uses: gradle/actions/wrapper-validation@v4
