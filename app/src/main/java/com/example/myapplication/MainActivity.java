@@ -504,7 +504,7 @@ public class MainActivity extends AppCompatActivity {
         BeachConditions conditions = beach.getConditions();
         statSurfValue.setText(conditions == null ? "--"
             : UnitConverter.formatWaveHeight(this, conditions.getWaveHeight()));
-        statUvValue.setText(conditions == null ? "--" : conditions.getFormattedUvIndex());
+        statUvValue.setText(conditions == null ? "--" : conditions.getFormattedUvIndex(this));
         statWindValue.setText(conditions == null ? "--"
             : UnitConverter.formatWindSpeed(this, conditions.getWindSpeed()));
         statTempValue.setText(conditions == null ? "--"

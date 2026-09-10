@@ -542,7 +542,7 @@ public class BeachDetailActivity extends AppCompatActivity {
 
         waveCard.setReading(conditions.getWaveHeight());
         ((TextView) findViewById(R.id.detailUvIndex))
-            .setText(conditions.getFormattedUvIndex());
+            .setText(conditions.getFormattedUvIndex(this));
         ((TextView) findViewById(R.id.detailVisibility))
             .setText(UnitConverter.formatVisibility(this, conditions.getVisibility()));
         ((TextView) findViewById(R.id.detailWindSpeed))

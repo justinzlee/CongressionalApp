@@ -50,7 +50,7 @@ public class WeatherClientTest {
 
     @Test
     public void uvIndexRoundsToNearestWholeStep() {
-        // 6.6 is "Higher", and must not truncate down to 6.
+        // 6.6 is "High", and must not truncate down to 6.
         assertEquals(Integer.valueOf(7),
             WeatherClient.buildConditions(fullForecast(), null).getUvIndex());
     }

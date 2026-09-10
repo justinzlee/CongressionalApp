@@ -6,6 +6,7 @@ import com.example.myapplication.model.Beach;
 import com.example.myapplication.model.BeachConditions;
 import com.example.myapplication.model.Hazard;
 import com.example.myapplication.model.SafetyLevel;
+import com.example.myapplication.model.UvLevel;
 
 import java.util.List;
 import java.util.Locale;
@@ -26,7 +27,7 @@ public class SafetyNote {
             note.append(' ').append(hazardText);
         }
 
-        String uvText = describeUv(beach.getConditions());
+        String uvText = describeUv(context, beach.getConditions());
         if (uvText != null) {
             note.append(' ').append(uvText);
         }
@@ -63,10 +64,13 @@ public class SafetyNote {
             : "There are warnings here for " + names + ".";
     }
 
-    private String describeUv(BeachConditions conditions) {
+    private String describeUv(Context context, BeachConditions conditions) {
         if (conditions == null || conditions.getUvIndex() == null) return null;
-        if (conditions.getUvIndex() < 8) return null;
-        return "UV is " + conditions.getUvLabel().toLowerCase(Locale.getDefault())
+        // "Very high" and above, read off the band table rather than a copied
+        // number, so this line appears at exactly the reading the UV lesson
+        // calls very high.
+        if (UvLevel.of(conditions.getUvIndex()).compareTo(UvLevel.VERY_HIGH) < 0) return null;
+        return "UV is " + conditions.getUvLabel(context).toLowerCase(Locale.getDefault())
             + " — cover up and reapply sunscreen.";
     }
 

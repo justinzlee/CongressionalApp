@@ -72,6 +72,8 @@ public class LearnActivity extends AppCompatActivity {
         new Group(R.string.learn_group_before, new Lesson[] {
             new Lesson(R.string.flag_entry_title, 0,
                 R.drawable.ic_flag, FlagGuideActivity.class),
+            new Lesson(R.string.uv_entry_title, 0,
+                R.drawable.ic_sun, UvGuideActivity.class),
         }),
         new Group(R.string.learn_group_water, new Lesson[] {
             new Lesson(R.string.guide_entry_title, 0,
