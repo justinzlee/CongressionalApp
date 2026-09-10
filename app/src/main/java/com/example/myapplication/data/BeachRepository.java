@@ -98,7 +98,7 @@ public class BeachRepository {
             "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/La_Jolla_Shores_photo_Don_Ramey_Logan.jpg/1280px-La_Jolla_Shores_photo_Don_Ramey_Logan.jpg"));
         
         beaches.add(new Beach("CA2", "Coronado Beach", 32.6859, -117.1831, null, null, null, 
-            null));
+            "https://img2.10bestmedia.com/Images/Photos/422054/Coronado-Beach_54_990x660.jpg?auto=webp&width=800&quality=75"));
         beaches.add(new Beach("CA3", "Ocean Beach", 32.7495, -117.2553, null, null, null,
             "https://upload.wikimedia.org/wikipedia/commons/9/9f/Sunset_pier.jpg"));
         beaches.add(new Beach("CA4", "Carlsbad State Beach", 33.1506, -117.3551, null, null, null,
