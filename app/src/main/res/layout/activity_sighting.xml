@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Reporting an animal at a beach.
+
+  Two questions, in this order: what it was, then where it was. The second one
+  is the one that matters — a dolphin in the water is a nice thing to note and a
+  seal on the sand is a warning other people need — so it gets full-width rows
+  with an explanation rather than a chip, and choosing "washed up" reveals what
+  that is about to do.
+
+  The species options are written out rather than inflated in a loop. There are
+  exactly three, they are not going to change at runtime, and spelling them out
+  keeps the ids the activity binds against visible in one place.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/sightingHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="8dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp">
+
+        <LinearLayout
+            android:id="@+id/sightingBackButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="0dp"
+            android:paddingEnd="10dp">
+
+            <ImageView
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:contentDescription="@null"
+                android:padding="9dp"
+                android:src="@drawable/ic_back"
+                app:tint="@color/primary" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:text="@string/back"
+                android:textColor="@color/primary"
+                android:textSize="12.5sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/sightingScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="24dp">
+
+            <TextView
+                android:id="@+id/sightingTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.App.Headline"
+                tools:text="Wildlife at La Jolla Shores" />
+
+            <!-- ══════ WHAT ══════ -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:text="@string/sighting_what"
+                android:textAppearance="@style/TextAppearance.App.Caption" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/sightingDolphin"
+                    style="@style/Widget.App.SpeciesChoice"
+                    android:layout_marginEnd="4dp">
+
+                    <ImageView
+                        android:id="@+id/sightingDolphinIcon"
+                        style="@style/Widget.App.SpeciesChoiceIcon"
+                        android:src="@drawable/ic_dolphin" />
+
+                    <TextView
+                        android:id="@+id/sightingDolphinLabel"
+                        style="@style/Widget.App.SpeciesChoiceLabel"
+                        android:text="@string/sighting_species_dolphin" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/sightingSeal"
+                    style="@style/Widget.App.SpeciesChoice"
+                    android:layout_marginHorizontal="4dp">
+
+                    <ImageView
+                        android:id="@+id/sightingSealIcon"
+                        style="@style/Widget.App.SpeciesChoiceIcon"
+                        android:src="@drawable/ic_seal" />
+
+                    <TextView
+                        android:id="@+id/sightingSealLabel"
+                        style="@style/Widget.App.SpeciesChoiceLabel"
+                        android:text="@string/sighting_species_seal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/sightingSeaLion"
+                    style="@style/Widget.App.SpeciesChoice"
+                    android:layout_marginStart="4dp">
+
+                    <ImageView
+                        android:id="@+id/sightingSeaLionIcon"
+                        style="@style/Widget.App.SpeciesChoiceIcon"
+                        android:src="@drawable/ic_seal" />
+
+                    <TextView
+                        android:id="@+id/sightingSeaLionLabel"
+                        style="@style/Widget.App.SpeciesChoiceLabel"
+                        android:text="@string/sighting_species_sea_lion" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ══════ WHERE ══════ -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="@string/sighting_where"
+                android:textAppearance="@style/TextAppearance.App.Caption" />
+
+            <LinearLayout
+                android:id="@+id/sightingInWater"
+                style="@style/Widget.App.WhereChoice"
+                android:layout_marginTop="8dp">
+
+                <ImageView
+                    android:id="@+id/sightingInWaterMark"
+                    style="@style/Widget.App.WhereChoiceMark"
+                    android:src="@drawable/ic_wave" />
+
+                <TextView
+                    style="@style/Widget.App.WhereChoiceLabel"
+                    android:text="@string/sighting_where_water" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/sightingStranded"
+                style="@style/Widget.App.WhereChoice"
+                android:layout_marginTop="8dp">
+
+                <ImageView
+                    android:id="@+id/sightingStrandedMark"
+                    style="@style/Widget.App.WhereChoiceMark"
+                    android:src="@drawable/ic_warning_circle" />
+
+                <TextView
+                    style="@style/Widget.App.WhereChoiceLabel"
+                    android:text="@string/sighting_where_stranded" />
+            </LinearLayout>
+
+            <!-- Shown only once "washed up" is picked: what that is about to do,
+                 and the one instruction that matters before they get closer. -->
+            <LinearLayout
+                android:id="@+id/sightingStrandedNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_danger_note"
+                android:orientation="horizontal"
+                android:padding="13dp"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <ImageView
+                    android:layout_width="19dp"
+                    android:layout_height="19dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_warning_circle"
+                    app:tint="@color/danger" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/sighting_stranded_title"
+                        android:textColor="@color/danger"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:text="@string/sighting_stranded_body"
+                        android:textAppearance="@style/TextAppearance.App.Body" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ══════ DETAIL ══════ -->
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:hint="@string/sighting_note_hint"
+                app:boxCornerRadiusBottomEnd="12dp"
+                app:boxCornerRadiusBottomStart="12dp"
+                app:boxCornerRadiusTopEnd="12dp"
+                app:boxCornerRadiusTopStart="12dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/sightingNote"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:maxLines="3"
+                    android:minLines="2" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="14dp"
+                android:text="@string/sighting_photo_note"
+                android:textAppearance="@style/TextAppearance.App.Subtitle" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp">
+
+                <ImageView
+                    android:id="@+id/sightingPhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="180dp"
+                    android:background="@drawable/bg_image_placeholder"
+                    android:clickable="true"
+                    android:contentDescription="@string/sighting_photo_add"
+                    android:focusable="true"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+                <LinearLayout
+                    android:id="@+id/sightingPhotoEmpty"
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:background="@drawable/bg_dashed_empty"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_camera"
+                        app:tint="@color/text_secondary" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:text="@string/sighting_photo_add"
+                        android:textAppearance="@style/TextAppearance.App.Subtitle" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/sightingSave"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="@string/sighting_save"
+                android:textSize="15sp"
+                app:cornerRadius="12dp" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

@@ -218,4 +218,75 @@
         <item name="strokeColor">@color/divider</item>
     </style>
 
+    <!-- Reporting a wildlife sighting.
+
+         Both sets of choices are painted in code rather than by a selector: the
+         backgrounds are GradientDrawables that get mutated on selection, the
+         same way the coast chips on the wildlife guide work. A selector would
+         need a second drawable per state and would still not colour the icon. -->
+
+    <!-- One of the three species, in a row of three -->
+    <style name="Widget.App.SpeciesChoice" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/bg_choice_card</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <!-- Split edges rather than padding{Horizontal,Vertical}: those are
+             API 26+, and in a style (unlike a layout) they are silently
+             dropped below that, which minSdk 24 would hit. -->
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">12dp</item>
+    </style>
+    <style name="Widget.App.SpeciesChoiceIcon" parent="">
+        <item name="android:layout_width">30dp</item>
+        <item name="android:layout_height">30dp</item>
+        <item name="android:contentDescription">@null</item>
+        <item name="tint">@color/text_secondary</item>
+    </style>
+    <style name="Widget.App.SpeciesChoiceLabel" parent="">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">6dp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/text_secondary</item>
+    </style>
+
+    <!-- In the water, or washed up: full width, because the second one needs
+         room to say what it means -->
+    <style name="Widget.App.WhereChoice" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@drawable/bg_choice_card</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:paddingLeft">14dp</item>
+        <item name="android:paddingRight">14dp</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+    </style>
+    <style name="Widget.App.WhereChoiceMark" parent="">
+        <item name="android:layout_width">21dp</item>
+        <item name="android:layout_height">21dp</item>
+        <item name="android:contentDescription">@null</item>
+        <item name="tint">@color/text_secondary</item>
+    </style>
+    <style name="Widget.App.WhereChoiceLabel" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginStart">12dp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
 </resources>

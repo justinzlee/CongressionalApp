@@ -173,4 +173,21 @@
          intent, but its own token because after dark the sea darkens into the
          night sky and a kite painted in it disappears. -->
     <color name="placeholder_kite_sail">#26A6C1</color>
+
+    <!-- Rock-scale reference pictures. The three drawn patches of shore that
+         anchor the 0-10 rocks rating at 3, 5 and 9.
+
+         Deliberately NOT the placeholder_* sand tokens above, and deliberately
+         not overridden in values-night. Those tokens turn into an after-dark
+         beach at night, which is right for a hero image and wrong here: these
+         three pictures are a measuring scale, and a scale that changes colour
+         with the phone's theme is no longer the same scale. Same reasoning as
+         the warning flags - what is depicted is a physical thing, so it looks
+         the same whichever way the app is set. -->
+    <color name="rocks_ref_water">#6FC9D4</color>
+    <color name="rocks_ref_sand_wet">#DCB985</color>
+    <color name="rocks_ref_sand">#EDCF9B</color>
+    <color name="rocks_ref_rock_light">#CFC7B8</color>
+    <color name="rocks_ref_rock_mid">#A69D8C</color>
+    <color name="rocks_ref_rock_dark">#7D7566</color>
 </resources>

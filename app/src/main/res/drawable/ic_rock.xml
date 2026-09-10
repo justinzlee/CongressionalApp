@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Three rocks sitting on a line of sand: the mark for the rocks-underfoot rating.
+
+  Sits next to ic_wave and ic_sun in the beach detail sections, so it is drawn
+  filled and at the same visual weight as those.
+
+  The three are given clearly different heights rather than being spaced apart.
+  They overlap, and a single tint flattens them into one silhouette, so the only
+  thing that says "three rocks" instead of "a hill" is the notch where a tall one
+  meets a short one. Equal heights lose that the moment the icon is shrunk.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Tall rock, left -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M2.6,17.5
+            C2.6,14.0 4.2,11.8 6.4,11.8
+            C8.6,11.8 10.2,14.0 10.2,17.5 Z" />
+
+    <!-- Low rock, middle: the notch either side of it is what separates the three -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M9.6,17.5
+            C9.6,15.4 10.7,14.0 12.2,14.0
+            C13.7,14.0 14.8,15.4 14.8,17.5 Z" />
+
+    <!-- Medium rock, right -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M14.2,17.5
+            C14.2,14.7 15.6,12.8 17.6,12.8
+            C19.6,12.8 21.0,14.7 21.0,17.5 Z" />
+
+    <!-- The sand they sit on, meeting the rocks rather than floating below them -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M1.4,17.5h21.2v1.5h-21.2z" />
+</vector>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The frame around a rock-scale reference picture.
+
+  Drawn unselected here and re-coloured in code when the slider lands on this
+  picture's number - same approach as the coast chips on the wildlife guide,
+  which mutate their GradientDrawable rather than swapping two drawables. The
+  stroke is always present, only its colour changes, so a picture does not shift
+  by a pixel when it becomes the selected one.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <corners android:radius="10dp" />
+    <solid android:color="@android:color/transparent" />
+    <stroke
+        android:width="2dp"
+        android:color="@color/divider" />
+</shape>

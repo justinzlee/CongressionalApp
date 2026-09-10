@@ -576,6 +576,111 @@
     <string name="sos_share_unknown">I need help at the beach. Sending my location.</string>
     <string name="sos_no_app">No app on this device can handle that.</string>
 
+    <!-- ══════ WHAT PEOPLE REPORT FROM THE BEACH ══════
+         The rocks rating and the wildlife log. Everything under here is written
+         for somebody standing on the sand with the app open, which is why the
+         prose is about feet, dogs and children rather than about data. -->
+
+    <string name="section_reports">What people report here</string>
+
+    <!-- Stands in for the relative-time formatter inside its first minute,
+         where it would otherwise render "0 min. ago". -->
+    <string name="time_just_now">just now</string>
+
+    <!-- Rocks underfoot -->
+    <string name="rocks_title">Rocks underfoot</string>
+    <string name="rocks_title_for">Rocks at %1$s</string>
+    <string name="rocks_unrated">Not rated yet</string>
+    <string name="rocks_unrated_body">Nobody has said what the shore here is like underfoot.</string>
+    <string name="rocks_rate_cta">Rate the rocks</string>
+    <string name="rocks_rerate_cta">Change this rating</string>
+    <string name="rocks_value">%1$d / 10</string>
+    <string name="rocks_rated_when">Rated %1$s</string>
+
+    <string name="rocks_band_clear">Clear sand</string>
+    <string name="rocks_band_few">A few rocks</string>
+    <string name="rocks_band_patchy">Patchy rock</string>
+    <string name="rocks_band_mostly">Mostly rock</string>
+    <string name="rocks_band_throughout">Rock throughout</string>
+
+    <string name="rocks_advice_clear">Bare feet are fine the whole way down.</string>
+    <string name="rocks_advice_few">Mostly sand. Watch your step at the waterline.</string>
+    <string name="rocks_advice_patchy">About as much rock as sand. Bring something for your feet.</string>
+    <string name="rocks_advice_mostly">Shoes needed, and hard going for small children.</string>
+    <string name="rocks_advice_throughout">Rock the whole way down. Not a barefoot beach, and awkward with a board or a pushchair.</string>
+
+    <string name="rocks_reference_heading">What the numbers look like</string>
+    <string name="rocks_reference_note">Pick the number whose picture is closest to what is in front of you.</string>
+    <string name="rocks_reference_3">3 — a few rocks on open sand</string>
+    <string name="rocks_reference_5">5 — as much rock as sand</string>
+    <string name="rocks_reference_9">9 — rock the whole way down</string>
+
+    <string name="rocks_your_rating">Your rating</string>
+    <string name="rocks_photo_heading">Your photo of the shore</string>
+    <string name="rocks_photo_note">Optional, and it stays on this phone. It is what lets the next person see whether they would have called it the same number.</string>
+    <string name="rocks_photo_add">Add a photo</string>
+    <string name="rocks_save">Save rating</string>
+    <string name="rocks_saved">Rating saved.</string>
+    <string name="rocks_clear">Remove my rating</string>
+    <string name="rocks_cleared">Rating removed.</string>
+
+    <!-- The hazard a high rating raises, in "What to watch for" and Alerts -->
+    <string name="hazard_rocks_rated_body">Somebody rated the shore here %1$d out of 10 for rock — %2$s.</string>
+    <string name="hazard_rocks_step_shoes">Wear something on your feet.</string>
+    <string name="hazard_rocks_step_entry">Look for a clear channel of sand to get in and out of the water.</string>
+
+    <!-- Wildlife sightings -->
+    <string name="sighting_species_dolphin">Dolphin</string>
+    <string name="sighting_species_seal">Seal</string>
+    <string name="sighting_species_sea_lion">Sea lion</string>
+
+    <string name="sighting_title">Report wildlife</string>
+    <string name="sighting_title_for">Wildlife at %1$s</string>
+    <string name="sighting_section">Seen here lately</string>
+    <string name="sighting_add_cta">Report a sighting</string>
+    <string name="sighting_none">Nothing reported here yet.</string>
+
+    <string name="sighting_what">What did you see?</string>
+    <string name="sighting_where">Where was it?</string>
+    <string name="sighting_where_water">Out in the water</string>
+    <string name="sighting_where_stranded">Washed up on the sand</string>
+
+    <string name="sighting_stranded_title">This raises a warning</string>
+    <string name="sighting_stranded_body">A washed-up animal shows at the top of this beach\'s alerts for the next two days, so anyone else who opens this beach sees it first. Keep well back from it yourself — a stranded seal is often just resting, and it can bite.</string>
+
+    <string name="sighting_note_hint">Anything worth adding (optional)</string>
+    <string name="sighting_photo_add">Add a photo</string>
+    <string name="sighting_photo_note">Optional, and it stays on this phone.</string>
+    <string name="sighting_save">Save report</string>
+    <string name="sighting_saved">Report saved.</string>
+    <string name="sighting_deleted">Report deleted.</string>
+    <string name="sighting_delete">Delete</string>
+
+    <string name="sighting_tag_stranded">Washed up</string>
+    <string name="sighting_tag_water">In the water</string>
+
+    <!-- Passing a warning to other people. There is no server behind this app,
+         so a report reaches other people through whatever messaging app they
+         already share - which is also the fastest way to reach the one person
+         who is actually walking towards it. -->
+    <string name="sighting_share_cta">Warn other people</string>
+    <string name="sighting_share_subject">Washed-up %1$s at %2$s</string>
+    <string name="sighting_share_stranded">Heads up: a %1$s is washed up on the sand at %2$s. Keep at least 150 feet back, keep dogs away, and don\'t push it back into the water — that can kill a healthy animal. Report it to the lifeguards there or your local marine mammal stranding network.</string>
+    <string name="sighting_share_water">Saw a %1$s in the water at %2$s.</string>
+    <string name="sighting_share_none">No app on this device can send that.</string>
+
+    <!-- The hazard a stranding raises, in "What to watch for" and Alerts -->
+    <string name="hazard_stranding_body">A %1$s was reported washed up on the sand here. Keep well back from it.</string>
+    <string name="hazard_stranding_step_distance">Stay at least 150 feet away. Getting closer is an offence under the Marine Mammal Protection Act.</string>
+    <string name="hazard_stranding_step_dogs">Keep dogs leashed and well away.</string>
+    <string name="hazard_stranding_step_leave">Do not push it back into the water. Seals rest on shore normally, and moving a healthy one can kill it.</string>
+    <string name="hazard_stranding_step_tell">Tell the lifeguards, or your local marine mammal stranding network.</string>
+
+    <plurals name="sighting_count">
+        <item quantity="one">%1$d sighting</item>
+        <item quantity="other">%1$d sightings</item>
+    </plurals>
+
     <plurals name="alert_count">
         <item quantity="one">%1$d alert</item>
         <item quantity="other">%1$d alerts</item>
