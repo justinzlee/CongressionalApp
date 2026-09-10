@@ -6,9 +6,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Pins the two decisions taken while importing somebody's own beach photo that
- * can be checked without a device: how far the image is shrunk, and which way
- * up it ends.
+ * Pins the two decisions taken while importing a photo that can be checked
+ * without a device: how far the image is shrunk, and which way up it ends.
+ *
+ * <p>Three features now share this importer - the beach hero photo, the picture
+ * behind a rock rating and the picture on a wildlife sighting - so a regression
+ * in either of these breaks all three at once.
  *
  * <p>The EXIF constants are written as their literal values rather than as
  * {@code ExifInterface.ORIENTATION_*}. They are compile-time constants either
@@ -16,7 +19,7 @@ import static org.junit.Assert.assertTrue;
  * out here keeps the test from leaning on the same library the code under test
  * reads them from.
  */
-public class BeachPhotoStoreTest {
+public class PhotoImporterTest {
 
     private static final int MAX_EDGE = 1600;
 
@@ -30,7 +33,7 @@ public class BeachPhotoStoreTest {
     public void sampleSizeNeverLeavesTheImageOverTheCap() {
         int[] edges = {640, 1600, 1601, 2048, 4032, 8000, 12000};
         for (int edge : edges) {
-            int sample = BeachPhotoStore.sampleSizeFor(edge, edge / 2, MAX_EDGE);
+            int sample = PhotoImporter.sampleSizeFor(edge, edge / 2, MAX_EDGE);
             assertTrue("sample size must be positive for " + edge, sample >= 1);
             assertTrue("longest edge " + edge + " sampled by " + sample + " is still over the cap",
                 edge / sample <= MAX_EDGE);
@@ -40,15 +43,15 @@ public class BeachPhotoStoreTest {
     /** An image already small enough is decoded whole. */
     @Test
     public void smallImagesAreNotShrunk() {
-        assertEquals(1, BeachPhotoStore.sampleSizeFor(1200, 900, MAX_EDGE));
-        assertEquals(1, BeachPhotoStore.sampleSizeFor(MAX_EDGE, MAX_EDGE, MAX_EDGE));
+        assertEquals(1, PhotoImporter.sampleSizeFor(1200, 900, MAX_EDGE));
+        assertEquals(1, PhotoImporter.sampleSizeFor(MAX_EDGE, MAX_EDGE, MAX_EDGE));
     }
 
     /** BitmapFactory only honours powers of two, so nothing else may be returned. */
     @Test
     public void sampleSizeIsAPowerOfTwo() {
         for (int edge = 100; edge <= 12000; edge += 137) {
-            int sample = BeachPhotoStore.sampleSizeFor(edge, 100, MAX_EDGE);
+            int sample = PhotoImporter.sampleSizeFor(edge, 100, MAX_EDGE);
             assertEquals("sample size " + sample + " is not a power of two",
                 0, sample & (sample - 1));
         }
@@ -58,8 +61,8 @@ public class BeachPhotoStoreTest {
     @Test
     public void portraitAndLandscapeShrinkTheSame() {
         assertEquals(
-            BeachPhotoStore.sampleSizeFor(4000, 3000, MAX_EDGE),
-            BeachPhotoStore.sampleSizeFor(3000, 4000, MAX_EDGE));
+            PhotoImporter.sampleSizeFor(4000, 3000, MAX_EDGE),
+            PhotoImporter.sampleSizeFor(3000, 4000, MAX_EDGE));
     }
 
     /**
@@ -69,10 +72,10 @@ public class BeachPhotoStoreTest {
      */
     @Test
     public void quarterTurnsFollowTheOrientationTag() {
-        assertEquals(0, BeachPhotoStore.rotationFor(1));    // ORIENTATION_NORMAL
-        assertEquals(180, BeachPhotoStore.rotationFor(3));  // ORIENTATION_ROTATE_180
-        assertEquals(90, BeachPhotoStore.rotationFor(6));   // ORIENTATION_ROTATE_90
-        assertEquals(270, BeachPhotoStore.rotationFor(8));  // ORIENTATION_ROTATE_270
+        assertEquals(0, PhotoImporter.rotationFor(1));    // ORIENTATION_NORMAL
+        assertEquals(180, PhotoImporter.rotationFor(3));  // ORIENTATION_ROTATE_180
+        assertEquals(90, PhotoImporter.rotationFor(6));   // ORIENTATION_ROTATE_90
+        assertEquals(270, PhotoImporter.rotationFor(8));  // ORIENTATION_ROTATE_270
     }
 
     /**
@@ -84,7 +87,7 @@ public class BeachPhotoStoreTest {
         int[] untouched = {0, 2, 4, 5, 7, 9, -1};
         for (int orientation : untouched) {
             assertEquals("orientation " + orientation + " should not turn the photo",
-                0, BeachPhotoStore.rotationFor(orientation));
+                0, PhotoImporter.rotationFor(orientation));
         }
     }
 }

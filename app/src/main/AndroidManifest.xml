@@ -94,6 +94,22 @@
             android:label="@string/sting_title"
             android:theme="@style/Theme.MyApplication" />
 
+        <!-- The two things somebody standing on the sand can report about a
+             beach. Both are opened from the beach detail screen and both hand
+             their result back through the stores rather than an activity
+             result, so the detail screen picks them up in onResume. -->
+        <activity
+            android:name=".RockRatingActivity"
+            android:exported="false"
+            android:label="@string/rocks_title"
+            android:theme="@style/Theme.MyApplication" />
+
+        <activity
+            android:name=".SightingActivity"
+            android:exported="false"
+            android:label="@string/sighting_title"
+            android:theme="@style/Theme.MyApplication" />
+
         <!-- Lets the camera app write a capture into our cache when someone
              adds their own photo of a beach. Not exported: the grant is handed
              to one app, for one file, for as long as that capture takes. -->

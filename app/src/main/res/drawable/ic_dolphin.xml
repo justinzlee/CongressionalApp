@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  A bottlenose dolphin in side view, nose to the right.
+
+  Filled rather than the single-weight outline ic_fish uses: this mark is drawn
+  as small as 20dp in a sighting row, and an outline closes up into a smudge at
+  that size. app:tint paints it in one colour either way.
+
+  Three things carry "dolphin" rather than "fish", and each is drawn as large as
+  the shape allows: a rostrum that tapers to a point off a rounded melon, a
+  dorsal fin raked backwards rather than spiked upright, and horizontal notched
+  flukes. A fish tail is vertical, so the flukes are the detail that has to
+  survive being shrunk - which is why they are the widest thing here.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <path
+        android:fillColor="#000000"
+        android:pathData="M23.0,11.7
+            C21.8,12.0 20.2,12.5 18.6,13.2
+            C16.7,14.5 14.2,15.2 11.4,15.0
+            C8.6,14.8 6.0,14.0 3.6,12.9
+            L3.6,13.0
+            C3.0,13.9 2.0,14.9 0.9,15.7
+            C0.4,16.1 -0.2,15.6 0.1,15.0
+            C0.8,13.6 1.2,12.6 1.2,12.0
+            C1.2,11.4 0.8,10.4 0.1,9.0
+            C-0.2,8.4 0.4,7.9 0.9,8.3
+            C2.0,9.1 3.0,10.1 3.6,11.0
+            L3.6,11.1
+            C5.2,10.4 6.9,9.8 8.6,9.4
+            C8.9,7.7 9.5,6.0 10.5,4.6
+            C10.9,4.1 11.6,4.4 11.6,5.0
+            C11.6,6.4 11.4,7.8 11.0,9.0
+            C12.9,8.8 14.7,8.9 16.3,9.4
+            C17.4,9.7 18.2,10.1 18.8,10.6
+            C20.3,10.9 21.7,11.2 23.0,11.4
+            C23.2,11.4 23.2,11.7 23.0,11.7 Z" />
+
+    <!-- Pectoral fin, below the body so it reads as the near-side flipper. -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M11.4,14.8
+            C11.4,16.3 11.0,17.8 10.2,19.1
+            C9.9,19.6 9.2,19.4 9.2,18.8
+            C9.2,17.2 9.4,15.8 9.8,14.6 Z" />
+</vector>

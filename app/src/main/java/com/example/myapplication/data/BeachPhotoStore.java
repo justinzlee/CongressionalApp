@@ -2,28 +2,14 @@ package com.example.myapplication.data;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
-import androidx.exifinterface.media.ExifInterface;
 import android.net.Uri;
-import android.os.Handler;
-import android.os.Looper;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
 
 import com.example.myapplication.SettingsActivity;
 import com.example.myapplication.model.Beach;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Locale;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 /**
  * Holds the photographs people take of a beach themselves.
@@ -41,14 +27,9 @@ import java.util.concurrent.Executors;
  * app's own private storage and its path recorded in the same preferences file
  * the rest of the app uses. Nothing is uploaded, and no other user sees it.
  *
- * <p>Incoming images are re-encoded rather than copied byte for byte. A phone
- * camera writes a twelve-megapixel JPEG, which is two orders of magnitude more
- * picture than a 168dp hero can show, and a gallery Uri may not outlive the
- * photo being deleted from the library or the permission grant expiring.
- * Decoding down to {@link #MAX_EDGE} and keeping our own copy fixes both, and
- * drops the EXIF block on the way — which is why the orientation tag has to be
- * read and baked into the pixels here, or every photo held in portrait would
- * come back on its side.
+ * <p>The scaling, turning and re-encoding all happen in {@link PhotoImporter},
+ * which the rock ratings and wildlife sightings share; this class is only the
+ * record of which file is the current photo for which beach.
  */
 public class BeachPhotoStore {
 
@@ -58,27 +39,6 @@ public class BeachPhotoStore {
     /** Where the re-encoded copies live, under the app's private files dir. */
     private static final String PHOTO_DIR = "beach_photos";
 
-    /**
-     * The longest edge kept, in pixels. The largest a photo is ever drawn is
-     * the detail hero, the full width of the screen; 1600px covers that on the
-     * densest phones with room to spare, and keeps each file to a few hundred
-     * kilobytes rather than several megabytes.
-     */
-    private static final int MAX_EDGE = 1600;
-
-    private static final int JPEG_QUALITY = 88;
-
-    /**
-     * Decoding and re-encoding a full-size photo takes long enough to drop
-     * frames, so it happens off the main thread. One thread is enough: this
-     * runs once, when someone picks a picture.
-     */
-    private static final ExecutorService IMPORT = Executors.newSingleThreadExecutor(runnable -> {
-        Thread thread = new Thread(runnable, "beach-photo-import");
-        thread.setDaemon(true);
-        return thread;
-    });
-
     /** Delivered on the main thread once a submitted photo is stored, or is not. */
     public interface SaveCallback {
         void onSaved(File photo);
@@ -87,19 +47,12 @@ public class BeachPhotoStore {
 
     private final Context app;
     private final SharedPreferences prefs;
-
-    /**
-     * Per instance rather than static, so that loading this class does not by
-     * itself reach for the main looper. The scaling arithmetic below is covered
-     * by plain JVM tests, where the framework is only a stub that throws, and a
-     * static handler would take the whole class down with it on first touch.
-     */
-    private final Handler main;
+    private final PhotoImporter importer;
 
     public BeachPhotoStore(Context context) {
         this.app = context.getApplicationContext();
         this.prefs = app.getSharedPreferences(SettingsActivity.PREFS_NAME, Context.MODE_PRIVATE);
-        this.main = new Handler(Looper.getMainLooper());
+        this.importer = new PhotoImporter(app);
     }
 
     /** The photo submitted for this beach, or null if nobody has added one. */
@@ -139,15 +92,24 @@ public class BeachPhotoStore {
      * one, and reports back on the main thread.
      */
     public void submit(String beachId, Uri source, SaveCallback callback) {
-        IMPORT.execute(() -> {
-            try {
-                File saved = importPhoto(beachId, source);
-                main.post(() -> callback.onSaved(saved));
-            } catch (Exception e) {
-                // Broad by design: BitmapFactory and the content resolver throw
-                // unchecked on a file that is not an image at all, and the
-                // picker hands over whatever the user chose.
-                main.post(() -> callback.onFailed(e));
+        File dir = new File(app.getFilesDir(), PHOTO_DIR);
+        importer.importInto(dir, beachId, source, new PhotoImporter.Callback() {
+            @Override
+            public void onSaved(File photo) {
+                // Point the beach at the new file before deleting the old one,
+                // so a process death between the two leaves a beach with a photo
+                // rather than a preference naming a file that is gone.
+                File previous = photoFor(beachId);
+                prefs.edit().putString(KEY_PREFIX + beachId, photo.getAbsolutePath()).apply();
+                if (previous != null) {
+                    previous.delete();
+                }
+                callback.onSaved(photo);
+            }
+
+            @Override
+            public void onFailed(Exception e) {
+                callback.onFailed(e);
             }
         });
     }
@@ -159,137 +121,5 @@ public class BeachPhotoStore {
         if (photo != null) {
             photo.delete();
         }
-    }
-
-    private File importPhoto(String beachId, Uri source) throws IOException {
-        Bitmap bitmap = decodeUpright(source);
-        if (bitmap == null) {
-            throw new IOException("Not an image this device can read: " + source);
-        }
-
-        File dir = new File(app.getFilesDir(), PHOTO_DIR);
-        if (!dir.isDirectory() && !dir.mkdirs()) {
-            throw new IOException("Could not create " + dir);
-        }
-
-        // A fresh filename each time rather than one per beach. Glide caches by
-        // the model it was handed, so writing a replacement over the same path
-        // would go on showing the old picture until that cache turned over.
-        File photo = new File(dir, String.format(Locale.US, "%s-%d.jpg",
-            fileSafe(beachId), System.currentTimeMillis()));
-
-        try (OutputStream out = new FileOutputStream(photo)) {
-            if (!bitmap.compress(Bitmap.CompressFormat.JPEG, JPEG_QUALITY, out)) {
-                throw new IOException("Could not encode the photo");
-            }
-        } catch (IOException e) {
-            photo.delete();
-            throw e;
-        } finally {
-            bitmap.recycle();
-        }
-
-        File previous = photoFor(beachId);
-        prefs.edit().putString(KEY_PREFIX + beachId, photo.getAbsolutePath()).apply();
-        if (previous != null) {
-            previous.delete();
-        }
-        return photo;
-    }
-
-    /**
-     * The picked image, scaled down and turned the right way up.
-     *
-     * <p>Read three times over: once for its dimensions alone, once for the
-     * orientation tag, and once for the pixels. That is cheaper than it looks —
-     * the first two passes read only the header — and it is the only way to
-     * choose a sample size before committing to an allocation, which is what
-     * keeps a fifty-megapixel photo from being decoded at full size and taking
-     * the process down with it.
-     */
-    @Nullable
-    private Bitmap decodeUpright(Uri source) throws IOException {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-        try (InputStream in = open(source)) {
-            BitmapFactory.decodeStream(in, null, options);
-        }
-
-        int degrees = rotationFor(orientationOf(source));
-
-        options.inSampleSize = sampleSizeFor(options.outWidth, options.outHeight, MAX_EDGE);
-        options.inJustDecodeBounds = false;
-        Bitmap decoded;
-        try (InputStream in = open(source)) {
-            decoded = BitmapFactory.decodeStream(in, null, options);
-        }
-        if (decoded == null || degrees == 0) return decoded;
-
-        Matrix matrix = new Matrix();
-        matrix.postRotate(degrees);
-        Bitmap upright = Bitmap.createBitmap(
-            decoded, 0, 0, decoded.getWidth(), decoded.getHeight(), matrix, true);
-        if (upright != decoded) {
-            decoded.recycle();
-        }
-        return upright;
-    }
-
-    private InputStream open(Uri source) throws IOException {
-        InputStream in = app.getContentResolver().openInputStream(source);
-        if (in == null) throw new IOException("Could not open " + source);
-        return in;
-    }
-
-    private int orientationOf(Uri source) {
-        try (InputStream in = open(source)) {
-            return new ExifInterface(in)
-                .getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
-        } catch (Exception e) {
-            // No EXIF block, or one this device cannot parse. Assume upright: a
-            // photo shown the way it was stored is a better failure than no
-            // photo at all.
-            return ExifInterface.ORIENTATION_NORMAL;
-        }
-    }
-
-    /**
-     * The power-of-two shrink that brings the longest edge down to
-     * {@code maxEdge}, which is the only kind {@code BitmapFactory} honours.
-     *
-     * <p>Deliberately never leaves the result larger than {@code maxEdge}:
-     * stopping a step earlier would keep more detail but decode an image up to
-     * twice as wide and twice as tall — four times the memory — for a picture
-     * that is about to be centre-cropped into a card.
-     */
-    @VisibleForTesting
-    static int sampleSizeFor(int width, int height, int maxEdge) {
-        int longest = Math.max(width, height);
-        int sample = 1;
-        while (longest / sample > maxEdge) {
-            sample *= 2;
-        }
-        return sample;
-    }
-
-    /**
-     * Degrees clockwise the decoded pixels must be turned to match the EXIF
-     * orientation tag. The mirrored orientations are treated as upright: they
-     * are vanishingly rare off a camera, and flipping a beach photo that did
-     * not need it is more visible than leaving one that did.
-     */
-    @VisibleForTesting
-    static int rotationFor(int exifOrientation) {
-        switch (exifOrientation) {
-            case ExifInterface.ORIENTATION_ROTATE_90: return 90;
-            case ExifInterface.ORIENTATION_ROTATE_180: return 180;
-            case ExifInterface.ORIENTATION_ROTATE_270: return 270;
-            default: return 0;
-        }
-    }
-
-    /** Beach ids are short codes like "CA1", but a filename must not trust that. */
-    private static String fileSafe(String beachId) {
-        return beachId == null ? "beach" : beachId.replaceAll("[^A-Za-z0-9_-]", "_");
     }
 }

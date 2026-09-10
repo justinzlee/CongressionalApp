@@ -29,7 +29,9 @@ import com.bumptech.glide.request.target.Target;
 import com.example.myapplication.ai.SafetyNote;
 import com.example.myapplication.data.BeachPhotoStore;
 import com.example.myapplication.data.BeachRepository;
+import com.example.myapplication.data.RockRatingStore;
 import com.example.myapplication.data.SavedBeachStore;
+import com.example.myapplication.data.SightingStore;
 import com.google.android.material.button.MaterialButton;
 import com.example.myapplication.model.Beach;
 import com.example.myapplication.model.BeachConditions;
@@ -37,8 +39,10 @@ import com.example.myapplication.model.ConditionHazards;
 import com.example.myapplication.model.Hazard;
 import com.example.myapplication.model.HelpLocation;
 import com.example.myapplication.model.HelpType;
+import com.example.myapplication.model.RockRating;
 import com.example.myapplication.model.SafetyLevel;
 import com.example.myapplication.model.Severity;
+import com.example.myapplication.model.Sighting;
 import com.example.myapplication.model.Tide;
 import com.example.myapplication.model.TideForecast;
 import com.example.myapplication.network.TideClient;
@@ -83,6 +87,9 @@ public class BeachDetailActivity extends AppCompatActivity {
     private ActivityResultLauncher<PickVisualMediaRequest> photoPicker;
     private ActivityResultLauncher<Uri> photoCamera;
     private File pendingCapture;
+
+    private RockRatingStore rockStore;
+    private SightingStore sightingStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +144,15 @@ public class BeachDetailActivity extends AppCompatActivity {
         bindHazards();
         bindVerdict();
 
+        rockStore = new RockRatingStore(this);
+        sightingStore = new SightingStore(this);
+        findViewById(R.id.detailRocksCard).setOnClickListener(
+            v -> startActivity(RockRatingActivity.intentFor(this, beach.getId())));
+        findViewById(R.id.detailSightingCta).setOnClickListener(
+            v -> startActivity(SightingActivity.intentFor(this, beach.getId())));
+        // The rows themselves are drawn in onResume, which also runs on the way
+        // back from those two screens.
+
         if (beach.getConditions() != null) {
             updateConditionsDisplay(beach.getConditions());
         } else {
@@ -149,6 +165,152 @@ public class BeachDetailActivity extends AppCompatActivity {
         tideClient = new TideClient();
         fetchRealTimeData();
         fetchTides();
+    }
+
+    /**
+     * Redraws everything a user report can change.
+     *
+     * <p>Runs on the way in and on the way back from the rating and sighting
+     * screens, which is the only way this screen learns that a report was
+     * filed. The hazard list is rebuilt alongside the two report sections, not
+     * just the sections themselves: a stranding is filed as a hazard, so
+     * leaving "What to watch for" as it was drawn would put a washed-up seal in
+     * the log at the bottom of the screen and nowhere near the warnings.
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        bindRocks();
+        bindSightings();
+        bindHazards();
+    }
+
+    /**
+     * The rocks-underfoot card: the rating if this beach has one, and an
+     * invitation to give it one either way.
+     */
+    private void bindRocks() {
+        int rating = rockStore.ratingFor(beach.getId());
+        boolean rated = RockRating.isRated(rating);
+
+        TextView value = findViewById(R.id.detailRocksValue);
+        TextView body = findViewById(R.id.detailRocksBody);
+        TextView adviceLine = findViewById(R.id.detailRocksAdvice);
+        TextView when = findViewById(R.id.detailRocksWhen);
+        ImageView photo = findViewById(R.id.detailRocksPhoto);
+
+        value.setVisibility(rated ? View.VISIBLE : View.GONE);
+        adviceLine.setVisibility(rated ? View.VISIBLE : View.GONE);
+        ((TextView) findViewById(R.id.detailRocksCta)).setText(
+            rated ? R.string.rocks_rerate_cta : R.string.rocks_rate_cta);
+
+        if (!rated) {
+            body.setText(R.string.rocks_unrated_body);
+            when.setVisibility(View.GONE);
+            photo.setVisibility(View.GONE);
+            return;
+        }
+
+        value.setText(getString(R.string.rocks_value, rating));
+        body.setText(RockRating.labelRes(rating));
+        adviceLine.setText(RockRating.adviceRes(rating));
+
+        long ratedAt = rockStore.ratedAt(beach.getId());
+        if (ratedAt > 0) {
+            when.setVisibility(View.VISIBLE);
+            when.setText(getString(R.string.rocks_rated_when,
+                SightingSheet.relativeTime(this, ratedAt)));
+        } else {
+            when.setVisibility(View.GONE);
+        }
+
+        File evidence = rockStore.photoFor(beach.getId());
+        if (evidence == null) {
+            photo.setVisibility(View.GONE);
+        } else {
+            photo.setVisibility(View.VISIBLE);
+            Glide.with(this).load(evidence).centerCrop().into(photo);
+        }
+    }
+
+    /** The wildlife log for this beach, newest first. */
+    private void bindSightings() {
+        List<Sighting> sightings = sightingStore.forBeach(beach.getId());
+
+        ViewGroup list = findViewById(R.id.detailSightingsList);
+        list.removeAllViews();
+        findViewById(R.id.detailSightingsEmpty)
+            .setVisibility(sightings.isEmpty() ? View.VISIBLE : View.GONE);
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        for (Sighting sighting : sightings) {
+            list.addView(buildSightingRow(inflater, list, sighting));
+        }
+    }
+
+    private View buildSightingRow(LayoutInflater inflater, ViewGroup parent, Sighting sighting) {
+        View row = inflater.inflate(R.layout.item_sighting, parent, false);
+
+        boolean stranded = sighting.isStranded();
+        int color = ContextCompat.getColor(this,
+            stranded ? R.color.danger : R.color.text_secondary);
+
+        ImageView icon = row.findViewById(R.id.sightingRowIcon);
+        icon.setImageResource(sighting.getSpecies().getIconRes());
+        ImageViewCompat.setImageTintList(icon, ColorStateList.valueOf(color));
+
+        ((TextView) row.findViewById(R.id.sightingRowSpecies))
+            .setText(sighting.getSpecies().getLabelRes());
+
+        TextView tag = row.findViewById(R.id.sightingRowTag);
+        tag.setText(stranded ? R.string.sighting_tag_stranded : R.string.sighting_tag_water);
+        tag.setTextColor(color);
+        Drawable tagBackground = tag.getBackground();
+        if (tagBackground instanceof GradientDrawable) {
+            ((GradientDrawable) tagBackground.mutate()).setColor(ContextCompat.getColor(this,
+                stranded ? R.color.danger_tint : R.color.surface_alt));
+        }
+
+        ((TextView) row.findViewById(R.id.sightingRowWhen))
+            .setText(SightingSheet.relativeTime(this, sighting.getTimeMillis()));
+
+        TextView note = row.findViewById(R.id.sightingRowNote);
+        if (sighting.getNote() == null) {
+            note.setVisibility(View.GONE);
+        } else {
+            note.setVisibility(View.VISIBLE);
+            note.setText(sighting.getNote());
+        }
+
+        ImageView photo = row.findViewById(R.id.sightingRowPhoto);
+        File taken = sighting.getPhoto();
+        if (taken == null) {
+            photo.setVisibility(View.GONE);
+        } else {
+            photo.setVisibility(View.VISIBLE);
+            Glide.with(this).load(taken).centerCrop().into(photo);
+        }
+
+        row.setOnClickListener(v -> SightingSheet.show(this, beach, sighting,
+            new SightingSheet.Choice() {
+                @Override
+                public void onShare() {
+                    SightingShare.share(BeachDetailActivity.this, beach, sighting);
+                }
+
+                @Override
+                public void onDelete() {
+                    sightingStore.remove(beach.getId(), sighting.getId());
+                    Toast.makeText(BeachDetailActivity.this,
+                        R.string.sighting_deleted, Toast.LENGTH_SHORT).show();
+                    bindSightings();
+                    // Deleting the stranding that raised the warning has to take
+                    // the warning down with it.
+                    bindHazards();
+                }
+            }));
+
+        return row;
     }
 
     /**

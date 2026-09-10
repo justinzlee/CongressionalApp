@@ -432,6 +432,154 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- ══════ WHAT PEOPLE REPORT HERE ══════
+
+                 Below the forecast and the lifeguards on purpose. Everything
+                 above this point is measured or on record; this is what other
+                 people have said, which is worth reading but is not the same
+                 kind of fact. A washed-up animal does not wait its turn down
+                 here though - it is filed as a hazard, so it appears in "What
+                 to watch for" above and in the Alerts tab as well. -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/section_reports"
+                android:textAppearance="@style/TextAppearance.App.Caption" />
+
+            <!-- Rocks underfoot -->
+            <LinearLayout
+                android:id="@+id/detailRocksCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_surface_card"
+                android:clickable="true"
+                android:focusable="true"
+                android:orientation="vertical"
+                android:padding="14dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="19dp"
+                        android:layout_height="19dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_rock"
+                        app:tint="@color/text_secondary" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/rocks_title"
+                        android:textColor="@color/text_primary"
+                        android:textSize="15sp" />
+
+                    <TextView
+                        android:id="@+id/detailRocksValue"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="@color/primary"
+                        android:textSize="17sp"
+                        tools:text="7 / 10" />
+                </LinearLayout>
+
+                <!-- The band when there is a rating ("Mostly rock"), and the
+                     "nobody has rated this" line when there is not. -->
+                <TextView
+                    android:id="@+id/detailRocksBody"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:textAppearance="@style/TextAppearance.App.Body"
+                    tools:text="Mostly rock" />
+
+                <TextView
+                    android:id="@+id/detailRocksAdvice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:textAppearance="@style/TextAppearance.App.Subtitle"
+                    android:visibility="gone"
+                    tools:text="Shoes needed, and hard going for small children."
+                    tools:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/detailRocksWhen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:textAppearance="@style/TextAppearance.App.Subtitle"
+                    android:visibility="gone"
+                    tools:text="Rated 3 days ago"
+                    tools:visibility="visible" />
+
+                <ImageView
+                    android:id="@+id/detailRocksPhoto"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_image_placeholder"
+                    android:contentDescription="@string/rocks_photo_heading"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/detailRocksCta"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="@color/primary"
+                    android:textSize="14sp"
+                    tools:text="Rate the rocks" />
+            </LinearLayout>
+
+            <!-- Wildlife seen here -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="18dp"
+                android:layout_marginBottom="8dp"
+                android:text="@string/sighting_section"
+                android:textAppearance="@style/TextAppearance.App.Caption" />
+
+            <TextView
+                android:id="@+id/detailSightingsEmpty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sighting_none"
+                android:textAppearance="@style/TextAppearance.App.Subtitle"
+                android:visibility="gone"
+                tools:visibility="visible" />
+
+            <LinearLayout
+                android:id="@+id/detailSightingsList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/detailSightingCta"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/sighting_add_cta"
+                android:textSize="14sp"
+                app:cornerRadius="12dp"
+                app:icon="@drawable/ic_dolphin"
+                app:strokeColor="@color/divider" />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

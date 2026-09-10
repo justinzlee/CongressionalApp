@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  A seal hauled out on the sand, head up, facing left.
+
+  Drawn resting rather than swimming on purpose: this icon marks a sighting, and
+  the sighting that matters most in this app is an animal on the beach rather
+  than one in the water. Sea lions share it - see SightingSpecies, which explains
+  why the app offers both names but only one drawing.
+
+  The head runs continuously into the body with no drawn neck. An earlier version
+  gave it a round head on a narrow neck and the silhouette read as a duck; a seal
+  out of water is one tapering mass from snout to flippers, and that taper is
+  what identifies it.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <path
+        android:fillColor="#000000"
+        android:pathData="M1.8,10.4
+            C1.8,9.2 2.6,8.2 3.8,7.8
+            C4.8,7.4 5.9,7.6 6.7,8.2
+            C8.4,9.0 10.0,10.0 11.5,11.2
+            C13.2,12.5 14.8,13.8 16.4,14.8
+            C17.9,14.0 19.6,13.7 21.3,13.9
+            C21.9,14.0 22.1,14.7 21.6,15.0
+            C20.6,15.6 19.8,16.3 19.2,17.2
+            C19.9,17.6 20.5,18.1 21.0,18.7
+            C21.4,19.2 20.9,19.9 20.3,19.7
+            C18.8,19.2 17.2,18.9 15.6,18.9
+            L7.6,18.9
+            C4.6,18.9 2.2,16.5 2.2,13.5
+            C2.2,12.9 2.3,12.3 2.5,11.8
+            C2.1,11.4 1.8,10.9 1.8,10.4 Z" />
+
+    <!-- Front flipper, propping the chest up off the sand. -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M8.6,14.2
+            C10.0,15.0 11.0,16.3 11.5,17.9
+            C11.7,18.5 11.0,19.0 10.5,18.6
+            C9.1,17.6 8.0,16.3 7.4,14.8 Z" />
+</vector>

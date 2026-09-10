@@ -25,13 +25,25 @@ public final class ConditionHazards {
     }
 
     /**
-     * Hazards on record for the beach, followed by anything today's readings
-     * add. A reported hazard always wins: if someone has written up the rip
-     * currents at this beach, that description is better than a derived one,
-     * so no second hazard of the same type is added underneath it.
+     * Everything worth watching for at this beach, best source first: what
+     * somebody standing on the sand reported today, then what the beach has on
+     * record, then what today's readings imply.
+     *
+     * <p>At most one hazard per type comes out, and the earlier source wins. A
+     * hand-written description of the rip currents at this beach beats a derived
+     * one, and an eyewitness report of a stranded seal this morning beats the
+     * beach's standing note that marine life is sometimes about. That ordering
+     * is also what keeps {@link BeachAlert#getId()} unique — it is built from
+     * the beach and the hazard type, so two hazards of one type at one beach
+     * would collapse into a single dismissible alert.
      */
     public static List<Hazard> merged(Context context, Beach beach) {
-        List<Hazard> merged = new ArrayList<>(beach.getHazards());
+        List<Hazard> merged = new ArrayList<>(ReportHazards.forBeach(context, beach));
+        for (Hazard recorded : beach.getHazards()) {
+            if (!containsType(merged, recorded.getType())) {
+                merged.add(recorded);
+            }
+        }
         for (Hazard derived : derive(context, beach.getConditions())) {
             if (!containsType(merged, derived.getType())) {
                 merged.add(derived);

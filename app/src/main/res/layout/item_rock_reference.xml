@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  One of the three reference pictures on the rock rating screen: the drawn shore
+  above, what that number means below.
+
+  Tappable. Reading the scale and then hunting for the same number on the slider
+  is two steps where one will do, so touching a picture sets the rating to it.
+  The slider is still there for the numbers in between.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:layout_weight="1"
+    android:background="?attr/selectableItemBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical"
+    android:paddingHorizontal="3dp"
+    android:paddingVertical="4dp">
+
+    <!-- The highlight ring sits on this frame rather than on the image, so a
+         selected picture grows a border without the drawing being inset. -->
+    <FrameLayout
+        android:id="@+id/rockReferenceFrame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_rock_reference"
+        android:padding="2dp">
+
+        <ImageView
+            android:id="@+id/rockReferenceImage"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:contentDescription="@null"
+            android:scaleType="centerCrop"
+            tools:src="@drawable/ic_rocks_scale_5" />
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/rockReferenceCaption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:textAppearance="@style/TextAppearance.App.Subtitle"
+        tools:text="5 — as much rock as sand" />
+</LinearLayout>
