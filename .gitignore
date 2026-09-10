@@ -7,6 +7,25 @@
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+
+# Android Studio state that belongs to one person, not to the project. These
+# were tracked, so every time anyone opened the IDE they turned up as changes
+# and rode along in unrelated commits - "Added some photos" carried a change to
+# which column the device table was sorted by.
+#
+# What stays tracked next to these is the genuinely shared config: gradle.xml,
+# compiler.xml, vcs.xml, AndroidProjectSystem.xml, runConfigurations.xml.
+/.idea/deploymentTargetSelector.xml
+/.idea/deviceManager.xml
+/.idea/appInsightsSettings.xml
+/.idea/studiobot.xml
+/.idea/planningMode.xml
+/.idea/claudeCodeEditorTabs.xml
+# misc.xml pins project-jdk-name to one machine's JDK ("temurin-21"). The
+# toolchain is already pinned for everyone in gradle/gradle-daemon-jvm.properties,
+# so this file only ever contradicted it.
+/.idea/misc.xml
+
 .DS_Store
 /build
 /captures
