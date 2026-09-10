@@ -1,5 +1,12 @@
 [versions]
-agp = "9.4.0"
+# CEILING: 9.2.1 — do not raise without checking every contributor's IDE first.
+# Android Studio refuses to sync a project whose AGP is newer than the version
+# that Studio release supports, and the whole team is on Studio 2026.1, which
+# tops out at AGP 9.2.1. Command-line `./gradlew build` does NOT enforce this,
+# so a bump can look completely fine locally while breaking Sync for everyone.
+# To raise it: everyone upgrades Android Studio first, then bump this line and
+# the matching ceiling in .github/workflows/build.yml in the same commit.
+agp = "9.2.1"
 kotlin = "2.1.10"
 playServicesLocation = "21.3.0"
 junit = "4.13.2"
