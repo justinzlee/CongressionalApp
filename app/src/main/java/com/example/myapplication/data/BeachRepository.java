@@ -116,7 +116,8 @@ public class BeachRepository {
             "9410230"));
 
         beaches.add(new Beach("CA2", "Coronado Beach", 32.6859, -117.1831, null, null, null,
-            null, "TWC0405"));
+            "https://img2.10bestmedia.com/Images/Photos/422054/Coronado-Beach_54_990x660.jpg?auto=webp&width=800&quality=75",
+            "TWC0405"));
         beaches.add(new Beach("CA3", "Ocean Beach", 32.7495, -117.2553, null, null, null,
             "https://upload.wikimedia.org/wikipedia/commons/9/9f/Sunset_pier.jpg", "TWC0405"));
         beaches.add(new Beach("CA4", "Carlsbad State Beach", 33.1527, -117.3503, null, null, null,
