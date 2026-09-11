@@ -39,12 +39,21 @@ import com.example.myapplication.model.ConditionHazards;
 import com.example.myapplication.model.Hazard;
 import com.example.myapplication.model.HelpLocation;
 import com.example.myapplication.model.HelpType;
+import com.example.myapplication.model.Activity;
+import com.example.myapplication.model.ActivityFit;
+import com.example.myapplication.model.ActivityScorer;
+import com.example.myapplication.model.AirQuality;
+import com.example.myapplication.model.ParkingSummary;
 import com.example.myapplication.model.RockRating;
 import com.example.myapplication.model.SafetyLevel;
 import com.example.myapplication.model.Severity;
 import com.example.myapplication.model.Sighting;
 import com.example.myapplication.model.Tide;
+import com.example.myapplication.model.WaterQuality;
 import com.example.myapplication.model.TideForecast;
+import com.example.myapplication.network.AirQualityClient;
+import com.example.myapplication.network.ParkingClient;
+import com.example.myapplication.network.RainfallClient;
 import com.example.myapplication.network.TideClient;
 import com.example.myapplication.network.WeatherClient;
 import com.example.myapplication.util.BeachPlaceholder;
@@ -92,6 +101,20 @@ public class BeachDetailActivity extends AppCompatActivity {
 
     private RockRatingStore rockStore;
     private SightingStore sightingStore;
+
+    private AirQualityClient airClient;
+    private RainfallClient rainClient;
+    private ParkingClient parkingClient;
+
+    /**
+     * The three readings that arrive after the forecast does. Held rather than
+     * bound straight to views because the activity scores are a blend of all of
+     * them plus the conditions, so each one landing has to rebuild the same
+     * section — see {@link #bindGoodFor()}.
+     */
+    @Nullable private AirQuality air;
+    @Nullable private WaterQuality water;
+    @Nullable private ParkingSummary parking;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -165,6 +188,9 @@ public class BeachDetailActivity extends AppCompatActivity {
 
         weatherClient = new WeatherClient();
         tideClient = new TideClient();
+        airClient = new AirQualityClient();
+        rainClient = new RainfallClient();
+        parkingClient = new ParkingClient(this);
         // The readings themselves are asked for in onStart, which runs on the
         // way in and again whenever this screen comes back to the front.
     }
@@ -182,6 +208,9 @@ public class BeachDetailActivity extends AppCompatActivity {
             fetchedAt = now;
             fetchRealTimeData();
             fetchTides();
+            fetchAirQuality();
+            fetchWaterQuality();
+            fetchParking();
         }
     }
 
@@ -201,6 +230,9 @@ public class BeachDetailActivity extends AppCompatActivity {
         bindRocks();
         bindSightings();
         bindHazards();
+        // A rocks rating filed on the way back moves two of the four scores:
+        // shingle is a problem walking in and an advantage to fish over.
+        bindGoodFor();
     }
 
     /**
@@ -674,6 +706,196 @@ public class BeachDetailActivity extends AppCompatActivity {
         return getString(R.string.tide_in_hours_minutes, minutes / 60, minutes % 60);
     }
 
+    // ── Air, water and parking ────────────────────────────────────────────
+    //
+    // Three independent calls that each land when they land. None of them
+    // blocks the screen, none of them fails it, and each one rebuilds the
+    // activity scores on arrival because every score is a blend that may
+    // include it. Everything here is free and keyless: Open-Meteo for the air
+    // and the rainfall, OpenStreetMap for the parking.
+
+    private void fetchAirQuality() {
+        airClient.getAirQuality(beach.getLatitude(), beach.getLongitude(), result ->
+            runOnUiThread(() -> {
+                if (isFinishing() || isDestroyed()) return;
+                air = result;
+                bindAirWater();
+                bindGoodFor();
+            }));
+    }
+
+    /**
+     * Rainfall in, advisory out. The advisory is worked out here rather than in
+     * the client because it needs the beach as well as the weather — how close
+     * this one sits to the Tijuana River mouth decides whether recent rain is
+     * an inconvenience or a closure.
+     */
+    private void fetchWaterQuality() {
+        rainClient.getRecentRain(beach.getLatitude(), beach.getLongitude(), dailyRainMm ->
+            runOnUiThread(() -> {
+                if (isFinishing() || isDestroyed()) return;
+                water = WaterQuality.evaluate(beach, dailyRainMm);
+                bindAirWater();
+                bindGoodFor();
+            }));
+    }
+
+    private void fetchParking() {
+        parkingClient.getParking(beach.getId(), beach.getLatitude(), beach.getLongitude(),
+            result -> runOnUiThread(() -> {
+                if (isFinishing() || isDestroyed()) return;
+                parking = result;
+                bindAirWater();
+                bindGoodFor();
+            }));
+    }
+
+    /** The three cards, each appearing only once its own reading has landed. */
+    private void bindAirWater() {
+        View section = findViewById(R.id.detailAirWaterSection);
+        section.setVisibility(
+            air == null && water == null && parking == null ? View.GONE : View.VISIBLE);
+
+        View aqiCard = findViewById(R.id.detailAqiCard);
+        if (air == null) {
+            aqiCard.setVisibility(View.GONE);
+        } else {
+            aqiCard.setVisibility(View.VISIBLE);
+            TextView value = findViewById(R.id.detailAqiValue);
+            value.setText(getString(R.string.aqi_value, air.getUsAqi()));
+            value.setTextColor(ContextCompat.getColor(this, air.getColorRes()));
+            ((TextView) findViewById(R.id.detailAqiBand)).setText(air.getLabelRes());
+            ((TextView) findViewById(R.id.detailAqiAdvice)).setText(air.getAdviceRes());
+        }
+
+        View waterCard = findViewById(R.id.detailWaterCard);
+        if (water == null) {
+            waterCard.setVisibility(View.GONE);
+        } else {
+            waterCard.setVisibility(View.VISIBLE);
+            int color = ContextCompat.getColor(this, water.getStatus().colorRes);
+            TextView status = findViewById(R.id.detailWaterStatus);
+            status.setText(water.getStatus().labelRes);
+            status.setTextColor(color);
+            ImageViewCompat.setImageTintList(
+                findViewById(R.id.detailWaterIcon), ColorStateList.valueOf(color));
+            ((TextView) findViewById(R.id.detailWaterBody)).setText(water.getStatus().bodyRes);
+        }
+
+        View parkingCard = findViewById(R.id.detailParkingCard);
+        if (parking == null) {
+            parkingCard.setVisibility(View.GONE);
+        } else {
+            parkingCard.setVisibility(View.VISIBLE);
+            ((TextView) findViewById(R.id.detailParkingSummary))
+                .setText(parking.getSummaryRes());
+            ((TextView) findViewById(R.id.detailParkingDetail)).setText(
+                getString(R.string.parking_detail,
+                    parking.getLots(), parking.getStreetSide()));
+        }
+    }
+
+    /**
+     * The four activity scores.
+     *
+     * <p>Held back until there is a forecast to blend: scoring a beach on
+     * parking alone would produce a confident-looking number about nothing.
+     */
+    private void bindGoodFor() {
+        View section = findViewById(R.id.detailGoodForSection);
+        if (beach.getConditions() == null) {
+            section.setVisibility(View.GONE);
+            return;
+        }
+        section.setVisibility(View.VISIBLE);
+
+        ViewGroup list = findViewById(R.id.detailActivityList);
+        list.removeAllViews();
+        LayoutInflater inflater = LayoutInflater.from(this);
+        for (ActivityFit fit : ActivityScorer.scoreAll(beach, scorerInputs())) {
+            list.addView(buildActivityRow(inflater, list, fit));
+        }
+    }
+
+    /** Everything the scorer is allowed to look at, as this screen knows it. */
+    private ActivityScorer.Inputs scorerInputs() {
+        ActivityScorer.Inputs in = new ActivityScorer.Inputs();
+        in.conditions = beach.getConditions();
+        in.air = air;
+        in.water = water;
+        in.parking = parking;
+        in.rockRating = rockStore.ratingFor(beach.getId());
+        in.guarded = guardedState(beach);
+        in.worstHazard = worstHazardSeverity();
+        return in;
+    }
+
+
+    /**
+     * Whether this beach is patrolled, or null when the app has no help data
+     * for it. An empty list means nobody recorded any, not that there is none —
+     * see {@link ActivityScorer.Inputs#guarded}.
+     */
+    @Nullable
+    private static Boolean guardedState(Beach beach) {
+        if (beach.getNearestHelp().isEmpty()) return null;
+        return beach.getNearestHelp().stream()
+            .anyMatch(h -> h.getType() == HelpType.LIFEGUARD_TOWER);
+    }
+
+    /** The most severe hazard currently on this beach, or null if there are none. */
+    @Nullable
+    private Severity worstHazardSeverity() {
+        Severity worst = null;
+        for (Hazard hazard : ConditionHazards.merged(this, beach)) {
+            if (worst == null || hazard.getSeverity().ordinal() > worst.ordinal()) {
+                worst = hazard.getSeverity();
+            }
+        }
+        return worst;
+    }
+
+    private View buildActivityRow(LayoutInflater inflater, ViewGroup parent, ActivityFit fit) {
+        View row = inflater.inflate(R.layout.item_activity_fit, parent, false);
+        Activity activity = fit.getActivity();
+        int color = ContextCompat.getColor(this, fit.getColorRes());
+
+        ImageView icon = row.findViewById(R.id.fitIcon);
+        icon.setImageResource(activity.getIconRes());
+        ImageViewCompat.setImageTintList(icon, ColorStateList.valueOf(color));
+
+        ((TextView) row.findViewById(R.id.fitActivity)).setText(activity.getLabelRes());
+
+        TextView verdict = row.findViewById(R.id.fitVerdict);
+        verdict.setText(fit.getVerdictRes());
+        verdict.setTextColor(color);
+        ((TextView) row.findViewById(R.id.fitScore))
+            .setText(getString(R.string.fit_out_of, fit.getScore()));
+
+        ((TextView) row.findViewById(R.id.fitReason)).setText(reasonFor(fit));
+        return row;
+    }
+
+    /**
+     * The line under an activity's name: what is holding it back, or what is
+     * carrying it when nothing is. A score built on too few readings says so
+     * instead, because "held back by wind" implies the rest was checked.
+     */
+    private String reasonFor(ActivityFit fit) {
+        if (!fit.isConfident()) {
+            return getString(R.string.fit_thin);
+        }
+        ActivityFit.Factor limiting = fit.getLimitingFactor();
+        if (limiting != null) {
+            return getString(R.string.fit_held_back, getString(limiting.getLabelRes()));
+        }
+        ActivityFit.Factor strongest = fit.getStrongestFactor();
+        if (strongest != null) {
+            return getString(R.string.fit_helped_by, getString(strongest.getLabelRes()));
+        }
+        return getString(R.string.fit_thin);
+    }
+
     private void fetchRealTimeData() {
         weatherClient.getBeachConditions(beach.getLatitude(), beach.getLongitude(), new WeatherClient.WeatherCallback() {
             @Override
@@ -692,6 +914,9 @@ public class BeachDetailActivity extends AppCompatActivity {
                         .updateConditions(beach.getId(), conditions);
                     bindVerdict();
                     bindHazards();
+                    // The scores are a blend that leans on these readings, so
+                    // they cannot be drawn until the forecast is in.
+                    bindGoodFor();
                 });
             }
 

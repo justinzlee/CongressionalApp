@@ -173,6 +173,9 @@ public class MainActivity extends AppCompatActivity {
         EdgeToEdge.applyBottomInset(findViewById(R.id.tabBar));
         TabBar.setup(this, TabBar.Tab.NOW);
 
+        findViewById(R.id.bestForCard).setOnClickListener(
+            v -> startActivity(ActivityRankingActivity.intentFor(this)));
+
         beachRecyclerView = findViewById(R.id.beachRecyclerView);
         beachRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new BeachAdapter(new ArrayList<>(), currentLat, currentLon, beach -> {

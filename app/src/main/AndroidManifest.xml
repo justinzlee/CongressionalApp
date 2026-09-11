@@ -110,6 +110,13 @@
             android:label="@string/sighting_title"
             android:theme="@style/Theme.MyApplication" />
 
+        <!-- Beaches ranked by what you actually want to do there. -->
+        <activity
+            android:name=".ActivityRankingActivity"
+            android:exported="false"
+            android:label="@string/activity_title"
+            android:theme="@style/Theme.MyApplication" />
+
         <!-- Lets the camera app write a capture into our cache when someone
              adds their own photo of a beach. Not exported: the grant is handed
              to one app, for one file, for as long as that capture takes. -->

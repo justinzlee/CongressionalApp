@@ -676,6 +676,100 @@
     <string name="hazard_stranding_step_leave">Do not push it back into the water. Seals rest on shore normally, and moving a healthy one can kill it.</string>
     <string name="hazard_stranding_step_tell">Tell the lifeguards, or your local marine mammal stranding network.</string>
 
+    <!-- ══════ WHAT'S IT GOOD FOR TODAY ══════
+         Ranking beaches by what someone actually came to do. Every score is a
+         blend of readings, so the wording never claims more certainty than a
+         blend deserves - "looks good for" rather than "is good for". -->
+
+    <string name="section_good_for">Good for today</string>
+    <string name="activity_title">Best beach for…</string>
+    <string name="activity_pick">What do you want to do?</string>
+
+    <string name="activity_swim">Swim</string>
+    <string name="activity_swim_blurb">Small rideable surf, clean water, ideally patrolled</string>
+    <string name="activity_surf">Surf</string>
+    <string name="activity_surf_blurb">Real swell and light wind</string>
+    <string name="activity_picnic">Picnic</string>
+    <string name="activity_picnic_blurb">Still air, warm but not baking, easy parking</string>
+    <string name="activity_fish">Fish</string>
+    <string name="activity_fish_blurb">Structure to fish over and water that isn\'t wild</string>
+
+    <string name="fit_great">Great</string>
+    <string name="fit_good">Good</string>
+    <string name="fit_soso">So-so</string>
+    <string name="fit_poor">Poor</string>
+
+    <string name="fit_score">%1$d</string>
+    <string name="fit_out_of">%1$d/100</string>
+    <string name="fit_held_back">Held back by %1$s</string>
+    <string name="fit_helped_by">Helped by %1$s</string>
+    <string name="fit_thin">Not enough readings here to be sure</string>
+    <string name="fit_rank">#%1$d</string>
+
+    <!-- Factor names, used mid-sentence in "Held back by wind" -->
+    <string name="factor_water">water quality</string>
+    <string name="factor_surf">the surf</string>
+    <string name="factor_wind">wind</string>
+    <string name="factor_warmth">the temperature</string>
+    <string name="factor_lifeguards">the lack of lifeguards</string>
+    <string name="factor_underfoot">rocks underfoot</string>
+    <string name="factor_air">air quality</string>
+    <string name="factor_parking">parking</string>
+    <string name="factor_uv">the UV index</string>
+    <string name="factor_structure">structure to fish over</string>
+    <string name="factor_hazards">an active hazard warning</string>
+
+    <string name="activity_ranking_heading">%1$s beaches ranked for %2$s</string>
+    <string name="activity_ranking_empty">No beaches in range to rank. Turn on location, or save a few beaches.</string>
+    <string name="activity_ranking_loading">Reading conditions at every beach…</string>
+
+    <!-- ══════ AIR ══════ -->
+    <string name="section_air_water">Air and water</string>
+    <string name="aqi_label">Air quality</string>
+    <string name="aqi_value">AQI %1$d</string>
+    <string name="aqi_good">Good</string>
+    <string name="aqi_moderate">Moderate</string>
+    <string name="aqi_sensitive">Unhealthy for sensitive groups</string>
+    <string name="aqi_unhealthy">Unhealthy</string>
+    <string name="aqi_very_unhealthy">Very unhealthy</string>
+    <string name="aqi_hazardous">Hazardous</string>
+    <string name="aqi_advice_good">Clean air. Nothing to work around.</string>
+    <string name="aqi_advice_moderate">Fine for almost everyone. A long hard session outdoors might bother you if you\'re unusually sensitive.</string>
+    <string name="aqi_advice_sensitive">If you have asthma, heart or lung trouble, keep it short and easy today. Everyone else is fine.</string>
+    <string name="aqi_advice_unhealthy">Everyone should cut back on hard exercise outside. Sensitive groups should stay in.</string>
+    <string name="aqi_advice_hazardous">Stay indoors. This is wildfire-smoke territory.</string>
+    <string name="aqi_pollutants">PM2.5 %1$.0f · PM10 %2$.0f µg/m³</string>
+
+    <!-- ══════ WATER ══════
+         Every one of these says what it is: a prediction from rainfall and
+         geography, not a water test. The app has no bacteria count and must
+         never read as though it does. -->
+    <string name="water_label">Water quality</string>
+    <string name="water_clean">Likely clean</string>
+    <string name="water_clean_body">No meaningful rain in the last three days and no known discharge nearby. Predicted from rainfall, not measured — this app has no water sample.</string>
+    <string name="water_runoff">Runoff advisory</string>
+    <string name="water_runoff_body">It rained here in the last three days. Storm drains carry the street into the sea, and health agencies advise staying out of the water for about 72 hours after rain.</string>
+    <string name="water_sewage">Cross-border sewage risk</string>
+    <string name="water_sewage_body">This beach is close enough to the Tijuana River mouth to sit under a standing advisory. Check San Diego County\'s current closure list before you swim.</string>
+    <string name="water_sewage_rain">Sewage and runoff together</string>
+    <string name="water_sewage_rain_body">Rain on top of cross-border flows — this is the combination that closes the south county beaches. Don\'t get in the water here today.</string>
+    <string name="water_rain_since">Last rain %1$s</string>
+    <string name="water_rain_today">Rain today</string>
+    <string name="water_rain_days">%1$d days ago</string>
+
+    <!-- ══════ PARKING ══════
+         Supply and cost, which is what OpenStreetMap actually knows. It does
+         not know whether the lot is full, and the wording never implies it. -->
+    <string name="parking_label">Parking</string>
+    <string name="parking_none_mapped">No parking mapped near here</string>
+    <string name="parking_thin">Barely any parking mapped — treat this as a guess</string>
+    <string name="parking_mostly_free">Mostly free parking nearby</string>
+    <string name="parking_paid">Paid parking only</string>
+    <string name="parking_mixed">Free and paid parking nearby</string>
+    <string name="parking_detail">%1$d car parks, %2$d street stretches within a 10-minute walk</string>
+    <string name="parking_capacity">About %1$d spaces mapped</string>
+    <string name="parking_caveat">Shows what exists, not what\'s free right now.</string>
+
     <plurals name="sighting_count">
         <item quantity="one">%1$d sighting</item>
         <item quantity="other">%1$d sightings</item>

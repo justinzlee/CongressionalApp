@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  A beach umbrella, for the picnic activity.
+
+  Drawn rather than reusing ic_beach_object_umbrella: that one is a 260x100
+  piece of the placeholder shoreline scene, and squeezed into a 22dp row it
+  renders as a few unreadable specks. Icons and scene furniture are not the same
+  thing even when they depict the same object.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Canopy: a plain dome. Scalloping the lower edge is what a real umbrella
+         has and what disappears first at this size, so it is left off. -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M12,2.2
+            C17.5,2.2 22,6.6 22,12
+            L2,12
+            C2,6.6 6.5,2.2 12,2.2 Z" />
+
+    <!-- Pole -->
+    <path
+        android:fillColor="#000000"
+        android:pathData="M11.15,12h1.7v9.6h-1.7z" />
+</vector>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  One activity's score for a beach: what you'd be doing, how well today suits
+  it, and the one reading that decided the number.
+
+  The reason line is the point of the row. A bare 72 is unfalsifiable - the
+  reader cannot tell whether it means clean water and no waves or the reverse,
+  and has no way to notice when the app is wrong. "Held back by wind" can be
+  checked against the wind tile further up the same screen.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:background="@drawable/bg_surface_card"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="13dp">
+
+    <ImageView
+        android:id="@+id/fitIcon"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:contentDescription="@null"
+        tools:src="@drawable/ic_wave"
+        app:tint="@color/text_secondary" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/fitActivity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:textColor="@color/text_primary"
+            android:textSize="15sp"
+            tools:text="Surf" />
+
+        <TextView
+            android:id="@+id/fitReason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textAppearance="@style/TextAppearance.App.Subtitle"
+            tools:text="Held back by wind" />
+    </LinearLayout>
+
+    <!-- The verdict word carries the meaning; the number is the tiebreak
+         between two beaches that both say "Good". Colour is never the only
+         signal - the word is always there. -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:gravity="end"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/fitVerdict"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="14sp"
+            tools:text="Good"
+            tools:textColor="@color/primary" />
+
+        <TextView
+            android:id="@+id/fitScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:textAppearance="@style/TextAppearance.App.Subtitle"
+            tools:text="72/100" />
+    </LinearLayout>
+</LinearLayout>

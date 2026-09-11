@@ -376,6 +376,240 @@
                 </LinearLayout>
             </LinearLayout>
 
+            <!-- ══════ AIR AND WATER ══════
+
+                 Sits with the conditions rather than with the warnings: these
+                 are readings, and two of the three are predictions the wording
+                 inside is careful to own. The whole section hides until at
+                 least one of them has landed, so the screen never shows three
+                 empty cards while the network is still out. -->
+            <LinearLayout
+                android:id="@+id/detailAirWaterSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/section_air_water"
+                    android:textAppearance="@style/TextAppearance.App.Caption" />
+
+                <!-- Air quality -->
+                <LinearLayout
+                    android:id="@+id/detailAqiCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/bg_surface_card"
+                    android:orientation="vertical"
+                    android:padding="13dp"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="19dp"
+                            android:layout_height="19dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_wind"
+                            app:tint="@color/text_secondary" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif-medium"
+                            android:text="@string/aqi_label"
+                            android:textColor="@color/text_primary"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/detailAqiValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-medium"
+                            android:textSize="15sp"
+                            tools:text="AQI 68"
+                            tools:textColor="@color/caution" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/detailAqiBand"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="@color/text_primary"
+                        android:textSize="13sp"
+                        tools:text="Moderate" />
+
+                    <TextView
+                        android:id="@+id/detailAqiAdvice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textAppearance="@style/TextAppearance.App.Subtitle"
+                        tools:text="Fine for almost everyone." />
+                </LinearLayout>
+
+                <!-- Water quality -->
+                <LinearLayout
+                    android:id="@+id/detailWaterCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:background="@drawable/bg_surface_card"
+                    android:orientation="vertical"
+                    android:padding="13dp"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/detailWaterIcon"
+                            android:layout_width="19dp"
+                            android:layout_height="19dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_wave"
+                            app:tint="@color/text_secondary" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif-medium"
+                            android:text="@string/water_label"
+                            android:textColor="@color/text_primary"
+                            android:textSize="15sp" />
+
+                        <TextView
+                            android:id="@+id/detailWaterStatus"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-medium"
+                            android:textSize="14sp"
+                            tools:text="Likely clean"
+                            tools:textColor="@color/safe" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/detailWaterBody"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:textAppearance="@style/TextAppearance.App.Subtitle"
+                        tools:text="No meaningful rain in the last three days." />
+                </LinearLayout>
+
+                <!-- Parking -->
+                <LinearLayout
+                    android:id="@+id/detailParkingCard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_surface_card"
+                    android:orientation="vertical"
+                    android:padding="13dp"
+                    android:visibility="gone"
+                    tools:visibility="visible">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="19dp"
+                            android:layout_height="19dp"
+                            android:contentDescription="@null"
+                            android:src="@drawable/ic_map_pin"
+                            app:tint="@color/text_secondary" />
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:layout_weight="1"
+                            android:fontFamily="sans-serif-medium"
+                            android:text="@string/parking_label"
+                            android:textColor="@color/text_primary"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/detailParkingSummary"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:textColor="@color/text_primary"
+                        android:textSize="13sp"
+                        tools:text="Mostly free parking nearby" />
+
+                    <TextView
+                        android:id="@+id/detailParkingDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textAppearance="@style/TextAppearance.App.Subtitle"
+                        tools:text="6 car parks, 3 street stretches within a 10-minute walk" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/parking_caveat"
+                        android:textAppearance="@style/TextAppearance.App.Subtitle"
+                        android:textStyle="italic" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ══════ GOOD FOR TODAY ══════
+
+                 The four activity scores. Below the readings they are built
+                 from on purpose: somebody who disagrees with a score should
+                 have already scrolled past the wind and the surf that produced
+                 it. -->
+            <LinearLayout
+                android:id="@+id/detailGoodForSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/section_good_for"
+                    android:textAppearance="@style/TextAppearance.App.Caption" />
+
+                <LinearLayout
+                    android:id="@+id/detailActivityList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+            </LinearLayout>
+
             <!-- ══════ WHAT TO WATCH FOR ══════ -->
             <TextView
                 android:layout_width="wrap_content"
