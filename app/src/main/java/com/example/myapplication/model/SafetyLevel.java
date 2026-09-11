@@ -1,5 +1,9 @@
 package com.example.myapplication.model;
 
+import android.content.Context;
+
+import androidx.annotation.VisibleForTesting;
+
 import androidx.annotation.ColorRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
@@ -94,10 +98,40 @@ public enum SafetyLevel {
      * "checking conditions" state rather than implying the water is fine.
      */
     @Nullable
+    /**
+     * The verdict, judged against every hazard the app would show for this
+     * beach rather than only the ones written into the beach list.
+     *
+     * <p>This is the one every screen should call. Without it the verdict and
+     * the hazard list beneath it can contradict each other, and they did:
+     * Imperial Beach sat under a cross-border sewage advisory, said so in "What
+     * to watch for", raised it in the Alerts tab — and still carried a green
+     * "Good to swim" at the top of the home screen, which is the one place
+     * somebody deciding whether to get in the water actually looks.
+     *
+     * <p>Reaches the same {@link ConditionHazards#merged} the hazard list is
+     * built from, so the two cannot drift apart again by construction.
+     */
+    public static SafetyLevel evaluate(Context context, Beach beach) {
+        if (beach == null) return null;
+        return evaluate(beach, ConditionHazards.merged(context, beach));
+    }
+
+    /**
+     * The verdict from the beach's recorded hazards alone.
+     *
+     * <p>Kept for the plain-JVM tests, which have no Context and are about the
+     * thresholds rather than about which hazards are in scope. Production code
+     * should prefer {@link #evaluate(Context, Beach)} — anything reading only
+     * the recorded list is blind to the surf, the reports and the water.
+     */
+    @VisibleForTesting
     public static SafetyLevel evaluate(Beach beach) {
         if (beach == null) return null;
+        return evaluate(beach, beach.getHazards());
+    }
 
-        List<Hazard> hazards = beach.getHazards();
+    private static SafetyLevel evaluate(Beach beach, List<Hazard> hazards) {
         BeachConditions conditions = beach.getConditions();
         if (conditions == null && hazards.isEmpty()) return null;
 

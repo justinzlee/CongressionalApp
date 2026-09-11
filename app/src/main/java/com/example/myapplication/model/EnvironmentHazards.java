@@ -54,7 +54,7 @@ public final class EnvironmentHazards {
     }
 
     /**
-     * A runoff or sewage advisory.
+     * How loud a water advisory should be, or null for no hazard at all.
      *
      * <p>Rain alone and a standing cross-border advisory are both {@link
      * Severity#MODERATE}: real reasons not to swim, but conditions rather than
@@ -62,16 +62,28 @@ public final class EnvironmentHazards {
      * a permanent red card there would bleach out every genuine warning around
      * it. The two together are {@link Severity#HIGH}, because that is the
      * combination that actually closes those beaches.
+     *
+     * <p>Kept apart from the hazard itself so the decision can be tested
+     * without a Context. Writing the description needs resources; deciding
+     * whether there is anything to describe does not, and that decision is the
+     * part worth pinning.
      */
     @VisibleForTesting
     @Nullable
-    static Hazard waterHazard(Context context, @Nullable WaterQuality water) {
+    static Severity waterSeverity(@Nullable WaterQuality water) {
         if (water == null || !water.isAdvisory()) return null;
+        return water.getStatus() == WaterQuality.Status.SEWAGE_AND_RAIN
+            ? Severity.HIGH : Severity.MODERATE;
+    }
 
-        boolean severe = water.getStatus() == WaterQuality.Status.SEWAGE_AND_RAIN;
+    @Nullable
+    private static Hazard waterHazard(Context context, @Nullable WaterQuality water) {
+        Severity severity = waterSeverity(water);
+        if (severity == null) return null;
+
         return new Hazard(
             HazardType.WATER_QUALITY,
-            severe ? Severity.HIGH : Severity.MODERATE,
+            severity,
             context.getString(water.getStatus().bodyRes),
             Arrays.asList(
                 context.getString(R.string.hazard_water_step_stay_out),
@@ -80,7 +92,7 @@ public final class EnvironmentHazards {
     }
 
     /**
-     * Smoke or ozone worth changing plans over.
+     * How loud an air reading should be, or null for no hazard at all.
      *
      * <p>Capped at {@link Severity#MODERATE} below the "very unhealthy" band
      * for the same reason the UV hazard is: this is a reason to cut a session
@@ -89,13 +101,19 @@ public final class EnvironmentHazards {
      */
     @VisibleForTesting
     @Nullable
-    static Hazard airHazard(Context context, @Nullable AirQuality air) {
+    static Severity airSeverity(@Nullable AirQuality air) {
         if (air == null || air.getUsAqi() < AIR_ALERT_FROM) return null;
+        return air.getUsAqi() > AirQuality.UNHEALTHY_MAX ? Severity.HIGH : Severity.MODERATE;
+    }
 
-        boolean severe = air.getUsAqi() > AirQuality.UNHEALTHY_MAX;
+    @Nullable
+    private static Hazard airHazard(Context context, @Nullable AirQuality air) {
+        Severity severity = airSeverity(air);
+        if (severity == null) return null;
+
         return new Hazard(
             HazardType.AIR_QUALITY,
-            severe ? Severity.HIGH : Severity.MODERATE,
+            severity,
             context.getString(R.string.hazard_air_body,
                 air.getUsAqi(), context.getString(air.getLabelRes())),
             Arrays.asList(
