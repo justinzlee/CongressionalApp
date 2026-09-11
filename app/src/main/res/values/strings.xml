@@ -16,6 +16,8 @@
     <string name="tide_in_minutes">in %1$dm</string>
     <string name="tide_in_hours_minutes">in %1$dh %2$dm</string>
     <string name="tide_unavailable">Not available</string>
+    <!-- On a lake: there is no tide to count down to -->
+    <string name="tide_none">No tides</string>
     <string name="placeholder_dashes">--</string>
     <string name="safety_alerts">Safety Alerts</string>
     <string name="no_major_hazards">No major hazards reported.</string>
@@ -56,7 +58,10 @@
     <string name="verdict_danger_short">Not safe today</string>
     <string name="verdict_unknown">Checking conditions</string>
     <string name="verdict_unknown_note">Live conditions for this beach haven\'t loaded yet. Check the flags and signs on the beach before you swim.</string>
-    <string name="verdict_updated">%1$s · updated just now</string>
+    <!-- Under the verdict: the beach, and how long ago its readings came in -->
+    <string name="verdict_updated_now">%1$s · updated just now</string>
+    <string name="verdict_updated_minutes">%1$s · updated %2$d min ago</string>
+    <string name="verdict_updated_hours">%1$s · updated %2$d h ago</string>
     <string name="beach_details">Beach details</string>
 
     <!-- Home header -->

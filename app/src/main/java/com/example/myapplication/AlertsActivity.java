@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.ImageViewCompat;
+import androidx.lifecycle.Lifecycle;
 
 import com.example.myapplication.data.AlertScope;
 import com.example.myapplication.data.AlertSeenStore;
@@ -63,6 +64,17 @@ public class AlertsActivity extends AppCompatActivity {
         // this screen never showed and reading it would never clear them.
         seenStore.markSeen(BeachAlert.from(this, alertBeaches()));
         TabBar.refreshAlertBadge(this);
+
+        // Nothing else refreshes the readings while this tab is in front, and
+        // half of these alerts are worked out from them, so ask on the way in
+        // (free while they are fresh). Rows that land later only count as read
+        // if this screen is still the one in front when they do.
+        BeachRepository.getInstance().refreshAllData(() -> runOnUiThread(() -> {
+            if (!getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) return;
+            bindAlerts();
+            seenStore.markSeen(BeachAlert.from(this, alertBeaches()));
+            TabBar.refreshAlertBadge(this);
+        }));
     }
 
     /** How many alert rows the screen will draw, worst first. */
