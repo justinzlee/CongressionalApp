@@ -29,6 +29,7 @@ import com.bumptech.glide.request.target.Target;
 import com.example.myapplication.ai.SafetyNote;
 import com.example.myapplication.data.BeachPhotoStore;
 import com.example.myapplication.data.BeachRepository;
+import com.example.myapplication.data.LiveReadings;
 import com.example.myapplication.data.RockRatingStore;
 import com.example.myapplication.data.SavedBeachStore;
 import com.example.myapplication.data.SightingStore;
@@ -719,8 +720,12 @@ public class BeachDetailActivity extends AppCompatActivity {
             runOnUiThread(() -> {
                 if (isFinishing() || isDestroyed()) return;
                 air = result;
+                // Share it, so a smoky day reaches the Alerts tab and its
+                // badge rather than only the screen that fetched it.
+                LiveReadings.putAir(beach.getId(), result);
                 bindAirWater();
                 bindGoodFor();
+                bindHazards();
             }));
     }
 
@@ -735,8 +740,10 @@ public class BeachDetailActivity extends AppCompatActivity {
             runOnUiThread(() -> {
                 if (isFinishing() || isDestroyed()) return;
                 water = WaterQuality.evaluate(beach, dailyRainMm);
+                LiveReadings.putWater(beach.getId(), water);
                 bindAirWater();
                 bindGoodFor();
+                bindHazards();
             }));
     }
 

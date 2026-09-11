@@ -39,6 +39,15 @@ public final class ConditionHazards {
      */
     public static List<Hazard> merged(Context context, Beach beach) {
         List<Hazard> merged = new ArrayList<>(ReportHazards.forBeach(context, beach));
+        // Today's air and water readings outrank anything written down about
+        // this beach in advance, for the same reason an eyewitness does: a
+        // runoff advisory that started with last night's rain is a fact about
+        // now, and the beach's standing water-quality note is not.
+        for (Hazard measured : EnvironmentHazards.forBeach(context, beach)) {
+            if (!containsType(merged, measured.getType())) {
+                merged.add(measured);
+            }
+        }
         for (Hazard recorded : beach.getHazards()) {
             if (!containsType(merged, recorded.getType())) {
                 merged.add(recorded);

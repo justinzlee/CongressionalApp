@@ -18,6 +18,7 @@ import androidx.core.widget.ImageViewCompat;
 
 import com.example.myapplication.data.AlertScope;
 import com.example.myapplication.data.BeachRepository;
+import com.example.myapplication.data.LiveReadings;
 import com.example.myapplication.data.RockRatingStore;
 import com.example.myapplication.model.Activity;
 import com.example.myapplication.model.ActivityFit;
@@ -212,6 +213,7 @@ public class ActivityRankingActivity extends AppCompatActivity {
                 @Override
                 public void onPoint(int index, AirQuality a) {
                     air[offset + index] = a;
+                    LiveReadings.putAir(beaches.get(offset + index).getId(), a);
                 }
 
                 @Override
@@ -223,8 +225,10 @@ public class ActivityRankingActivity extends AppCompatActivity {
             rainClient.getRecentRain(lats, lons, new RainfallClient.BatchCallback() {
                 @Override
                 public void onPoint(int index, double[] dailyRainMm) {
-                    water[offset + index] =
-                        WaterQuality.evaluate(beaches.get(offset + index), dailyRainMm);
+                    Beach beach = beaches.get(offset + index);
+                    WaterQuality w = WaterQuality.evaluate(beach, dailyRainMm);
+                    water[offset + index] = w;
+                    LiveReadings.putWater(beach.getId(), w);
                 }
 
                 @Override
@@ -270,6 +274,15 @@ public class ActivityRankingActivity extends AppCompatActivity {
 
         List<ActivityFit> ranked = rank();
         status.setVisibility(View.VISIBLE);
+
+        // Beaches in scope but not one forecast between them: the fetches all
+        // failed. Saying "11 beaches ranked" above an empty list would read as
+        // though every one of them had been judged and found wanting.
+        if (ranked.isEmpty()) {
+            status.setText(R.string.activity_ranking_no_readings);
+            return;
+        }
+
         status.setText(getString(R.string.activity_ranking_heading,
             String.valueOf(ranked.size()), getString(selected.getLabelRes()).toLowerCase(
                 java.util.Locale.getDefault())));

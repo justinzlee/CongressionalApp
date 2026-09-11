@@ -722,6 +722,7 @@
     <string name="activity_ranking_heading">%1$s beaches ranked for %2$s</string>
     <string name="activity_ranking_empty">No beaches in range to rank. Turn on location, or save a few beaches.</string>
     <string name="activity_ranking_loading">Reading conditions at every beach…</string>
+    <string name="activity_ranking_no_readings">Couldn\'t read conditions for any beach. Check your connection and come back.</string>
 
     <!-- ══════ AIR ══════ -->
     <string name="section_air_water">Air and water</string>
@@ -756,6 +757,14 @@
     <string name="water_rain_since">Last rain %1$s</string>
     <string name="water_rain_today">Rain today</string>
     <string name="water_rain_days">%1$d days ago</string>
+
+    <!-- The hazards the air and water readings raise, in "What to watch for"
+         and the Alerts tab -->
+    <string name="hazard_water_step_stay_out">Keep your head out of the water, and don\'t swim if you have an open cut.</string>
+    <string name="hazard_water_step_wash">Rinse off with clean water afterwards.</string>
+    <string name="hazard_water_step_check">Check your county\'s beach closure list before you go in.</string>
+    <string name="hazard_air_body">The air quality index here is %1$d — %2$s.</string>
+    <string name="hazard_air_step_indoors">Keep hard exercise short, and go inside if your chest tightens.</string>
 
     <!-- ══════ PARKING ══════
          Supply and cost, which is what OpenStreetMap actually knows. It does
