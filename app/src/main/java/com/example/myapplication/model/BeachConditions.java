@@ -12,13 +12,24 @@ public class BeachConditions {
     private final Double windSpeed;      // mph
     private final Double waveHeight;     // feet
     private final Double visibility;     // miles
+    private final long fetchedAtMillis;
 
+    /** Readings that have just come in. */
     public BeachConditions(Double airTemperature, Integer uvIndex, Double windSpeed, Double waveHeight, Double visibility) {
+        this(airTemperature, uvIndex, windSpeed, waveHeight, visibility, System.currentTimeMillis());
+    }
+
+    /**
+     * @param fetchedAtMillis when the readings came in, so a screen can say how
+     *                        old they are instead of calling them current
+     */
+    public BeachConditions(Double airTemperature, Integer uvIndex, Double windSpeed, Double waveHeight, Double visibility, long fetchedAtMillis) {
         this.airTemperature = airTemperature;
         this.uvIndex = uvIndex;
         this.windSpeed = windSpeed;
         this.waveHeight = waveHeight;
         this.visibility = visibility;
+        this.fetchedAtMillis = fetchedAtMillis;
     }
 
     public Double getAirTemperature() { return airTemperature; }
@@ -26,6 +37,7 @@ public class BeachConditions {
     public Double getWindSpeed() { return windSpeed; }
     public Double getWaveHeight() { return waveHeight; }
     public Double getVisibility() { return visibility; }
+    public long getFetchedAtMillis() { return fetchedAtMillis; }
 
     public String getFormattedUvIndex(Context context) {
         if (uvIndex == null) return context.getString(R.string.placeholder_dashes);

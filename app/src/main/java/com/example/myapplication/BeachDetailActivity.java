@@ -68,6 +68,8 @@ public class BeachDetailActivity extends AppCompatActivity {
 
     private WeatherClient weatherClient;
     private TideClient tideClient;
+    /** When the readings on screen were last asked for; zero means never. */
+    private long fetchedAt;
 
     private Beach beach;
     private ViewGroup hazardList;
@@ -147,8 +149,24 @@ public class BeachDetailActivity extends AppCompatActivity {
 
         weatherClient = new WeatherClient();
         tideClient = new TideClient();
-        fetchRealTimeData();
-        fetchTides();
+        // The readings themselves are asked for in onStart, which runs on the
+        // way in and again whenever this screen comes back to the front.
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (beach == null) return;
+        // Left open in the background, this screen used to come back showing
+        // an hours-old reading as if it were current, beside a tide countdown
+        // that had long since run out. The shared list's freshness window
+        // keeps a quick trip away from refetching.
+        long now = System.currentTimeMillis();
+        if (now - fetchedAt >= BeachRepository.FRESH_FOR_MS) {
+            fetchedAt = now;
+            fetchRealTimeData();
+            fetchTides();
+        }
     }
 
     /**
@@ -429,11 +447,17 @@ public class BeachDetailActivity extends AppCompatActivity {
     }
 
     /**
-     * Tides ride on the same marine forecast as the surf, so the pair of tiles
-     * fills in alongside the rest of the conditions rather than on its own trip.
+     * The next low and high from NOAA's predictions for this beach's station.
+     * A lake names no station: there is no tide there to count down to.
      */
     private void fetchTides() {
-        tideClient.getTideForecast(beach.getLatitude(), beach.getLongitude(), new TideClient.TideCallback() {
+        String station = beach.getTideStation();
+        if (station == null) {
+            bindNoTide(lowTide, lowTideCountdown);
+            bindNoTide(highTide, highTideCountdown);
+            return;
+        }
+        tideClient.getTideForecast(station, new TideClient.TideCallback() {
             @Override
             public void onSuccess(TideForecast forecast) {
                 runOnUiThread(() -> updateTideDisplay(forecast));
@@ -447,6 +471,11 @@ public class BeachDetailActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    private void bindNoTide(TextView time, TextView countdown) {
+        time.setText(R.string.placeholder_dashes);
+        countdown.setText(R.string.tide_none);
     }
 
     private void updateTideDisplay(TideForecast forecast) {

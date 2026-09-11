@@ -13,6 +13,9 @@ import android.os.Looper;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
+import com.bumptech.glide.load.model.GlideUrl;
+import com.bumptech.glide.load.model.Headers;
+import com.bumptech.glide.load.model.LazyHeaders;
 import com.example.myapplication.SettingsActivity;
 import com.example.myapplication.model.Beach;
 
@@ -96,10 +99,26 @@ public class BeachPhotoStore {
      */
     private final Handler main;
 
+    /**
+     * Who is asking, sent with every curated photo. Wikimedia throttles
+     * requests that carry a generic client string, which is what Glide sends
+     * unless told otherwise ("Dalvik/2.1.0 ..."): in a quick run through the
+     * curated photos a third came back 429 Too Many Requests and those rows
+     * fell back to the drawing, where the same run naming the app loaded every
+     * one. See https://meta.wikimedia.org/wiki/User-Agent_policy
+     *
+     * <p>Built per instance for the same reason as {@link #main}: Glide's
+     * header builder reads the platform the first time it is touched.
+     */
+    private final Headers remoteHeaders;
+
     public BeachPhotoStore(Context context) {
         this.app = context.getApplicationContext();
         this.prefs = app.getSharedPreferences(SettingsActivity.PREFS_NAME, Context.MODE_PRIVATE);
         this.main = new Handler(Looper.getMainLooper());
+        this.remoteHeaders = new LazyHeaders.Builder()
+            .setHeader("User-Agent", "Sandbar/1.0 (https://github.com/justinzlee/CongressionalApp) Android")
+            .build();
     }
 
     /** The photo submitted for this beach, or null if nobody has added one. */
@@ -131,7 +150,9 @@ public class BeachPhotoStore {
     @Nullable
     public Object imageSourceFor(Beach beach) {
         File submitted = photoFor(beach.getId());
-        return submitted != null ? submitted : beach.getImageUrl();
+        if (submitted != null) return submitted;
+        String url = beach.getImageUrl();
+        return url == null ? null : new GlideUrl(url, remoteHeaders);
     }
 
     /**

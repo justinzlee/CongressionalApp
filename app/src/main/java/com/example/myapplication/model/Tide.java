@@ -9,7 +9,7 @@ public class Tide {
 
     private final Type type;
     private final long timeMillis;
-    private final double heightFeet; // relative to mean sea level
+    private final double heightFeet; // above mean lower low water, the datum tide tables use
 
     public Tide(Type type, long timeMillis, double heightFeet) {
         this.type = type;

@@ -6,6 +6,8 @@ import com.google.gson.JsonParser;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -171,5 +173,35 @@ public class WeatherClientTest {
         assertNull(currents.get(0));
         assertEquals(80.0, WeatherClient.buildConditions(currents.get(1), null)
             .getAirTemperature(), 0.001);
+    }
+
+    /**
+     * Daytona Beach came back from the default wave model with a forecast and
+     * no surf: the grid cell nearest the sand is one that model counts as land.
+     * Points like that, and only those, are sent to the second model.
+     */
+    @Test
+    public void onlyPointsWithAForecastButNoWaveGoToTheFallback() {
+        List<JsonObject> currents = Arrays.asList(
+            fullForecast(), fullForecast(), fullForecast(), null);
+        List<JsonObject> marine = Arrays.asList(
+            json("{\"wave_height\":1.1}"), json("{\"wave_height\":null}"), null, null);
+
+        assertEquals(Arrays.asList(1, 2), WeatherClient.missingWaves(currents, marine, 4));
+    }
+
+    /** A flat sea is a reading. Asking another model would overwrite a real zero. */
+    @Test
+    public void flatCalmIsNotAGap() {
+        assertTrue(WeatherClient.missingWaves(
+            Collections.singletonList(fullForecast()),
+            Collections.singletonList(json("{\"wave_height\":0.0}")), 1).isEmpty());
+    }
+
+    /** If the wave request failed outright, every point with a forecast gets a second try. */
+    @Test
+    public void failedWaveRequestSendsEveryForecastPointToTheFallback() {
+        assertEquals(Arrays.asList(0, 1), WeatherClient.missingWaves(
+            Arrays.asList(fullForecast(), fullForecast()), Collections.emptyList(), 2));
     }
 }

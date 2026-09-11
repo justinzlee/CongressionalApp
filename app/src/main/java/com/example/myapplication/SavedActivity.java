@@ -46,14 +46,6 @@ public class SavedActivity extends AppCompatActivity {
         store = new SavedBeachStore(this);
 
         TabBar.setup(this, TabBar.Tab.SAVED);
-
-        // Conditions arrive asynchronously; redraw once they land so the
-        // verdicts here are not stuck on "Checking conditions".
-        repository.refreshAllData(() -> runOnUiThread(() -> {
-            bindSaved();
-            // Alerts derived from these readings only exist once they land.
-            TabBar.refreshAlertBadge(this);
-        }));
     }
 
     @Override
@@ -63,6 +55,17 @@ public class SavedActivity extends AppCompatActivity {
         bindSaved();
         // Alerts may have been read since this screen was last in front.
         TabBar.refreshAlertBadge(this);
+
+        // Tabs are brought back to the front rather than rebuilt, so asking
+        // only on the way in left these verdicts on whatever the water was
+        // doing when the tab first opened. Within the repository's freshness
+        // window this costs nothing. Conditions arrive asynchronously; redraw
+        // once they land so the verdicts are not stuck on "Checking conditions".
+        repository.refreshAllData(() -> runOnUiThread(() -> {
+            bindSaved();
+            // Alerts derived from these readings only exist once they land.
+            TabBar.refreshAlertBadge(this);
+        }));
     }
 
     private void bindSaved() {

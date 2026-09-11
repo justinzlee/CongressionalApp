@@ -25,6 +25,21 @@ public class WeatherClient {
      */
     public static final int BATCH_SIZE = 25;
 
+    private static final String MARINE = "https://marine-api.open-meteo.com/v1/marine?";
+
+    /**
+     * The wave model asked about any point the default one leaves blank.
+     *
+     * <p>Open-Meteo's default leans on a fine coastal grid, and at a few
+     * beaches the cell nearest the sand is one that grid counts as land:
+     * Daytona Beach, open Atlantic surf, came back with a forecast and no wave
+     * height at all. ECMWF's coarser wave model still reaches those points.
+     * GFS-Wave was the other candidate and cannot be used — it answers a point
+     * it has no sea for with 0.00m rather than nothing, which reads as a flat
+     * calm and clears every threshold in the verdict.
+     */
+    private static final String FALLBACK_WAVE_MODEL = "ecmwf_wam025";
+
     public interface WeatherCallback {
         void onSuccess(BeachConditions conditions);
         void onFailure(Exception e);
@@ -44,7 +59,8 @@ public class WeatherClient {
     }
 
     /**
-     * Fetches conditions for many points in a single pair of requests.
+     * Fetches conditions for many points in a single pair of requests, plus a
+     * third for any point the default wave model has nothing for.
      *
      * <p>The callback hears about every index exactly once — with {@code null}
      * where that point has no forecast — and then {@code onComplete}, so a
@@ -66,13 +82,12 @@ public class WeatherClient {
                         + "&temperature_unit=fahrenheit&wind_speed_unit=mph",
                     count);
 
-                // Marine coverage is patchy — the Great Lakes beaches and the
-                // sheltered bays in this list have no wave model at all — so a
-                // missing marine answer leaves the surf reading blank rather
-                // than sinking the batch.
-                marineCurrents = fetchCurrents(
-                    "https://marine-api.open-meteo.com/v1/marine?" + points + "&current=wave_height",
-                    count);
+                // Marine coverage has gaps — the western tip of Lake Superior
+                // has no wave model at all — so a missing marine answer leaves
+                // the surf reading blank rather than sinking the batch. Points
+                // the default model misses get one more try from another.
+                marineCurrents = fetchCurrents(MARINE + points + "&current=wave_height", count);
+                marineCurrents = withFallbackWaves(latitudes, longitudes, currents, marineCurrents, count);
             } catch (Exception e) {
                 // Deliberately broad, for the same reason as the single-point
                 // fetch below: an escaped unchecked exception would fire no
@@ -87,6 +102,65 @@ public class WeatherClient {
             }
             callback.onComplete();
         });
+    }
+
+    /**
+     * Fills the points the default wave model left blank from
+     * {@link #FALLBACK_WAVE_MODEL}, in one more request covering only those
+     * points. Returns the marine payloads to use, one slot per point.
+     */
+    private List<JsonObject> withFallbackWaves(double[] latitudes, double[] longitudes,
+            List<JsonObject> currents, List<JsonObject> marine, int count) throws IOException {
+        List<Integer> missing = missingWaves(currents, marine, count);
+        if (missing.isEmpty()) {
+            return marine;
+        }
+
+        double[] missingLatitudes = new double[missing.size()];
+        double[] missingLongitudes = new double[missing.size()];
+        for (int j = 0; j < missing.size(); j++) {
+            missingLatitudes[j] = latitudes[missing.get(j)];
+            missingLongitudes[j] = longitudes[missing.get(j)];
+        }
+        List<JsonObject> fallback = fetchCurrents(MARINE
+                + "latitude=" + join(missingLatitudes, missing.size())
+                + "&longitude=" + join(missingLongitudes, missing.size())
+                + "&current=wave_height&models=" + FALLBACK_WAVE_MODEL,
+            missing.size());
+
+        List<JsonObject> merged = new ArrayList<>(count);
+        for (int i = 0; i < count; i++) {
+            merged.add(i < marine.size() ? marine.get(i) : null);
+        }
+        for (int j = 0; j < fallback.size(); j++) {
+            if (hasWave(fallback.get(j))) {
+                merged.set(missing.get(j), fallback.get(j));
+            }
+        }
+        return merged;
+    }
+
+    /**
+     * The points, among the first {@code count}, that have a forecast but no
+     * wave reading — the ones worth asking a second wave model about. A point
+     * with no forecast is left alone; it has nothing to show a wave beside.
+     * Package-private so the unit tests can pin the selection.
+     */
+    static List<Integer> missingWaves(List<JsonObject> currents, List<JsonObject> marine, int count) {
+        List<Integer> missing = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            JsonObject current = i < currents.size() ? currents.get(i) : null;
+            JsonObject wave = i < marine.size() ? marine.get(i) : null;
+            if (current != null && !hasWave(wave)) {
+                missing.add(i);
+            }
+        }
+        return missing;
+    }
+
+    /** Whether a marine payload carries a wave height, a flat calm included. */
+    static boolean hasWave(JsonObject marine) {
+        return marine != null && optDouble(marine, "wave_height") != null;
     }
 
     /** Formats the first {@code count} coordinates as Open-Meteo's comma-separated list. */
@@ -111,7 +185,7 @@ public class WeatherClient {
 
                 // Marine API: Wave Height (meters -> feet)
                 String marineUrl = String.format(Locale.US,
-                    "https://marine-api.open-meteo.com/v1/marine?latitude=%.4f&longitude=%.4f&current=wave_height",
+                    MARINE + "latitude=%.4f&longitude=%.4f&current=wave_height",
                     lat, lon);
 
                 JsonObject current = fetchCurrent(weatherUrl);
@@ -125,11 +199,23 @@ public class WeatherClient {
                     return;
                 }
 
-                // Marine coverage is patchy — plenty of coastal points have no
-                // wave model at all. That is a missing reading, not an error,
-                // so the rest of the conditions still go through with a null
-                // wave height and the surf tile shows "--".
-                callback.onSuccess(buildConditions(current, fetchCurrent(marineUrl)));
+                // Marine coverage has gaps — some coastal points have no wave
+                // model at all. That is a missing reading, not an error, so the
+                // rest of the conditions still go through with a null wave
+                // height and the surf tile shows "--". A point the default
+                // model misses is asked of the fallback one first.
+                JsonObject marine = fetchCurrent(marineUrl);
+                if (!hasWave(marine)) {
+                    try {
+                        JsonObject fallback = fetchCurrent(marineUrl + "&models=" + FALLBACK_WAVE_MODEL);
+                        if (hasWave(fallback)) {
+                            marine = fallback;
+                        }
+                    } catch (IOException e) {
+                        // Keep the blank reading; the weather still goes through.
+                    }
+                }
+                callback.onSuccess(buildConditions(current, marine));
 
             } catch (Exception e) {
                 // Deliberately broad: Gson's parse and getAs* calls throw

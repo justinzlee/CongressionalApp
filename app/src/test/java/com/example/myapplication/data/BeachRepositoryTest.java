@@ -1,14 +1,22 @@
 package com.example.myapplication.data;
 
 import com.example.myapplication.model.Beach;
+import com.example.myapplication.model.HelpLocation;
+import com.example.myapplication.model.HelpType;
 
 import org.junit.Test;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.regex.Pattern;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -25,6 +33,13 @@ public class BeachRepositoryTest {
      * to a bad merge unnoticed; bump it deliberately when the list grows.
      */
     private static final int EXPECTED_BEACH_COUNT = 114;
+
+    /** The Great Lakes beaches: no tide to read, so no station to read it from. */
+    private static final Set<String> LAKE_BEACHES = new HashSet<>(Arrays.asList(
+        "MI1", "MI2", "IL1", "IN1", "WI1", "OH1", "MN1", "NY7"));
+
+    /** NOAA's station ids: seven digits, or three letters and four digits. */
+    private static final Pattern NOAA_STATION = Pattern.compile("\\d{7}|[A-Z]{3}\\d{4}");
 
     private Beach find(List<Beach> beaches, String name) {
         Optional<Beach> match = beaches.stream()
@@ -69,8 +84,10 @@ public class BeachRepositoryTest {
 
         Beach carlsbad = find(beaches, "Carlsbad State Beach");
         assertEquals("CA4", carlsbad.getId());
-        assertEquals(33.1506, carlsbad.getLatitude(), COORD_DELTA);
-        assertEquals(-117.3551, carlsbad.getLongitude(), COORD_DELTA);
+        // On the sand at Tamarack. The point this replaced was half a
+        // kilometre out to sea.
+        assertEquals(33.1527, carlsbad.getLatitude(), COORD_DELTA);
+        assertEquals(-117.3503, carlsbad.getLongitude(), COORD_DELTA);
 
         Beach moonlight = find(beaches, "Moonlight State Beach");
         assertEquals("CA5", moonlight.getId());
@@ -86,7 +103,10 @@ public class BeachRepositoryTest {
         assertEquals("FL1", southBeach.getId());
         assertEquals(25.7826, southBeach.getLatitude(), COORD_DELTA);
         assertEquals(-80.1285, southBeach.getLongitude(), COORD_DELTA);
-        assertFalse("South Beach should have a UV hazard entry", southBeach.getHazards().isEmpty());
+        // UV comes from the live reading. A "High UV today" written into the
+        // list and never cleared held this beach at "Not safe to swim" all night.
+        assertTrue("South Beach should carry no recorded hazard", southBeach.getHazards().isEmpty());
+        assertEquals(HelpType.LIFEGUARD_TOWER, southBeach.getNearestHelp().get(0).getType());
 
         Beach haulover = find(beaches, "Haulover Beach");
         assertEquals("FL2", haulover.getId());
@@ -136,9 +156,8 @@ public class BeachRepositoryTest {
         Beach flamenco = find(beaches, "Flamenco Beach");
         assertEquals("PR1", flamenco.getId());
 
-        // No marine model covers the Great Lakes, so this one carries no surf
-        // reading. It belongs here all the same - people drown in Lake
-        // Michigan every summer.
+        // A lake, so no tide station and no tides - but people drown in Lake
+        // Michigan every summer, so it belongs here all the same.
         Beach northAvenue = find(beaches, "North Avenue Beach");
         assertEquals("IL1", northAvenue.getId());
 
@@ -151,6 +170,47 @@ public class BeachRepositoryTest {
         find(beaches, "Cape May Beach");              // New Jersey
         find(beaches, "Nauset Beach");                // Massachusetts
         find(beaches, "Popham Beach");                // Maine
+    }
+
+    /**
+     * A sea beach without a station shows no tides, and nothing else would
+     * say anything was missing. This catches a beach added without one.
+     */
+    @Test
+    public void everySeaBeachNamesATideStation() {
+        for (Beach beach : BeachRepository.newForTesting().getBeaches()) {
+            if (LAKE_BEACHES.contains(beach.getId())) continue;
+            String station = beach.getTideStation();
+            assertNotNull(beach.getName() + " names no tide station", station);
+            assertTrue(beach.getName() + " has a malformed station id: " + station,
+                NOAA_STATION.matcher(station).matches());
+        }
+    }
+
+    @Test
+    public void lakeBeachesNameNoTideStation() {
+        int lakes = 0;
+        for (Beach beach : BeachRepository.newForTesting().getBeaches()) {
+            if (!LAKE_BEACHES.contains(beach.getId())) continue;
+            assertNull(beach.getName() + " is on a lake and has no tide", beach.getTideStation());
+            lakes++;
+        }
+        assertEquals(LAKE_BEACHES.size(), lakes);
+    }
+
+    /**
+     * A help point at the beach's own coordinates is a placeholder, not a
+     * place — and it is where the SOS sheet sends someone for directions.
+     */
+    @Test
+    public void helpPointsAreTheirOwnPlaceNotTheBeachPinAgain() {
+        for (Beach beach : BeachRepository.newForTesting().getBeaches()) {
+            for (HelpLocation help : beach.getNearestHelp()) {
+                assertFalse(beach.getName() + ": " + help.getName() + " is pinned to the beach itself",
+                    help.getLatitude() == beach.getLatitude()
+                        && help.getLongitude() == beach.getLongitude());
+            }
+        }
     }
 
     @Test

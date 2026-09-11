@@ -6,48 +6,50 @@ import com.google.gson.JsonParser;
 
 import org.junit.Test;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 /**
- * Pins the reading of a marine-forecast body, above all the timestamp maths:
- * the series arrives on the beach's wall clock with its offset alongside, and
- * shifting by that offset the wrong way would put every tide hours out.
+ * Pins the reading of a NOAA predictions body. The times arrive in GMT and are
+ * shown on the beach's own clock; getting either half wrong puts every tide
+ * hours out, which is worse than showing none.
  */
 public class TideClientTest {
 
     private static final TimeZone PACIFIC = TimeZone.getTimeZone("America/Los_Angeles");
 
-    /** A morning off La Jolla, trimmed from a live response. */
-    private static final String LA_JOLLA = "{"
-        + "\"utc_offset_seconds\":-25200,"
-        + "\"timezone\":\"America/Los_Angeles\","
-        + "\"hourly\":{"
-        + "  \"time\":[\"2026-08-31T00:00\",\"2026-08-31T01:00\",\"2026-08-31T02:00\","
-        + "            \"2026-08-31T03:00\",\"2026-08-31T04:00\",\"2026-08-31T05:00\","
-        + "            \"2026-08-31T06:00\",\"2026-08-31T07:00\",\"2026-08-31T08:00\","
-        + "            \"2026-08-31T09:00\",\"2026-08-31T10:00\",\"2026-08-31T11:00\","
-        + "            \"2026-08-31T12:00\",\"2026-08-31T13:00\"],"
-        + "  \"sea_level_height_msl\":[0.71,0.46,0.17,-0.11,-0.29,-0.31,-0.17,"
-        + "                            0.09,0.41,0.73,0.97,1.05,0.97,0.75]"
-        + "}}";
+    /**
+     * NOAA's predictions for La Jolla (Scripps Pier) at the end of August 2026,
+     * as served. The Open-Meteo sea-level series this app used to read put that
+     * morning's low at 04:37 and its high at 11:00; NOAA has them at 05:13 and
+     * 11:34.
+     */
+    private static final String LA_JOLLA = "{ \"predictions\" : [\n"
+        + "{\"t\":\"2026-08-31 00:10\", \"v\":\"1.069\", \"type\":\"L\"},"
+        + "{\"t\":\"2026-08-31 06:09\", \"v\":\"4.813\", \"type\":\"H\"},"
+        + "{\"t\":\"2026-08-31 12:13\", \"v\":\"0.947\", \"type\":\"L\"},"
+        + "{\"t\":\"2026-08-31 18:34\", \"v\":\"5.404\", \"type\":\"H\"},"
+        + "{\"t\":\"2026-09-01 01:00\", \"v\":\"1.027\", \"type\":\"L\"}\n"
+        + "]}";
 
-    private static TideForecast parse(String json) throws Exception {
-        return TideClient.parse(JsonParser.parseString(json).getAsJsonObject());
+    private static TideForecast parse(String json) throws IOException {
+        return TideClient.parse(JsonParser.parseString(json).getAsJsonObject(), PACIFIC);
     }
 
     /** The tide's clock time as a reader standing at that beach would see it. */
-    private static String localTime(Tide tide, TimeZone zone) {
+    private static String localTime(Tide tide) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
-        format.setTimeZone(zone);
+        format.setTimeZone(PACIFIC);
         return format.format(new Date(tide.getTimeMillis()));
     }
 
@@ -59,60 +61,90 @@ public class TideClientTest {
     }
 
     @Test
-    public void readsBothTurnsOnTheBeachesOwnClock() throws Exception {
-        TideForecast forecast = parse(LA_JOLLA);
+    public void readsEveryTurnInOrder() throws Exception {
+        List<Tide> tides = parse(LA_JOLLA).getTides();
 
-        assertEquals(PACIFIC, forecast.getZone());
-        assertEquals(2, forecast.getTides().size());
-
-        // The water is still falling into the 05:00 sample, so the fitted turn
-        // sits before it - and it must read as morning Pacific time, not as the
-        // 12:00 UTC instant underneath.
-        Tide low = forecast.getTides().get(0);
-        assertEquals(Tide.Type.LOW, low.getType());
-        assertEquals("2026-08-31 04:37", localTime(low, forecast.getZone()));
-
-        Tide high = forecast.getTides().get(1);
-        assertEquals(Tide.Type.HIGH, high.getType());
-        assertEquals("2026-08-31 11:00", localTime(high, forecast.getZone()));
+        Tide.Type[] expected = {
+            Tide.Type.LOW, Tide.Type.HIGH, Tide.Type.LOW, Tide.Type.HIGH, Tide.Type.LOW };
+        assertEquals(expected.length, tides.size());
+        for (int i = 0; i < expected.length; i++) {
+            assertEquals(expected[i], tides.get(i).getType());
+        }
     }
 
     @Test
-    public void heightsComeBackInFeet() throws Exception {
-        Tide high = parse(LA_JOLLA).getTides().get(1);
-        // 1.05 m of sea level is about 3.4 ft, not 1.05 of anything.
-        assertEquals(3.44, high.getHeightFeet(), 0.05);
+    public void gmtTimesLandOnTheBeachesOwnClock() throws Exception {
+        TideForecast forecast = parse(LA_JOLLA);
+
+        // 12:13 GMT is 05:13 in La Jolla in summer — the time on NOAA's own
+        // table for the station, and on the board at the lifeguard tower.
+        assertEquals("2026-08-31 05:13", localTime(forecast.getTides().get(2)));
+        assertEquals("2026-08-31 11:34", localTime(forecast.getTides().get(3)));
+        assertEquals(PACIFIC, forecast.getZone());
+    }
+
+    @Test
+    public void heightsAreFeetAsPrinted() throws Exception {
+        assertEquals(5.404, parse(LA_JOLLA).getTides().get(3).getHeightFeet(), 0.0001);
     }
 
     @Test
     public void nextTurnsAreTheOnesStillAhead() throws Exception {
         TideForecast forecast = parse(LA_JOLLA);
-        // Standing on the sand at 06:00 Pacific: the low is behind, the high ahead.
+        // Standing on the sand at 06:00: the morning low has been, the high is to come.
         long now = pacificInstant(6, 0);
 
-        assertEquals(null, forecast.getNextLow(now));
-        Tide high = forecast.getNextHigh(now);
-        assertNotNull(high);
-        assertEquals("2026-08-31 11:00", localTime(high, forecast.getZone()));
+        assertEquals("2026-08-31 11:34", localTime(forecast.getNextHigh(now)));
+        assertEquals("2026-08-31 18:00", localTime(forecast.getNextLow(now)));
     }
 
     @Test
-    public void aGapInTheSeriesStopsTheRead() throws Exception {
-        String withGap = LA_JOLLA.replace("0.09,0.41", "null,0.41");
-        TideForecast forecast = parse(withGap);
+    public void higherHighsAndLowerLowsStillCount() throws Exception {
+        List<Tide> tides = parse("{\"predictions\":["
+            + "{\"t\":\"2026-08-31 06:09\",\"v\":\"4.8\",\"type\":\"HH\"},"
+            + "{\"t\":\"2026-08-31 12:13\",\"v\":\"-0.3\",\"type\":\"LL\"}]}").getTides();
 
-        // Only the run before the gap keeps its even hourly spacing, so the low
-        // survives and the high beyond the gap is not guessed at.
-        assertEquals(1, forecast.getTides().size());
-        assertEquals(Tide.Type.LOW, forecast.getTides().get(0).getType());
+        assertEquals(Tide.Type.HIGH, tides.get(0).getType());
+        assertEquals(Tide.Type.LOW, tides.get(1).getType());
+    }
+
+    /**
+     * A station NOAA does not know comes back as an error object with no
+     * predictions. That has to fail, not read as a day on which the tide never
+     * turns.
+     */
+    @Test
+    public void errorBodyIsAFailureNotAnEmptyTable() {
+        try {
+            parse("{\"error\": {\"message\":\" The station is not a valid station or there is system error.\"}}");
+            fail("expected an IOException");
+        } catch (IOException e) {
+            assertTrue(e.getMessage(), e.getMessage().startsWith("The station is not a valid station"));
+        }
+    }
+
+    /**
+     * NOAA publishes a station's standard offset, not its zone. Each offset on
+     * these coasts has to name the zone that carries its daylight saving, or
+     * every summer tide from Maine to Texas reads an hour early.
+     */
+    @Test
+    public void stationOffsetsNameTheZoneWithItsDaylightSaving() {
+        assertEquals("America/Los_Angeles", TideClient.zoneFor(-8).getID());
+        assertEquals("America/Chicago", TideClient.zoneFor(-6).getID());
+        assertEquals("America/New_York", TideClient.zoneFor(-5).getID());
+        assertEquals("Pacific/Honolulu", TideClient.zoneFor(-10).getID());
+        assertEquals("America/Puerto_Rico", TideClient.zoneFor(-4).getID());
     }
 
     @Test
-    public void unknownZoneFallsBackToTheReportedOffset() throws Exception {
-        String oddZone = LA_JOLLA.replace("America/Los_Angeles", "Nowhere/Atlantis");
-        TideForecast forecast = parse(oddZone);
+    public void anUnlistedOffsetKeepsThePlainOffset() {
+        assertEquals(9 * 3_600_000, TideClient.zoneFor(9).getRawOffset());
+    }
 
-        assertEquals(-25200 * 1000, forecast.getZone().getRawOffset());
-        assertTrue(forecast.getTides().size() >= 1);
+    @Test
+    public void beginDateIsWrittenInGmt() {
+        // 06:00 in La Jolla in August is 13:00 GMT, which is what NOAA must be told.
+        assertEquals("20260831 13:00", TideClient.beginDate(pacificInstant(6, 0)));
     }
 }

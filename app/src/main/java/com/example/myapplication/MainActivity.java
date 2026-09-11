@@ -187,14 +187,7 @@ public class MainActivity extends AppCompatActivity {
         setupCitySearch();
         updateRadiusButtonsEnabled();
 
-        repository.refreshAllData(() -> runOnUiThread(() -> {
-            updateList();
-            // Some alerts are worked out from these readings, so the badge is
-            // only right once they have landed — it counted the hand-recorded
-            // hazards alone until this ran.
-            TabBar.refreshAlertBadge(this);
-        }));
-
+        // Conditions are asked for in onResume, which runs on the way in too.
         updateList(); // Initial update
 
         setupWelcomeOverlay(savedInstanceState);
@@ -472,7 +465,10 @@ public class MainActivity extends AppCompatActivity {
         verdictCard.setVisibility(View.VISIBLE);
         statGrid.setVisibility(View.VISIBLE);
 
-        headerKickerRow.setVisibility(View.VISIBLE);
+        // "Near you" is a claim about where the phone is. Until a fix or a
+        // searched city says where that is, the list is only sorted from a
+        // default in Los Angeles, so the kicker stays unsaid.
+        headerKickerRow.setVisibility(hasLocation ? View.VISIBLE : View.GONE);
         headerKicker.setText(isManualLocation
             ? R.string.header_kicker_searching : R.string.header_kicker_near_you);
         headerTitle.setText(beach.getName());
@@ -487,7 +483,7 @@ public class MainActivity extends AppCompatActivity {
         ImageViewCompat.setImageTintList(verdictIcon, ColorStateList.valueOf(color));
         verdictText.setText(level != null ? level.getVerdictRes() : R.string.verdict_unknown);
         verdictText.setTextColor(color);
-        verdictMeta.setText(getString(R.string.verdict_updated, beach.getName()));
+        verdictMeta.setText(updatedLine(beach));
 
         if (level == null) {
             verdictNote.setText(R.string.verdict_unknown_note);
@@ -511,6 +507,20 @@ public class MainActivity extends AppCompatActivity {
             : UnitConverter.formatTemperature(this, conditions.getAirTemperature()));
     }
 
+    /**
+     * "Santa Monica Pier · updated 12 min ago". Before any reading has landed
+     * there is nothing to date, so it is only the name; the verdict beside it
+     * already says conditions are still being checked.
+     */
+    private String updatedLine(Beach beach) {
+        BeachConditions conditions = beach.getConditions();
+        if (conditions == null) return beach.getName();
+        long minutes = (System.currentTimeMillis() - conditions.getFetchedAtMillis()) / 60_000L;
+        if (minutes < 1) return getString(R.string.verdict_updated_now, beach.getName());
+        if (minutes < 60) return getString(R.string.verdict_updated_minutes, beach.getName(), minutes);
+        return getString(R.string.verdict_updated_hours, beach.getName(), minutes / 60);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -521,6 +531,18 @@ public class MainActivity extends AppCompatActivity {
         updateList();
         // Alerts may have been read since this screen was last in front.
         TabBar.refreshAlertBadge(this);
+
+        // Tabs are brought back to the front rather than rebuilt, so asking
+        // only in onCreate left this screen on the readings from whenever the
+        // app first opened — hours old after an afternoon in the background,
+        // under a line saying "updated just now". Within the repository's
+        // freshness window this costs nothing.
+        repository.refreshAllData(() -> runOnUiThread(() -> {
+            updateList();
+            // Some alerts are worked out from these readings, so the badge is
+            // only right once they have landed.
+            TabBar.refreshAlertBadge(this);
+        }));
     }
 
     private void updateRadiusButtonLabels() {
