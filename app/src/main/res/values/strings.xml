@@ -170,6 +170,22 @@
     <string name="guide_caught_title">Caught in one?</string>
     <string name="guide_caught_body">Don\'t swim against it. Float, keep your head up, raise an arm and shout. If you can swim, go sideways towards the breaking waves, then in.</string>
 
+    <!-- Spotting someone drowning. The four signs are the instinctive drowning
+         response: how a person looks in the last minute or so before they go
+         under, which is nothing like the splashing and shouting people expect. -->
+    <string name="drowning_entry_title">How to tell if someone is drowning</string>
+    <string name="drowning_title">Spot someone drowning</string>
+    <string name="drowning_sign_1_title">Quiet, not calling out</string>
+    <string name="drowning_sign_1_body">They can\'t shout or wave. Call to them — no answer means act now.</string>
+    <string name="drowning_sign_2_title">Head back, mouth at the water</string>
+    <string name="drowning_sign_2_body">Mouth at the waterline, slipping under and bobbing back up.</string>
+    <string name="drowning_sign_3_title">Upright, not kicking</string>
+    <string name="drowning_sign_3_body">Straight up in the water, as if climbing a ladder that isn\'t there.</string>
+    <string name="drowning_sign_4_title">Arms pressing down</string>
+    <string name="drowning_sign_4_body">Out to the sides, pushing down on the water rather than swimming.</string>
+    <string name="drowning_act_title">Think someone is drowning?</string>
+    <string name="drowning_act_body">Shout for a lifeguard and point. No lifeguard, call 911. Throw them anything that floats, and don\'t swim out without it — they will pull you under. You may have less than a minute.</string>
+
 
     <!-- Beach warning flags guide -->
     <string name="flag_entry_title">What the beach flags mean</string>

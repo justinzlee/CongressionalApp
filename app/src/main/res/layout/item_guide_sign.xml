@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- One numbered thing to look for when scanning the water for a rip. -->
+<!-- One numbered thing to look for when scanning the water: a sign of a rip
+     current, or of someone drowning. -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"

@@ -78,6 +78,8 @@ public class LearnActivity extends AppCompatActivity {
         new Group(R.string.learn_group_water, new Lesson[] {
             new Lesson(R.string.guide_entry_title, 0,
                 R.drawable.ic_wave, RipGuideActivity.class),
+            new Lesson(R.string.drowning_entry_title, 0,
+                R.drawable.ic_lifebuoy, DrowningGuideActivity.class),
         }),
         // Each animal is its own lesson: someone who has just been stung wants
         // that one set of steps, not a list of five to pick through.
