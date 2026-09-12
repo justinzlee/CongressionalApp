@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Press feedback for a control on the map: dark on the light controls,
+     light on the dark ones. The mask keeps it to the button; the group's
+     rounded outline trims the corners. -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/map_hud_ripple">
+    <item android:id="@android:id/mask">
+        <color android:color="@android:color/white" />
+    </item>
+</ripple>

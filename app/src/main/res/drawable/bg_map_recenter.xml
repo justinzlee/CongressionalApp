@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The Recenter pill in the map card's header: a raised surface with a
+     hairline, and a ripple kept inside the pill. -->
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="?attr/colorControlHighlight">
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/surface_alt" />
+            <stroke android:width="1dp" android:color="@color/divider" />
+            <corners android:radius="999dp" />
+        </shape>
+    </item>
+</ripple>

@@ -136,4 +136,37 @@
     <color name="wave_shallow">#2E93A3</color>
     <color name="wave_foam">#CDEAEF</color>
     <color name="on_wave">#EBF7F9</color>
+
+    <!-- Beach map: the design's own dark set for the card's kicker, its
+         controls and its pills. The markers are the same in both themes. -->
+    <color name="map_kicker">#7E9298</color>
+    <color name="map_ground">#0B1418</color>
+    <color name="map_hud">#F0122126</color>
+    <color name="map_hud_edge">#22343A</color>
+    <color name="map_hud_text">#EAF1F0</color>
+    <color name="map_hud_text_quiet">#9FB1B5</color>
+    <color name="map_hud_active_text">#EAF1F0</color>
+    <color name="map_hud_ripple">#33FFFFFF</color>
+    <color name="map_chip">#CC0B1418</color>
+    <color name="map_chip_text">#8FA3A8</color>
+    <color name="map_you_chip">#D10B1418</color>
+    <color name="map_you_text">#C7D6D9</color>
+
+    <!-- Wave height card, at night: the design's own sky and sea. -->
+    <color name="wave_card_sky_top">#1B1D2B</color>
+    <color name="wave_card_sky_bottom">#0E1220</color>
+    <color name="wave_card_edge">#12E9E9ED</color>
+    <color name="wave_card_back_top">#B32F7F96</color>
+    <color name="wave_card_back_bottom">#CC14283F</color>
+    <color name="wave_card_mid_top">#E657C6C0</color>
+    <color name="wave_card_mid_bottom">#F214405F</color>
+    <color name="wave_card_mid_edge">#59BFE6EA</color>
+    <color name="wave_card_front_shadow">#8C060A14</color>
+    <color name="wave_card_front_mid">#22708C</color>
+    <color name="wave_card_front_deep">#1A5678</color>
+    <color name="wave_card_front_bed">#12405F</color>
+    <color name="wave_card_guide">#73E9E9ED</color>
+    <color name="wave_card_number">#E9E9ED</color>
+    <color name="wave_card_unit">#B2B6CA</color>
+    <color name="wave_card_number_glow">#B3060A14</color>
 </resources>

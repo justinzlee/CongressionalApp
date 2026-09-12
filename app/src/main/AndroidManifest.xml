@@ -65,6 +65,12 @@
             android:theme="@style/Theme.MyApplication" />
 
         <activity
+            android:name=".DrowningGuideActivity"
+            android:exported="false"
+            android:label="@string/drowning_title"
+            android:theme="@style/Theme.MyApplication" />
+
+        <activity
             android:name=".FlagGuideActivity"
             android:exported="false"
             android:label="@string/flag_title"

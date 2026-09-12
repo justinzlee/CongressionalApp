@@ -29,6 +29,7 @@ import com.bumptech.glide.request.target.Target;
 import com.example.myapplication.ai.SafetyNote;
 import com.example.myapplication.data.BeachPhotoStore;
 import com.example.myapplication.data.BeachRepository;
+import com.example.myapplication.data.LastKnownLocation;
 import com.example.myapplication.data.LiveReadings;
 import com.example.myapplication.data.RockRatingStore;
 import com.example.myapplication.data.SavedBeachStore;
@@ -52,7 +53,9 @@ import com.example.myapplication.model.Sighting;
 import com.example.myapplication.model.Tide;
 import com.example.myapplication.model.WaterQuality;
 import com.example.myapplication.model.TideForecast;
+import com.example.myapplication.location.LocationService;
 import com.example.myapplication.network.AirQualityClient;
+import com.example.myapplication.network.LifeguardClient;
 import com.example.myapplication.network.ParkingClient;
 import com.example.myapplication.network.RainfallClient;
 import com.example.myapplication.network.TideClient;
@@ -117,6 +120,8 @@ public class BeachDetailActivity extends AppCompatActivity {
     @Nullable private WaterQuality water;
     @Nullable private ParkingSummary parking;
 
+    private BeachMapCard mapCard;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,6 +174,7 @@ public class BeachDetailActivity extends AppCompatActivity {
         bindLifeguards();
         bindHazards();
         bindVerdict();
+        bindMap();
 
         rockStore = new RockRatingStore(this);
         sightingStore = new SightingStore(this);
@@ -234,6 +240,20 @@ public class BeachDetailActivity extends AppCompatActivity {
         // A rocks rating filed on the way back moves two of the four scores:
         // shingle is a problem walking in and an advantage to fish over.
         bindGoodFor();
+        mapCard.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mapCard.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        // Null when onCreate turned away a beach it could not find.
+        if (mapCard != null) mapCard.onDestroy();
+        super.onDestroy();
     }
 
     /**
@@ -569,6 +589,41 @@ public class BeachDetailActivity extends AppCompatActivity {
         } else {
             lifeguards.setText(getString(R.string.lifeguards_nearest, tower.getName()));
         }
+    }
+
+    /**
+     * The beach map: the beach, its lifeguard towers, and you.
+     *
+     * <p>You are wherever the phone last knew, then a fresh fix if location is
+     * already allowed. This screen never asks for it — the home screen does —
+     * and without one the map simply shows the beach without you on it. The
+     * towers in the app's own records go on straight away; the ones
+     * OpenStreetMap has join them when they land.
+     */
+    private void bindMap() {
+        mapCard = findViewById(R.id.detailMapCard);
+        mapCard.setBeach(beach);
+
+        LastKnownLocation last = new LastKnownLocation(this);
+        if (last.isKnown()) mapCard.setUserLocation(last.getLatitude(), last.getLongitude());
+        new LocationService(this).getLastLocation(new LocationService.LocationUpdateListener() {
+            @Override
+            public void onLocationUpdated(double latitude, double longitude) {
+                if (isFinishing() || isDestroyed()) return;
+                mapCard.setUserLocation(latitude, longitude);
+            }
+
+            @Override
+            public void onLocationError(String error) {
+                // Not allowed, switched off, or no fix yet.
+            }
+        });
+
+        new LifeguardClient(this).getTowers(beach.getId(), beach.getLatitude(), beach.getLongitude(),
+            towers -> runOnUiThread(() -> {
+                if (towers == null || isFinishing() || isDestroyed()) return;
+                mapCard.addTowers(towers);
+            }));
     }
 
     /**
