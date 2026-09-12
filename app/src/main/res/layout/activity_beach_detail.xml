@@ -610,6 +610,17 @@
                     android:orientation="vertical" />
             </LinearLayout>
 
+            <!-- ══════ BEACH MAP ══════
+
+                 Where the towers stand and where you are from them, between
+                 what the day is good for and what to watch out for. It carries
+                 its own heading inside the card, so there is no caption above. -->
+            <com.example.myapplication.BeachMapCard
+                android:id="@+id/detailMapCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp" />
+
             <!-- ══════ WHAT TO WATCH FOR ══════ -->
             <TextView
                 android:layout_width="wrap_content"

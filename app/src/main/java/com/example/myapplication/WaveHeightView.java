@@ -15,6 +15,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 
+import androidx.core.content.ContextCompat;
+
 import com.example.myapplication.util.UnitConverter;
 
 import java.util.Locale;
@@ -27,6 +29,10 @@ import java.util.Locale;
  * whole sheet breathes up and down, and the front crest carries a foam line
  * that runs along it. The colour of the water is the reading, blending from
  * green through amber to red as the surf builds (see {@link WaveScale}).
+ *
+ * The sky and the sea follow the app's theme, like the card around them: the
+ * design's night sea on the dark ground, a daylight one on the light ground.
+ * Both sets are colour resources, dark in values-night and light in values.
  *
  * Geometry is transcribed from the "Wave Height Card" design, which draws into
  * a 224x250 box stretched to fill the panel. Rather than convert every number,
@@ -56,26 +62,23 @@ public class WaveHeightView extends View {
     /** A flat sea still has to read as water, so the crest never sinks past here. */
     private static final float CREST_FLOOR = 208f;
 
-    private static final int PANEL_TOP = 0xFF1B1D2B;
-    private static final int PANEL_BOTTOM = 0xFF0E1220;
-    private static final int PANEL_EDGE = 0x12E9E9ED;
-    private static final int BACK_TOP = 0xB32F7F96;
-    private static final int BACK_BOTTOM = 0xCC14283F;
-    private static final int MID_TOP = 0xE657C6C0;
-    private static final int MID_BOTTOM = 0xF214405F;
-    private static final int MID_STROKE = 0x59BFE6EA;
-    private static final int FRONT_SHADOW = 0x8C060A14;
-    private static final int FRONT_MID = 0xFF22708C;
-    private static final int FRONT_DEEP = 0xFF1A5678;
-    private static final int FRONT_BED = 0xFF12405F;
+    // Light on the water is white by day and by night alike.
     private static final int CREST_STROKE = 0xCCE8F1F8;
     private static final int FOAM_STROKE = 0x80FFFFFF;
     private static final int SOFT_BAND = 0x12FFFFFF;
     private static final int SPARKLE = 0xFFEEF5FA;
-    private static final int GUIDE_LINE = 0x73E9E9ED;
-    private static final int NUMBER_COLOR = 0xFFE9E9ED;
-    private static final int UNIT_COLOR = 0xFFB2B6CA;
-    private static final int NUMBER_SHADOW = 0xB3060A14;
+
+    private final int skyTop;
+    private final int skyBottom;
+    private final int backTop;
+    private final int backBottom;
+    private final int midTop;
+    private final int midBottom;
+    private final int midEdge;
+    private final int frontShadow;
+    private final int frontMid;
+    private final int frontDeep;
+    private final int frontBed;
 
     private final Paint fillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     private final Paint strokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -107,24 +110,39 @@ public class WaveHeightView extends View {
         density = context.getResources().getDisplayMetrics().density;
         cornerPx = 10f * density;
 
+        skyTop = ContextCompat.getColor(context, R.color.wave_card_sky_top);
+        skyBottom = ContextCompat.getColor(context, R.color.wave_card_sky_bottom);
+        backTop = ContextCompat.getColor(context, R.color.wave_card_back_top);
+        backBottom = ContextCompat.getColor(context, R.color.wave_card_back_bottom);
+        midTop = ContextCompat.getColor(context, R.color.wave_card_mid_top);
+        midBottom = ContextCompat.getColor(context, R.color.wave_card_mid_bottom);
+        midEdge = ContextCompat.getColor(context, R.color.wave_card_mid_edge);
+        frontShadow = ContextCompat.getColor(context, R.color.wave_card_front_shadow);
+        frontMid = ContextCompat.getColor(context, R.color.wave_card_front_mid);
+        frontDeep = ContextCompat.getColor(context, R.color.wave_card_front_deep);
+        frontBed = ContextCompat.getColor(context, R.color.wave_card_front_bed);
+        int glow = ContextCompat.getColor(context, R.color.wave_card_number_glow);
+
         strokePaint.setStyle(Paint.Style.STROKE);
         strokePaint.setStrokeCap(Paint.Cap.ROUND);
 
         edgePaint.setStyle(Paint.Style.STROKE);
         edgePaint.setStrokeWidth(density);
-        edgePaint.setColor(PANEL_EDGE);
+        edgePaint.setColor(ContextCompat.getColor(context, R.color.wave_card_edge));
 
         guidePaint.setStyle(Paint.Style.STROKE);
         guidePaint.setStrokeWidth(density);
-        guidePaint.setColor(GUIDE_LINE);
+        guidePaint.setColor(ContextCompat.getColor(context, R.color.wave_card_guide));
 
+        // The number keeps a soft halo of the sky's own tone - dark at night,
+        // light by day - so it stays legible where it overlaps the back swells.
         numberPaint.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
-        numberPaint.setColor(NUMBER_COLOR);
+        numberPaint.setColor(ContextCompat.getColor(context, R.color.wave_card_number));
         numberPaint.setLetterSpacing(-0.03f);
         numberPaint.setFontFeatureSettings("tnum");
-        numberPaint.setShadowLayer(12f * density, 0f, 2f * density, NUMBER_SHADOW);
-        unitPaint.setColor(UNIT_COLOR);
-        unitPaint.setShadowLayer(10f * density, 0f, 2f * density, NUMBER_SHADOW);
+        numberPaint.setShadowLayer(12f * density, 0f, 2f * density, glow);
+        unitPaint.setColor(ContextCompat.getColor(context, R.color.wave_card_unit));
+        unitPaint.setShadowLayer(10f * density, 0f, 2f * density, glow);
 
         setOutlineProvider(new ViewOutlineProvider() {
             @Override
@@ -151,7 +169,7 @@ public class WaveHeightView extends View {
         super.onSizeChanged(w, h, oldw, oldh);
         if (h > 0) {
             panelPaint.setShader(new LinearGradient(
-                0f, 0f, 0f, h, PANEL_TOP, PANEL_BOTTOM, Shader.TileMode.CLAMP));
+                0f, 0f, 0f, h, skyTop, skyBottom, Shader.TileMode.CLAMP));
         }
         invalidateOutline();
     }
@@ -198,7 +216,7 @@ public class WaveHeightView extends View {
 
         fillLayer(canvas, 0, t, backShader);
         fillLayer(canvas, 1, t, midShader);
-        strokeLayer(canvas, 1, t, MID_STROKE, 1.2f);
+        strokeLayer(canvas, 1, t, midEdge, 1.2f);
 
         float shift = shiftFor(FRONT, t);
 
@@ -216,7 +234,7 @@ public class WaveHeightView extends View {
         buildWave(wavePath, LAYER_BASE[FRONT] + 6f, LAYER_AMP[FRONT],
             LAYER_PEAK_X[FRONT], shift, true);
         fillPaint.setShader(null);
-        fillPaint.setColor(FRONT_SHADOW);
+        fillPaint.setColor(frontShadow);
         canvas.drawPath(wavePath, fillPaint);
 
         buildWave(wavePath, LAYER_BASE[FRONT], LAYER_AMP[FRONT],
@@ -342,9 +360,9 @@ public class WaveHeightView extends View {
     private void ensureShaders(float crest) {
         if (backShader == null) {
             backShader = new LinearGradient(0f, 20f, 0f, 110f,
-                BACK_TOP, BACK_BOTTOM, Shader.TileMode.CLAMP);
+                backTop, backBottom, Shader.TileMode.CLAMP);
             midShader = new LinearGradient(0f, 28f, 0f, 120f,
-                MID_TOP, MID_BOTTOM, Shader.TileMode.CLAMP);
+                midTop, midBottom, Shader.TileMode.CLAMP);
         }
         int crestColor = WaveScale.crestColor(heightFt);
         int bodyColor = WaveScale.bodyColor(heightFt);
@@ -358,7 +376,7 @@ public class WaveHeightView extends View {
         shaderBody = bodyColor;
         shaderGradEnd = gradEnd;
         frontShader = new LinearGradient(0f, 34f, 0f, gradEnd,
-            new int[] {crestColor, bodyColor, FRONT_MID, FRONT_DEEP, FRONT_BED},
+            new int[] {crestColor, bodyColor, frontMid, frontDeep, frontBed},
             new float[] {0f, 0.13f, 0.4f, 0.72f, 1f}, Shader.TileMode.CLAMP);
         glowPaint.setShader(new RadialGradient(0f, 0f, 1f,
             (crestColor & 0x00FFFFFF) | 0x80000000, crestColor & 0x00FFFFFF,

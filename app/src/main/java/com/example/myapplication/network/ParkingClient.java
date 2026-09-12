@@ -13,13 +13,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import java.io.IOException;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
-
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 /**
  * What parking exists around a beach, from OpenStreetMap via the Overpass API.
@@ -42,8 +37,6 @@ import okhttp3.Response;
  * user and rude to them.
  */
 public class ParkingClient {
-
-    private static final String ENDPOINT = "https://overpass-api.de/api/interpreter";
 
     /** How long a beach's parking answer is reused before asking again. */
     @VisibleForTesting static final int CACHE_DAYS = 30;
@@ -78,7 +71,7 @@ public class ParkingClient {
         Http.IO.execute(() -> {
             ParkingSummary parking = null;
             try {
-                String body = post(query(lat, lon));
+                String body = Overpass.fetch(query(lat, lon));
                 if (body != null) {
                     parking = parse(body);
                     if (parking != null) writeCache(beachId, parking);
@@ -203,18 +196,6 @@ public class ParkingClient {
             // Capacity is free text often enough ("approx 50") that this is
             // routine rather than exceptional.
             return null;
-        }
-    }
-
-    @Nullable
-    private String post(String query) throws IOException {
-        Request request = new Request.Builder()
-            .url(ENDPOINT)
-            .post(RequestBody.create(query.getBytes()))
-            .build();
-        try (Response response = Http.CLIENT.newCall(request).execute()) {
-            if (!response.isSuccessful() || response.body() == null) return null;
-            return response.body().string();
         }
     }
 

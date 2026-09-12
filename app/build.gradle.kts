@@ -35,6 +35,7 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.gson)
     implementation(libs.exifinterface)
+    implementation(libs.osmdroid)
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
     testImplementation(libs.junit)

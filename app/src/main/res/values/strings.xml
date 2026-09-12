@@ -798,4 +798,19 @@
         <item quantity="one">%1$d beach</item>
         <item quantity="other">%1$d beaches</item>
     </plurals>
+
+    <!-- ══════ BEACH MAP ══════ -->
+    <string name="map_kicker">Beach map</string>
+    <string name="map_title">Lifeguard towers &amp; access</string>
+    <string name="map_recenter">Recenter</string>
+    <string name="map_zoom_in">Zoom in</string>
+    <string name="map_zoom_out">Zoom out</string>
+    <string name="map_satellite">Satellite</string>
+    <string name="map_plain">Plain</string>
+    <string name="map_legend_tower">Lifeguard tower · help point</string>
+    <!-- Under the arrow pointing back at you: how far you are from the middle
+         of the map, e.g. "You · 1.8 km" -->
+    <string name="map_you">You · %1$s</string>
+    <string name="map_description">Map of %1$s</string>
+    <string name="map_attribution">© Esri · © OpenStreetMap</string>
 </resources>
