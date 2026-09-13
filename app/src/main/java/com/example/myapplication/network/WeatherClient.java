@@ -134,8 +134,24 @@ public class WeatherClient {
         }
         for (int j = 0; j < fallback.size(); j++) {
             if (hasWave(fallback.get(j))) {
-                merged.set(missing.get(j), fallback.get(j));
+                int point = missing.get(j);
+                merged.set(point, withFallbackWave(merged.get(point), fallback.get(j)));
             }
+        }
+        return merged;
+    }
+
+    /**
+     * The wave from the backup model, the water from the default one. The
+     * backup has no sea temperature at all, so taking its payload whole threw
+     * away Daytona's real reading of about 83°F. Package-private so the unit
+     * tests can pin the merge.
+     */
+    static JsonObject withFallbackWave(JsonObject marine, JsonObject fallback) {
+        JsonObject merged = new JsonObject();
+        merged.add("wave_height", fallback.get("wave_height"));
+        if (marine != null) {
+            merged.add("sea_surface_temperature", marine.get("sea_surface_temperature"));
         }
         return merged;
     }
@@ -209,7 +225,7 @@ public class WeatherClient {
                     try {
                         JsonObject fallback = fetchCurrent(marineUrl + "&models=" + FALLBACK_WAVE_MODEL);
                         if (hasWave(fallback)) {
-                            marine = fallback;
+                            marine = withFallbackWave(marine, fallback);
                         }
                     } catch (IOException e) {
                         // Keep the blank reading; the weather still goes through.
@@ -270,9 +286,9 @@ public class WeatherClient {
                 waterTemp = (sstC * 9.0 / 5.0) + 32.0;
             }
         }
-        if (waterTemp == null && temp != null) {
-            waterTemp = temp - 4.0;
-        }
+        // A missing sea temperature stays missing rather than being guessed
+        // from the air: the marine model has none for the Great Lakes, and
+        // "air minus 4" put Duluth's water 10°F colder than NOAA measured it.
 
         return new BeachConditions(temp, waterTemp, uv, wind, waveHeight, visibility);
     }

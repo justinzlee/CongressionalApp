@@ -817,9 +817,6 @@ public class BeachDetailActivity extends AppCompatActivity {
 
     /** The cards, each appearing only once its own reading has landed. */
     private void bindEnvironment() {
-        BeachConditions conditions = beach.getConditions();
-        boolean hasWaterTemp = conditions != null && conditions.getWaterTemperature() != null;
-
         View section = findViewById(R.id.detailEnvironmentSection);
         if (section != null) {
             section.setVisibility(View.VISIBLE);
@@ -852,61 +849,6 @@ public class BeachDetailActivity extends AppCompatActivity {
                 ImageViewCompat.setImageTintList(
                     findViewById(R.id.detailWaterIcon), ColorStateList.valueOf(color));
                 ((TextView) findViewById(R.id.detailWaterBody)).setText(water.getStatus().bodyRes);
-            }
-        }
-
-        View waterTempCard = findViewById(R.id.detailWaterTempCard);
-        if (!hasWaterTemp) {
-            if (waterTempCard != null) waterTempCard.setVisibility(View.GONE);
-        } else {
-            if (waterTempCard != null) {
-                waterTempCard.setVisibility(View.VISIBLE);
-                double wTemp = conditions.getWaterTemperature();
-                TextView val = findViewById(R.id.detailWaterTempValue);
-                if (val != null) {
-                    val.setText(UnitConverter.formatTemperature(this, wTemp));
-                }
-
-                TextView status = findViewById(R.id.detailWaterTempStatus);
-                TextView advice = findViewById(R.id.detailWaterTempAdvice);
-                ImageView icon = findViewById(R.id.detailWaterTempIcon);
-
-                int iconRes;
-                int colorRes;
-                int statusRes;
-                int adviceRes;
-
-                if (wTemp < 60) {
-                    iconRes = R.drawable.ic_thermometer_cold;
-                    colorRes = R.color.icon_wind;
-                    statusRes = R.string.water_temp_cold;
-                    adviceRes = R.string.water_temp_advice_cold;
-                } else if (wTemp < 72) {
-                    iconRes = R.drawable.ic_thermometer_warm;
-                    colorRes = R.color.icon_temp;
-                    statusRes = R.string.water_temp_cool;
-                    adviceRes = R.string.water_temp_advice_cool;
-                } else if (wTemp < 82) {
-                    iconRes = R.drawable.ic_thermometer_warm;
-                    colorRes = R.color.safe;
-                    statusRes = R.string.water_temp_warm;
-                    adviceRes = R.string.water_temp_advice_warm;
-                } else {
-                    iconRes = R.drawable.ic_thermometer_hot;
-                    colorRes = R.color.icon_temp;
-                    statusRes = R.string.water_temp_hot;
-                    adviceRes = R.string.water_temp_advice_hot;
-                }
-
-                if (status != null) {
-                    status.setText(statusRes);
-                    status.setTextColor(ContextCompat.getColor(this, colorRes));
-                }
-                if (advice != null) advice.setText(adviceRes);
-                if (icon != null) {
-                    icon.setImageResource(iconRes);
-                    ImageViewCompat.setImageTintList(icon, ColorStateList.valueOf(ContextCompat.getColor(this, colorRes)));
-                }
             }
         }
 
@@ -1088,6 +1030,37 @@ public class BeachDetailActivity extends AppCompatActivity {
             ImageViewCompat.setImageTintList(airTempIcon, ColorStateList.valueOf(color));
         } else {
             airTemp.setText("--");
+        }
+
+        TextView waterTemp = findViewById(R.id.detailWaterTemp);
+        ImageView waterTempIcon = findViewById(R.id.detailWaterTempIcon);
+
+        if (conditions.getWaterTemperature() != null) {
+            double wTemp = conditions.getWaterTemperature();
+            waterTemp.setText(UnitConverter.formatTemperature(this, wTemp));
+
+            // Same thermometer as the air tile, on the sea's own scale:
+            // 82°F is very warm water but only warm air.
+            int iconRes;
+            int color;
+            if (wTemp < 60) {
+                iconRes = R.drawable.ic_thermometer_cold;
+                color = ContextCompat.getColor(this, R.color.icon_wind);
+            } else if (wTemp < 72) {
+                iconRes = R.drawable.ic_thermometer_warm;
+                color = ContextCompat.getColor(this, R.color.icon_temp);
+            } else if (wTemp < 82) {
+                iconRes = R.drawable.ic_thermometer_warm;
+                color = ContextCompat.getColor(this, R.color.safe);
+            } else {
+                iconRes = R.drawable.ic_thermometer_hot;
+                color = ContextCompat.getColor(this, R.color.icon_temp);
+            }
+
+            waterTempIcon.setImageResource(iconRes);
+            ImageViewCompat.setImageTintList(waterTempIcon, ColorStateList.valueOf(color));
+        } else {
+            waterTemp.setText("--");
         }
 
         waveCard.setReading(conditions.getWaveHeight());
