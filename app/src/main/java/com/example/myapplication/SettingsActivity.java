@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -80,6 +81,14 @@ public class SettingsActivity extends AppCompatActivity {
             AppCompatDelegate.setDefaultNightMode(isChecked
                 ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
         });
+
+        View contactRow = findViewById(R.id.contactDeveloperRow);
+        if (contactRow != null) {
+            contactRow.setOnClickListener(v -> {
+                Intent intent = new Intent(this, ContactDeveloperActivity.class);
+                startActivity(intent);
+            });
+        }
     }
 
     @Override

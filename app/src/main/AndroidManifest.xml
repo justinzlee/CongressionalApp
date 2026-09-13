@@ -41,6 +41,12 @@
             android:theme="@style/Theme.MyApplication" />
 
         <activity
+            android:name=".ContactDeveloperActivity"
+            android:exported="false"
+            android:label="@string/contact_developers_title"
+            android:theme="@style/Theme.MyApplication" />
+
+        <activity
             android:name=".AlertsActivity"
             android:exported="false"
             android:label="@string/tab_alerts"

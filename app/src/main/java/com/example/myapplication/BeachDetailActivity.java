@@ -396,13 +396,16 @@ public class BeachDetailActivity extends AppCompatActivity {
      * opposite case, which is why it outranks everything else here.
      */
     private void bindHeroPhoto() {
-        Drawable placeholder = BeachPlaceholder.forBeach(this, beach);
+        Drawable current = heroImage.getDrawable();
+        Drawable defaultPlaceholder = BeachPlaceholder.forBeach(this, beach);
+        Drawable placeholder = current != null ? current : defaultPlaceholder;
+
         Glide.with(this)
             .load(photoStore.imageSourceFor(beach))
             .centerCrop()
             .placeholder(placeholder)
-            .fallback(placeholder)
-            .error(placeholder)
+            .fallback(defaultPlaceholder)
+            .error(defaultPlaceholder)
             // The scrim exists to keep the verdict chip readable on a
             // photograph, so it only comes on once a photograph is actually
             // there. Over the drawn shoreline it just dims the drawing.
@@ -683,7 +686,7 @@ public class BeachDetailActivity extends AppCompatActivity {
         verdictText.setText(level != null ? level.getVerdictRes() : R.string.verdict_unknown);
         verdictText.setTextColor(color);
 
-        android.graphics.drawable.Drawable background = verdictChip.getBackground();
+        Drawable background = verdictChip.getBackground();
         if (background instanceof GradientDrawable) {
             int stroke = Math.round(getResources().getDisplayMetrics().density);
             ((GradientDrawable) background.mutate()).setStroke(stroke, color);
@@ -812,49 +815,118 @@ public class BeachDetailActivity extends AppCompatActivity {
             }));
     }
 
-    /** The three cards, each appearing only once its own reading has landed. */
-    private void bindAirWater() {
-        View section = findViewById(R.id.detailAirWaterSection);
-        section.setVisibility(
-            air == null && water == null && parking == null ? View.GONE : View.VISIBLE);
+    /** The cards, each appearing only once its own reading has landed. */
+    private void bindEnvironment() {
+        BeachConditions conditions = beach.getConditions();
+        boolean hasWaterTemp = conditions != null && conditions.getWaterTemperature() != null;
+
+        View section = findViewById(R.id.detailEnvironmentSection);
+        if (section != null) {
+            section.setVisibility(View.VISIBLE);
+        }
 
         View aqiCard = findViewById(R.id.detailAqiCard);
         if (air == null) {
-            aqiCard.setVisibility(View.GONE);
+            if (aqiCard != null) aqiCard.setVisibility(View.GONE);
         } else {
-            aqiCard.setVisibility(View.VISIBLE);
-            TextView value = findViewById(R.id.detailAqiValue);
-            value.setText(getString(R.string.aqi_value, air.getUsAqi()));
-            value.setTextColor(ContextCompat.getColor(this, air.getColorRes()));
-            ((TextView) findViewById(R.id.detailAqiBand)).setText(air.getLabelRes());
-            ((TextView) findViewById(R.id.detailAqiAdvice)).setText(air.getAdviceRes());
+            if (aqiCard != null) {
+                aqiCard.setVisibility(View.VISIBLE);
+                TextView value = findViewById(R.id.detailAqiValue);
+                value.setText(getString(R.string.aqi_value, air.getUsAqi()));
+                value.setTextColor(ContextCompat.getColor(this, air.getColorRes()));
+                ((TextView) findViewById(R.id.detailAqiBand)).setText(air.getLabelRes());
+                ((TextView) findViewById(R.id.detailAqiAdvice)).setText(air.getAdviceRes());
+            }
         }
 
         View waterCard = findViewById(R.id.detailWaterCard);
         if (water == null) {
-            waterCard.setVisibility(View.GONE);
+            if (waterCard != null) waterCard.setVisibility(View.GONE);
         } else {
-            waterCard.setVisibility(View.VISIBLE);
-            int color = ContextCompat.getColor(this, water.getStatus().colorRes);
-            TextView status = findViewById(R.id.detailWaterStatus);
-            status.setText(water.getStatus().labelRes);
-            status.setTextColor(color);
-            ImageViewCompat.setImageTintList(
-                findViewById(R.id.detailWaterIcon), ColorStateList.valueOf(color));
-            ((TextView) findViewById(R.id.detailWaterBody)).setText(water.getStatus().bodyRes);
+            if (waterCard != null) {
+                waterCard.setVisibility(View.VISIBLE);
+                int color = ContextCompat.getColor(this, water.getStatus().colorRes);
+                TextView status = findViewById(R.id.detailWaterStatus);
+                status.setText(water.getStatus().labelRes);
+                status.setTextColor(color);
+                ImageViewCompat.setImageTintList(
+                    findViewById(R.id.detailWaterIcon), ColorStateList.valueOf(color));
+                ((TextView) findViewById(R.id.detailWaterBody)).setText(water.getStatus().bodyRes);
+            }
+        }
+
+        View waterTempCard = findViewById(R.id.detailWaterTempCard);
+        if (!hasWaterTemp) {
+            if (waterTempCard != null) waterTempCard.setVisibility(View.GONE);
+        } else {
+            if (waterTempCard != null) {
+                waterTempCard.setVisibility(View.VISIBLE);
+                double wTemp = conditions.getWaterTemperature();
+                TextView val = findViewById(R.id.detailWaterTempValue);
+                if (val != null) {
+                    val.setText(UnitConverter.formatTemperature(this, wTemp));
+                }
+
+                TextView status = findViewById(R.id.detailWaterTempStatus);
+                TextView advice = findViewById(R.id.detailWaterTempAdvice);
+                ImageView icon = findViewById(R.id.detailWaterTempIcon);
+
+                int iconRes;
+                int colorRes;
+                int statusRes;
+                int adviceRes;
+
+                if (wTemp < 60) {
+                    iconRes = R.drawable.ic_thermometer_cold;
+                    colorRes = R.color.icon_wind;
+                    statusRes = R.string.water_temp_cold;
+                    adviceRes = R.string.water_temp_advice_cold;
+                } else if (wTemp < 72) {
+                    iconRes = R.drawable.ic_thermometer_warm;
+                    colorRes = R.color.icon_temp;
+                    statusRes = R.string.water_temp_cool;
+                    adviceRes = R.string.water_temp_advice_cool;
+                } else if (wTemp < 82) {
+                    iconRes = R.drawable.ic_thermometer_warm;
+                    colorRes = R.color.safe;
+                    statusRes = R.string.water_temp_warm;
+                    adviceRes = R.string.water_temp_advice_warm;
+                } else {
+                    iconRes = R.drawable.ic_thermometer_hot;
+                    colorRes = R.color.icon_temp;
+                    statusRes = R.string.water_temp_hot;
+                    adviceRes = R.string.water_temp_advice_hot;
+                }
+
+                if (status != null) {
+                    status.setText(statusRes);
+                    status.setTextColor(ContextCompat.getColor(this, colorRes));
+                }
+                if (advice != null) advice.setText(adviceRes);
+                if (icon != null) {
+                    icon.setImageResource(iconRes);
+                    ImageViewCompat.setImageTintList(icon, ColorStateList.valueOf(ContextCompat.getColor(this, colorRes)));
+                }
+            }
         }
 
         View parkingCard = findViewById(R.id.detailParkingCard);
         if (parking == null) {
-            parkingCard.setVisibility(View.GONE);
+            if (parkingCard != null) parkingCard.setVisibility(View.GONE);
         } else {
-            parkingCard.setVisibility(View.VISIBLE);
-            ((TextView) findViewById(R.id.detailParkingSummary))
-                .setText(parking.getSummaryRes());
-            ((TextView) findViewById(R.id.detailParkingDetail)).setText(
-                getString(R.string.parking_detail,
-                    parking.getLots(), parking.getStreetSide()));
+            if (parkingCard != null) {
+                parkingCard.setVisibility(View.VISIBLE);
+                ((TextView) findViewById(R.id.detailParkingSummary))
+                    .setText(parking.getSummaryRes());
+                ((TextView) findViewById(R.id.detailParkingDetail)).setText(
+                    getString(R.string.parking_detail,
+                        parking.getLots(), parking.getStreetSide()));
+            }
         }
+    }
+
+    private void bindAirWater() {
+        bindEnvironment();
     }
 
     /**
@@ -1025,5 +1097,6 @@ public class BeachDetailActivity extends AppCompatActivity {
             .setText(UnitConverter.formatVisibility(this, conditions.getVisibility()));
         ((TextView) findViewById(R.id.detailWindSpeed))
             .setText(UnitConverter.formatWindSpeed(this, conditions.getWindSpeed()));
+        bindAirWater();
     }
 }

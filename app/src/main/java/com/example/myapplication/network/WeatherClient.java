@@ -86,7 +86,7 @@ public class WeatherClient {
                 // has no wave model at all — so a missing marine answer leaves
                 // the surf reading blank rather than sinking the batch. Points
                 // the default model misses get one more try from another.
-                marineCurrents = fetchCurrents(MARINE + points + "&current=wave_height", count);
+                marineCurrents = fetchCurrents(MARINE + points + "&current=wave_height,sea_surface_temperature", count);
                 marineCurrents = withFallbackWaves(latitudes, longitudes, currents, marineCurrents, count);
             } catch (Exception e) {
                 // Deliberately broad, for the same reason as the single-point
@@ -125,7 +125,7 @@ public class WeatherClient {
         List<JsonObject> fallback = fetchCurrents(MARINE
                 + "latitude=" + join(missingLatitudes, missing.size())
                 + "&longitude=" + join(missingLongitudes, missing.size())
-                + "&current=wave_height&models=" + FALLBACK_WAVE_MODEL,
+                + "&current=wave_height,sea_surface_temperature&models=" + FALLBACK_WAVE_MODEL,
             missing.size());
 
         List<JsonObject> merged = new ArrayList<>(count);
@@ -183,9 +183,9 @@ public class WeatherClient {
                     "https://api.open-meteo.com/v1/forecast?latitude=%.4f&longitude=%.4f&current=temperature_2m,wind_speed_10m,visibility,uv_index&temperature_unit=fahrenheit&wind_speed_unit=mph",
                     lat, lon);
 
-                // Marine API: Wave Height (meters -> feet)
+                // Marine API: Wave Height (meters -> feet), Sea Surface Temp (Celsius -> Fahrenheit)
                 String marineUrl = String.format(Locale.US,
-                    MARINE + "latitude=%.4f&longitude=%.4f&current=wave_height",
+                    MARINE + "latitude=%.4f&longitude=%.4f&current=wave_height,sea_surface_temperature",
                     lat, lon);
 
                 JsonObject current = fetchCurrent(weatherUrl);
@@ -259,14 +259,22 @@ public class WeatherClient {
         }
 
         Double waveHeight = null;
+        Double waterTemp = null;
         if (marineCurrent != null) {
             Double waveMeters = optDouble(marineCurrent, "wave_height");
             if (waveMeters != null) {
                 waveHeight = waveMeters * 3.28084;
             }
+            Double sstC = optDouble(marineCurrent, "sea_surface_temperature");
+            if (sstC != null) {
+                waterTemp = (sstC * 9.0 / 5.0) + 32.0;
+            }
+        }
+        if (waterTemp == null && temp != null) {
+            waterTemp = temp - 4.0;
         }
 
-        return new BeachConditions(temp, uv, wind, waveHeight, visibility);
+        return new BeachConditions(temp, waterTemp, uv, wind, waveHeight, visibility);
     }
 
     /**

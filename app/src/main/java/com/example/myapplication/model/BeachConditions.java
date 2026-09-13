@@ -7,16 +7,17 @@ import androidx.annotation.ColorRes;
 import com.example.myapplication.R;
 
 public class BeachConditions {
-    private final Double airTemperature; // °F
+    private final Double airTemperature;   // °F
+    private final Double waterTemperature; // °F
     private final Integer uvIndex;
-    private final Double windSpeed;      // mph
-    private final Double waveHeight;     // feet
-    private final Double visibility;     // miles
+    private final Double windSpeed;        // mph
+    private final Double waveHeight;       // feet
+    private final Double visibility;       // miles
     private final long fetchedAtMillis;
 
     /** Readings that have just come in. */
     public BeachConditions(Double airTemperature, Integer uvIndex, Double windSpeed, Double waveHeight, Double visibility) {
-        this(airTemperature, uvIndex, windSpeed, waveHeight, visibility, System.currentTimeMillis());
+        this(airTemperature, null, uvIndex, windSpeed, waveHeight, visibility, System.currentTimeMillis());
     }
 
     /**
@@ -24,7 +25,16 @@ public class BeachConditions {
      *                        old they are instead of calling them current
      */
     public BeachConditions(Double airTemperature, Integer uvIndex, Double windSpeed, Double waveHeight, Double visibility, long fetchedAtMillis) {
+        this(airTemperature, null, uvIndex, windSpeed, waveHeight, visibility, fetchedAtMillis);
+    }
+
+    public BeachConditions(Double airTemperature, Double waterTemperature, Integer uvIndex, Double windSpeed, Double waveHeight, Double visibility) {
+        this(airTemperature, waterTemperature, uvIndex, windSpeed, waveHeight, visibility, System.currentTimeMillis());
+    }
+
+    public BeachConditions(Double airTemperature, Double waterTemperature, Integer uvIndex, Double windSpeed, Double waveHeight, Double visibility, long fetchedAtMillis) {
         this.airTemperature = airTemperature;
+        this.waterTemperature = waterTemperature;
         this.uvIndex = uvIndex;
         this.windSpeed = windSpeed;
         this.waveHeight = waveHeight;
@@ -33,6 +43,7 @@ public class BeachConditions {
     }
 
     public Double getAirTemperature() { return airTemperature; }
+    public Double getWaterTemperature() { return waterTemperature; }
     public Integer getUvIndex() { return uvIndex; }
     public Double getWindSpeed() { return windSpeed; }
     public Double getWaveHeight() { return waveHeight; }

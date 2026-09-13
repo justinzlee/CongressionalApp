@@ -21,6 +21,7 @@ import com.example.myapplication.model.SafetyLevel;
 import com.example.myapplication.util.BeachPlaceholder;
 import com.example.myapplication.util.UnitConverter;
 import java.util.List;
+import java.util.Objects;
 
 public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHolder> {
     public interface OnBeachClickListener {
@@ -77,13 +78,20 @@ public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHol
         if (photoStore == null) {
             photoStore = new BeachPhotoStore(row.getContext());
         }
-        Drawable placeholder = BeachPlaceholder.forBeach(row.getContext(), beach);
+
+        boolean isSameBeach = Objects.equals(holder.currentBeachId, beach.getId());
+        holder.currentBeachId = beach.getId();
+
+        Drawable currentDrawable = holder.beachImage.getDrawable();
+        Drawable defaultPlaceholder = BeachPlaceholder.forBeach(row.getContext(), beach);
+        Drawable placeholder = (isSameBeach && currentDrawable != null) ? currentDrawable : defaultPlaceholder;
+
         Glide.with(row.getContext())
             .load(photoStore.imageSourceFor(beach))
             .centerCrop()
             .placeholder(placeholder)
-            .fallback(placeholder)
-            .error(placeholder)
+            .fallback(defaultPlaceholder)
+            .error(defaultPlaceholder)
             .into(holder.beachImage);
 
         // Verdict drives the row's chip colour and its one-line summary.
@@ -144,6 +152,7 @@ public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHol
         public final TextView name, verdict, distance, surf;
         public final ImageView beachImage, levelIcon, guardedIcon;
         public final View levelChip;
+        public String currentBeachId;
 
         public BeachViewHolder(@NonNull View itemView) {
             super(itemView);

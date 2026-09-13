@@ -740,7 +740,8 @@
     <string name="activity_ranking_loading">Reading conditions at every beach…</string>
     <string name="activity_ranking_no_readings">Couldn\'t read conditions for any beach. Check your connection and come back.</string>
 
-    <!-- ══════ AIR ══════ -->
+    <!-- ══════ ENVIRONMENT ══════ -->
+    <string name="section_environment">Environment</string>
     <string name="section_air_water">Air and water</string>
     <string name="aqi_label">Air quality</string>
     <string name="aqi_value">AQI %1$d</string>
@@ -773,6 +774,17 @@
     <string name="water_rain_since">Last rain %1$s</string>
     <string name="water_rain_today">Rain today</string>
     <string name="water_rain_days">%1$d days ago</string>
+
+    <!-- ══════ WATER TEMPERATURE ══════ -->
+    <string name="water_temp_label">Water temperature</string>
+    <string name="water_temp_cold">Cold water</string>
+    <string name="water_temp_cool">Refreshing water</string>
+    <string name="water_temp_warm">Warm &amp; comfortable water</string>
+    <string name="water_temp_hot">Very warm water</string>
+    <string name="water_temp_advice_cold">Wetsuit recommended for extended swimming.</string>
+    <string name="water_temp_advice_cool">Brisk water temperature, great for quick dips.</string>
+    <string name="water_temp_advice_warm">Ideal water temperature for swimming and watersports.</string>
+    <string name="water_temp_advice_hot">Tropical ocean water temperature.</string>
 
     <!-- The hazards the air and water readings raise, in "What to watch for"
          and the Alerts tab -->
@@ -829,4 +841,25 @@
     <string name="map_you">You · %1$s</string>
     <string name="map_description">Map of %1$s</string>
     <string name="map_attribution">© Esri · © OpenStreetMap</string>
+
+    <!-- ══════ SUPPORT & CONTACT ══════ -->
+    <string name="support_section_title">Support &amp; Feedback</string>
+    <string name="contact_developers_title">Contact Developers</string>
+    <string name="contact_developers_subtitle">Email the app developer team with questions or feedback</string>
+    <string name="contact_intro_title">Contact the Developers</string>
+    <string name="contact_intro_body">Have feedback, a bug report, or a feature request? Send us an email and we\'ll get back to you!</string>
+    <string name="contact_email_address">leezacharyjustin@gmail.com</string>
+    <string name="contact_topic_label">Topic</string>
+    <string name="contact_topic_general">General</string>
+    <string name="contact_topic_bug">Bug Report</string>
+    <string name="contact_topic_feature">Feature Idea</string>
+    <string name="contact_topic_data">Beach Data</string>
+    <string name="contact_subject_label">Subject</string>
+    <string name="contact_subject_hint">Enter subject</string>
+    <string name="contact_message_label">Message</string>
+    <string name="contact_message_hint">Type your message here…</string>
+    <string name="contact_send_button">Send Email</string>
+    <string name="contact_chooser_title">Send email via…</string>
+    <string name="contact_no_email_app">No email app found. You can email us at leezacharyjustin@gmail.com</string>
+    <string name="contact_empty_message_error">Please write a message before sending.</string>
 </resources>
