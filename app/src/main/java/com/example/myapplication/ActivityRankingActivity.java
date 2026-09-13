@@ -5,21 +5,23 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.core.widget.ImageViewCompat;
 
-import com.example.myapplication.data.AlertScope;
 import com.example.myapplication.data.BeachRepository;
+import com.example.myapplication.data.LastKnownLocation;
 import com.example.myapplication.data.LiveReadings;
+import com.example.myapplication.data.RankingScope;
 import com.example.myapplication.data.RockRatingStore;
+import com.example.myapplication.location.LocationService;
 import com.example.myapplication.model.Activity;
 import com.example.myapplication.model.ActivityFit;
 import com.example.myapplication.model.ActivityScorer;
@@ -29,6 +31,7 @@ import com.example.myapplication.model.BeachConditions;
 import com.example.myapplication.model.ConditionHazards;
 import com.example.myapplication.model.Hazard;
 import com.example.myapplication.model.HelpType;
+import com.example.myapplication.model.ParkingSummary;
 import com.example.myapplication.model.Severity;
 import com.example.myapplication.model.WaterQuality;
 import com.example.myapplication.network.AirQualityClient;
@@ -40,10 +43,12 @@ import com.example.myapplication.util.EdgeToEdge;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
- * Beaches ranked by how well they suit one thing you might want to do.
+ * Every beach in range, ranked by how well it suits one thing you might want
+ * to do.
  *
  * <p>The readings are fetched once for every beach in scope and every activity
  * is then scored from them in memory, so switching between "where should I
@@ -52,20 +57,28 @@ import java.util.concurrent.atomic.AtomicInteger;
  * interesting thing about these four rankings is how differently they order the
  * same coast, and that is only visible if flipping between them is free.
  *
- * <p>Which beaches are in scope is {@link AlertScope}'s decision, the same one
- * the Alerts tab uses — the beaches near you plus the ones you saved. Ranking
- * every beach in the country would be a slower answer to a question nobody
- * asked.
+ * <p>Which beaches are in scope is {@link RankingScope}'s decision: the ones
+ * saved, plus the ones within fifty miles of where the phone is as this screen
+ * opens, or only the saved ones if the user has asked for that in More. All
+ * of them are listed, best first, rather than only the top few.
+ *
+ * <p>Every beach is scored from what its own screen scores it from, parking
+ * included, so the number beside a beach here is the number its page shows
+ * under "Good for today". Parking used to come only from a cache the beach
+ * screens fill, so a beach nobody had opened was ranked without it, and the
+ * order changed once somebody did.
  */
 public class ActivityRankingActivity extends AppCompatActivity {
 
     private static final String STATE_ACTIVITY = "activity";
 
     /**
-     * How many beaches are ranked. Well past what anyone scrolls, and low
-     * enough that the batched fetches stay to a couple of requests each.
+     * How long the list waits on parking before drawing without it. Parking
+     * comes from a free service that can take half a minute when it is busy,
+     * while the weather, air and water that carry most of every score are in
+     * within a second or two.
      */
-    private static final int MAX_RANKED = 40;
+    private static final long PARKING_WAIT_MS = 8_000;
 
     private final List<TextView> activityChips = new ArrayList<>();
     private Activity selected = Activity.SWIM;
@@ -74,7 +87,11 @@ public class ActivityRankingActivity extends AppCompatActivity {
     private BeachConditions[] conditions;
     private AirQuality[] air;
     private WaterQuality[] water;
+    private ParkingSummary[] parking;
 
+    private final Handler handler = new Handler(Looper.getMainLooper());
+    private boolean readingsIn;
+    private boolean parkingIn;
     private boolean loaded;
 
     public static Intent intentFor(Context context) {
@@ -97,13 +114,19 @@ public class ActivityRankingActivity extends AppCompatActivity {
 
         buildActivityChips();
         showActivity(selected);
-        fetchEverything();
+        locateThenFetch();
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(STATE_ACTIVITY, selected.name());
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        handler.removeCallbacksAndMessages(null);
     }
 
     private void buildActivityChips() {
@@ -155,32 +178,59 @@ public class ActivityRankingActivity extends AppCompatActivity {
 
     // ── Fetching ─────────────────────────────────────────────────────────
     //
-    // Three batched sources over the same list of points. Each one reports per
-    // point and then completes; the screen draws once all of them have, since a
-    // ranking that reorders itself twice while you are reading it is worse than
-    // one that takes a moment to appear.
+    // Where the phone is first, since that decides which beaches are asked
+    // about. Then four sources over the same list of points, each reporting per
+    // point and then completing. The screen draws once all of them have, since
+    // a ranking that reorders itself while you are reading it is worse than
+    // one that takes a moment to appear — except that parking only gets
+    // PARKING_WAIT_MS past the rest before the list is drawn without it.
 
-    private void fetchEverything() {
-        beaches = AlertScope.inScope(this, BeachRepository.getInstance().getBeaches());
-        if (beaches.size() > MAX_RANKED) {
-            beaches = new ArrayList<>(beaches.subList(0, MAX_RANKED));
-        }
+    /**
+     * A fresh fix rather than the one the home screen last stored, since a
+     * trip since then changes which beaches are within range. The stored one
+     * is only the fallback when the phone cannot give a fresh one, and with
+     * neither, only saved beaches are ranked.
+     */
+    private void locateThenFetch() {
+        new LocationService(this).getCurrentLocation(new LocationService.LocationUpdateListener() {
+            @Override
+            public void onLocationUpdated(double latitude, double longitude) {
+                if (isFinishing() || isDestroyed()) return;
+                new LastKnownLocation(ActivityRankingActivity.this).remember(latitude, longitude);
+                fetchEverything(latitude, longitude);
+            }
+
+            @Override
+            public void onLocationError(String error) {
+                if (isFinishing() || isDestroyed()) return;
+                LastKnownLocation last = new LastKnownLocation(ActivityRankingActivity.this);
+                fetchEverything(last.isKnown() ? last.getLatitude() : null,
+                    last.isKnown() ? last.getLongitude() : null);
+            }
+        });
+    }
+
+    private void fetchEverything(@Nullable Double latitude, @Nullable Double longitude) {
+        beaches = RankingScope.inScope(this, BeachRepository.getInstance().getBeaches(),
+            latitude, longitude);
         int count = beaches.size();
         conditions = new BeachConditions[count];
         air = new AirQuality[count];
         water = new WaterQuality[count];
+        parking = new ParkingSummary[count];
 
         if (count == 0) {
-            loaded = true;
-            bindRanking();
+            show();
             return;
         }
 
         double[] latitudes = new double[count];
         double[] longitudes = new double[count];
+        List<String> ids = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
             latitudes[i] = beaches.get(i).getLatitude();
             longitudes[i] = beaches.get(i).getLongitude();
+            ids.add(beaches.get(i).getId());
         }
 
         int chunks = (count + WeatherClient.BATCH_SIZE - 1) / WeatherClient.BATCH_SIZE;
@@ -201,6 +251,12 @@ public class ActivityRankingActivity extends AppCompatActivity {
                 @Override
                 public void onPoint(int index, BeachConditions c) {
                     conditions[offset + index] = c;
+                    // Handed back to the shared list, as the beach screen does,
+                    // so a beach opened from here starts on the same reading.
+                    if (c != null) {
+                        BeachRepository.getInstance()
+                            .updateConditions(beaches.get(offset + index).getId(), c);
+                    }
                 }
 
                 @Override
@@ -237,15 +293,48 @@ public class ActivityRankingActivity extends AppCompatActivity {
                 }
             });
         }
+
+        new ParkingClient(this).getParking(ids, latitudes, longitudes,
+            new ParkingClient.BatchCallback() {
+                @Override
+                public void onPoint(int index, @Nullable ParkingSummary p) {
+                    parking[index] = p;
+                }
+
+                @Override
+                public void onComplete() {
+                    runOnUiThread(() -> {
+                        parkingIn = true;
+                        if (readingsIn) show();
+                    });
+                }
+            });
     }
 
+    /** Counts down the weather, air and water; parking reports on its own. */
     private void settle(AtomicInteger outstanding) {
         if (outstanding.decrementAndGet() > 0) return;
         runOnUiThread(() -> {
-            if (isFinishing() || isDestroyed()) return;
-            loaded = true;
-            bindRanking();
+            readingsIn = true;
+            if (parkingIn) {
+                show();
+            } else {
+                handler.postDelayed(() -> {
+                    if (!loaded) show();
+                }, PARKING_WAIT_MS);
+            }
         });
+    }
+
+    /**
+     * Draws the ranking. Runs once the readings are in, and again if parking
+     * turns up after the list was drawn without it: a late reorder is a smaller
+     * fault than a score that disagrees with the beach's own page.
+     */
+    private void show() {
+        if (isFinishing() || isDestroyed()) return;
+        loaded = true;
+        bindRanking();
     }
 
     private static double[] slice(double[] values, int start, int end) {
@@ -268,7 +357,8 @@ public class ActivityRankingActivity extends AppCompatActivity {
         }
         if (beaches.isEmpty()) {
             status.setVisibility(View.VISIBLE);
-            status.setText(R.string.activity_ranking_empty);
+            status.setText(RankingScope.savedOnly(this)
+                ? R.string.activity_ranking_empty_saved : R.string.activity_ranking_empty);
             return;
         }
 
@@ -283,9 +373,8 @@ public class ActivityRankingActivity extends AppCompatActivity {
             return;
         }
 
-        status.setText(getString(R.string.activity_ranking_heading,
-            String.valueOf(ranked.size()), getString(selected.getLabelRes()).toLowerCase(
-                java.util.Locale.getDefault())));
+        status.setText(getString(R.string.activity_ranking_heading, String.valueOf(ranked.size()),
+            getString(selected.getLabelRes()).toLowerCase(Locale.getDefault())));
 
         LayoutInflater inflater = LayoutInflater.from(this);
         for (int i = 0; i < ranked.size(); i++) {
@@ -303,7 +392,6 @@ public class ActivityRankingActivity extends AppCompatActivity {
      */
     private List<ActivityFit> rank() {
         RockRatingStore rocks = new RockRatingStore(this);
-        ParkingClient parkingClient = new ParkingClient(this);
 
         List<ActivityFit> fits = new ArrayList<>();
         for (int i = 0; i < beaches.size(); i++) {
@@ -314,7 +402,7 @@ public class ActivityRankingActivity extends AppCompatActivity {
             in.conditions = conditions[i];
             in.air = air[i];
             in.water = water[i];
-            in.parking = parkingClient.cached(beach.getId());
+            in.parking = parking[i];
             in.rockRating = rocks.ratingFor(beach.getId());
             in.guarded = guardedState(beach);
             in.worstHazard = worstHazard(beach);

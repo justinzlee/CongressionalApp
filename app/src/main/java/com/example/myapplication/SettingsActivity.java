@@ -16,6 +16,7 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String KEY_USE_METRIC = "use_metric";
     public static final String KEY_DARK_MODE = "dark_mode";
     public static final String KEY_ALERTS_SAVED_ONLY = "alerts_saved_only";
+    public static final String KEY_RANKING_SAVED_ONLY = "ranking_saved_only";
 
     /**
      * Puts the app in whichever appearance the user last picked, and leaves it
@@ -71,6 +72,14 @@ public class SettingsActivity extends AppCompatActivity {
             // re-counted here rather than waiting for that tab to be opened.
             TabBar.refreshAlertBadge(this);
         });
+
+        // The same narrowing for "Best beach for…", kept apart from the Alerts
+        // one: wanting fewer warnings says nothing about where you would go for
+        // a swim.
+        MaterialSwitch savedRankingSwitch = findViewById(R.id.savedRankingSwitch);
+        savedRankingSwitch.setChecked(prefs.getBoolean(KEY_RANKING_SAVED_ONLY, false));
+        bindRow(findViewById(R.id.savedRankingRow), savedRankingSwitch, isChecked ->
+            prefs.edit().putBoolean(KEY_RANKING_SAVED_ONLY, isChecked).apply());
 
         MaterialSwitch darkModeSwitch = findViewById(R.id.darkModeSwitch);
         // With no choice stored we are following the system, so the switch

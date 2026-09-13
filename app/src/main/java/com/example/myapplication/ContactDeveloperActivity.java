@@ -64,10 +64,21 @@ public class ContactDeveloperActivity extends AppCompatActivity {
         paintTopicCard(topicFeatureView, index == 2);
         paintTopicCard(topicDataView, index == 3);
 
-        subjectInput.setText(topicTitle);
-        subjectInput.setEnabled(false);
-        subjectInput.setFocusable(false);
-        subjectInput.setFocusableInTouchMode(false);
+        // The topic fills the subject in as a starting point; the field stays
+        // open to type over, and a subject somebody has written themselves is
+        // left alone rather than replaced by a topic name.
+        if (subjectIsTopicOrEmpty()) {
+            subjectInput.setText(topicTitle);
+        }
+    }
+
+    private boolean subjectIsTopicOrEmpty() {
+        String subject = subjectInput.getText() != null ? subjectInput.getText().toString().trim() : "";
+        return subject.isEmpty()
+            || subject.equals(getString(R.string.contact_topic_general))
+            || subject.equals(getString(R.string.contact_topic_bug))
+            || subject.equals(getString(R.string.contact_topic_feature))
+            || subject.equals(getString(R.string.contact_topic_data));
     }
 
     private void paintTopicCard(TextView card, boolean selected) {

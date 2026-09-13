@@ -64,6 +64,14 @@ public class MainActivity extends AppCompatActivity {
      */
     private static final int MAX_LISTED_BEACHES = 60;
 
+    /**
+     * How far the phone has to move before a new fix is worth acting on:
+     * about fifty metres, under half the smallest step a distance is shown in
+     * (a tenth of a kilometre), and well over the few metres a phone lying
+     * still wanders by. See {@link #onRealFix}.
+     */
+    private static final double REFIX_MILES = 0.03;
+
     private BeachRepository repository;
     private LocationService locationService;
     private BeachAdapter adapter;
@@ -261,6 +269,12 @@ public class MainActivity extends AppCompatActivity {
         radiusToggleGroup.check(R.id.radiusAll);
         shouldScrollToTop = true;
         Toast.makeText(this, "Using real-time location", Toast.LENGTH_SHORT).show();
+        // Back to the fix already in hand straight away: the next one may be
+        // too close to it to count as news (see onRealFix), which would leave
+        // the list sorted around the searched city.
+        if (hasRealLocation) {
+            updateUserLocation(realLat, realLon);
+        }
         requestLocation();
     }
 
@@ -394,6 +408,15 @@ public class MainActivity extends AppCompatActivity {
      * alert range that were not in it a moment ago.
      */
     private void onRealFix(double latitude, double longitude) {
+        // The provider reports every second or two whether or not the phone
+        // has moved, and each report used to rebuild the whole list, which
+        // reloaded every row's photo and flashed it to the drawn placeholder
+        // and back. A fix too close to the last one to change any distance on
+        // screen has nothing new for the list, the badge or the stored position.
+        if (hasRealLocation && UnitConverter.calculateDistance(
+                realLat, realLon, latitude, longitude) < REFIX_MILES) {
+            return;
+        }
         realLat = latitude;
         realLon = longitude;
         hasRealLocation = true;

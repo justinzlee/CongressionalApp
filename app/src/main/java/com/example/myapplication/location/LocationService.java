@@ -7,6 +7,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import com.google.android.gms.location.CurrentLocationRequest;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -53,6 +54,38 @@ public class LocationService {
                 listener.onLocationUpdated(location.getLatitude(), location.getLongitude());
             } else {
                 listener.onLocationError("Last location unknown");
+            }
+        }).addOnFailureListener(e -> listener.onLocationError(e.getMessage()));
+    }
+
+    /**
+     * Where the phone is now, for a screen that needs one answer rather than a
+     * stream. A position the provider already holds is taken if it is under a
+     * minute old; otherwise it gets a fresh fix, giving up after ten seconds.
+     * A failure is reported as an error rather than as an old position.
+     */
+    public void getCurrentLocation(LocationUpdateListener listener) {
+        boolean hasFine = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        boolean hasCoarse = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+        if (!hasFine && !hasCoarse) {
+            listener.onLocationError("Permission not granted");
+            return;
+        }
+        if (!isLocationEnabled()) {
+            listener.onLocationError("Location services are turned off");
+            return;
+        }
+
+        CurrentLocationRequest request = new CurrentLocationRequest.Builder()
+                .setPriority(Priority.PRIORITY_BALANCED_POWER_ACCURACY)
+                .setMaxUpdateAgeMillis(60_000)
+                .setDurationMillis(10_000)
+                .build();
+        fusedLocationClient.getCurrentLocation(request, null).addOnSuccessListener(location -> {
+            if (location != null) {
+                listener.onLocationUpdated(location.getLatitude(), location.getLongitude());
+            } else {
+                listener.onLocationError("Current location unknown");
             }
         }).addOnFailureListener(e -> listener.onLocationError(e.getMessage()));
     }

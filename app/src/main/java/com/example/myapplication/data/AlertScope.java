@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
 
 import com.example.myapplication.SettingsActivity;
 import com.example.myapplication.model.Beach;
@@ -74,10 +73,12 @@ public final class AlertScope {
      * granted location has not thereby asked to hear about every coast in the
      * country. The Alerts screen says as much rather than just looking empty.
      *
+     * <p>{@link RankingScope} applies the same rule to "Best beach for…", with
+     * its own saved-only setting.
+     *
      * @param savedOnly when true, distance is ignored and only saved beaches
      *                  count, however near the user happens to be to others.
      */
-    @VisibleForTesting
     static List<Beach> filter(List<Beach> beaches, Set<String> savedIds, boolean savedOnly,
                               @Nullable Double latitude, @Nullable Double longitude) {
         if (beaches == null || beaches.isEmpty()) return Collections.emptyList();

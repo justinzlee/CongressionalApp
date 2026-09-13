@@ -13,7 +13,12 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -44,8 +49,23 @@ public class ParkingClient {
     private static final String KEY_PREFIX = "parking_";
     private static final String KEY_AT_SUFFIX = "_at";
 
+    /** What every query starts with, one beach or several. */
+    private static final String HEADER = "[out:json][timeout:25];";
+
     public interface Callback {
         void onResult(@Nullable ParkingSummary parking);
+    }
+
+    /** Reports a batched lookup one beach at a time, then once when it is done. */
+    public interface BatchCallback {
+        /**
+         * @param index   the beach's position in the list that was passed in
+         * @param parking its parking, or null where it could not be found out
+         */
+        void onPoint(int index, @Nullable ParkingSummary parking);
+
+        /** Called once, after every beach has been reported. */
+        void onComplete();
     }
 
     private final SharedPreferences prefs;
@@ -87,23 +107,63 @@ public class ParkingClient {
     }
 
     /**
-     * What is already known about this beach's parking, without asking
-     * Overpass.
+     * The parking around several beaches at once, for the ranking screen:
+     * whatever the cache holds, plus one Overpass query covering every beach
+     * it does not.
      *
-     * <p>For the ranking screen, which scores thirty beaches at once. Thirty
-     * Overpass queries to fill in one factor would be slow for the user and an
-     * abuse of a free volunteer-run service, so the ranking uses whatever the
-     * cache happens to hold and leaves parking out of the blend for the rest —
-     * {@link com.example.myapplication.model.ActivityScorer} drops absent
-     * factors rather than scoring them zero, so a beach nobody has opened yet
-     * is not punished for it.
+     * <p>The ranking has to score a beach on the parking its own screen shows,
+     * or the two disagree — which is what happened while it only read the
+     * cache, and a beach nobody had opened was ranked with no parking at all.
+     * One query rather than one per beach, because a dozen queries to a free
+     * volunteer-run service is slow for the user and rude to the service. It
+     * asks exactly what {@link #query} asks, beach after beach, with a marker
+     * before each, so every beach's share of the answer is the answer it would
+     * have had alone.
      *
-     * <p>Which means the rankings quietly sharpen as somebody uses the app:
-     * every beach screen opened fills one more entry in here.
+     * <p>Cached beaches are reported straight away on the calling thread; the
+     * rest, and the completion, on a background thread.
      */
-    @Nullable
-    public ParkingSummary cached(String beachId) {
-        return readCache(beachId);
+    public void getParking(List<String> beachIds, double[] lats, double[] lons,
+                           BatchCallback callback) {
+        List<Integer> missing = new ArrayList<>();
+        for (int i = 0; i < beachIds.size(); i++) {
+            ParkingSummary cached = readCache(beachIds.get(i));
+            if (cached != null) {
+                callback.onPoint(i, cached);
+            } else {
+                missing.add(i);
+            }
+        }
+        if (missing.isEmpty()) {
+            callback.onComplete();
+            return;
+        }
+
+        Http.IO.execute(() -> {
+            Map<String, ParkingSummary> found = Collections.emptyMap();
+            try {
+                StringBuilder query = new StringBuilder(HEADER);
+                for (int i : missing) {
+                    query.append(marker(beachIds.get(i))).append(around(lats[i], lons[i]));
+                }
+                String body = Overpass.fetch(query.toString());
+                if (body != null) found = parseBatch(body);
+            } catch (Exception e) {
+                // As for a single beach: parking is optional to every score,
+                // so a failure leaves it out rather than holding up the list.
+            }
+            for (int i : missing) {
+                ParkingSummary parking = found.get(beachIds.get(i));
+                if (parking != null) writeCache(beachIds.get(i), parking);
+                callback.onPoint(i, parking);
+            }
+            callback.onComplete();
+        });
+    }
+
+    @VisibleForTesting
+    static String query(double lat, double lon) {
+        return HEADER + around(lat, lon);
     }
 
     /**
@@ -111,15 +171,94 @@ public class ParkingClient {
      * areas, plus street-side parking, which is what actually fills up first at
      * a beach and is tagged separately.
      */
-    @VisibleForTesting
-    static String query(double lat, double lon) {
+    private static String around(double lat, double lon) {
         return String.format(Locale.US,
-            "[out:json][timeout:25];("
-                + "node[\"amenity\"=\"parking\"](around:%d,%.5f,%.5f);"
+            "(node[\"amenity\"=\"parking\"](around:%d,%.5f,%.5f);"
                 + "way[\"amenity\"=\"parking\"](around:%d,%.5f,%.5f);"
                 + ");out tags center 80;",
             ParkingSummary.SEARCH_RADIUS_M, lat, lon,
             ParkingSummary.SEARCH_RADIUS_M, lat, lon);
+    }
+
+    /** A made-up element announcing whose parking follows, in a batched query. */
+    private static String marker(String beachId) {
+        return "make marker beach=\"" + beachId + "\";out;";
+    }
+
+    @VisibleForTesting
+    @Nullable
+    static ParkingSummary parse(String body) {
+        JsonArray elements = elementsOf(rootOf(body));
+        return elements == null ? null : summarize(elements);
+    }
+
+    /**
+     * Splits a batched answer at its markers into one summary per beach id.
+     *
+     * <p>A beach whose marker is missing is left out rather than reported as
+     * having no parking, and so is every beach when Overpass says it ran out of
+     * time or memory part way: an answer cut short would count too few car
+     * parks, and be cached for a month.
+     */
+    @VisibleForTesting
+    static Map<String, ParkingSummary> parseBatch(String body) {
+        Map<String, ParkingSummary> found = new HashMap<>();
+        JsonObject root = rootOf(body);
+        JsonArray elements = elementsOf(root);
+        if (elements == null || isCutShort(root)) return found;
+
+        String beach = null;
+        JsonArray share = null;
+        for (JsonElement element : elements) {
+            String marked = markedBeach(element);
+            if (marked != null) {
+                if (beach != null) found.put(beach, summarize(share));
+                beach = marked;
+                share = new JsonArray();
+            } else if (share != null) {
+                share.add(element);
+            }
+        }
+        if (beach != null) found.put(beach, summarize(share));
+        return found;
+    }
+
+    @Nullable
+    private static JsonObject rootOf(String body) {
+        JsonElement parsed;
+        try {
+            parsed = JsonParser.parseString(body);
+        } catch (RuntimeException e) {
+            return null;
+        }
+        return parsed != null && parsed.isJsonObject() ? parsed.getAsJsonObject() : null;
+    }
+
+    @Nullable
+    private static JsonArray elementsOf(@Nullable JsonObject root) {
+        if (root == null) return null;
+        JsonElement elements = root.get("elements");
+        return elements != null && elements.isJsonArray() ? elements.getAsJsonArray() : null;
+    }
+
+    /** Overpass reports a query it had to abandon in a "remark", not a status code. */
+    private static boolean isCutShort(JsonObject root) {
+        JsonElement remark = root.get("remark");
+        return remark != null && remark.isJsonPrimitive()
+            && remark.getAsString().contains("runtime error");
+    }
+
+    /** The beach id a marker element announces, or null for anything else. */
+    @Nullable
+    private static String markedBeach(JsonElement element) {
+        if (element == null || !element.isJsonObject()) return null;
+        JsonObject object = element.getAsJsonObject();
+        JsonElement type = object.get("type");
+        if (type == null || !type.isJsonPrimitive() || !"marker".equals(type.getAsString())) {
+            return null;
+        }
+        JsonElement tags = object.get("tags");
+        return tags != null && tags.isJsonObject() ? string(tags.getAsJsonObject(), "beach") : null;
     }
 
     /**
@@ -131,22 +270,10 @@ public class ParkingClient {
      * usable, which is how OpenStreetMap's own consumers read an absent
      * {@code access} — most public lots simply never get tagged.
      */
-    @VisibleForTesting
-    @Nullable
-    static ParkingSummary parse(String body) {
-        JsonElement parsed;
-        try {
-            parsed = JsonParser.parseString(body);
-        } catch (RuntimeException e) {
-            return null;
-        }
-        if (parsed == null || !parsed.isJsonObject()) return null;
-        JsonElement elements = parsed.getAsJsonObject().get("elements");
-        if (elements == null || !elements.isJsonArray()) return null;
-
+    private static ParkingSummary summarize(JsonArray elements) {
         int lots = 0, free = 0, paid = 0, capacity = 0, street = 0;
 
-        for (JsonElement element : elements.getAsJsonArray()) {
+        for (JsonElement element : elements) {
             if (element == null || !element.isJsonObject()) continue;
             JsonElement tagsElement = element.getAsJsonObject().get("tags");
             JsonObject tags = tagsElement != null && tagsElement.isJsonObject()

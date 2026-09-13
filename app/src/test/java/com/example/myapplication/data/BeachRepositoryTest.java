@@ -139,6 +139,53 @@ public class BeachRepositoryTest {
     }
 
     /**
+     * A photo belongs to the one beach it was given to. The same stock pictures
+     * used to be dealt round the whole list, so a dozen beaches on three coasts
+     * showed the same shoreline; a beach with no photo of its own shows the
+     * drawn one instead. Compared without the query string, which only sizes
+     * the image.
+     */
+    @Test
+    public void noTwoBeachesShareAPhoto() {
+        Set<String> seen = new HashSet<>();
+        for (Beach beach : BeachRepository.newForTesting().getBeaches()) {
+            String url = beach.getImageUrl();
+            if (url == null) continue;
+            String photo = url.split("\\?")[0];
+            assertTrue(beach.getName() + " repeats a photo another beach already shows: " + photo,
+                seen.add(photo));
+        }
+    }
+
+    /**
+     * The beaches whose photo has been checked to be of that beach: geotagged
+     * on the sand on Wikimedia Commons, or showing a landmark nowhere else has
+     * (Scripps Pier, the Hotel del Coronado, Haystack Rock). Every other beach
+     * shows the drawn shoreline. The stock photos that used to fill the list
+     * turned out to be the Maldives, Yosemite and a mosque in Malaysia, so a
+     * photo added without that check fails here until it has had one.
+     */
+    private static final Set<String> CHECKED_PHOTOS = new HashSet<>(Arrays.asList(
+        "CA1", "CA2", "CA3", "CA4", "CA5", "LA2", "LA3", "FL1", "FL2", "FL4", "NY1", "TX1", "TX2", "OR1",
+        "CA6", "CA8", "CA9", "CA10", "CA11", "LA5", "LA6", "LA7", "LA8", "LA9", "LA10",
+        "CC1", "CC2", "CC3", "CC5", "SF1", "SF2", "SF3", "OR2", "OR3", "OR4",
+        "WA1", "WA2", "WA3", "WA4", "HI1", "HI2", "HI3", "HI4", "HI5", "HI6",
+        "LOU1", "MS1", "FL3", "FL8", "FL9", "FL10", "FL11", "FL5", "FL6", "FL7", "FL12", "FL13",
+        "SC1", "SC2", "NC1", "NC3", "MD1", "DE1", "DE2", "NJ1", "NJ4", "NJ5", "NY3", "NY4",
+        "RI1", "RI2", "MA1", "ME1", "ME2", "ME3", "MI1", "MI2", "WI1", "OH1", "PR1", "PR2"));
+
+    @Test
+    public void onlyCheckedPhotosAreShown() {
+        for (Beach beach : BeachRepository.newForTesting().getBeaches()) {
+            boolean hasPhoto = beach.getImageUrl() != null;
+            assertEquals(beach.getName() + (hasPhoto
+                    ? " has a photo nobody has checked is of it: " + beach.getImageUrl()
+                    : " is listed as checked but has no photo"),
+                CHECKED_PHOTOS.contains(beach.getId()), hasPhoto);
+        }
+    }
+
+    /**
      * The dataset used to be Southern California with three other states for
      * company. It reaches every coast now, so this pins one beach in each
      * region that had none: if a region is dropped, the app quietly stops

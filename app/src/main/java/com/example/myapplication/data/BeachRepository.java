@@ -80,8 +80,13 @@ public class BeachRepository {
 
         // Conditions start null so the live fetch is what fills them.
         //
-        // Photos are curated high-resolution real beach images, each verified to return
-        // HTTP 200 OK and load reliably without rate limiting across all devices.
+        // A beach only gets a photo once it has been checked to be of that beach:
+        // geotagged on the sand on Wikimedia Commons, or showing a landmark
+        // nowhere else has. The stock photos once dealt round this list turned
+        // out to be the Maldives, Yosemite and a mosque in Malaysia, and a
+        // picture of somewhere else under a beach's name misleads the one
+        // judgement this app exists for. Every other beach shows the drawn
+        // shoreline, and no photo is used for two beaches.
         //
         // The last argument is the NOAA station each beach's tides are read
         // from. It is deliberately not always the nearest one: the nearest is
@@ -116,27 +121,26 @@ public class BeachRepository {
             "9410230"));
 
         beaches.add(new Beach("LA1", "Santa Monica Pier", 34.0099, -118.4960, null, null, null,
-            "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Santa_monica_pier_entrance_evening.jpg/1280px-Santa_monica_pier_entrance_evening.jpg",
-            "9410840"));
+            null, "9410840"));
         beaches.add(new Beach("LA2", "Huntington Beach", 33.6557, -118.0043, null, null, null,
-            "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop&q=80",
+            "https://upload.wikimedia.org/wikipedia/commons/2/2a/Huntington_Beach_%288256933262%29.jpg",
             "9410583"));
         beaches.add(new Beach("LA3", "Malibu Lagoon", 34.0322, -118.6775, null, null, null,
-            "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&auto=format&fit=crop&q=80",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Malibu_Lagoon_-_panoramio.jpg/1280px-Malibu_Lagoon_-_panoramio.jpg",
             "9410840"));
         beaches.add(new Beach("LA4", "Venice Beach", 33.9850, -118.4695, null, null, null,
-            "https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=800&auto=format&fit=crop&q=80",
-            "9410840"));
+            null, "9410840"));
 
         beaches.add(new Beach("FL1", "South Beach", 25.7826, -80.1285,
             null,
             null,
             Collections.singletonList(new HelpLocation("Miami Beach Ocean Rescue", HelpType.LIFEGUARD_TOWER, 25.7803, -80.1302)),
-            "https://images.unsplash.com/photo-1471922694854-ff1b63b20054?w=800&auto=format&fit=crop&q=80",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/8/88/Lifeguards_stand_South_Beach_2.jpg/1280px-Lifeguards_stand_South_Beach_2.jpg",
             "8723170"));
 
         beaches.add(new Beach("FL2", "Haulover Beach", 25.9035, -80.1213, null, null, null,
-            "https://images.unsplash.com/photo-1473116763249-2faaef81ccda?w=800&auto=format&fit=crop&q=80", "8723080"));
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/Miami-Dade_County%2C_FL%2C_USA_-_panoramio_%288%29.jpg/1280px-Miami-Dade_County%2C_FL%2C_USA_-_panoramio_%288%29.jpg",
+            "8723080"));
         beaches.add(new Beach("FL4", "Clearwater Beach", 27.9765, -82.8318, null, null, null,
             "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cf/Clearwater_Beach_%2854357452307%29.jpg/1280px-Clearwater_Beach_%2854357452307%29.jpg",
             "8726724"));
@@ -144,153 +148,152 @@ public class BeachRepository {
             "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Rockaway_Beach_Queens.JPG/1280px-Rockaway_Beach_Queens.JPG",
             "8516881"));
         beaches.add(new Beach("NY2", "Jones Beach State Park", 40.5909, -73.5121, null, null, null,
-            "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?w=800&auto=format&fit=crop&q=80",
-            "8516385"));
+            null, "8516385"));
         beaches.add(new Beach("TX1", "Galveston Island", 29.2876, -94.7906, null, null, null,
-            "https://images.unsplash.com/photo-1504681869696-d977211a5f4c?w=800&auto=format&fit=crop&q=80",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Galveston_Island_Historic_Pleasure_Pier_-_Texas_Gulf_Coast_%2854182554969%29.jpg/1280px-Galveston_Island_Historic_Pleasure_Pier_-_Texas_Gulf_Coast_%2854182554969%29.jpg",
             "8771510"));
         beaches.add(new Beach("TX2", "South Padre Island", 26.1118, -97.1681, null, null, null,
-            "https://images.unsplash.com/photo-1509233725247-49e657c54213?w=800&auto=format&fit=crop&q=80",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/d/da/South_Padre_Island_beach_view_from_condo.jpg/1280px-South_Padre_Island_beach_view_from_condo.jpg",
             "8779750"));
         beaches.add(new Beach("OR1", "Cannon Beach", 45.8918, -123.9615, null, null, null,
             "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Haystack_Rock%2C_Oregon_%28drone_photograph%29.jpg/1280px-Haystack_Rock%2C_Oregon_%28drone_photograph%29.jpg",
             "9437585"));
 
         // San Diego County
-        add("CA6", "Pacific Beach", 32.7970, -117.2560, "https://images.unsplash.com/photo-1437719417032-8595fd9e9dc6?w=800&auto=format&fit=crop&q=80", "9410230");
-        add("CA7", "Mission Beach", 32.7708, -117.2520, "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&auto=format&fit=crop&q=80", "9410230");
-        add("CA8", "Del Mar City Beach", 32.9595, -117.2673, "https://images.unsplash.com/photo-1515238152791-8216bfdf89a7?w=800&auto=format&fit=crop&q=80", "9410230");
-        add("CA9", "Torrey Pines State Beach", 32.9337, -117.2590, "https://images.unsplash.com/photo-1501426026826-31c667bdf23d?w=800&auto=format&fit=crop&q=80", "9410230");
-        add("CA10", "Imperial Beach", 32.5793, -117.1350, "https://images.unsplash.com/photo-1468413253725-0d5181091126?w=800&auto=format&fit=crop&q=80", "9410120");
-        add("CA11", "Oceanside Beach", 33.1928, -117.3861, "https://images.unsplash.com/photo-1476673160081-cf065607f449?w=800&auto=format&fit=crop&q=80", "TWC0419");
+        add("CA6", "Pacific Beach", 32.7970, -117.2560, "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/San_Diego_coastline%2C_California%2C_USA26.jpg/1280px-San_Diego_coastline%2C_California%2C_USA26.jpg", "9410230");
+        add("CA7", "Mission Beach", 32.7708, -117.2520, "9410230");
+        add("CA8", "Del Mar City Beach", 32.9595, -117.2673, "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Del_Mar%2C_CA_-_panoramio_%281%29.jpg/1280px-Del_Mar%2C_CA_-_panoramio_%281%29.jpg", "9410230");
+        add("CA9", "Torrey Pines State Beach", 32.9337, -117.2590, "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Torrey_Pines_Sunset_%2816018375041%29.jpg/1280px-Torrey_Pines_Sunset_%2816018375041%29.jpg", "9410230");
+        add("CA10", "Imperial Beach", 32.5793, -117.1350, "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Imperial_Beach%2C_CA%2C_USA_-_panoramio_%2829%29.jpg/1280px-Imperial_Beach%2C_CA%2C_USA_-_panoramio_%2829%29.jpg", "9410120");
+        add("CA11", "Oceanside Beach", 33.1928, -117.3861, "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Oceanside%2C_California_Beach.jpg/1280px-Oceanside%2C_California_Beach.jpg", "TWC0419");
 
         // Los Angeles and Orange County
-        add("LA5", "Newport Beach", 33.6076, -117.9290, "https://images.unsplash.com/photo-1512100356356-de1b84283e18?w=800&auto=format&fit=crop&q=80", "9410583");
-        add("LA6", "Laguna Main Beach", 33.5427, -117.7854, "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=800&auto=format&fit=crop&q=80", "9410580");
-        add("LA7", "Zuma Beach", 34.0158, -118.8210, "https://images.unsplash.com/photo-1538964173425-93884d739596?w=800&auto=format&fit=crop&q=80", "TWC0445");
-        add("LA8", "Manhattan Beach", 33.8847, -118.4109, "https://images.unsplash.com/photo-1506477331477-33d5d8b3dc85?w=800&auto=format&fit=crop&q=80", "9410777");
-        add("LA9", "Redondo Beach", 33.8130, -118.3930, "https://images.unsplash.com/photo-1470240731273-7821a6eeb6bd?w=800&auto=format&fit=crop&q=80", "9410738");
-        add("LA10", "Seal Beach", 33.7414, -118.1050, "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=800&auto=format&fit=crop&q=80", "9410678");
+        add("LA5", "Newport Beach", 33.6076, -117.9290, "https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Near_Tower_20_and_Newport_Pier_%2849081452016%29.jpg/1280px-Near_Tower_20_and_Newport_Pier_%2849081452016%29.jpg", "9410583");
+        add("LA6", "Laguna Main Beach", 33.5427, -117.7854, "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Cloudy_Laguna_Main_Beach.jpg/1280px-Cloudy_Laguna_Main_Beach.jpg", "9410580");
+        add("LA7", "Zuma Beach", 34.0158, -118.8210, "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/ZumaBeachCountyPark.jpg/1280px-ZumaBeachCountyPark.jpg", "TWC0445");
+        add("LA8", "Manhattan Beach", 33.8847, -118.4109, "https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Manhattan_Beach%2C_California_35_2018-05-20.jpg/1280px-Manhattan_Beach%2C_California_35_2018-05-20.jpg", "9410777");
+        add("LA9", "Redondo Beach", 33.8130, -118.3930, "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Race_Start_for_Wet_Suit_Swimmers_%2849171557952%29.jpg/1280px-Race_Start_for_Wet_Suit_Swimmers_%2849171557952%29.jpg", "9410738");
+        add("LA10", "Seal Beach", 33.7414, -118.1050, "https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Overcast_Summer_Day_%28218581039%29.jpeg/1280px-Overcast_Summer_Day_%28218581039%29.jpeg", "9410678");
 
         // Central Coast
-        add("CC1", "East Beach, Santa Barbara", 34.4150, -119.6650, "https://images.unsplash.com/photo-1513553404607-988bf2703777?w=800&auto=format&fit=crop&q=80", "9411340");
-        add("CC2", "Pismo Beach", 35.1400, -120.6450, "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop&q=80", "9412110");
-        add("CC3", "Carmel Beach", 36.5550, -121.9290, "https://images.unsplash.com/photo-1520116468816-95b69f847357?w=800&auto=format&fit=crop&q=80", "9413375");
-        add("CC4", "Monterey State Beach", 36.6050, -121.8880, "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=800&auto=format&fit=crop&q=80", "9413450");
-        add("CC5", "Santa Cruz Main Beach", 36.9620, -122.0180, "https://images.unsplash.com/photo-1519817650390-64a93db51149?w=800&auto=format&fit=crop&q=80", "9413745");
+        add("CC1", "East Beach, Santa Barbara", 34.4150, -119.6650, "https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Morning_Stroll_%283148737532%29.jpg/1280px-Morning_Stroll_%283148737532%29.jpg", "9411340");
+        add("CC2", "Pismo Beach", 35.1400, -120.6450, "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Pismo_Beach_Pier%2C_North_view_20110805_1.jpg/1280px-Pismo_Beach_Pier%2C_North_view_20110805_1.jpg", "9412110");
+        add("CC3", "Carmel Beach", 36.5550, -121.9290, "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Carmel-by-the-Sea_1_-_panoramio.jpg/1280px-Carmel-by-the-Sea_1_-_panoramio.jpg", "9413375");
+        add("CC4", "Monterey State Beach", 36.6050, -121.8880, "9413450");
+        add("CC5", "Santa Cruz Main Beach", 36.9620, -122.0180, "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Santa_Cruz_Beach_13_2012-12-18.jpg/1280px-Santa_Cruz_Beach_13_2012-12-18.jpg", "9413745");
 
         // San Francisco Bay Area
-        add("SF1", "Ocean Beach, San Francisco", 37.7594, -122.5107, "https://images.unsplash.com/photo-1540206395-68808572332f?w=800&auto=format&fit=crop&q=80", "9414275");
-        add("SF2", "Stinson Beach", 37.8981, -122.6431, "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80", "9414275");
-        add("SF3", "Half Moon Bay State Beach", 37.4640, -122.4430, "https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=800&auto=format&fit=crop&q=80", "9414131");
+        add("SF1", "Ocean Beach, San Francisco", 37.7594, -122.5107, "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ed/Sunset_at_Judah%2C_Ocean_Beach_-_panoramio.jpg/1280px-Sunset_at_Judah%2C_Ocean_Beach_-_panoramio.jpg", "9414275");
+        add("SF2", "Stinson Beach", 37.8981, -122.6431, "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Stinson_Beach%2C_CA_-_panoramio.jpg/1280px-Stinson_Beach%2C_CA_-_panoramio.jpg", "9414275");
+        add("SF3", "Half Moon Bay State Beach", 37.4640, -122.4430, "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Half_Moon_Bay_State_Beach_8_2019-06-12.jpg/1280px-Half_Moon_Bay_State_Beach_8_2019-06-12.jpg", "9414131");
 
         // Oregon
-        add("OR2", "Seaside Beach", 45.9932, -123.9226, "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop&q=80", "9440574");
-        add("OR3", "Cape Kiwanda", 45.2140, -123.9700, "https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?w=800&auto=format&fit=crop&q=80", "TWC0857");
-        add("OR4", "Bandon Beach", 43.1190, -124.4270, "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&auto=format&fit=crop&q=80", "9431647");
+        add("OR2", "Seaside Beach", 45.9932, -123.9226, "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Seaside%2C_Oregon_Coast_-_Pacific_Ocean_Coastal_Beach_%2820152855151%29.jpg/1280px-Seaside%2C_Oregon_Coast_-_Pacific_Ocean_Coastal_Beach_%2820152855151%29.jpg", "9440574");
+        add("OR3", "Cape Kiwanda", 45.2140, -123.9700, "https://upload.wikimedia.org/wikipedia/commons/e/e1/Cape_Kiwanda%2C_Oregon_%2852018819076%29.jpg", "TWC0857");
+        add("OR4", "Bandon Beach", 43.1190, -124.4270, "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Beach_in_Bandon%2C_OR_%28TK18%29.JPG/1280px-Beach_in_Bandon%2C_OR_%28TK18%29.JPG", "9431647");
 
         // Washington
-        add("WA1", "Alki Beach", 47.5810, -122.4090, "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop&q=80", "9447130");
-        add("WA2", "Ocean Shores", 46.9755, -124.1734, "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&auto=format&fit=crop&q=80", "TWC0965");
-        add("WA3", "Ruby Beach", 47.7100, -124.4160, "https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=800&auto=format&fit=crop&q=80", "TWC0965");
-        add("WA4", "Long Beach, Washington", 46.3517, -124.0624, "https://images.unsplash.com/photo-1471922694854-ff1b63b20054?w=800&auto=format&fit=crop&q=80", "9440574");
+        add("WA1", "Alki Beach", 47.5810, -122.4090, "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Alki_Beach%2C_West_Seattle_-_Flickr_-_brewbooks.jpg/1280px-Alki_Beach%2C_West_Seattle_-_Flickr_-_brewbooks.jpg", "9447130");
+        add("WA2", "Ocean Shores", 46.9755, -124.1734, "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Grays_Harbor_County%2C_WA%2C_USA_-_panoramio_%2814%29.jpg/1280px-Grays_Harbor_County%2C_WA%2C_USA_-_panoramio_%2814%29.jpg", "TWC0965");
+        add("WA3", "Ruby Beach", 47.7100, -124.4160, "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Sunset_ruby_beach_rocks_coast_scenic_r_mckenna_march_04_2015_%2816691114474%29.jpg/1280px-Sunset_ruby_beach_rocks_coast_scenic_r_mckenna_march_04_2015_%2816691114474%29.jpg", "TWC0965");
+        add("WA4", "Long Beach, Washington", 46.3517, -124.0624, "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Long_Beach%2C_WA_-_panoramio_-_Gabriele_Giuseppini.jpg/1280px-Long_Beach%2C_WA_-_panoramio_-_Gabriele_Giuseppini.jpg", "9440574");
 
         // Hawaii
-        add("HI1", "Waikiki Beach", 21.2760, -157.8270, "https://images.unsplash.com/photo-1473116763249-2faaef81ccda?w=800&auto=format&fit=crop&q=80", "1612340");
-        add("HI2", "Hanauma Bay", 21.2690, -157.6940, "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?w=800&auto=format&fit=crop&q=80", "1612301");
-        add("HI3", "Waimea Bay", 21.6420, -158.0640, "https://images.unsplash.com/photo-1504681869696-d977211a5f4c?w=800&auto=format&fit=crop&q=80", "1612668");
-        add("HI4", "Poipu Beach", 21.8740, -159.4550, "https://images.unsplash.com/photo-1509233725247-49e657c54213?w=800&auto=format&fit=crop&q=80", "1611400");
-        add("HI5", "Kaanapali Beach", 20.9250, -156.6950, "https://images.unsplash.com/photo-1437719417032-8595fd9e9dc6?w=800&auto=format&fit=crop&q=80", "TPT2799");
-        add("HI6", "Hapuna Beach", 19.9930, -155.8250, "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&auto=format&fit=crop&q=80", "1617433");
+        add("HI1", "Waikiki Beach", 21.2760, -157.8270, "https://upload.wikimedia.org/wikipedia/commons/thumb/d/db/Waikiki_Beach_2.jpg/1280px-Waikiki_Beach_2.jpg", "1612340");
+        add("HI2", "Hanauma Bay", 21.2690, -157.6940, "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Hanauma_Bay_James_Brennan_Hawaii_%28137045391%29.jpeg/1280px-Hanauma_Bay_James_Brennan_Hawaii_%28137045391%29.jpeg", "1612301");
+        add("HI3", "Waimea Bay", 21.6420, -158.0640, "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Waimea_Bay_Beach_%2812598979504%29.jpg/1280px-Waimea_Bay_Beach_%2812598979504%29.jpg", "1612668");
+        add("HI4", "Poipu Beach", 21.8740, -159.4550, "https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Poipu_Beach%2C_Koloa_%28502724%29_%2816135704164%29.jpg/1280px-Poipu_Beach%2C_Koloa_%28502724%29_%2816135704164%29.jpg", "1611400");
+        add("HI5", "Kaanapali Beach", 20.9250, -156.6950, "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Kaanapali_beach_Hawaii_%2845689920562%29.jpg/1280px-Kaanapali_beach_Hawaii_%2845689920562%29.jpg", "TPT2799");
+        add("HI6", "Hapuna Beach", 19.9930, -155.8250, "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Hapuna_Strand_Big_island_Hawaii_%2844460194830%29.jpg/1280px-Hapuna_Strand_Big_island_Hawaii_%2844460194830%29.jpg", "1617433");
 
         // Texas
-        add("TX3", "Port Aransas Beach", 27.8277, -97.0528, "https://images.unsplash.com/photo-1515238152791-8216bfdf89a7?w=800&auto=format&fit=crop&q=80", "8775270");
-        add("TX4", "Corpus Christi Beach", 27.8180, -97.3890, "https://images.unsplash.com/photo-1501426026826-31c667bdf23d?w=800&auto=format&fit=crop&q=80", "8775296");
+        add("TX3", "Port Aransas Beach", 27.8277, -97.0528, "8775270");
+        add("TX4", "Corpus Christi Beach", 27.8180, -97.3890, "8775296");
 
         // Louisiana, Mississippi, Alabama
-        add("LOU1", "Grand Isle State Park", 29.2603, -89.9513, "https://images.unsplash.com/photo-1468413253725-0d5181091126?w=800&auto=format&fit=crop&q=80", "8761724");
-        add("MS1", "Biloxi Beach", 30.3900, -88.8900, "https://images.unsplash.com/photo-1476673160081-cf065607f449?w=800&auto=format&fit=crop&q=80", "8744117");
-        add("AL1", "Gulf Shores Public Beach", 30.2460, -87.7010, "https://images.unsplash.com/photo-1512100356356-de1b84283e18?w=800&auto=format&fit=crop&q=80", "8731269");
-        add("AL2", "Orange Beach", 30.2690, -87.5730, "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=800&auto=format&fit=crop&q=80", "8731269");
+        add("LOU1", "Grand Isle State Park", 29.2603, -89.9513, "https://upload.wikimedia.org/wikipedia/commons/thumb/5/59/Grand_Isle_State_Park.jpg/1280px-Grand_Isle_State_Park.jpg", "8761724");
+        add("MS1", "Biloxi Beach", 30.3900, -88.8900, "https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Biloxi_Beach.jpg/1280px-Biloxi_Beach.jpg", "8744117");
+        add("AL1", "Gulf Shores Public Beach", 30.2460, -87.7010, "8731269");
+        add("AL2", "Orange Beach", 30.2690, -87.5730, "8731269");
 
         // Florida — Atlantic side
-        add("FL3", "Fort Lauderdale Beach", 26.1300, -80.1030, "https://images.unsplash.com/photo-1538964173425-93884d739596?w=800&auto=format&fit=crop&q=80", "8722899");
-        add("FL8", "Daytona Beach", 29.2260, -81.0100, "https://images.unsplash.com/photo-1506477331477-33d5d8b3dc85?w=800&auto=format&fit=crop&q=80", "8721120");
-        add("FL9", "Cocoa Beach", 28.3200, -80.6070, "https://images.unsplash.com/photo-1470240731273-7821a6eeb6bd?w=800&auto=format&fit=crop&q=80", "8721649");
-        add("FL10", "Smathers Beach, Key West", 24.5510, -81.7660, "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=800&auto=format&fit=crop&q=80", "8724557");
-        add("FL11", "St. Augustine Beach", 29.8500, -81.2650, "https://images.unsplash.com/photo-1513553404607-988bf2703777?w=800&auto=format&fit=crop&q=80", "8720587");
-        add("FL14", "Jacksonville Beach", 30.2889, -81.3888, "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop&q=80", "8720291");
+        add("FL3", "Fort Lauderdale Beach", 26.1300, -80.1030, "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/All_clear_at_Fort_Lauderdale_Beach_-_panoramio_%281%29.jpg/1280px-All_clear_at_Fort_Lauderdale_Beach_-_panoramio_%281%29.jpg", "8722899");
+        add("FL8", "Daytona Beach", 29.2260, -81.0100, "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Beach-at-daytona.jpg_-_panoramio.jpg/1280px-Beach-at-daytona.jpg_-_panoramio.jpg", "8721120");
+        add("FL9", "Cocoa Beach", 28.3200, -80.6070, "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Cocoa_Beach_Surf_%283879446691%29.jpg/1280px-Cocoa_Beach_Surf_%283879446691%29.jpg", "8721649");
+        add("FL10", "Smathers Beach, Key West", 24.5510, -81.7660, "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Early_morning_Smathers_Beach_Key_West.JPG/1280px-Early_morning_Smathers_Beach_Key_West.JPG", "8724557");
+        add("FL11", "St. Augustine Beach", 29.8500, -81.2650, "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Dune_Rise_-_panoramio.jpg/1280px-Dune_Rise_-_panoramio.jpg", "8720587");
+        add("FL14", "Jacksonville Beach", 30.2889, -81.3888, "8720291");
 
         // Florida — Gulf side and Panhandle
-        add("FL5", "Siesta Key Beach", 27.2660, -82.5500, "https://images.unsplash.com/photo-1520116468816-95b69f847357?w=800&auto=format&fit=crop&q=80", "8726034");
-        add("FL6", "Panama City Beach", 30.1770, -85.8060, "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=800&auto=format&fit=crop&q=80", "8729210");
-        add("FL7", "Pensacola Beach", 30.3305, -87.1402, "https://images.unsplash.com/photo-1519817650390-64a93db51149?w=800&auto=format&fit=crop&q=80", "8729807");
-        add("FL12", "Naples Beach", 26.1310, -81.8070, "https://images.unsplash.com/photo-1540206395-68808572332f?w=800&auto=format&fit=crop&q=80", "8725110");
-        add("FL13", "Fort Myers Beach", 26.4520, -81.9500, "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80", "8725383");
-        add("FL15", "Sanibel Island", 26.4315, -82.1149, "https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=800&auto=format&fit=crop&q=80", "8725383");
+        add("FL5", "Siesta Key Beach", 27.2660, -82.5500, "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Siesta_Key_Beach._Sarasota_-_panoramio_-_4net_%286%29.jpg/1280px-Siesta_Key_Beach._Sarasota_-_panoramio_-_4net_%286%29.jpg", "8726034");
+        add("FL6", "Panama City Beach", 30.1770, -85.8060, "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/30795376590_Jpg_%28197628539%29.jpeg/1280px-30795376590_Jpg_%28197628539%29.jpeg", "8729210");
+        add("FL7", "Pensacola Beach", 30.3305, -87.1402, "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/PensacolaBeachgulfpier.jpg/1280px-PensacolaBeachgulfpier.jpg", "8729807");
+        add("FL12", "Naples Beach", 26.1310, -81.8070, "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Naples_-_a_dream_beach%2C_the_Naples_Municipal_Beach_%2815871623455%29.jpg/1280px-Naples_-_a_dream_beach%2C_the_Naples_Municipal_Beach_%2815871623455%29.jpg", "8725110");
+        add("FL13", "Fort Myers Beach", 26.4520, -81.9500, "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Fort_Myers_Beach_-_panoramio_%281%29.jpg/1280px-Fort_Myers_Beach_-_panoramio_%281%29.jpg", "8725383");
+        add("FL15", "Sanibel Island", 26.4315, -82.1149, "8725383");
 
         // Georgia and the Carolinas
-        add("GA1", "Tybee Island Beach", 32.0000, -80.8450, "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop&q=80", "8670892");
-        add("GA2", "St. Simons Island", 31.1500, -81.3700, "https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?w=800&auto=format&fit=crop&q=80", "TEC3499");
-        add("SC1", "Myrtle Beach", 33.6890, -78.8860, "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&auto=format&fit=crop&q=80", "8661070");
-        add("SC2", "Folly Beach", 32.6550, -79.9400, "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop&q=80", "TEC3127");
-        add("SC3", "Coligny Beach, Hilton Head", 32.1400, -80.7500, "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&auto=format&fit=crop&q=80", "8669167");
-        add("NC1", "Wrightsville Beach", 34.2080, -77.7960, "https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=800&auto=format&fit=crop&q=80", "8658163");
-        add("NC2", "Nags Head", 35.9570, -75.6240, "https://images.unsplash.com/photo-1471922694854-ff1b63b20054?w=800&auto=format&fit=crop&q=80", "8652226");
-        add("NC3", "Cape Hatteras", 35.2250, -75.5280, "https://images.unsplash.com/photo-1473116763249-2faaef81ccda?w=800&auto=format&fit=crop&q=80", "TEC2789");
-        add("NC4", "Atlantic Beach", 34.6990, -76.7400, "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?w=800&auto=format&fit=crop&q=80", "8656590");
+        add("GA1", "Tybee Island Beach", 32.0000, -80.8450, "8670892");
+        add("GA2", "St. Simons Island", 31.1500, -81.3700, "TEC3499");
+        add("SC1", "Myrtle Beach", 33.6890, -78.8860, "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/Myrtle_Beach%2C_SC%2C_USA_-_panoramio_%281%29.jpg/1280px-Myrtle_Beach%2C_SC%2C_USA_-_panoramio_%281%29.jpg", "8661070");
+        add("SC2", "Folly Beach", 32.6550, -79.9400, "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Folly_Pier_-_panoramio_%281%29.jpg/1280px-Folly_Pier_-_panoramio_%281%29.jpg", "TEC3127");
+        add("SC3", "Coligny Beach, Hilton Head", 32.1400, -80.7500, "8669167");
+        add("NC1", "Wrightsville Beach", 34.2080, -77.7960, "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Surfer_Dude_-_Flickr_-_Michael_A._Richardson.jpg/1280px-Surfer_Dude_-_Flickr_-_Michael_A._Richardson.jpg", "8658163");
+        add("NC2", "Nags Head", 35.9570, -75.6240, "8652226");
+        add("NC3", "Cape Hatteras", 35.2250, -75.5280, "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Cape_Point_looking_west_toward_South_Beach_at_mid-tide_01-26-2021_%2851759671005%29.jpg/1280px-Cape_Point_looking_west_toward_South_Beach_at_mid-tide_01-26-2021_%2851759671005%29.jpg", "TEC2789");
+        add("NC4", "Atlantic Beach", 34.6990, -76.7400, "8656590");
 
         // Virginia, Maryland, Delaware
-        add("VA1", "Virginia Beach", 36.8530, -75.9780, "https://images.unsplash.com/photo-1504681869696-d977211a5f4c?w=800&auto=format&fit=crop&q=80", "8639168");
-        add("VA2", "Sandbridge Beach", 36.7284, -75.9369, "https://images.unsplash.com/photo-1509233725247-49e657c54213?w=800&auto=format&fit=crop&q=80", "8639428");
-        add("MD1", "Ocean City, Maryland", 38.3360, -75.0840, "https://images.unsplash.com/photo-1437719417032-8595fd9e9dc6?w=800&auto=format&fit=crop&q=80", "8570280");
-        add("MD2", "Assateague Island", 38.2372, -75.1366, "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&auto=format&fit=crop&q=80", "8570280");
-        add("DE1", "Rehoboth Beach", 38.7160, -75.0760, "https://images.unsplash.com/photo-1515238152791-8216bfdf89a7?w=800&auto=format&fit=crop&q=80", "8557863");
-        add("DE2", "Bethany Beach", 38.5390, -75.0550, "https://images.unsplash.com/photo-1501426026826-31c667bdf23d?w=800&auto=format&fit=crop&q=80", "8557863");
+        add("VA1", "Virginia Beach", 36.8530, -75.9780, "8639168");
+        add("VA2", "Sandbridge Beach", 36.7284, -75.9369, "8639428");
+        add("MD1", "Ocean City, Maryland", 38.3360, -75.0840, "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Ocean_City%2C_Maryland_-_panoramio_%284%29.jpg/1280px-Ocean_City%2C_Maryland_-_panoramio_%284%29.jpg", "8570280");
+        add("MD2", "Assateague Island", 38.2372, -75.1366, "8570280");
+        add("DE1", "Rehoboth Beach", 38.7160, -75.0760, "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Blue_Morning_at_Rehoboth.jpg/1280px-Blue_Morning_at_Rehoboth.jpg", "8557863");
+        add("DE2", "Bethany Beach", 38.5390, -75.0550, "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Storm_at_Bethany_Beach.jpg/1280px-Storm_at_Bethany_Beach.jpg", "8557863");
 
         // New Jersey
-        add("NJ1", "Asbury Park Beach", 40.2200, -74.0000, "https://images.unsplash.com/photo-1468413253725-0d5181091126?w=800&auto=format&fit=crop&q=80", "8532337");
-        add("NJ2", "Cape May Beach", 38.9330, -74.9200, "https://images.unsplash.com/photo-1476673160081-cf065607f449?w=800&auto=format&fit=crop&q=80", "8535962");
-        add("NJ3", "Atlantic City Beach", 39.3540, -74.4240, "https://images.unsplash.com/photo-1512100356356-de1b84283e18?w=800&auto=format&fit=crop&q=80", "8534720");
-        add("NJ4", "Point Pleasant Beach", 40.0900, -74.0380, "https://images.unsplash.com/photo-1499793983690-e29da59ef1c2?w=800&auto=format&fit=crop&q=80", "8532337");
-        add("NJ5", "Ocean City, New Jersey", 39.2750, -74.5750, "https://images.unsplash.com/photo-1538964173425-93884d739596?w=800&auto=format&fit=crop&q=80", "8534770");
+        add("NJ1", "Asbury Park Beach", 40.2200, -74.0000, "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Asbury_Park_July_10_Early_Morning_04.jpg/1280px-Asbury_Park_July_10_Early_Morning_04.jpg", "8532337");
+        add("NJ2", "Cape May Beach", 38.9330, -74.9200, "8535962");
+        add("NJ3", "Atlantic City Beach", 39.3540, -74.4240, "8534720");
+        add("NJ4", "Point Pleasant Beach", 40.0900, -74.0380, "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/2025-08-23_12_32_31_Rough_surf_along_Jenkinson%27s_Beach_in_Point_Pleasant_Beach%2C_Ocean_County%2C_New_Jersey.jpg/1280px-2025-08-23_12_32_31_Rough_surf_along_Jenkinson%27s_Beach_in_Point_Pleasant_Beach%2C_Ocean_County%2C_New_Jersey.jpg", "8532337");
+        add("NJ5", "Ocean City, New Jersey", 39.2750, -74.5750, "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Ocean_City_NJ_beach_looking_south_from_Music_Pier.jpeg/1280px-Ocean_City_NJ_beach_looking_south_from_Music_Pier.jpeg", "8534770");
 
         // New York
-        add("NY3", "Coney Island Beach", 40.5720, -73.9790, "https://images.unsplash.com/photo-1506477331477-33d5d8b3dc85?w=800&auto=format&fit=crop&q=80", "8517741");
-        add("NY4", "Long Beach, New York", 40.5830, -73.6580, "https://images.unsplash.com/photo-1470240731273-7821a6eeb6bd?w=800&auto=format&fit=crop&q=80", "8516385");
-        add("NY5", "Robert Moses State Park", 40.6250, -73.2660, "https://images.unsplash.com/photo-1505118380757-91f5f5632de0?w=800&auto=format&fit=crop&q=80", "8515228");
-        add("NY6", "Ditch Plains, Montauk", 41.0350, -71.9250, "https://images.unsplash.com/photo-1513553404607-988bf2703777?w=800&auto=format&fit=crop&q=80", "8459681");
+        add("NY3", "Coney Island Beach", 40.5720, -73.9790, "https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/2008-05-17_Coney_Island%2C_Long_Island_017_Coney_Island%2C_Boardwalk%2C_Beach_%282677864525%29.jpg/1280px-2008-05-17_Coney_Island%2C_Long_Island_017_Coney_Island%2C_Boardwalk%2C_Beach_%282677864525%29.jpg", "8517741");
+        add("NY4", "Long Beach, New York", 40.5830, -73.6580, "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7a/Long_Beach%2C_NY_boardwalk_at_sunset.jpg/1280px-Long_Beach%2C_NY_boardwalk_at_sunset.jpg", "8516385");
+        add("NY5", "Robert Moses State Park", 40.6250, -73.2660, "8515228");
+        add("NY6", "Ditch Plains, Montauk", 41.0350, -71.9250, "8459681");
 
         // New England
-        add("CT1", "Hammonasset Beach State Park", 41.2600, -72.5400, "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop&q=80", "8463701");
-        add("RI1", "Narragansett Town Beach", 41.4380, -71.4470, "https://images.unsplash.com/photo-1520116468816-95b69f847357?w=800&auto=format&fit=crop&q=80", "8454658");
-        add("RI2", "Misquamicut State Beach", 41.3232, -71.8025, "https://images.unsplash.com/photo-1509316975850-ff9c5deb0cd9?w=800&auto=format&fit=crop&q=80", "8458694");
-        add("MA1", "Revere Beach", 42.4130, -70.9900, "https://images.unsplash.com/photo-1519817650390-64a93db51149?w=800&auto=format&fit=crop&q=80", "8443970");
-        add("MA2", "Nauset Beach", 41.7900, -69.9350, "https://images.unsplash.com/photo-1540206395-68808572332f?w=800&auto=format&fit=crop&q=80", "8447435");
-        add("MA3", "Coast Guard Beach", 41.8390, -69.9460, "https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=800&auto=format&fit=crop&q=80", "8447435");
-        add("MA4", "Good Harbor Beach", 42.6180, -70.6390, "https://images.unsplash.com/photo-1518837695005-2083093ee35b?w=800&auto=format&fit=crop&q=80", "8441841");
-        add("NH1", "Hampton Beach", 42.9080, -70.8100, "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop&q=80", "8429489");
-        add("ME1", "Old Orchard Beach", 43.5150, -70.3770, "https://images.unsplash.com/photo-1475924156734-496f6cac6ec1?w=800&auto=format&fit=crop&q=80", "8418557");
-        add("ME2", "Ogunquit Beach", 43.2500, -70.5900, "https://images.unsplash.com/photo-1501785888041-af3ef285b470?w=800&auto=format&fit=crop&q=80", "8419399");
-        add("ME3", "Popham Beach", 43.7360, -69.7960, "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=800&auto=format&fit=crop&q=80", "8417177");
+        add("CT1", "Hammonasset Beach State Park", 41.2600, -72.5400, "8463701");
+        add("RI1", "Narragansett Town Beach", 41.4380, -71.4470, "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Narragansett%2C_Rhode_Island_%2853845090729%29.jpg/1280px-Narragansett%2C_Rhode_Island_%2853845090729%29.jpg", "8454658");
+        add("RI2", "Misquamicut State Beach", 41.3232, -71.8025, "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Misquamicut_Beach%2C_RI_2010-08-07_2.JPG/1280px-Misquamicut_Beach%2C_RI_2010-08-07_2.JPG", "8458694");
+        add("MA1", "Revere Beach", 42.4130, -70.9900, "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Revere%2C_MA%2C_USA_-_panoramio_%2810%29.jpg/1280px-Revere%2C_MA%2C_USA_-_panoramio_%2810%29.jpg", "8443970");
+        add("MA2", "Nauset Beach", 41.7900, -69.9350, "8447435");
+        add("MA3", "Coast Guard Beach", 41.8390, -69.9460, "8447435");
+        add("MA4", "Good Harbor Beach", 42.6180, -70.6390, "8441841");
+        add("NH1", "Hampton Beach", 42.9080, -70.8100, "8429489");
+        add("ME1", "Old Orchard Beach", 43.5150, -70.3770, "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Stormy_Weather_%2827885794643%29.jpg/1280px-Stormy_Weather_%2827885794643%29.jpg", "8418557");
+        add("ME2", "Ogunquit Beach", 43.2500, -70.5900, "https://upload.wikimedia.org/wikipedia/commons/thumb/7/76/Qgunquit-beach-high-tide.jpg/1280px-Qgunquit-beach-high-tide.jpg", "8419399");
+        add("ME3", "Popham Beach", 43.7360, -69.7960, "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Surf_%2825138358805%29.jpg/1280px-Surf_%2825138358805%29.jpg", "8417177");
 
         // The Great Lakes. The wave model reaches these — off Chicago it agreed
         // with the Wilmette buoy to within a few inches — except the far western
         // tip of Lake Superior, so Park Point's surf tile stays blank. A lake
         // has no tide worth the name, so none of them names a station.
-        add("MI1", "Sleeping Bear Dunes Beach", 44.8110, -86.0680, "https://images.unsplash.com/photo-1519046904884-53103b34b206?w=800&auto=format&fit=crop&q=80", null);
-        add("MI2", "Grand Haven State Park", 43.0530, -86.2480, "https://images.unsplash.com/photo-1506929562872-bb421503ef21?w=800&auto=format&fit=crop&q=80", null);
-        add("IL1", "North Avenue Beach", 41.9180, -87.6320, "https://images.unsplash.com/photo-1471922694854-ff1b63b20054?w=800&auto=format&fit=crop&q=80", null);
-        add("IN1", "West Beach, Indiana Dunes", 41.6245, -87.2191, "https://images.unsplash.com/photo-1473116763249-2faaef81ccda?w=800&auto=format&fit=crop&q=80", null);
-        add("WI1", "Bradford Beach", 43.0570, -87.8770, "https://images.unsplash.com/photo-1510414842594-a61c69b5ae57?w=800&auto=format&fit=crop&q=80", null);
-        add("OH1", "Headlands Beach State Park", 41.7565, -81.2909, "https://images.unsplash.com/photo-1504681869696-d977211a5f4c?w=800&auto=format&fit=crop&q=80", null);
-        add("MN1", "Park Point Beach", 46.7300, -92.0600, "https://images.unsplash.com/photo-1509233725247-49e657c54213?w=800&auto=format&fit=crop&q=80", null);
-        add("NY7", "Hamlin Beach State Park", 43.3620, -77.9490, "https://images.unsplash.com/photo-1437719417032-8595fd9e9dc6?w=800&auto=format&fit=crop&q=80", null);
+        add("MI1", "Sleeping Bear Dunes Beach", 44.8110, -86.0680, "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Sleeping_bear_walk_%28161333600%29.jpg/1280px-Sleeping_bear_walk_%28161333600%29.jpg", null);
+        add("MI2", "Grand Haven State Park", 43.0530, -86.2480, "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Grand_Haven_Beach_-_20260623.jpg/1280px-Grand_Haven_Beach_-_20260623.jpg", null);
+        add("IL1", "North Avenue Beach", 41.9180, -87.6320, null);
+        add("IN1", "West Beach, Indiana Dunes", 41.6245, -87.2191, null);
+        add("WI1", "Bradford Beach", 43.0570, -87.8770, "https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Milwaukee_February_2026_59_%28Bradford_Beach%29.jpg/1280px-Milwaukee_February_2026_59_%28Bradford_Beach%29.jpg", null);
+        add("OH1", "Headlands Beach State Park", 41.7565, -81.2909, "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2e/Headlands_Beach_%2814231171650%29.jpg/1280px-Headlands_Beach_%2814231171650%29.jpg", null);
+        add("MN1", "Park Point Beach", 46.7300, -92.0600, null);
+        add("NY7", "Hamlin Beach State Park", 43.3620, -77.9490, null);
 
         // Puerto Rico
-        add("PR1", "Flamenco Beach", 18.3270, -65.3160, "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800&auto=format&fit=crop&q=80", "9752235");
-        add("PR2", "Condado Beach", 18.4600, -66.0730, "https://images.unsplash.com/photo-1515238152791-8216bfdf89a7?w=800&auto=format&fit=crop&q=80", "9755371");
-        add("PR3", "Isla Verde Beach", 18.4460, -66.0120, "https://images.unsplash.com/photo-1501426026826-31c667bdf23d?w=800&auto=format&fit=crop&q=80", "9754986");
+        add("PR1", "Flamenco Beach", 18.3270, -65.3160, "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Culebra%2C_Puerto_Rico_-_panoramio.jpg/1280px-Culebra%2C_Puerto_Rico_-_panoramio.jpg", "9752235");
+        add("PR2", "Condado Beach", 18.4600, -66.0730, "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Condado_Beach.jpg/1280px-Condado_Beach.jpg", "9755371");
+        add("PR3", "Isla Verde Beach", 18.4460, -66.0120, "9754986");
     }
 
     /**

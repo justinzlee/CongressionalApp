@@ -84,6 +84,25 @@ public class WeatherClientTest {
     }
 
     @Test
+    public void seaTemperatureIsConvertedToFahrenheit() {
+        // 22.5°C is 72.5°F
+        assertEquals(72.5, WeatherClient.buildConditions(
+            fullForecast(), json("{\"sea_surface_temperature\":22.5}")).getWaterTemperature(), 0.001);
+    }
+
+    /**
+     * The marine model has no sea temperature for the Great Lakes. That has to
+     * read as "no water reading" rather than be guessed from the air: "air
+     * minus 4" put Duluth's water ten degrees colder than NOAA measured it.
+     */
+    @Test
+    public void missingSeaTemperatureLeavesWaterUnknown() {
+        assertNull(WeatherClient.buildConditions(
+            fullForecast(), json("{\"wave_height\":0.3}")).getWaterTemperature());
+        assertNull(WeatherClient.buildConditions(fullForecast(), null).getWaterTemperature());
+    }
+
+    @Test
     public void missingForecastFieldsAreUnknownRatherThanZero() {
         BeachConditions c = WeatherClient.buildConditions(json("{}"), null);
 
@@ -203,5 +222,31 @@ public class WeatherClientTest {
     public void failedWaveRequestSendsEveryForecastPointToTheFallback() {
         assertEquals(Arrays.asList(0, 1), WeatherClient.missingWaves(
             Arrays.asList(fullForecast(), fullForecast()), Collections.emptyList(), 2));
+    }
+
+    /**
+     * Daytona's surf comes from the backup wave model, which has no sea
+     * temperature at all. Only the wave may come from the backup; the default
+     * model's water reading has to survive the swap.
+     */
+    @Test
+    public void backupWaveKeepsTheDefaultModelsSeaTemperature() {
+        BeachConditions c = WeatherClient.buildConditions(fullForecast(),
+            WeatherClient.withFallbackWave(
+                json("{\"wave_height\":null,\"sea_surface_temperature\":28.3}"),
+                json("{\"wave_height\":0.8,\"sea_surface_temperature\":null}")));
+
+        // 0.8 m of swell, and 28.3°C of water
+        assertEquals(2.625, c.getWaveHeight(), 0.001);
+        assertEquals(82.94, c.getWaterTemperature(), 0.001);
+    }
+
+    @Test
+    public void backupWaveStandsWhenTheDefaultModelSentNothing() {
+        BeachConditions c = WeatherClient.buildConditions(fullForecast(),
+            WeatherClient.withFallbackWave(null, json("{\"wave_height\":0.8}")));
+
+        assertEquals(2.625, c.getWaveHeight(), 0.001);
+        assertNull(c.getWaterTemperature());
     }
 }
