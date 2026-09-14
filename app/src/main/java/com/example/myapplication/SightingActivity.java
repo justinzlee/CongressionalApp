@@ -8,8 +8,11 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -35,18 +38,20 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Objects;
 
 /**
  * Reporting an animal seen at a beach: what it was, whether it was in the water
  * or washed up on the sand, optionally a photograph and a note.
  *
- * <p>The "washed up" choice is what makes this more than a diary. It files the
- * report as a high-severity hazard for two days — see {@link
- * com.example.myapplication.model.ReportHazards} — so the beach screen, the
- * Alerts tab and the tab badge all carry it, and it hands the user straight to
- * the share sheet on save so the warning can reach people who are not holding
- * this phone.
+ * <p>Where it was is what makes this more than a diary. "Washed up" files the
+ * report as a high-severity hazard for two days, and a shark still in the water
+ * for one — see {@link com.example.myapplication.model.ReportHazards} — so the
+ * beach screen, the Alerts tab and the tab badge all carry it, and either one
+ * hands the user straight to the share sheet on save so the warning can reach
+ * people who are not holding this phone.
  */
 public class SightingActivity extends AppCompatActivity {
 
@@ -57,14 +62,31 @@ public class SightingActivity extends AppCompatActivity {
     private static final String STATE_STRANDED = "stranded";
     private static final String STATE_PENDING_PHOTO = "pending_photo";
 
+    /**
+     * Cards per row in the animal grid. Three fits the longest label on two
+     * lines at the narrowest phone this app supports; four does not fit it at
+     * all.
+     */
+    private static final int SPECIES_COLUMNS = 3;
+
     private Beach beach;
     private SightingStore store;
 
-    private SightingSpecies species = SightingSpecies.DOLPHIN;
+    /**
+     * "Something else" to start with. Something has to be selected — an unset
+     * "what" would let a report be filed that says only where it was — and of
+     * the six this is the only one that asserts nothing. A specific animal as
+     * the default would mean a user who tapped straight past this question
+     * filed a report that is wrong rather than one that is merely vague, and
+     * vague is the cheaper of the two mistakes for everyone reading it after.
+     */
+    private SightingSpecies species = SightingSpecies.OTHER;
     private boolean stranded;
 
-    private View dolphinChoice, sealChoice, seaLionChoice;
-    private View inWaterChoice, strandedChoice, strandedNote;
+    /** Every animal card, keyed by what it stands for. Built in {@link #buildSpeciesChoices}. */
+    private final Map<SightingSpecies, View> speciesCards = new EnumMap<>(SightingSpecies.class);
+
+    private View inWaterChoice, strandedChoice, strandedNote, sharkNote;
     private ImageView photo;
     private View photoEmpty;
     private TextInputEditText note;
@@ -115,12 +137,10 @@ public class SightingActivity extends AppCompatActivity {
         ((TextView) findViewById(R.id.sightingTitle))
             .setText(getString(R.string.sighting_title_for, beach.getName()));
 
-        dolphinChoice = findViewById(R.id.sightingDolphin);
-        sealChoice = findViewById(R.id.sightingSeal);
-        seaLionChoice = findViewById(R.id.sightingSeaLion);
         inWaterChoice = findViewById(R.id.sightingInWater);
         strandedChoice = findViewById(R.id.sightingStranded);
         strandedNote = findViewById(R.id.sightingStrandedNote);
+        sharkNote = findViewById(R.id.sightingSharkNote);
         photo = findViewById(R.id.sightingPhoto);
         photoEmpty = findViewById(R.id.sightingPhotoEmpty);
         note = findViewById(R.id.sightingNote);
@@ -134,10 +154,8 @@ public class SightingActivity extends AppCompatActivity {
             if (pendingPhotoPath != null) pendingPhoto = new File(pendingPhotoPath);
         }
         registerPhotoLaunchers();
+        buildSpeciesChoices();
 
-        dolphinChoice.setOnClickListener(v -> setSpecies(SightingSpecies.DOLPHIN));
-        sealChoice.setOnClickListener(v -> setSpecies(SightingSpecies.SEAL));
-        seaLionChoice.setOnClickListener(v -> setSpecies(SightingSpecies.SEA_LION));
         inWaterChoice.setOnClickListener(v -> setStranded(false));
         strandedChoice.setOnClickListener(v -> setStranded(true));
 
@@ -152,45 +170,131 @@ public class SightingActivity extends AppCompatActivity {
         bindPhoto();
     }
 
+    // ── What it was ───────────────────────────────────────────────────────
+
+    /**
+     * Lays the animal groups out from the enum, three cards to a row.
+     *
+     * <p>Order comes straight from the enum, which puts {@link
+     * SightingSpecies#OTHER} last and so in the bottom right — the corner the
+     * eye reaches after everything specific has been ruled out, which is what
+     * that answer means.
+     */
+    private void buildSpeciesChoices() {
+        ViewGroup container = findViewById(R.id.sightingSpecies);
+        LayoutInflater inflater = LayoutInflater.from(this);
+
+        float density = getResources().getDisplayMetrics().density;
+        int gap = Math.round(4 * density);
+        int rowGap = Math.round(8 * density);
+
+        SightingSpecies[] groups = SightingSpecies.values();
+        LinearLayout row = null;
+        for (int i = 0; i < groups.length; i++) {
+            boolean first = i % SPECIES_COLUMNS == 0;
+            boolean last = i % SPECIES_COLUMNS == SPECIES_COLUMNS - 1;
+            if (first) {
+                row = new LinearLayout(this);
+                row.setOrientation(LinearLayout.HORIZONTAL);
+                // Cards are icon-over-label, so aligning their first baselines
+                // would hang the row off the icons and stagger the labels.
+                row.setBaselineAligned(false);
+                LinearLayout.LayoutParams rowParams = new LinearLayout.LayoutParams(
+                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                if (i > 0) rowParams.topMargin = rowGap;
+                container.addView(row, rowParams);
+            }
+
+            View card = inflater.inflate(R.layout.item_species_choice, row, false);
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) card.getLayoutParams();
+            // Every card takes the height of the tallest in its row, so a label
+            // that wraps to two lines does not leave its neighbours short.
+            params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+            params.setMarginStart(first ? 0 : gap);
+            params.setMarginEnd(last ? 0 : gap);
+            bindSpeciesCard(card, groups[i]);
+            row.addView(card, params);
+        }
+
+        // A short last row is padded out so its cards keep the same third of the
+        // width as the rows above. Six groups divide evenly today; this is here
+        // so that adding a seventh stays a one-line change to the enum rather
+        // than a row of stretched cards nobody thought to look at.
+        int remainder = groups.length % SPECIES_COLUMNS;
+        if (remainder != 0 && row != null) {
+            for (int i = remainder; i < SPECIES_COLUMNS; i++) {
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, 1, 1f);
+                params.setMarginStart(gap);
+                row.addView(new View(this), params);
+            }
+        }
+    }
+
+    private void bindSpeciesCard(View card, SightingSpecies group) {
+        ((ImageView) card.findViewById(R.id.speciesIcon)).setImageResource(group.getIconRes());
+        ((TextView) card.findViewById(R.id.speciesLabel)).setText(group.getLabelRes());
+        card.setContentDescription(getString(group.getLabelRes()));
+        card.setOnClickListener(v -> setSpecies(group));
+        speciesCards.put(group, card);
+    }
+
     private void setSpecies(SightingSpecies chosen) {
         species = chosen;
         showSpecies();
     }
+
+    private void showSpecies() {
+        for (Map.Entry<SightingSpecies, View> entry : speciesCards.entrySet()) {
+            paintChoice(entry.getValue(), entry.getKey() == species);
+        }
+        showWarningNote();
+    }
+
+    // ── Where it was ──────────────────────────────────────────────────────
 
     private void setStranded(boolean value) {
         stranded = value;
         showWhere();
     }
 
-    private void showSpecies() {
-        paintChoice(dolphinChoice, R.id.sightingDolphinIcon, R.id.sightingDolphinLabel,
-            species == SightingSpecies.DOLPHIN);
-        paintChoice(sealChoice, R.id.sightingSealIcon, R.id.sightingSealLabel,
-            species == SightingSpecies.SEAL);
-        paintChoice(seaLionChoice, R.id.sightingSeaLionIcon, R.id.sightingSeaLionLabel,
-            species == SightingSpecies.SEA_LION);
-    }
-
     /**
      * The "washed up" row turns the whole card red rather than brand teal, and
-     * brings up the note explaining what it is about to do. Selecting it is the
-     * one choice on this screen with consequences beyond the phone, so it does
-     * not look like the other one.
+     * brings up the note explaining what it is about to do. It is one of the two
+     * answers on this screen with consequences beyond the phone, so it does not
+     * look like the one beside it.
      */
     private void showWhere() {
         paintWhere(inWaterChoice, R.id.sightingInWaterMark, !stranded, false);
         paintWhere(strandedChoice, R.id.sightingStrandedMark, stranded, true);
-        strandedNote.setVisibility(stranded ? View.VISIBLE : View.GONE);
+        showWarningNote();
     }
 
-    /** One of the three species cards: filled and tinted when it is the choice. */
-    private void paintChoice(View card, int iconId, int labelId, boolean selected) {
+    /**
+     * Shows whichever red note the current pair of answers has earned, if any.
+     *
+     * <p>Driven by both questions rather than one, because the warning follows
+     * the combination: a shark washed up on the sand is a stranding and gets the
+     * stranding note, while a shark still swimming is the only in-water report
+     * the app raises anything for. At most one note is ever up, so the two are
+     * mutually exclusive rather than stacked.
+     */
+    private void showWarningNote() {
+        boolean shark = !stranded && species == SightingSpecies.SHARK;
+        strandedNote.setVisibility(stranded ? View.VISIBLE : View.GONE);
+        sharkNote.setVisibility(shark ? View.VISIBLE : View.GONE);
+    }
+
+    // ── Painting a choice ─────────────────────────────────────────────────
+
+    /** One animal card: filled and tinted when it is the choice. */
+    private void paintChoice(View card, boolean selected) {
         paintCard(card, selected, R.color.accent_tint, R.color.primary);
 
         int accent = ContextCompat.getColor(this,
             selected ? R.color.primary : R.color.text_secondary);
-        ImageViewCompat.setImageTintList(card.findViewById(iconId), ColorStateList.valueOf(accent));
-        ((TextView) card.findViewById(labelId)).setTextColor(accent);
+        ImageViewCompat.setImageTintList(
+            card.findViewById(R.id.speciesIcon), ColorStateList.valueOf(accent));
+        ((TextView) card.findViewById(R.id.speciesLabel)).setTextColor(accent);
     }
 
     private void paintWhere(View card, int markId, boolean selected, boolean danger) {
@@ -213,9 +317,9 @@ public class SightingActivity extends AppCompatActivity {
     }
 
     /**
-     * Stores the report, then — for a stranding — goes straight to the share
-     * sheet. Warning people is the point of filing that one, and asking them to
-     * find a share button afterwards is how it does not get done.
+     * Stores the report, then — for one that warns people — goes straight to the
+     * share sheet. Warning people is the point of filing those, and asking them
+     * to find a share button afterwards is how it does not get done.
      */
     private void save() {
         Sighting sighting = store.add(beach.getId(), species, stranded,
@@ -223,7 +327,7 @@ public class SightingActivity extends AppCompatActivity {
         saved = true;
 
         Toast.makeText(this, R.string.sighting_saved, Toast.LENGTH_SHORT).show();
-        if (stranded) {
+        if (sighting.raisesWarning()) {
             SightingShare.share(this, beach, sighting);
         }
         finish();

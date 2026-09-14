@@ -323,8 +323,13 @@ public class BeachDetailActivity extends AppCompatActivity {
         View row = inflater.inflate(R.layout.item_sighting, parent, false);
 
         boolean stranded = sighting.isStranded();
+        // Red on the row follows whether the report warns anyone, not whether
+        // the animal was on the sand: a shark still in the water is the one
+        // in-water report that does, and it would otherwise be drawn in the
+        // same grey as a dolphin off the break.
+        boolean warning = sighting.raisesWarning();
         int color = ContextCompat.getColor(this,
-            stranded ? R.color.danger : R.color.text_secondary);
+            warning ? R.color.danger : R.color.text_secondary);
 
         ImageView icon = row.findViewById(R.id.sightingRowIcon);
         icon.setImageResource(sighting.getSpecies().getIconRes());
@@ -339,7 +344,7 @@ public class BeachDetailActivity extends AppCompatActivity {
         Drawable tagBackground = tag.getBackground();
         if (tagBackground instanceof GradientDrawable) {
             ((GradientDrawable) tagBackground.mutate()).setColor(ContextCompat.getColor(this,
-                stranded ? R.color.danger_tint : R.color.surface_alt));
+                warning ? R.color.danger_tint : R.color.surface_alt));
         }
 
         ((TextView) row.findViewById(R.id.sightingRowWhen))

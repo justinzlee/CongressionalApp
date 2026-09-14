@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  A shark in side view, nose to the right, in the same single-weight outline as
+  ic_fish so app:tint paints the whole mark in one colour.
+
+  Body, dorsal fin and tail are one continuous outline rather than three shapes
+  laid over each other. Drawn as separate paths they met at the tail root and
+  the join read as an open mouth on a fish facing the other way — the silhouette
+  has to close for the eye to find the nose.
+
+  Three things carry "shark" rather than "fish", and the two icons sit in the
+  same row of the report screen so none of them may be subtle: a tall dorsal fin
+  raked back, a crescent tail whose upper lobe is much the longer, and a mouth
+  set back underneath a pointed snout.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <path
+        android:pathData="M22.0,12.6 C19.6,9.8 17.2,8.6 14.6,8.4 L11.6,3.2 L9.4,8.9 C7.9,9.3 6.5,10.0 5.2,11.0 L1.5,6.2 C2.9,10.0 3.0,13.6 2.4,16.6 L5.2,13.6 C8.0,15.9 11.4,17.0 14.6,16.8 C17.6,16.6 20.2,15.2 22.0,12.6 Z"
+        android:strokeColor="#000000"
+        android:strokeWidth="1.6"
+        android:strokeLineJoin="round"
+        android:strokeLineCap="round" />
+
+    <!-- Pectoral fin, below the body so it reads as the near-side one -->
+    <path
+        android:pathData="M15.6,16.4 L11.4,20.3 L13.4,16.1"
+        android:strokeColor="#000000"
+        android:strokeWidth="1.6"
+        android:strokeLineJoin="round"
+        android:strokeLineCap="round" />
+
+    <!-- Underslung mouth, set back from the snout -->
+    <path
+        android:pathData="M21.0,13.8 C19.8,14.6 18.6,15.0 17.5,15.0"
+        android:strokeColor="#000000"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round" />
+
+    <path
+        android:pathData="M18.8,11.2 m-0.8,0 a0.8,0.8 0,1 0,1.6 0 a0.8,0.8 0,1 0,-1.6 0"
+        android:fillColor="#000000" />
+</vector>

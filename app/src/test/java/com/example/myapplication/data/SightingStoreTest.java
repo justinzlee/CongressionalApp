@@ -35,37 +35,37 @@ public class SightingStoreTest {
     @Test
     public void reportsSurviveARoundTrip() {
         List<Sighting> written = Arrays.asList(
-            sighting("a", SightingSpecies.SEAL, true, "Not moving", "/tmp/a.jpg", NOW),
-            sighting("b", SightingSpecies.DOLPHIN, false, null, null, NOW - 5000));
+            sighting("a", SightingSpecies.JELLYFISH, true, "Not moving", "/tmp/a.jpg", NOW),
+            sighting("b", SightingSpecies.FISH, false, null, null, NOW - 5000));
 
         List<Sighting> read = SightingStore.decode("CA1",
             SightingStore.encode(written).toString());
 
         assertEquals(2, read.size());
 
-        Sighting seal = read.get(0);
-        assertEquals("a", seal.getId());
-        assertEquals("CA1", seal.getBeachId());
-        assertEquals(SightingSpecies.SEAL, seal.getSpecies());
-        assertTrue(seal.isStranded());
-        assertEquals("Not moving", seal.getNote());
-        assertEquals("/tmp/a.jpg", seal.rawPhotoPath());
-        assertEquals(NOW, seal.getTimeMillis());
+        Sighting stranding = read.get(0);
+        assertEquals("a", stranding.getId());
+        assertEquals("CA1", stranding.getBeachId());
+        assertEquals(SightingSpecies.JELLYFISH, stranding.getSpecies());
+        assertTrue(stranding.isStranded());
+        assertEquals("Not moving", stranding.getNote());
+        assertEquals("/tmp/a.jpg", stranding.rawPhotoPath());
+        assertEquals(NOW, stranding.getTimeMillis());
 
-        Sighting dolphin = read.get(1);
-        assertEquals(SightingSpecies.DOLPHIN, dolphin.getSpecies());
-        assertFalse(dolphin.isStranded());
-        assertNull(dolphin.getNote());
-        assertNull(dolphin.rawPhotoPath());
+        Sighting inWater = read.get(1);
+        assertEquals(SightingSpecies.FISH, inWater.getSpecies());
+        assertFalse(inWater.isStranded());
+        assertNull(inWater.getNote());
+        assertNull(inWater.rawPhotoPath());
     }
 
     /** Newest first, whatever order they went in. */
     @Test
     public void reportsComeBackNewestFirst() {
         List<Sighting> written = Arrays.asList(
-            sighting("oldest", SightingSpecies.SEAL, false, null, null, NOW - 10_000),
-            sighting("newest", SightingSpecies.DOLPHIN, false, null, null, NOW),
-            sighting("middle", SightingSpecies.SEA_LION, false, null, null, NOW - 5_000));
+            sighting("oldest", SightingSpecies.RAY, false, null, null, NOW - 10_000),
+            sighting("newest", SightingSpecies.FISH, false, null, null, NOW),
+            sighting("middle", SightingSpecies.JELLYFISH, false, null, null, NOW - 5_000));
 
         List<Sighting> read = SightingStore.decode("CA1",
             SightingStore.encode(written).toString());
@@ -100,11 +100,11 @@ public class SightingStoreTest {
     @Test
     public void oneBadReportDoesNotTakeTheRestWithIt() {
         String json = "["
-            + "{\"id\":\"good\",\"species\":\"SEAL\",\"stranded\":true,\"at\":" + NOW + "},"
-            + "{\"species\":\"SEAL\",\"at\":123},"          // no id
-            + "{\"id\":\"noTime\",\"species\":\"SEAL\"},"   // no timestamp
+            + "{\"id\":\"good\",\"species\":\"JELLYFISH\",\"stranded\":true,\"at\":" + NOW + "},"
+            + "{\"species\":\"JELLYFISH\",\"at\":123}," // no id
+            + "{\"id\":\"noTime\",\"species\":\"JELLYFISH\"}," // no timestamp
             + "\"a bare string\","
-            + "{\"id\":\"alsoGood\",\"species\":\"DOLPHIN\",\"at\":" + (NOW - 1) + "}"
+            + "{\"id\":\"alsoGood\",\"species\":\"FISH\",\"at\":" + (NOW - 1) + "}"
             + "]";
 
         List<Sighting> read = SightingStore.decode("CA1", json);
@@ -121,13 +121,13 @@ public class SightingStoreTest {
         List<Sighting> read = SightingStore.decode("CA1", json);
 
         assertEquals(1, read.size());
-        assertEquals(SightingSpecies.SEAL, read.get(0).getSpecies());
+        assertEquals(SightingSpecies.OTHER, read.get(0).getSpecies());
     }
 
     /** A report with no "stranded" field is not a warning — the safe default. */
     @Test
     public void aMissingStrandedFlagIsNotAWarning() {
-        String json = "[{\"id\":\"x\",\"species\":\"SEAL\",\"at\":" + NOW + "}]";
+        String json = "[{\"id\":\"x\",\"species\":\"JELLYFISH\",\"at\":" + NOW + "}]";
         Sighting read = SightingStore.decode("CA1", json).get(0);
 
         assertFalse(read.isStranded());
@@ -137,7 +137,7 @@ public class SightingStoreTest {
     /** The beach id comes from the caller, not the file: the key already says it. */
     @Test
     public void theBeachIdComesFromTheCaller() {
-        String json = "[{\"id\":\"x\",\"species\":\"SEAL\",\"at\":" + NOW + "}]";
+        String json = "[{\"id\":\"x\",\"species\":\"JELLYFISH\",\"at\":" + NOW + "}]";
         assertEquals("FL7", SightingStore.decode("FL7", json).get(0).getBeachId());
     }
 
@@ -146,5 +146,29 @@ public class SightingStoreTest {
     public void anEmptyLogEncodesCleanly() {
         assertEquals("[]", SightingStore.encode(Collections.emptyList()).toString());
         assertTrue(SightingStore.decode("CA1", "[]").isEmpty());
+    }
+
+    /**
+     * A log written before this app offered groups rather than species. Not a
+     * hypothetical corrupt file: it is sitting on the phone of everybody who had
+     * the previous build. None of the three names it could write has a card any
+     * more, so they read back as OTHER — the reports survive with their dates,
+     * photographs and stranding warnings intact, which is what matters.
+     */
+    @Test
+    public void aLogFromTheOldSpeciesListStillReadsBack() {
+        String json = "["
+            + "{\"id\":\"a\",\"species\":\"SEAL\",\"stranded\":true,\"at\":" + NOW + "},"
+            + "{\"id\":\"b\",\"species\":\"SEA_LION\",\"at\":" + (NOW - 1) + "},"
+            + "{\"id\":\"c\",\"species\":\"DOLPHIN\",\"at\":" + (NOW - 2) + "}"
+            + "]";
+
+        List<Sighting> read = SightingStore.decode("CA1", json);
+
+        assertEquals(3, read.size());
+        for (Sighting sighting : read) {
+            assertEquals(SightingSpecies.OTHER, sighting.getSpecies());
+        }
+        assertTrue(read.get(0).isActiveWarning(NOW));
     }
 }

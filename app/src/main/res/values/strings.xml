@@ -691,10 +691,28 @@
     <string name="hazard_rocks_step_shoes">Wear something on your feet.</string>
     <string name="hazard_rocks_step_entry">Look for a clear channel of sand to get in and out of the water.</string>
 
-    <!-- Wildlife sightings -->
-    <string name="sighting_species_dolphin">Dolphin</string>
-    <string name="sighting_species_seal">Seal</string>
-    <string name="sighting_species_sea_lion">Sea lion</string>
+    <!-- Wildlife sightings.
+
+         Groups, not species. Asking somebody standing on sand with a phone to
+         tell a seal from a sea lion got a narrow log of three animals and no
+         way at all to report the shark, the jellyfish bloom or the thing nobody
+         could name. Each label is paired with a bare noun below it for the
+         middle of a sentence, because "Something else washed up at Del Mar"
+         is not English and no amount of lower-casing makes it so. -->
+    <string name="sighting_species_shark">Shark</string>
+    <string name="sighting_species_ray">Ray</string>
+    <string name="sighting_species_fish">Fish</string>
+    <string name="sighting_species_jellyfish">Jellyfish</string>
+    <string name="sighting_species_bird">Bird</string>
+    <string name="sighting_species_other">Something else</string>
+
+
+    <string name="sighting_noun_shark">shark</string>
+    <string name="sighting_noun_ray">ray</string>
+    <string name="sighting_noun_fish">fish</string>
+    <string name="sighting_noun_jellyfish">jellyfish</string>
+    <string name="sighting_noun_bird">bird</string>
+    <string name="sighting_noun_other">animal</string>
 
     <string name="sighting_title">Report wildlife</string>
     <string name="sighting_title_for">Wildlife at %1$s</string>
@@ -708,7 +726,10 @@
     <string name="sighting_where_stranded">Washed up on the sand</string>
 
     <string name="sighting_stranded_title">This raises a warning</string>
-    <string name="sighting_stranded_body">A washed-up animal shows at the top of this beach\'s alerts for the next two days, so anyone else who opens this beach sees it first. Keep well back from it yourself — a stranded seal is often just resting, and it can bite.</string>
+    <string name="sighting_stranded_body">A washed-up animal shows at the top of this beach\'s alerts for the next two days, so anyone else who opens this beach sees it first. Keep well back from it yourself — a stranded animal is often just resting, and a frightened one bites.</string>
+
+    <string name="sighting_shark_title">This raises a warning</string>
+    <string name="sighting_shark_body">A shark in the water shows at the top of this beach\'s alerts for the next day, so anyone else who opens this beach sees it before they get in.</string>
 
     <string name="sighting_note_hint">Anything worth adding (optional)</string>
     <string name="sighting_photo_add">Add a photo</string>
@@ -724,19 +745,36 @@
     <!-- Passing a warning to other people. There is no server behind this app,
          so a report reaches other people through whatever messaging app they
          already share - which is also the fastest way to reach the one person
-         who is actually walking towards it. -->
+         who is actually walking towards it.
+
+         Written without "a" or "an" in front of the animal: the noun is chosen
+         at runtime and the article would have to agree with it in every
+         language the app ships. -->
     <string name="sighting_share_cta">Warn other people</string>
     <string name="sighting_share_subject">Washed-up %1$s at %2$s</string>
-    <string name="sighting_share_stranded">Heads up: a %1$s is washed up on the sand at %2$s. Keep at least 150 feet back, keep dogs away, and don\'t push it back into the water — that can kill a healthy animal. Report it to the lifeguards there or your local marine mammal stranding network.</string>
-    <string name="sighting_share_water">Saw a %1$s in the water at %2$s.</string>
+    <string name="sighting_share_subject_shark">Shark seen at %1$s</string>
+    <string name="sighting_share_subject_seen">Wildlife at %1$s</string>
+    <string name="sighting_share_stranded">Heads up — washed-up %1$s on the sand at %2$s. Keep at least 150 feet back, keep dogs away, and don\'t push it back into the water; that can kill a healthy animal. Report it to the lifeguards there or your local marine mammal stranding network.</string>
+    <string name="sighting_share_shark">Heads up — shark reported in the water at %1$s. Tell the lifeguards there before anyone gets in.</string>
+    <string name="sighting_share_water">Seen at %2$s: %1$s in the water.</string>
     <string name="sighting_share_none">No app on this device can send that.</string>
 
-    <!-- The hazard a stranding raises, in "What to watch for" and Alerts -->
-    <string name="hazard_stranding_body">A %1$s was reported washed up on the sand here. Keep well back from it.</string>
-    <string name="hazard_stranding_step_distance">Stay at least 150 feet away. Getting closer is an offence under the Marine Mammal Protection Act.</string>
+    <!-- The hazard a report raises, in "What to watch for" and Alerts.
+
+         Two sets of steps for a stranding. The Marine Mammal Protection Act
+         distance and the do-not-refloat instruction are true of seals, sea
+         lions, dolphins and whales and of nothing else, so a washed-up fish
+         gets the short version instead of a federal offence it is not. -->
+    <string name="hazard_stranding_body">Washed-up %1$s reported on the sand here. Keep well back from it.</string>
+    <string name="hazard_stranding_step_back">Keep well back, and keep children back. For a seal, sea lion, dolphin or whale, stay at least 150 feet away — closer than that is an offence under the Marine Mammal Protection Act.</string>
     <string name="hazard_stranding_step_dogs">Keep dogs leashed and well away.</string>
-    <string name="hazard_stranding_step_leave">Do not push it back into the water. Seals rest on shore normally, and moving a healthy one can kill it.</string>
+    <string name="hazard_stranding_step_leave">Do not touch it, and do not push it back into the water. A jellyfish still stings once it is dead, and an animal resting on shore can be killed by being moved.</string>
     <string name="hazard_stranding_step_tell">Tell the lifeguards, or your local marine mammal stranding network.</string>
+
+    <string name="hazard_shark_body">A shark was reported in the water here within the last day.</string>
+    <string name="hazard_shark_step_exit">If you are in the water, leave it calmly and steadily rather than thrashing.</string>
+    <string name="hazard_shark_step_group">Stay out of the water at dawn and dusk, and don\'t swim alone or near bait fish and diving birds.</string>
+    <string name="hazard_shark_step_tell">Tell the lifeguards, and check whether the beach has been posted.</string>
 
     <!-- ══════ WHAT'S IT GOOD FOR TODAY ══════
          Ranking beaches by what someone actually came to do. Every score is a

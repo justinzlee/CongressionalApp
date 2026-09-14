@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  One animal group on the report form, as a card in the grid.
+
+  Inflated once per SightingSpecies rather than written out seven times: the
+  enum already carries the label and the icon, so a species added there appears
+  here without anyone remembering to come and add it. The label is allowed two
+  lines because "Marine mammal" needs them at a third of the screen, and the
+  activity stretches every card in a row to the tallest so a wrapped label does
+  not leave its neighbours short.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.App.SpeciesChoice">
+
+    <ImageView
+        android:id="@+id/speciesIcon"
+        style="@style/Widget.App.SpeciesChoiceIcon" />
+
+    <TextView
+        android:id="@+id/speciesLabel"
+        style="@style/Widget.App.SpeciesChoiceLabel"
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:maxLines="2" />
+</LinearLayout>
