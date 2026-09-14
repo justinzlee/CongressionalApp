@@ -2,10 +2,15 @@ package com.example.myapplication.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import com.example.myapplication.R;
 import com.example.myapplication.SettingsActivity;
 import java.util.Locale;
 
 public class UnitConverter {
+
+    /** One mile in kilometres, for every conversion in both directions. */
+    public static final double KM_PER_MILE = 1.60934;
+
     public static String formatTemperature(Context context, Double tempF) {
         if (tempF == null) return "--";
         SharedPreferences prefs = context.getSharedPreferences(SettingsActivity.PREFS_NAME, Context.MODE_PRIVATE);
@@ -93,16 +98,15 @@ public class UnitConverter {
         return earthRadius * c;
     }
 
+    /** "km" or "mi", to label a distance already in the user's unit. */
+    public static String distanceUnit(Context context) {
+        return useMetric(context) ? "km" : "mi";
+    }
+
     public static String formatDistance(Context context, Double distanceMiles) {
         if (distanceMiles == null) return "";
-        SharedPreferences prefs = context.getSharedPreferences(SettingsActivity.PREFS_NAME, Context.MODE_PRIVATE);
-        boolean useMetric = prefs.getBoolean(SettingsActivity.KEY_USE_METRIC, false);
-        
-        if (useMetric) {
-            double distanceKm = distanceMiles * 1.60934;
-            return String.format(Locale.US, "%.1f km away", distanceKm);
-        } else {
-            return String.format(Locale.US, "%.1f miles away", distanceMiles);
-        }
+        return useMetric(context)
+            ? context.getString(R.string.distance_away_km, distanceMiles * KM_PER_MILE)
+            : context.getString(R.string.distance_away, distanceMiles);
     }
 }

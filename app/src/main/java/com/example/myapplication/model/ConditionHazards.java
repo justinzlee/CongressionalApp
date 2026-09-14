@@ -50,7 +50,7 @@ public final class ConditionHazards {
         }
         for (Hazard recorded : beach.getHazards()) {
             if (!containsType(merged, recorded.getType())) {
-                merged.add(recorded);
+                merged.add(recorded.localized(context));
             }
         }
         for (Hazard derived : derive(context, beach.getConditions())) {

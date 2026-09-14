@@ -25,7 +25,6 @@ import com.example.myapplication.model.Severity;
 import com.example.myapplication.util.EdgeToEdge;
 
 import java.util.List;
-import java.util.Locale;
 
 /**
  * The hazards on record at the beaches this user has reason to care about,
@@ -193,7 +192,7 @@ public class AlertsActivity extends AppCompatActivity {
             .setText(alert.getHazard().getDescription());
 
         TextView severity = row.findViewById(R.id.alertSeverity);
-        severity.setText(prettySeverity(alert.getSeverity()));
+        severity.setText(alert.getSeverity().getLabelRes());
         severity.setTextColor(color);
 
         TextView where = row.findViewById(R.id.alertWhere);
@@ -212,11 +211,6 @@ public class AlertsActivity extends AppCompatActivity {
         Intent intent = new Intent(this, BeachDetailActivity.class);
         intent.putExtra(BeachDetailActivity.EXTRA_BEACH_ID, beach.getId());
         startActivity(intent);
-    }
-
-    private static String prettySeverity(Severity severity) {
-        String raw = severity.name().toLowerCase(Locale.ROOT);
-        return Character.toUpperCase(raw.charAt(0)) + raw.substring(1);
     }
 
     private static int severityColorRes(Severity severity) {

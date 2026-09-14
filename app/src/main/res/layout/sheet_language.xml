@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The language picker, in the same shape as the beach photo sheet: a title and
+  a short column of rows. Each name is written in its own language, and the one
+  in use carries a tick, so the sheet needs no prose to explain itself.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_sheet_top"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp"
+    android:paddingTop="16dp"
+    android:paddingBottom="16dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/language_title"
+        android:textColor="@color/text_primary"
+        android:textSize="19sp" />
+
+    <LinearLayout
+        android:id="@+id/languageSystem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/bg_surface_card"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="13dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/language_system"
+            android:textColor="@color/text_primary"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/languageSystemTick"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_check_circle"
+            android:visibility="gone"
+            app:tint="@color/primary" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/languageEnglish"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:background="@drawable/bg_surface_card"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="13dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/language_english"
+            android:textColor="@color/text_primary"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/languageEnglishTick"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_check_circle"
+            android:visibility="gone"
+            app:tint="@color/primary" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/languageSpanish"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:background="@drawable/bg_surface_card"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="13dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/language_spanish"
+            android:textColor="@color/text_primary"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/languageSpanishTick"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_check_circle"
+            android:visibility="gone"
+            app:tint="@color/primary" />
+    </LinearLayout>
+
+</LinearLayout>

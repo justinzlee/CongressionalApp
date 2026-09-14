@@ -2,6 +2,7 @@ package com.example.myapplication.data;
 
 import androidx.annotation.VisibleForTesting;
 
+import com.example.myapplication.R;
 import com.example.myapplication.model.*;
 import com.example.myapplication.network.WeatherClient;
 import com.example.myapplication.util.UnitConverter;
@@ -100,7 +101,9 @@ public class BeachRepository {
         // SOS sheet sends as the user's location, so a point in the middle of
         // town or out in the bay is not a harmless approximation.
         beaches.add(new Beach("CA1", "La Jolla Shores", 32.8589, -117.2558,
-            Collections.singletonList(new Hazard(HazardType.RIP_CURRENT, Severity.MODERATE, "Strong rips near the pier.", Collections.singletonList("Swim near lifeguard"))),
+            Collections.singletonList(new Hazard(HazardType.RIP_CURRENT, Severity.MODERATE,
+                R.string.hazard_recorded_lajolla_rips,
+                R.string.hazard_recorded_step_swim_near_lifeguard)),
             null,
             // The City of San Diego's address for its La Jolla Shores
             // lifeguards, 8260 Camino del Oro. It used to sit on the beach's

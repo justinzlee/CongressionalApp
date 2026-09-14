@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -101,7 +100,22 @@ public class MainActivity extends AppCompatActivity {
     private double currentLon = -118.2437;
     private double realLat = 34.0522;
     private double realLon = -118.2437;
-    private double currentRadiusMiles = Double.MAX_VALUE; // Default All
+    /**
+     * The four search radii, as round numbers in each system rather than one
+     * converted into the other: five miles across reads as "8 km", which is
+     * nobody's idea of a search radius. Whichever number is on the chip is
+     * what the list cuts at, so the two can never disagree.
+     */
+    private static final int[] RADIUS_STEPS_MILES = {5, 10, 25, 50};
+    private static final int[] RADIUS_STEPS_KM = {10, 25, 50, 100};
+    /** The chips those steps sit on, in the same order. */
+    private static final int[] RADIUS_BUTTON_IDS = {
+        R.id.radiusStep1, R.id.radiusStep2, R.id.radiusStep3, R.id.radiusStep4};
+    /** The "All" chip, which is no step at all. */
+    private static final int RADIUS_ALL = -1;
+
+    private int radiusStep = RADIUS_ALL;
+    private double currentRadiusMiles = Double.MAX_VALUE;
     private boolean hasLocation = false;
     private boolean hasRealLocation = false;
     private boolean isManualLocation = false;
@@ -254,10 +268,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateRadiusButtonsEnabled() {
-        findViewById(R.id.radius5).setEnabled(hasLocation);
-        findViewById(R.id.radius10).setEnabled(hasLocation);
-        findViewById(R.id.radius25).setEnabled(hasLocation);
-        findViewById(R.id.radius50).setEnabled(hasLocation);
+        for (int buttonId : RADIUS_BUTTON_IDS) {
+            findViewById(buttonId).setEnabled(hasLocation);
+        }
         findViewById(R.id.radiusHint).setVisibility(hasLocation ? View.GONE : View.VISIBLE);
     }
 
@@ -268,7 +281,7 @@ public class MainActivity extends AppCompatActivity {
         citySearchEditText.setText("");
         radiusToggleGroup.check(R.id.radiusAll);
         shouldScrollToTop = true;
-        Toast.makeText(this, "Using real-time location", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.search_using_location, Toast.LENGTH_SHORT).show();
         // Back to the fix already in hand straight away: the next one may be
         // too close to it to count as news (see onRealFix), which would leave
         // the list sorted around the searched city.
@@ -300,7 +313,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 addresses = geocoder.getFromLocationName(cityName, 1);
             } catch (IOException e) {
-                errorMessage = "Network error";
+                errorMessage = getString(R.string.search_network_error);
             }
 
             List<Address> results = addresses;
@@ -313,38 +326,47 @@ public class MainActivity extends AppCompatActivity {
                     Address address = results.get(0);
                     isManualLocation = true;
                     updateUserLocation(address.getLatitude(), address.getLongitude());
-                    Toast.makeText(this, "Searching near: " + cityName, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, getString(R.string.search_near_city, cityName),
+                        Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(this, "Location not found", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.search_city_not_found, Toast.LENGTH_SHORT).show();
                 }
             });
         });
     }
 
     private void setupRadiusSpinner() {
-        currentRadiusMiles = Double.MAX_VALUE; // Default All
+        radiusStep = RADIUS_ALL;
+        currentRadiusMiles = Double.MAX_VALUE;
         radiusToggleGroup.check(R.id.radiusAll);
+        updateRadiusButtonLabels();
 
         radiusToggleGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
             if (!isChecked) return;
-
-            if (checkedId == R.id.radiusAll) {
-                currentRadiusMiles = Double.MAX_VALUE;
-                updateList();
-                return;
-            }
-
-            if (checkedId == R.id.radius5) {
-                currentRadiusMiles = 5.0;
-            } else if (checkedId == R.id.radius10) {
-                currentRadiusMiles = 10.0;
-            } else if (checkedId == R.id.radius25) {
-                currentRadiusMiles = 25.0;
-            } else if (checkedId == R.id.radius50) {
-                currentRadiusMiles = 50.0;
-            }
+            radiusStep = stepFor(checkedId);
+            currentRadiusMiles = radiusMiles(radiusStep);
             updateList();
         });
+    }
+
+    /** Which step a chip is, or {@link #RADIUS_ALL} for the one that filters nothing. */
+    private static int stepFor(int checkedId) {
+        for (int step = 0; step < RADIUS_BUTTON_IDS.length; step++) {
+            if (RADIUS_BUTTON_IDS[step] == checkedId) return step;
+        }
+        return RADIUS_ALL;
+    }
+
+    /**
+     * A step as miles, which is the unit the list filters in whatever the chip
+     * says. Read fresh rather than stored, so flipping the metric switch moves
+     * the cut to the number now printed on the chip.
+     */
+    private double radiusMiles(int step) {
+        if (step == RADIUS_ALL) return Double.MAX_VALUE;
+        return UnitConverter.useMetric(this)
+            ? RADIUS_STEPS_KM[step] / UnitConverter.KM_PER_MILE
+            : RADIUS_STEPS_MILES[step];
     }
 
     private void setupSearch() {
@@ -571,20 +593,20 @@ public class MainActivity extends AppCompatActivity {
         }));
     }
 
+    /**
+     * Labels the radius chips in the unit Settings is on, and re-reads the
+     * checked one in that unit. Called from onResume because the metric switch
+     * lives on another screen: coming back from it should leave the list
+     * showing what the chip now says, not what it said before.
+     */
     private void updateRadiusButtonLabels() {
-        SharedPreferences prefs = getSharedPreferences(SettingsActivity.PREFS_NAME, MODE_PRIVATE);
-        boolean useMetric = prefs.getBoolean(SettingsActivity.KEY_USE_METRIC, false);
-
-        setRadiusButtonLabel(R.id.radius5, 5.0, useMetric);
-        setRadiusButtonLabel(R.id.radius10, 10.0, useMetric);
-        setRadiusButtonLabel(R.id.radius25, 25.0, useMetric);
-        setRadiusButtonLabel(R.id.radius50, 50.0, useMetric);
-    }
-
-    private void setRadiusButtonLabel(int buttonId, double miles, boolean useMetric) {
-        long displayValue = useMetric ? Math.round(miles * 1.60934) : (long) miles;
-        String unit = useMetric ? "km" : "mi";
-        ((Button) findViewById(buttonId)).setText(displayValue + unit);
+        int[] steps = UnitConverter.useMetric(this) ? RADIUS_STEPS_KM : RADIUS_STEPS_MILES;
+        String unit = UnitConverter.distanceUnit(this);
+        for (int step = 0; step < RADIUS_BUTTON_IDS.length; step++) {
+            ((Button) findViewById(RADIUS_BUTTON_IDS[step]))
+                .setText(getString(R.string.radius_step, steps[step], unit));
+        }
+        currentRadiusMiles = radiusMiles(radiusStep);
     }
 
     @Override
