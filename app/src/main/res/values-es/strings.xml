@@ -683,10 +683,23 @@
     <string name="hazard_rocks_step_shoes">Lleva algo en los pies.</string>
     <string name="hazard_rocks_step_entry">Busca un canal de arena limpio para entrar y salir del agua.</string>
 
-    <!-- Avistamientos de fauna -->
-    <string name="sighting_species_dolphin">Delfín</string>
-    <string name="sighting_species_seal">Foca</string>
-    <string name="sighting_species_sea_lion">León marino</string>
+    <!-- Avistamientos de fauna. Grupos, no especies: ver el comentario en el
+         archivo en inglés. Cada etiqueta va acompañada de un sustantivo suelto
+         para el medio de una frase. -->
+    <string name="sighting_species_shark">Tiburón</string>
+    <string name="sighting_species_ray">Raya</string>
+    <string name="sighting_species_fish">Pez</string>
+    <string name="sighting_species_jellyfish">Medusa</string>
+    <string name="sighting_species_bird">Ave</string>
+    <string name="sighting_species_other">Otra cosa</string>
+
+
+    <string name="sighting_noun_shark">tiburón</string>
+    <string name="sighting_noun_ray">raya</string>
+    <string name="sighting_noun_fish">pez</string>
+    <string name="sighting_noun_jellyfish">medusa</string>
+    <string name="sighting_noun_bird">ave</string>
+    <string name="sighting_noun_other">animal</string>
 
     <string name="sighting_title">Reportar fauna</string>
     <string name="sighting_title_for">Fauna en %1$s</string>
@@ -700,7 +713,10 @@
     <string name="sighting_where_stranded">Varado en la arena</string>
 
     <string name="sighting_stranded_title">Esto levanta un aviso</string>
-    <string name="sighting_stranded_body">Un animal varado aparece arriba de los avisos de esta playa durante dos días, para que cualquiera que la abra lo vea primero. Mantente bien lejos tú también: una foca varada muchas veces solo está descansando, y puede morder.</string>
+    <string name="sighting_stranded_body">Un animal varado aparece arriba de los avisos de esta playa durante dos días, para que cualquiera que la abra lo vea primero. Mantente bien lejos tú también: un animal varado muchas veces solo está descansando, y asustado muerde.</string>
+
+    <string name="sighting_shark_title">Esto levanta un aviso</string>
+    <string name="sighting_shark_body">Un tiburón en el agua aparece arriba de los avisos de esta playa durante un día, para que cualquiera que la abra lo vea antes de entrar.</string>
 
     <string name="sighting_note_hint">Algo que valga la pena agregar (opcional)</string>
     <string name="sighting_photo_add">Agregar una foto</string>
@@ -713,22 +729,26 @@
     <string name="sighting_tag_stranded">En la arena</string>
     <string name="sighting_tag_water">En el agua</string>
 
-    <!-- Pasar el aviso a otra gente. No hay servidor detrás de esta app, así
-         que un reporte llega a los demás por la app de mensajes que ya
-         comparten, que además es la vía más rápida para llegar a la persona
-         que va caminando hacia el animal. -->
     <string name="sighting_share_cta">Avisar a otras personas</string>
     <string name="sighting_share_subject">Varamiento de %1$s en %2$s</string>
-    <string name="sighting_share_stranded">Atención: hay un varamiento de %1$s en la arena en %2$s. Quédate a por lo menos 45 metros, aleja a los perros y no lo empujes de vuelta al agua: eso puede matar a un animal sano. Repórtalo a los salvavidas de ahí o a tu red local de varamientos de mamíferos marinos.</string>
-    <string name="sighting_share_water">Avistamiento de %1$s en el agua en %2$s.</string>
+    <string name="sighting_share_subject_shark">Tiburón visto en %1$s</string>
+    <string name="sighting_share_subject_seen">Fauna en %1$s</string>
+    <string name="sighting_share_stranded">Atención: hay un varamiento de %1$s en la arena en %2$s. Quédate a por lo menos 45 metros, aleja a los perros y no lo empujes de vuelta al agua; eso puede matar a un animal sano. Repórtalo a los salvavidas de ahí o a tu red local de varamientos de mamíferos marinos.</string>
+    <string name="sighting_share_shark">Atención: reportaron un tiburón en el agua en %1$s. Avisa a los salvavidas de ahí antes de que alguien entre.</string>
+    <string name="sighting_share_water">Visto en %2$s: %1$s en el agua.</string>
     <string name="sighting_share_none">Ninguna app de este dispositivo puede enviar eso.</string>
 
-    <!-- El peligro que levanta un varamiento -->
-    <string name="hazard_stranding_body">Se reportó un varamiento de %1$s en la arena aquí. Mantente bien lejos.</string>
-    <string name="hazard_stranding_step_distance">Quédate a por lo menos 45 metros. Acercarse más es un delito bajo la Marine Mammal Protection Act.</string>
+    <!-- El aviso que levanta un reporte, en "A qué estar atento" y Avisos -->
+    <string name="hazard_stranding_body">Reportaron un varamiento de %1$s en la arena aquí. Mantente bien lejos.</string>
+    <string name="hazard_stranding_step_back">Mantente bien lejos, y mantén lejos a los niños. Si es una foca, un león marino, un delfín o una ballena, quédate a por lo menos 45 metros: acercarse más es un delito bajo la Marine Mammal Protection Act.</string>
     <string name="hazard_stranding_step_dogs">Mantén a los perros con correa y bien lejos.</string>
-    <string name="hazard_stranding_step_leave">No lo empujes de vuelta al agua. Las focas descansan en la orilla con normalidad, y mover a una sana puede matarla.</string>
+    <string name="hazard_stranding_step_leave">No lo toques ni lo empujes de vuelta al agua. Una medusa sigue picando aunque esté muerta, y un animal que descansa en la orilla puede morir si lo mueven.</string>
     <string name="hazard_stranding_step_tell">Avisa a los salvavidas, o a tu red local de varamientos de mamíferos marinos.</string>
+
+    <string name="hazard_shark_body">Reportaron un tiburón en el agua aquí en el último día.</string>
+    <string name="hazard_shark_step_exit">Si estás en el agua, sal con calma y sin chapotear.</string>
+    <string name="hazard_shark_step_group">No entres al agua al amanecer ni al atardecer, y no nades solo ni cerca de cardúmenes de carnada o de aves que se zambullen.</string>
+    <string name="hazard_shark_step_tell">Avisa a los salvavidas y fíjate si la playa tiene aviso puesto.</string>
 
     <!-- ══════ PARA QUÉ ES BUENA HOY ══════ -->
 

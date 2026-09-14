@@ -46,10 +46,11 @@ public final class SightingSheet {
             String.format(Locale.getDefault(), "%s · %s",
                 relativeTime(context, sighting.getTimeMillis()), beach.getName()));
 
-        // Only a stranding is worth warning anyone about. A dolphin out in the
-        // water is a nice thing to have seen, not a message somebody needs.
+        // Only a report that warns people is worth passing on: a stranding, or
+        // a shark still in the water. A dolphin off the break is a nice thing to
+        // have seen, not a message somebody needs.
         View share = sheet.findViewById(R.id.sightingSheetShare);
-        share.setVisibility(sighting.isStranded() ? View.VISIBLE : View.GONE);
+        share.setVisibility(sighting.raisesWarning() ? View.VISIBLE : View.GONE);
         share.setOnClickListener(v -> {
             dialog.dismiss();
             choice.onShare();

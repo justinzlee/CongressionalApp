@@ -8,9 +8,11 @@
   with an explanation rather than a chip, and choosing "washed up" reveals what
   that is about to do.
 
-  The species options are written out rather than inflated in a loop. There are
-  exactly three, they are not going to change at runtime, and spelling them out
-  keeps the ids the activity binds against visible in one place.
+  The animal groups are built from SightingSpecies at runtime rather than
+  written out here. They were written out when there were three of them; the
+  enum already carries every label and icon, it decides the order the cards sit
+  in, and a list spelled out in two places is a list that ends up disagreeing
+  with itself.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -92,61 +94,14 @@
                 android:text="@string/sighting_what"
                 android:textAppearance="@style/TextAppearance.App.Caption" />
 
+            <!-- Filled from SightingSpecies at runtime, three cards to a row.
+                 See item_species_choice.xml for why this is not written out. -->
             <LinearLayout
+                android:id="@+id/sightingSpecies"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:id="@+id/sightingDolphin"
-                    style="@style/Widget.App.SpeciesChoice"
-                    android:layout_marginEnd="4dp">
-
-                    <ImageView
-                        android:id="@+id/sightingDolphinIcon"
-                        style="@style/Widget.App.SpeciesChoiceIcon"
-                        android:src="@drawable/ic_dolphin" />
-
-                    <TextView
-                        android:id="@+id/sightingDolphinLabel"
-                        style="@style/Widget.App.SpeciesChoiceLabel"
-                        android:text="@string/sighting_species_dolphin" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/sightingSeal"
-                    style="@style/Widget.App.SpeciesChoice"
-                    android:layout_marginHorizontal="4dp">
-
-                    <ImageView
-                        android:id="@+id/sightingSealIcon"
-                        style="@style/Widget.App.SpeciesChoiceIcon"
-                        android:src="@drawable/ic_seal" />
-
-                    <TextView
-                        android:id="@+id/sightingSealLabel"
-                        style="@style/Widget.App.SpeciesChoiceLabel"
-                        android:text="@string/sighting_species_seal" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/sightingSeaLion"
-                    style="@style/Widget.App.SpeciesChoice"
-                    android:layout_marginStart="4dp">
-
-                    <ImageView
-                        android:id="@+id/sightingSeaLionIcon"
-                        style="@style/Widget.App.SpeciesChoiceIcon"
-                        android:src="@drawable/ic_seal" />
-
-                    <TextView
-                        android:id="@+id/sightingSeaLionLabel"
-                        style="@style/Widget.App.SpeciesChoiceLabel"
-                        android:text="@string/sighting_species_sea_lion" />
-                </LinearLayout>
-            </LinearLayout>
+                android:orientation="vertical" />
 
             <!-- ══════ WHERE ══════ -->
             <TextView
@@ -226,6 +181,52 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
                         android:text="@string/sighting_stranded_body"
+                        android:textAppearance="@style/TextAppearance.App.Body" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Shown only for a shark still in the water: the other report on
+                 this screen that raises a beach-wide warning, and the only one
+                 that does so without anything being on the sand. Same treatment
+                 as the stranding note, because it does the same thing. -->
+            <LinearLayout
+                android:id="@+id/sightingSharkNote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_danger_note"
+                android:orientation="horizontal"
+                android:padding="13dp"
+                android:visibility="gone"
+                tools:visibility="gone">
+
+                <ImageView
+                    android:layout_width="19dp"
+                    android:layout_height="19dp"
+                    android:contentDescription="@null"
+                    android:src="@drawable/ic_warning_circle"
+                    app:tint="@color/danger" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="11dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="@string/sighting_shark_title"
+                        android:textColor="@color/danger"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="3dp"
+                        android:text="@string/sighting_shark_body"
                         android:textAppearance="@style/TextAppearance.App.Body" />
                 </LinearLayout>
             </LinearLayout>

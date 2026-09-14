@@ -1,31 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Stingray seen from above. The disc is drawn wide and flat with the wingtips
-  swept back past the body, and the tail runs most of the height of the icon:
-  at list size a rounder disc over a short tail just reads as a mushroom.
+  Stingray seen from above.
+
+  Where the wingtips sit is the whole icon. Two earlier versions put them at the
+  lowest point of the shape, which leaves the outline arching over a vertical
+  tail and reads unmistakably as an umbrella, ribs and handle and all. Here they
+  are at mid-height with the body carried on below them, so the disc closes into
+  a diamond with a front and a back: leading edges convex out to the tips,
+  trailing edges swept concave back in to the root of the tail.
+
+  The tail then runs nearly to the bottom of the frame. Anything shorter goes
+  straight back to reading as a handle.
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="24dp"
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    <!-- Disc, wingtips swept back to the outer corners -->
+
     <path
-        android:pathData="M12,6.4 C15.4,7.4 19.4,9.8 22,13.6 C18.6,13.3 16.4,12.9 14.6,12.4 C13.8,12.9 13,13.1 12,13.1 C11,13.1 10.2,12.9 9.4,12.4 C7.6,12.9 5.4,13.3 2,13.6 C4.6,9.8 8.6,7.4 12,6.4 Z"
+        android:pathData="M12,3.6 C15.4,4.2 19.0,7.0 22.2,11.0 C18.6,11.8 15.6,13.4 13.4,15.6 C13.0,16.1 12.6,16.4 12,16.4 C11.4,16.4 11.0,16.1 10.6,15.6 C8.4,13.4 5.4,11.8 1.8,11.0 C5.0,7.0 8.6,4.2 12,3.6 Z"
         android:strokeColor="#000000"
         android:strokeWidth="1.6"
         android:strokeLineJoin="round"
         android:strokeLineCap="round" />
+
     <!-- Tail, long and kinked the way it whips -->
     <path
-        android:pathData="M12,13.1 C12.5,15.6 11.7,17.6 12.4,19.4 C12.8,20.4 12.6,21 12.3,21.6"
+        android:pathData="M12,16.4 C12.5,18.6 11.7,20.2 12.4,21.6 C12.7,22.2 12.6,22.6 12.3,22.9"
         android:strokeColor="#000000"
         android:strokeWidth="1.5"
         android:strokeLineCap="round" />
+
     <path
-        android:pathData="M10.5,9.3 m-0.75,0 a0.75,0.75 0,1 0,1.5 0 a0.75,0.75 0,1 0,-1.5 0"
+        android:pathData="M10.4,7.4 m-0.75,0 a0.75,0.75 0,1 0,1.5 0 a0.75,0.75 0,1 0,-1.5 0"
         android:fillColor="#000000" />
     <path
-        android:pathData="M13.5,9.3 m-0.75,0 a0.75,0.75 0,1 0,1.5 0 a0.75,0.75 0,1 0,-1.5 0"
+        android:pathData="M13.6,7.4 m-0.75,0 a0.75,0.75 0,1 0,1.5 0 a0.75,0.75 0,1 0,-1.5 0"
         android:fillColor="#000000" />
 </vector>
