@@ -2,6 +2,7 @@ package com.example.myapplication.ai;
 
 import android.content.Context;
 
+import com.example.myapplication.R;
 import com.example.myapplication.model.Beach;
 import com.example.myapplication.model.BeachConditions;
 import com.example.myapplication.model.Hazard;
@@ -15,12 +16,16 @@ import java.util.Locale;
  * Writes the one-paragraph plain-language note under the swim verdict — the
  * "why" behind the headline. Everything it says is drawn from the beach's
  * live conditions and the hazards on record; it never invents detail.
+ *
+ * <p>Every sentence is a whole string resource rather than fragments glued
+ * together, so a translation can order its own words: "hay un aviso por" takes
+ * the hazard where English takes it in the middle of "There is a … warning".
  */
 public class SafetyNote {
 
     public String describe(Context context, Beach beach, SafetyLevel level) {
         StringBuilder note = new StringBuilder();
-        note.append(describeSurf(beach.getConditions()));
+        note.append(describeSurf(context, beach.getConditions()));
 
         String hazardText = describeHazards(context, beach.getHazards());
         if (hazardText != null) {
@@ -32,23 +37,23 @@ public class SafetyNote {
             note.append(' ').append(uvText);
         }
 
-        note.append(' ').append(advice(level));
+        note.append(' ').append(context.getString(adviceRes(level)));
         return note.toString();
     }
 
-    private String describeSurf(BeachConditions conditions) {
+    private String describeSurf(Context context, BeachConditions conditions) {
         if (conditions == null || conditions.getWaveHeight() == null) {
-            return "Live surf readings for this beach aren't in yet.";
+            return context.getString(R.string.note_surf_unknown);
         }
         // Read off SafetyLevel's own thresholds rather than copied numbers, so
         // the wording can never call a swell "heavy" while the card above it
         // says "Moderate" and the verdict says "Take care". Copies of these
         // two numbers are exactly what drifted apart before.
         double feet = conditions.getWaveHeight();
-        if (feet < 1.0) return "The water is close to flat right now.";
-        if (feet < SafetyLevel.CAUTION_WAVE_FEET) return "Small, manageable waves are running.";
-        if (feet < SafetyLevel.DANGER_WAVE_FEET) return "There is a moderate swell running.";
-        return "A heavy swell is running.";
+        if (feet < 1.0) return context.getString(R.string.note_surf_flat);
+        if (feet < SafetyLevel.CAUTION_WAVE_FEET) return context.getString(R.string.note_surf_small);
+        if (feet < SafetyLevel.DANGER_WAVE_FEET) return context.getString(R.string.note_surf_moderate);
+        return context.getString(R.string.note_surf_heavy);
     }
 
     private String describeHazards(Context context, List<Hazard> hazards) {
@@ -57,11 +62,10 @@ public class SafetyNote {
         // name produced "uv index" mid-sentence.
         String names = hazards.stream()
             .map(h -> context.getString(h.getType().getInlineLabelRes()))
-            .reduce((a, b) -> a + " and " + b)
+            .reduce((a, b) -> context.getString(R.string.note_hazard_join, a, b))
             .orElse("");
-        return hazards.size() == 1
-            ? "There is a " + names + " warning here."
-            : "There are warnings here for " + names + ".";
+        return context.getString(hazards.size() == 1
+            ? R.string.note_hazard_one : R.string.note_hazard_many, names);
     }
 
     private String describeUv(Context context, BeachConditions conditions) {
@@ -70,19 +74,19 @@ public class SafetyNote {
         // number, so this line appears at exactly the reading the UV lesson
         // calls very high.
         if (UvLevel.of(conditions.getUvIndex()).compareTo(UvLevel.VERY_HIGH) < 0) return null;
-        return "UV is " + conditions.getUvLabel(context).toLowerCase(Locale.getDefault())
-            + " — cover up and reapply sunscreen.";
+        return context.getString(R.string.note_uv,
+            conditions.getUvLabel(context).toLowerCase(Locale.getDefault()));
     }
 
-    private String advice(SafetyLevel level) {
+    private int adviceRes(SafetyLevel level) {
         switch (level) {
             case DANGER:
-                return "Stay out of the water and follow the flags and signs on the beach.";
+                return R.string.note_advice_danger;
             case CAUTION:
-                return "Swim between the flags and keep a close eye on anyone in the water.";
+                return R.string.note_advice_caution;
             case SAFE:
             default:
-                return "Still swim between the flags where a patrol is on duty.";
+                return R.string.note_advice_safe;
         }
     }
 }

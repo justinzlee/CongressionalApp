@@ -485,30 +485,30 @@
                         app:singleSelection="true">
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/radius5"
+                            android:id="@+id/radiusStep1"
                             style="@style/Widget.App.Button.Radius"
-                            android:text="5mi" />
+                            tools:text="5 mi" />
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/radius10"
+                            android:id="@+id/radiusStep2"
                             style="@style/Widget.App.Button.Radius"
-                            android:text="10mi" />
+                            tools:text="10 mi" />
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/radius25"
+                            android:id="@+id/radiusStep3"
                             style="@style/Widget.App.Button.Radius"
-                            android:text="25mi" />
+                            tools:text="25 mi" />
 
                         <com.google.android.material.button.MaterialButton
-                            android:id="@+id/radius50"
+                            android:id="@+id/radiusStep4"
                             style="@style/Widget.App.Button.Radius"
-                            android:text="50mi" />
+                            tools:text="50 mi" />
 
                         <com.google.android.material.button.MaterialButton
                             android:id="@+id/radiusAll"
                             style="@style/Widget.App.Button.Radius"
                             android:checked="true"
-                            android:text="All" />
+                            android:text="@string/radius_all" />
                     </com.google.android.material.button.MaterialButtonToggleGroup>
 
                     <TextView
