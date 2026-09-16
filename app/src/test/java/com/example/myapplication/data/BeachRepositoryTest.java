@@ -3,6 +3,7 @@ package com.example.myapplication.data;
 import com.example.myapplication.model.Beach;
 import com.example.myapplication.model.HelpLocation;
 import com.example.myapplication.model.HelpType;
+import com.example.myapplication.util.UnitConverter;
 
 import org.junit.Test;
 
@@ -32,7 +33,7 @@ public class BeachRepositoryTest {
      * The size of the hardcoded dataset. Pinned so that a beach cannot be lost
      * to a bad merge unnoticed; bump it deliberately when the list grows.
      */
-    private static final int EXPECTED_BEACH_COUNT = 114;
+    private static final int EXPECTED_BEACH_COUNT = 175;
 
     /** The Great Lakes beaches: no tide to read, so no station to read it from. */
     private static final Set<String> LAKE_BEACHES = new HashSet<>(Arrays.asList(
@@ -139,6 +140,33 @@ public class BeachRepositoryTest {
     }
 
     /**
+     * Two pins a few hundred metres apart are one beach entered twice: the
+     * list shows them as separate places, the same conditions fill both, and
+     * the ranking screen puts what is really one stretch of sand in the top
+     * three twice over. Redondo Beach's pin sat on Torrance County Beach until
+     * Torrance was added and the two collided here.
+     *
+     * <p>A quarter of a mile is the loosest line that still catches that.
+     * Neighbours this app does list separately - Pacific Beach and Tourmaline,
+     * La Jolla Shores and the Cove - are all further apart than that.
+     */
+    @Test
+    public void noTwoBeachesArePinnedToTheSameSand() {
+        List<Beach> beaches = BeachRepository.newForTesting().getBeaches();
+        for (int i = 0; i < beaches.size(); i++) {
+            for (int j = i + 1; j < beaches.size(); j++) {
+                Beach a = beaches.get(i);
+                Beach b = beaches.get(j);
+                double miles = UnitConverter.calculateDistance(
+                    a.getLatitude(), a.getLongitude(), b.getLatitude(), b.getLongitude());
+                assertTrue(a.getName() + " and " + b.getName() + " are pinned "
+                        + Math.round(miles * 1760) + " yards apart - the same sand under two names",
+                    miles >= 0.25);
+            }
+        }
+    }
+
+    /**
      * A photo belongs to the one beach it was given to. The same stock pictures
      * used to be dealt round the whole list, so a dozen beaches on three coasts
      * showed the same shoreline; a beach with no photo of its own shows the
@@ -172,7 +200,15 @@ public class BeachRepositoryTest {
         "WA1", "WA2", "WA3", "WA4", "HI1", "HI2", "HI3", "HI4", "HI5", "HI6",
         "LOU1", "MS1", "FL3", "FL8", "FL9", "FL10", "FL11", "FL5", "FL6", "FL7", "FL12", "FL13",
         "SC1", "SC2", "NC1", "NC3", "MD1", "DE1", "DE2", "NJ1", "NJ4", "NJ5", "NY3", "NY4",
-        "RI1", "RI2", "MA1", "ME1", "ME2", "ME3", "MI1", "MI2", "WI1", "OH1", "PR1", "PR2"));
+        "RI1", "RI2", "MA1", "ME1", "ME2", "ME3", "MI1", "MI2", "WI1", "OH1", "PR1", "PR2",
+        // Sourced from Wikimedia Commons by geotag, then looked at one by one:
+        // a geotag on its own is not enough. Three Brück & Sohn postcards of
+        // Santa Catalina are tagged on the sand at San Onofre, fifty miles up
+        // the coast, which is why San Onofre still has no picture.
+        "CA13", "CA17", "CA19", "CA23", "LA11", "LA13", "LA14", "LA15", "LA16", "LA18",
+        "LA23", "LA24", "LA25", "LA26", "LA27", "CC6", "CC8", "CC10", "CC11", "CC12",
+        "CC16", "CC17", "CC19", "CC20", "SF4", "SF5", "SF6", "SF7", "SF8", "SF9",
+        "NCA1", "NCA2", "OR5", "WA5", "HI7", "NC5"));
 
     @Test
     public void onlyCheckedPhotosAreShown() {
@@ -210,6 +246,11 @@ public class BeachRepositoryTest {
 
         find(beaches, "Ruby Beach");                  // Washington
         find(beaches, "Ocean Beach, San Francisco");  // Northern California
+        find(beaches, "Refugio State Beach");           // Santa Barbara County
+        find(beaches, "Morro Rock Beach");              // San Luis Obispo County
+        find(beaches, "Asilomar State Beach");          // The Monterey Peninsula
+        find(beaches, "Crescent Beach, Crescent City"); // The Oregon border
+        find(beaches, "Avalon Beach, Catalina Island"); // The Channel Islands
         find(beaches, "Grand Isle State Park");       // Louisiana
         find(beaches, "Myrtle Beach");                // South Carolina
         find(beaches, "Cape Hatteras");               // North Carolina
@@ -264,8 +305,9 @@ public class BeachRepositoryTest {
     public void search_isCaseInsensitiveSubstringMatch() {
         BeachRepository repo = BeachRepository.newForTesting();
         List<Beach> results = repo.searchBeaches("carlsbad");
-        assertEquals(1, results.size());
+        assertEquals(2, results.size());
         assertEquals("Carlsbad State Beach", results.get(0).getName());
+        assertEquals("South Carlsbad State Beach", results.get(1).getName());
 
         List<Beach> mixedCase = repo.searchBeaches("CoRoNaDo");
         assertEquals(1, mixedCase.size());

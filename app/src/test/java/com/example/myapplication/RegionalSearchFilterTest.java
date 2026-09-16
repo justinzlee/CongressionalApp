@@ -45,15 +45,23 @@ public class RegionalSearchFilterTest {
         List<String> names = results.stream().map(Beach::getName).collect(Collectors.toList());
 
         assertEquals("Coronado Beach", names.get(0));
-        assertEquals("Ocean Beach", names.get(1));
-        assertEquals("Mission Beach", names.get(2));
-        assertEquals("Pacific Beach", names.get(3));
-        assertEquals("Imperial Beach", names.get(4));
-        assertEquals("La Jolla Shores", names.get(5));
-        assertEquals("Torrey Pines State Beach", names.get(6));
-        assertEquals("Del Mar City Beach", names.get(7));
-        assertEquals("Moonlight State Beach", names.get(8));
-        assertEquals(9, names.size());
+        assertEquals("Silver Strand State Beach", names.get(1));
+        assertEquals("Ocean Beach", names.get(2));
+        assertEquals("Mission Beach", names.get(3));
+        assertEquals("Pacific Beach", names.get(4));
+        assertEquals("Tourmaline Surfing Park", names.get(5));
+        assertEquals("Imperial Beach", names.get(6));
+        assertEquals("Windansea Beach", names.get(7));
+        assertEquals("La Jolla Cove", names.get(8));
+        assertEquals("La Jolla Shores", names.get(9));
+        assertEquals("Black's Beach", names.get(10));
+        assertEquals("Torrey Pines State Beach", names.get(11));
+        assertEquals("Del Mar City Beach", names.get(12));
+        assertEquals("Fletcher Cove, Solana Beach", names.get(13));
+        assertEquals("Cardiff State Beach", names.get(14));
+        assertEquals("Swami's Beach", names.get(15));
+        assertEquals("Moonlight State Beach", names.get(16));
+        assertEquals(17, names.size());
         assertTrue("Carlsbad State Beach (~32mi) should be outside a 25mi San Diego search",
             !names.contains("Carlsbad State Beach"));
         assertTrue("No East Coast beach should ever appear in a 25mi San Diego search",
@@ -70,11 +78,23 @@ public class RegionalSearchFilterTest {
 
         assertEquals("Carlsbad State Beach", names.get(0));
         assertEquals("Oceanside Beach", names.get(1));
-        assertEquals("Moonlight State Beach", names.get(2));
-        assertEquals("Del Mar City Beach", names.get(3));
-        assertEquals("Torrey Pines State Beach", names.get(4));
-        assertEquals("La Jolla Shores", names.get(5));
-        assertEquals(6, names.size());
+        assertEquals("South Carlsbad State Beach", names.get(2));
+        assertEquals("North Ponto Beach", names.get(3));
+        assertEquals("South Ponto Beach", names.get(4));
+        assertEquals("Moonlight State Beach", names.get(5));
+        assertEquals("Swami's Beach", names.get(6));
+        assertEquals("Cardiff State Beach", names.get(7));
+        assertEquals("Fletcher Cove, Solana Beach", names.get(8));
+        assertEquals("Del Mar City Beach", names.get(9));
+        assertEquals("Torrey Pines State Beach", names.get(10));
+        assertEquals("Black's Beach", names.get(11));
+        assertEquals("San Onofre State Beach", names.get(12));
+        assertEquals("La Jolla Shores", names.get(13));
+        assertEquals("La Jolla Cove", names.get(14));
+        assertEquals("San Clemente State Beach", names.get(15));
+        assertEquals("Windansea Beach", names.get(16));
+        assertEquals("Tourmaline Surfing Park", names.get(17));
+        assertEquals(18, names.size());
         assertTrue("Coronado/Ocean Beach (~30-34mi) should be outside a 25mi Carlsbad search",
             !names.contains("Coronado Beach") && !names.contains("Ocean Beach"));
     }
@@ -152,8 +172,12 @@ public class RegionalSearchFilterTest {
 
         List<String> names = matches.stream().map(Beach::getName).collect(Collectors.toList());
         assertTrue(names.contains("Carlsbad State Beach"));
+        assertTrue(names.contains("South Carlsbad State Beach"));
         assertTrue(names.contains("Moonlight State Beach"));
+        assertTrue(names.contains("Cardiff State Beach"));
         assertTrue(names.contains("Torrey Pines State Beach"));
-        assertEquals(3, names.size());
+        assertTrue(names.contains("San Onofre State Beach"));
+        assertTrue(names.contains("San Clemente State Beach"));
+        assertEquals(7, names.size());
     }
 }

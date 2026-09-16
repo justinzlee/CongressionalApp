@@ -101,7 +101,13 @@ public class WildlifeGuideActivity extends AppCompatActivity {
         new Coast(R.string.wildlife_region_socal,
             new String[] {
                 "CA1", "CA2", "CA3", "CA4", "CA5", "CA6", "CA7", "CA8", "CA9", "CA10", "CA11",
-                "LA1", "LA2", "LA3", "LA4", "LA5", "LA6", "LA7", "LA8", "LA9", "LA10" },
+                "CA12", "CA13", "CA14", "CA15", "CA16", "CA17", "CA18", "CA19", "CA20", "CA21",
+                "CA22", "CA23",
+                "LA1", "LA2", "LA3", "LA4", "LA5", "LA6", "LA7", "LA8", "LA9", "LA10",
+                "LA11", "LA12", "LA13", "LA14", "LA15", "LA16", "LA17", "LA18", "LA19",
+                "LA20", "LA21", "LA22", "LA23", "LA24", "LA25", "LA26", "LA27", "LA28",
+                // Santa Barbara and Ventura county, still inside the Bight.
+                "CC1", "CC6", "CC7", "CC8", "CC9", "CC10", "CC11", "CC12" },
             R.string.wildlife_socal_note_title, R.string.wildlife_socal_note_body,
             new Species[] {
                 new Species(R.string.wildlife_socal_ray_title,
@@ -120,9 +126,34 @@ public class WildlifeGuideActivity extends AppCompatActivity {
                     R.string.wildlife_socal_grunion_body, Risk.HARMLESS),
             }),
 
+        // Everything north of Point Conception, where the water turns cold and
+        // the animals change with it. The Southern California list stops at the
+        // point for the same reason.
+        new Coast(R.string.wildlife_region_norcal,
+            new String[] {
+                "CC2", "CC3", "CC4", "CC5",
+                "CC13", "CC14", "CC15", "CC16", "CC17", "CC18", "CC19", "CC20",
+                "SF1", "SF2", "SF3", "SF4", "SF5", "SF6", "SF7", "SF8", "SF9", "SF10",
+                "NCA1", "NCA2", "NCA3" },
+            R.string.wildlife_norcal_note_title, R.string.wildlife_norcal_note_body,
+            new Species[] {
+                new Species(R.string.wildlife_norcal_nettle_title,
+                    R.string.wildlife_norcal_nettle_body, Risk.CAN_STING, Sting.JELLYFISH),
+                new Species(R.string.wildlife_norcal_white_title,
+                    R.string.wildlife_norcal_white_body, Risk.GIVE_ROOM),
+                new Species(R.string.wildlife_norcal_eseal_title,
+                    R.string.wildlife_norcal_eseal_body, Risk.GIVE_ROOM),
+                new Species(R.string.wildlife_norcal_otter_title,
+                    R.string.wildlife_norcal_otter_body, Risk.PROTECTED),
+                new Species(R.string.wildlife_norcal_seal_title,
+                    R.string.wildlife_norcal_seal_body, Risk.PROTECTED),
+                new Species(R.string.wildlife_norcal_tidepool_title,
+                    R.string.wildlife_norcal_tidepool_body, Risk.HARMLESS),
+            }),
+
         new Coast(R.string.wildlife_region_florida,
             new String[] {
-                "FL1", "FL2", "FL3", "FL8", "FL9", "FL10", "FL11", "FL14" },
+                "FL1", "FL2", "FL3", "FL8", "FL9", "FL10", "FL11", "FL14", "FL16" },
             R.string.wildlife_fl_note_title, R.string.wildlife_fl_note_body,
             new Species[] {
                 new Species(R.string.wildlife_fl_manowar_title,
@@ -163,7 +194,7 @@ public class WildlifeGuideActivity extends AppCompatActivity {
             new String[] {
                 "NY1", "NY2", "NY3", "NY4", "NY5", "NY6",
                 "NJ1", "NJ2", "NJ3", "NJ4", "NJ5",
-                "CT1", "RI1", "RI2", "MA1", "MA2", "MA3", "MA4", "NH1", "ME1", "ME2", "ME3" },
+                "CT1", "RI1", "RI2", "MA1", "MA2", "MA3", "MA4", "MA5", "NH1", "ME1", "ME2", "ME3" },
             R.string.wildlife_ne_note_title, R.string.wildlife_ne_note_body,
             new Species[] {
                 new Species(R.string.wildlife_ne_lionsmane_title,
@@ -182,7 +213,7 @@ public class WildlifeGuideActivity extends AppCompatActivity {
 
         new Coast(R.string.wildlife_region_pnw,
             new String[] {
-                "OR1", "OR2", "OR3", "OR4", "WA1", "WA2", "WA3", "WA4" },
+                "OR1", "OR2", "OR3", "OR4", "OR5", "WA1", "WA2", "WA3", "WA4", "WA5" },
             R.string.wildlife_pnw_note_title, R.string.wildlife_pnw_note_body,
             new Species[] {
                 new Species(R.string.wildlife_pnw_jelly_title,

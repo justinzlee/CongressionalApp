@@ -610,6 +610,23 @@
     <string name="wildlife_pnw_whale_body">They migrate past in December and January and again from March to June, and a few feed off the headlands all summer. Look for the blow from the viewpoints above the beach.</string>
     <string name="wildlife_pnw_note_title">Sneaker waves</string>
     <string name="wildlife_pnw_note_body">This coast throws waves far up the beach with no warning and drags logs with them. Never turn your back on the water, never sit on a beach log, and keep off rocks the tide can cut off.</string>
+
+    <!-- Central and Northern California -->
+    <string name="wildlife_region_norcal">Central &amp; Northern California</string>
+    <string name="wildlife_norcal_nettle_title">Pacific sea nettle</string>
+    <string name="wildlife_norcal_nettle_body">A gold bell trailing long maroon arms, blooming in Monterey Bay in late summer. The sting stays sore for an hour or two, and a broken tentacle in the shallows stings after the jelly has gone.</string>
+    <string name="wildlife_norcal_white_title">White shark</string>
+    <string name="wildlife_norcal_white_body">This is the Red Triangle, and young white sharks spend their summers off the Monterey Bay beaches. They are hunting rays on the sand, not swimmers, and bites stay rare — but stay out of the water around seal haul-outs and at dawn and dusk.</string>
+    <string name="wildlife_norcal_eseal_title">Northern elephant seal</string>
+    <string name="wildlife_norcal_eseal_body">Two tons of animal that can outrun you over sand. They haul out at Año Nuevo, Point Reyes and Piedras Blancas to breed and to moult. Stay 100 feet back and never walk between one and the sea.</string>
+    <string name="wildlife_norcal_otter_title">Sea otter</string>
+    <string name="wildlife_norcal_otter_body">Rafts of them float in the kelp from Monterey down to Morro Bay. Getting close drives one off its food and a cornered otter bites hard, so watch from the sand and give a raft a wide berth in the water.</string>
+    <string name="wildlife_norcal_seal_title">Harbor seal pup</string>
+    <string name="wildlife_norcal_seal_body">Pupping runs from March to June and the mother leaves the pup on the sand while she feeds. Keep 150 feet back and dogs on the lead — a mother who will not come ashore loses the pup.</string>
+    <string name="wildlife_norcal_tidepool_title">Ochre sea stars and anemones</string>
+    <string name="wildlife_norcal_tidepool_body">Most of these pools sit inside marine protected areas where nothing may be taken. Walk on bare rock, and set back any stone you turn exactly as it lay.</string>
+    <string name="wildlife_norcal_note_title">The water does not warm up</string>
+    <string name="wildlife_norcal_note_body">Upwelling holds this coast in the low 50s°F through the summer. Cold that deep pulls the breath out of you on the first wave and takes your strength in minutes, which is why everyone in the water is wearing a wetsuit.</string>
     <!-- Your own photo of a beach. The hero changing is the confirmation that
          one landed or was taken away, so only the failures need words. -->
     <string name="photo_add">Add a photo</string>
