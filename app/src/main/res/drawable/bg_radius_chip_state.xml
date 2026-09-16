@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  A radius chip. Only the chip that is on is drawn; the rest are label-only,
+  which is what keeps the tray reading as one control instead of five buttons.
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/bg_radius_chip_on" android:state_selected="true" />
+    <item android:drawable="@android:color/transparent" />
+</selector>

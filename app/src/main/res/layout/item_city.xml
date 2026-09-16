@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  One coastal city in the list that drops out of the city field. The state sits
+  on the right in its own colour rather than trailing the name behind a comma,
+  so a column of cities reads as a column of names.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_city_item"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="13dp"
+    android:paddingTop="11dp"
+    android:paddingRight="13dp"
+    android:paddingBottom="11dp">
+
+    <TextView
+        android:id="@+id/cityName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/text_primary"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/cityState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textColor="@color/text_secondary"
+        android:textSize="11sp" />
+</LinearLayout>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  The ring that swells out from the pin on the search button. Drawn solid; the
+  fade is the view's own alpha, animated in MainActivity.
+-->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="oval">
+    <solid android:color="@color/primary" />
+</shape>

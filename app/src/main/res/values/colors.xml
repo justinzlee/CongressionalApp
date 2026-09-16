@@ -43,6 +43,11 @@
     <color name="danger_tint">#FEE1DA</color>
     <color name="accent_tint">#EBF7F9</color>
 
+    <!-- The band the search button sits on, at the foot of the Find a beach
+         card. Barely a colour - a five-percent wash of Sea over the card, just
+         enough to read as a separate shelf below the hairline. -->
+    <color name="search_footer">#0D147384</color>
+
     <!-- Legacy aliases kept so existing layouts and code keep resolving -->
     <color name="error">#E03C21</color>
     <color name="safe_green">#1DA46A</color>

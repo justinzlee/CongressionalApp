@@ -35,6 +35,10 @@
     <color name="danger_tint">#24F4947F</color>
     <color name="accent_tint">#2461B4C1</color>
 
+    <!-- The search card's footer wash, a step lighter than by day: a tint this
+         faint has to survive being laid over a dark surface rather than sand. -->
+    <color name="search_footer">#0F61B4C1</color>
+
     <!-- Legacy aliases kept so existing layouts and code keep resolving -->
     <color name="error">#F4947F</color>
     <color name="safe_green">#55CE9B</color>

@@ -33,6 +33,9 @@
     <string name="search_city_not_found">Location not found</string>
     <string name="search_network_error">Network error</string>
     <string name="find_nearby_beaches">Find Nearby Beaches</string>
+    <!-- On the search button while the city is being looked up -->
+    <string name="find_nearby_searching">Searching…</string>
+    <string name="search_clear">Clear the beach name</string>
     <string name="nearby_beaches">Nearby Beaches</string>
     <string name="nearby_report_action">Nearby Beach Report</string>
     <string name="nearby_report_title">Beaches Near You</string>
@@ -75,10 +78,12 @@
     <string name="verdict_danger_short">Not safe today</string>
     <string name="verdict_unknown">Checking conditions</string>
     <string name="verdict_unknown_note">Live conditions for this beach haven\'t loaded yet. Check the flags and signs on the beach before you swim.</string>
-    <!-- Under the verdict: the beach, and how long ago its readings came in -->
-    <string name="verdict_updated_now">%1$s · updated just now</string>
-    <string name="verdict_updated_minutes">%1$s · updated %2$d min ago</string>
-    <string name="verdict_updated_hours">%1$s · updated %2$d h ago</string>
+    <!-- Beside the verdict: how long ago this beach's readings came in. The
+         beach is not named here - the header above the card already names it,
+         and this line is set small enough that a name would crowd it out. -->
+    <string name="verdict_updated_now">Updated just now</string>
+    <string name="verdict_updated_minutes">Updated %1$dm ago</string>
+    <string name="verdict_updated_hours">Updated %1$dh ago</string>
     <string name="beach_details">Beach details</string>
 
     <!-- The paragraph under the verdict, assembled by SafetyNote from whatever

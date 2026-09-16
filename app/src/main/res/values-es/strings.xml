@@ -40,6 +40,8 @@
     <string name="search_city_not_found">No se encontró la ubicación</string>
     <string name="search_network_error">Error de conexión</string>
     <string name="find_nearby_beaches">Buscar playas cercanas</string>
+    <string name="find_nearby_searching">Buscando…</string>
+    <string name="search_clear">Borrar el nombre de la playa</string>
     <string name="nearby_beaches">Playas cercanas</string>
     <string name="nearby_report_action">Reporte de playas cercanas</string>
     <string name="nearby_report_title">Playas cerca de ti</string>
@@ -79,9 +81,9 @@
     <string name="verdict_danger_short">Hoy no es seguro</string>
     <string name="verdict_unknown">Consultando condiciones</string>
     <string name="verdict_unknown_note">Todavía no llegan las condiciones en vivo de esta playa. Revisa las banderas y las señales de la playa antes de nadar.</string>
-    <string name="verdict_updated_now">%1$s · actualizado ahora mismo</string>
-    <string name="verdict_updated_minutes">%1$s · actualizado hace %2$d min</string>
-    <string name="verdict_updated_hours">%1$s · actualizado hace %2$d h</string>
+    <string name="verdict_updated_now">Actualizado ahora mismo</string>
+    <string name="verdict_updated_minutes">Actualizado hace %1$d min</string>
+    <string name="verdict_updated_hours">Actualizado hace %1$d h</string>
     <string name="beach_details">Detalles de la playa</string>
 
     <!-- El párrafo bajo el veredicto, armado por SafetyNote -->
