@@ -175,6 +175,68 @@
         <item name="android:textColor">@color/text_secondary</item>
     </style>
 
+    <!--
+      Home hero tile: one of the four readings folded into the verdict card.
+      Unlike Widget.App.StatTile it carries no icon - inside the card the four
+      labels already sit in a 2x2 block that reads as a set, and four more
+      glyphs only crowd it.
+    -->
+    <style name="Widget.App.HeroStatTile" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@drawable/bg_stat_tile</item>
+        <!-- Split edges rather than padding{Horizontal,Vertical}: those are
+             API 26+, and in a style (unlike a layout) they are silently
+             dropped below that, which minSdk 24 would hit. -->
+        <item name="android:paddingLeft">13dp</item>
+        <item name="android:paddingRight">13dp</item>
+        <item name="android:paddingTop">11dp</item>
+        <item name="android:paddingBottom">11dp</item>
+    </style>
+    <style name="Widget.App.HeroStatTileValue" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <!-- A field inside the search card: the city picker and the name box. -->
+    <style name="Widget.App.SearchField" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:background">@drawable/bg_search_field</item>
+        <item name="android:paddingLeft">15dp</item>
+        <item name="android:paddingRight">15dp</item>
+    </style>
+
+    <!--
+      One of the five radius chips. Selection is a background and a colour, not
+      a border: five outlined buttons in a row would read as five controls
+      rather than one setting with five positions.
+    -->
+    <style name="Widget.App.RadiusChip" parent="">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:background">@drawable/bg_radius_chip</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">9dp</item>
+        <item name="android:paddingBottom">9dp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">12.5sp</item>
+        <item name="android:textColor">@color/radius_chip_text</item>
+    </style>
+
     <!-- Bottom tab bar -->
     <style name="Widget.App.Tab" parent="">
         <item name="android:layout_width">0dp</item>
@@ -200,22 +262,6 @@
         <item name="android:layout_marginTop">3dp</item>
         <item name="android:textSize">9.5sp</item>
         <item name="android:textColor">@color/text_secondary</item>
-    </style>
-
-    <!-- Search-radius segmented buttons -->
-    <style name="Widget.App.Button.Radius" parent="Widget.Material3.Button.OutlinedButton">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:insetTop">0dp</item>
-        <item name="android:insetBottom">0dp</item>
-        <item name="android:paddingLeft">0dp</item>
-        <item name="android:paddingRight">0dp</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:letterSpacing">0</item>
-        <item name="android:textSize">12sp</item>
-        <item name="cornerRadius">8dp</item>
-        <item name="strokeColor">@color/divider</item>
     </style>
 
     <!-- Reporting a wildlife sighting.

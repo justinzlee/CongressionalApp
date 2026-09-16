@@ -136,13 +136,19 @@
             android:paddingTop="6dp"
             android:paddingBottom="24dp">
 
-            <!-- ══════ VERDICT CARD ══════ -->
+            <!-- ══════ THE BEACH NEAR YOU ══════
+
+                 The nearest beach's answer to "can I swim right now?" and the
+                 readings behind that answer, in one card. The four tiles used
+                 to sit in a block of their own below, which read as a second
+                 subject; folded in under the sentence, they are plainly the
+                 evidence for the line at the top. -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/verdictCard"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/surface"
-                app:cardCornerRadius="14dp"
+                app:cardCornerRadius="20dp"
                 app:cardElevation="0dp"
                 app:strokeColor="@color/divider"
                 app:strokeWidth="1dp">
@@ -150,200 +156,164 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                    <!-- The design's colour band across the top of the card -->
-                    <View
-                        android:id="@+id/verdictBand"
+                    <!--
+                      The verdict, at speaking size rather than headline size:
+                      the beach name above the card is this screen's headline.
+                      A dot in the safety colour carries the state that a band
+                      across the card and a badge beside it used to carry
+                      between them - one mark, in the one place the eye is
+                      already going.
+                    -->
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="4dp"
-                        android:background="@color/safe" />
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <!-- Painted in code: the dot and its ring both take the
+                             safety colour of the moment. See bindVerdict. -->
+                        <View
+                            android:id="@+id/verdictDot"
+                            android:layout_width="16dp"
+                            android:layout_height="16dp" />
+
+                        <TextView
+                            android:id="@+id/verdictText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="10dp"
+                            android:fontFamily="sans-serif-medium"
+                            android:textColor="@color/safe"
+                            android:textSize="15sp"
+                            tools:text="Good to swim" />
+
+                        <TextView
+                            android:id="@+id/verdictMeta"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            android:layout_weight="1"
+                            android:ellipsize="end"
+                            android:gravity="end"
+                            android:maxLines="1"
+                            android:textAppearance="@style/TextAppearance.App.TileLabel"
+                            tools:text="Updated 4m ago" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/verdictNote"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:textAppearance="@style/TextAppearance.App.Body"
+                        tools:text="Small, manageable waves are running. Still swim between the flags where a patrol is on duty." />
+
+                    <!-- The four readings the verdict is drawn from. No icons:
+                         inside the card the labels already sit in a 2x2 block
+                         that reads as one set, and four more glyphs only
+                         crowd it. -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            style="@style/Widget.App.HeroStatTile"
+                            android:layout_marginEnd="4dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/stat_surf"
+                                android:textAppearance="@style/TextAppearance.App.TileLabel" />
+
+                            <TextView
+                                android:id="@+id/statSurfValue"
+                                style="@style/Widget.App.HeroStatTileValue"
+                                tools:text="2.8 ft" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            style="@style/Widget.App.HeroStatTile"
+                            android:layout_marginStart="4dp">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/stat_uv"
+                                android:textAppearance="@style/TextAppearance.App.TileLabel" />
+
+                            <TextView
+                                android:id="@+id/statUvValue"
+                                style="@style/Widget.App.HeroStatTileValue"
+                                tools:text="Moderate (5)" />
+                        </LinearLayout>
+                    </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingHorizontal="15dp"
-                        android:paddingTop="16dp"
-                        android:paddingBottom="15dp">
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
 
                         <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center_vertical"
-                            android:orientation="horizontal">
+                            style="@style/Widget.App.HeroStatTile"
+                            android:layout_marginEnd="4dp">
 
-                            <ImageView
-                                android:id="@+id/verdictIcon"
-                                android:layout_width="30dp"
-                                android:layout_height="30dp"
-                                android:contentDescription="@null"
-                                android:src="@drawable/ic_check_circle"
-                                app:tint="@color/safe" />
-
-                            <LinearLayout
-                                android:layout_width="0dp"
+                            <TextView
+                                android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="11dp"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
+                                android:text="@string/stat_wind"
+                                android:textAppearance="@style/TextAppearance.App.TileLabel" />
 
-                                <TextView
-                                    android:id="@+id/verdictText"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="sans-serif-medium"
-                                    android:textColor="@color/safe"
-                                    android:textSize="23sp"
-                                    tools:text="Good to swim" />
-
-                                <TextView
-                                    android:id="@+id/verdictMeta"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="3dp"
-                                    android:ellipsize="end"
-                                    android:maxLines="1"
-                                    android:textAppearance="@style/TextAppearance.App.Subtitle"
-                                    tools:text="La Jolla Shores · updated just now" />
-                            </LinearLayout>
+                            <TextView
+                                android:id="@+id/statWindValue"
+                                style="@style/Widget.App.HeroStatTileValue"
+                                tools:text="8.7 mph" />
                         </LinearLayout>
 
-                        <TextView
-                            android:id="@+id/verdictNote"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:textAppearance="@style/TextAppearance.App.Body"
-                            tools:text="Small clean waves and a light onshore breeze." />
+                        <LinearLayout
+                            style="@style/Widget.App.HeroStatTile"
+                            android:layout_marginStart="4dp">
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/verdictDetailsButton"
-                            style="@style/Widget.Material3.Button.OutlinedButton"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:fontFamily="sans-serif-medium"
-                            android:letterSpacing="0"
-                            android:text="@string/beach_details"
-                            android:textAllCaps="false"
-                            android:textColor="@color/primary"
-                            android:textSize="14sp"
-                            app:cornerRadius="8dp"
-                            app:strokeColor="@color/primary" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/stat_water"
+                                android:textAppearance="@style/TextAppearance.App.TileLabel" />
+
+                            <TextView
+                                android:id="@+id/statTempValue"
+                                style="@style/Widget.App.HeroStatTileValue"
+                                tools:text="74.6°F" />
+                        </LinearLayout>
                     </LinearLayout>
+
+                    <!-- The way through to the whole report. A ghost button:
+                         the card has already said everything urgent, so this
+                         is an offer rather than a call. -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/verdictDetailsButton"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="46dp"
+                        android:layout_marginTop="14dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:insetBottom="0dp"
+                        android:insetTop="0dp"
+                        android:letterSpacing="0"
+                        android:text="@string/beach_details"
+                        android:textAllCaps="false"
+                        android:textColor="@color/primary"
+                        android:textSize="14sp"
+                        app:cornerRadius="13dp"
+                        app:strokeColor="@color/divider" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
-
-            <!-- ══════ STAT TILES ══════ -->
-            <LinearLayout
-                android:id="@+id/statGrid"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="14dp"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        style="@style/Widget.App.StatTile"
-                        android:layout_marginEnd="4.5dp">
-
-                        <LinearLayout
-                            style="@style/Widget.App.StatTileLabelRow">
-
-                            <ImageView
-                                style="@style/Widget.App.StatTileIcon"
-                                android:src="@drawable/ic_wave" />
-
-                            <TextView
-                                style="@style/Widget.App.StatTileLabel"
-                                android:text="@string/stat_surf" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/statSurfValue"
-                            style="@style/Widget.App.StatTileValue"
-                            tools:text="0.4 m" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        style="@style/Widget.App.StatTile"
-                        android:layout_marginStart="4.5dp">
-
-                        <LinearLayout
-                            style="@style/Widget.App.StatTileLabelRow">
-
-                            <ImageView
-                                style="@style/Widget.App.StatTileIcon"
-                                android:src="@drawable/ic_sun" />
-
-                            <TextView
-                                style="@style/Widget.App.StatTileLabel"
-                                android:text="@string/stat_uv" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/statUvValue"
-                            style="@style/Widget.App.StatTileValue"
-                            tools:text="8 · very high" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="9dp"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        style="@style/Widget.App.StatTile"
-                        android:layout_marginEnd="4.5dp">
-
-                        <LinearLayout
-                            style="@style/Widget.App.StatTileLabelRow">
-
-                            <ImageView
-                                style="@style/Widget.App.StatTileIcon"
-                                android:src="@drawable/ic_wind" />
-
-                            <TextView
-                                style="@style/Widget.App.StatTileLabel"
-                                android:text="@string/stat_wind" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/statWindValue"
-                            style="@style/Widget.App.StatTileValue"
-                            tools:text="14 mph" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        style="@style/Widget.App.StatTile"
-                        android:layout_marginStart="4.5dp">
-
-                        <LinearLayout
-                            style="@style/Widget.App.StatTileLabelRow">
-
-                            <ImageView
-                                style="@style/Widget.App.StatTileIcon"
-                                android:src="@drawable/ic_thermometer" />
-
-                            <TextView
-                                style="@style/Widget.App.StatTileLabel"
-                                android:text="@string/stat_water" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:id="@+id/statTempValue"
-                            style="@style/Widget.App.StatTileValue"
-                            tools:text="75°F" />
-                    </LinearLayout>
-                </LinearLayout>
-            </LinearLayout>
 
             <!-- ══════ BEST BEACH FOR… ══════
 
@@ -405,15 +375,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="9dp"
                 android:text="@string/section_search"
                 android:textAppearance="@style/TextAppearance.App.Caption" />
 
+            <!--
+              Two fields, a radius, and one action, in a card that keeps the
+              action on a shelf of its own at the foot. The fields are drawn
+              rather than framed - a recessed well with a hairline edge, the
+              same treatment as a stat tile - because three stacked outlined
+              boxes read as a form, and this is a search.
+            -->
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/surface"
-                app:cardCornerRadius="10dp"
+                app:cardCornerRadius="20dp"
                 app:cardElevation="0dp"
                 app:strokeColor="@color/divider"
                 app:strokeWidth="1dp">
@@ -421,123 +398,235 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="13dp">
+                    android:orientation="vertical">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/select_coastal_city"
-                        app:boxCornerRadiusBottomEnd="8dp"
-                        app:boxCornerRadiusBottomStart="8dp"
-                        app:boxCornerRadiusTopEnd="8dp"
-                        app:boxCornerRadiusTopStart="8dp"
-                        app:boxStrokeColor="@color/divider"
-                        app:startIconDrawable="@drawable/ic_map_pin"
-                        app:startIconTint="@color/primary">
+                        android:orientation="vertical"
+                        android:padding="16dp">
 
-                        <AutoCompleteTextView
-                            android:id="@+id/citySearchEditText"
+                        <!--
+                          The city. Still a typeable field rather than a plain
+                          menu: the list runs to a hundred and fifty coastal
+                          towns, and typing three letters beats scrolling to
+                          the M's. The caret says it drops down; MainActivity
+                          turns it over while the list is open.
+                        -->
+                        <LinearLayout
+                            android:id="@+id/cityField"
+                            style="@style/Widget.App.SearchField">
+
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_map_pin"
+                                app:tint="@color/primary" />
+
+                            <AutoCompleteTextView
+                                android:id="@+id/citySearchEditText"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="12dp"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:completionThreshold="1"
+                                android:dropDownAnchor="@id/cityField"
+                                android:dropDownHeight="236dp"
+                                android:dropDownVerticalOffset="8dp"
+                                android:gravity="center_vertical"
+                                android:hint="@string/select_coastal_city"
+                                android:imeOptions="actionSearch"
+                                android:importantForAutofill="no"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:paddingStart="0dp"
+                                android:paddingEnd="0dp"
+                                android:popupBackground="@drawable/bg_search_menu"
+                                android:textColor="@color/text_primary"
+                                android:textColorHint="@color/text_secondary"
+                                android:textSize="14.5sp" />
+
+                            <ImageView
+                                android:id="@+id/cityCaret"
+                                android:layout_width="11dp"
+                                android:layout_height="11dp"
+                                android:layout_marginStart="10dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_chevron_down"
+                                app:tint="@color/text_secondary" />
+                        </LinearLayout>
+
+                        <!-- The beach name, filtering the list below as it is
+                             typed. The clear mark only appears once there is
+                             something to clear. -->
+                        <LinearLayout
+                            style="@style/Widget.App.SearchField"
+                            android:layout_marginTop="10dp">
+
+                            <ImageView
+                                android:layout_width="15dp"
+                                android:layout_height="15dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_search"
+                                app:tint="@color/primary" />
+
+                            <!-- Nothing here is about the person, so there is
+                                 nothing for autofill to fill. -->
+                            <EditText
+                                android:id="@+id/searchEditText"
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="11dp"
+                                android:layout_weight="1"
+                                android:background="@null"
+                                android:gravity="center_vertical"
+                                android:hint="@string/beach_name_hint"
+                                android:imeOptions="actionSearch"
+                                android:importantForAutofill="no"
+                                android:inputType="text"
+                                android:maxLines="1"
+                                android:paddingStart="0dp"
+                                android:paddingEnd="0dp"
+                                android:textColor="@color/text_primary"
+                                android:textColorHint="@color/text_secondary"
+                                android:textSize="14.5sp" />
+
+                            <ImageButton
+                                android:id="@+id/searchClearButton"
+                                android:layout_width="26dp"
+                                android:layout_height="26dp"
+                                android:background="?attr/selectableItemBackgroundBorderless"
+                                android:contentDescription="@string/search_clear"
+                                android:padding="8dp"
+                                android:src="@drawable/ic_close"
+                                android:visibility="gone"
+                                app:tint="@color/text_secondary" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginBottom="7dp"
+                            android:text="@string/radius_label"
+                            android:textAppearance="@style/TextAppearance.App.TileLabel" />
+
+                        <!-- One setting with five positions, not five buttons:
+                             the tray is the control, and only the chip that is
+                             on is drawn. -->
+                        <LinearLayout
+                            android:id="@+id/radiusChipRow"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:completionThreshold="1"
-                            android:hint="@string/select_coastal_city"
-                            android:inputType="text"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                            android:background="@drawable/bg_radius_tray"
+                            android:orientation="horizontal"
+                            android:padding="4dp">
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:hint="@string/beach_name_hint"
-                        app:boxCornerRadiusBottomEnd="8dp"
-                        app:boxCornerRadiusBottomStart="8dp"
-                        app:boxCornerRadiusTopEnd="8dp"
-                        app:boxCornerRadiusTopStart="8dp"
-                        app:boxStrokeColor="@color/divider"
-                        app:startIconDrawable="@drawable/ic_search"
-                        app:startIconTint="@color/primary">
+                            <TextView
+                                android:id="@+id/radiusStep1"
+                                style="@style/Widget.App.RadiusChip"
+                                tools:text="5 mi" />
 
-                        <com.google.android.material.textfield.TextInputEditText
-                            android:id="@+id/searchEditText"
+                            <TextView
+                                android:id="@+id/radiusStep2"
+                                style="@style/Widget.App.RadiusChip"
+                                android:layout_marginStart="4dp"
+                                tools:text="10 mi" />
+
+                            <TextView
+                                android:id="@+id/radiusStep3"
+                                style="@style/Widget.App.RadiusChip"
+                                android:layout_marginStart="4dp"
+                                tools:text="25 mi" />
+
+                            <TextView
+                                android:id="@+id/radiusStep4"
+                                style="@style/Widget.App.RadiusChip"
+                                android:layout_marginStart="4dp"
+                                tools:text="50 mi" />
+
+                            <TextView
+                                android:id="@+id/radiusAll"
+                                style="@style/Widget.App.RadiusChip"
+                                android:layout_marginStart="4dp"
+                                android:text="@string/radius_all" />
+                        </LinearLayout>
+
+                        <!-- Why four of the five chips are dimmed, when they
+                             are. Gone the moment there is a position to
+                             measure from. -->
+                        <TextView
+                            android:id="@+id/radiusHint"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="text"
-                            android:textSize="14sp" />
-                    </com.google.android.material.textfield.TextInputLayout>
+                            android:layout_marginTop="8dp"
+                            android:text="@string/radius_needs_location"
+                            android:textAppearance="@style/TextAppearance.App.Subtitle"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="14dp"
-                        android:layout_marginBottom="7dp"
-                        android:text="@string/radius_label"
-                        android:textAppearance="@style/TextAppearance.App.TileLabel" />
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="@color/divider" />
 
-                    <com.google.android.material.button.MaterialButtonToggleGroup
-                        android:id="@+id/radiusToggleGroup"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:selectionRequired="true"
-                        app:singleSelection="true">
+                        android:background="@color/search_footer"
+                        android:orientation="vertical"
+                        android:paddingLeft="16dp"
+                        android:paddingTop="14dp"
+                        android:paddingRight="16dp"
+                        android:paddingBottom="16dp">
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/radiusStep1"
-                            style="@style/Widget.App.Button.Radius"
-                            tools:text="5 mi" />
+                        <LinearLayout
+                            android:id="@+id/citySearchButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:background="@drawable/bg_search_cta"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:gravity="center"
+                            android:orientation="horizontal">
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/radiusStep2"
-                            style="@style/Widget.App.Button.Radius"
-                            tools:text="10 mi" />
+                            <!-- A ring that swells out of the pin and fades,
+                                 the way a fix lands on a map. Driven from
+                                 MainActivity.
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/radiusStep3"
-                            style="@style/Widget.App.Button.Radius"
-                            tools:text="25 mi" />
+                                 The pin is pulled back over the ring with a
+                                 negative margin rather than stacked in a
+                                 FrameLayout: this screen is already ten
+                                 levels deep, and a frame here is one level
+                                 spent on two views that never move apart. -->
+                            <View
+                                android:id="@+id/citySearchPulse"
+                                android:layout_width="18dp"
+                                android:layout_height="18dp"
+                                android:alpha="0"
+                                android:background="@drawable/bg_pulse_ring" />
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/radiusStep4"
-                            style="@style/Widget.App.Button.Radius"
-                            tools:text="50 mi" />
+                            <ImageView
+                                android:layout_width="14dp"
+                                android:layout_height="14dp"
+                                android:layout_marginStart="-16dp"
+                                android:contentDescription="@null"
+                                android:src="@drawable/ic_map_pin"
+                                app:tint="@color/primary" />
 
-                        <com.google.android.material.button.MaterialButton
-                            android:id="@+id/radiusAll"
-                            style="@style/Widget.App.Button.Radius"
-                            android:checked="true"
-                            android:text="@string/radius_all" />
-                    </com.google.android.material.button.MaterialButtonToggleGroup>
-
-                    <TextView
-                        android:id="@+id/radiusHint"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="7dp"
-                        android:text="@string/radius_needs_location"
-                        android:textAppearance="@style/TextAppearance.App.Subtitle"
-                        android:textSize="11.5sp" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/citySearchButton"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="match_parent"
-                        android:layout_height="44dp"
-                        android:layout_marginTop="14dp"
-                        android:fontFamily="sans-serif-medium"
-                        android:letterSpacing="0"
-                        android:text="@string/find_nearby_beaches"
-                        android:textAllCaps="false"
-                        android:textColor="@color/primary"
-                        android:textSize="14sp"
-                        app:cornerRadius="8dp"
-                        app:icon="@drawable/ic_map_pin"
-                        app:iconGravity="textStart"
-                        app:iconPadding="8dp"
-                        app:iconTint="@color/primary"
-                        app:strokeColor="@color/primary" />
+                            <TextView
+                                android:id="@+id/citySearchLabel"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="9dp"
+                                android:fontFamily="sans-serif-medium"
+                                android:text="@string/find_nearby_beaches"
+                                android:textColor="@color/primary"
+                                android:textSize="14.5sp" />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

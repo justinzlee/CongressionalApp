@@ -6,25 +6,28 @@ import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.res.ColorStateList;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.ai.SafetyNote;
@@ -36,7 +39,6 @@ import com.example.myapplication.model.BeachConditions;
 import com.example.myapplication.model.SafetyLevel;
 import com.example.myapplication.util.EdgeToEdge;
 import com.example.myapplication.util.UnitConverter;
-import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.card.MaterialCardView;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -77,9 +79,14 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView beachRecyclerView;
     
     private EditText searchEditText;
+    private View searchClearButton;
     private AutoCompleteTextView citySearchEditText;
-    private MaterialButtonToggleGroup radiusToggleGroup;
-    private Button citySearchButton;
+    private View cityField;
+    private ImageView cityCaret;
+    private View citySearchButton, citySearchPulse;
+    private TextView citySearchLabel;
+    /** The five radius chips, steps first and "All" last. */
+    private final TextView[] radiusChips = new TextView[5];
     private View emptyState;
     private TextView beachCountBadge;
 
@@ -87,12 +94,13 @@ public class MainActivity extends AppCompatActivity {
     private TextView headerKicker, headerTitle;
     private View headerKickerRow;
     private MaterialCardView verdictCard;
-    private View verdictBand;
-    private ImageView verdictIcon;
+    /** The safety colour, as a dot in a ring of its own tint. */
+    private View verdictDot;
     private TextView verdictText, verdictMeta, verdictNote;
-    private Button verdictDetailsButton;
-    private View statGrid;
+    private View verdictDetailsButton;
     private TextView statSurfValue, statUvValue, statWindValue, statTempValue;
+    /** The ring swelling out of the pin on the search button. */
+    private ValueAnimator pulseAnimator;
     /** The beach the verdict card speaks for; what the SOS sheet reports. */
     private Beach nearestBeach;
 
@@ -108,9 +116,13 @@ public class MainActivity extends AppCompatActivity {
      */
     private static final int[] RADIUS_STEPS_MILES = {5, 10, 25, 50};
     private static final int[] RADIUS_STEPS_KM = {10, 25, 50, 100};
-    /** The chips those steps sit on, in the same order. */
-    private static final int[] RADIUS_BUTTON_IDS = {
-        R.id.radiusStep1, R.id.radiusStep2, R.id.radiusStep3, R.id.radiusStep4};
+    /**
+     * The chips in the tray, in order: the four steps above, then "All". The
+     * last one is no step at all, so it is the only chip that works without a
+     * position to measure from.
+     */
+    private static final int[] RADIUS_CHIP_IDS = {
+        R.id.radiusStep1, R.id.radiusStep2, R.id.radiusStep3, R.id.radiusStep4, R.id.radiusAll};
     /** The "All" chip, which is no step at all. */
     private static final int RADIUS_ALL = -1;
 
@@ -176,9 +188,16 @@ public class MainActivity extends AppCompatActivity {
         locationService = new LocationService(this);
 
         searchEditText = findViewById(R.id.searchEditText);
+        searchClearButton = findViewById(R.id.searchClearButton);
         citySearchEditText = findViewById(R.id.citySearchEditText);
+        cityField = findViewById(R.id.cityField);
+        cityCaret = findViewById(R.id.cityCaret);
         citySearchButton = findViewById(R.id.citySearchButton);
-        radiusToggleGroup = findViewById(R.id.radiusToggleGroup);
+        citySearchLabel = findViewById(R.id.citySearchLabel);
+        citySearchPulse = findViewById(R.id.citySearchPulse);
+        for (int i = 0; i < RADIUS_CHIP_IDS.length; i++) {
+            radiusChips[i] = findViewById(RADIUS_CHIP_IDS[i]);
+        }
         emptyState = findViewById(R.id.emptyState);
         beachCountBadge = findViewById(R.id.beachCountBadge);
 
@@ -186,13 +205,11 @@ public class MainActivity extends AppCompatActivity {
         headerKickerRow = findViewById(R.id.headerKickerRow);
         headerTitle = findViewById(R.id.headerTitle);
         verdictCard = findViewById(R.id.verdictCard);
-        verdictBand = findViewById(R.id.verdictBand);
-        verdictIcon = findViewById(R.id.verdictIcon);
+        verdictDot = findViewById(R.id.verdictDot);
         verdictText = findViewById(R.id.verdictText);
         verdictMeta = findViewById(R.id.verdictMeta);
         verdictNote = findViewById(R.id.verdictNote);
         verdictDetailsButton = findViewById(R.id.verdictDetailsButton);
-        statGrid = findViewById(R.id.statGrid);
         statSurfValue = findViewById(R.id.statSurfValue);
         statUvValue = findViewById(R.id.statUvValue);
         statWindValue = findViewById(R.id.statWindValue);
@@ -216,10 +233,10 @@ public class MainActivity extends AppCompatActivity {
         });
         beachRecyclerView.setAdapter(adapter);
 
-        setupRadiusSpinner();
+        setupRadiusChips();
         setupSearch();
         setupCitySearch();
-        updateRadiusButtonsEnabled();
+        updateRadiusChipsEnabled();
 
         // Conditions are asked for in onResume, which runs on the way in too.
         updateList(); // Initial update
@@ -274,11 +291,49 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         requestLocation();
+        startPulse();
     }
 
-    private void updateRadiusButtonsEnabled() {
-        for (int buttonId : RADIUS_BUTTON_IDS) {
-            findViewById(buttonId).setEnabled(hasLocation);
+    /**
+     * The ring swelling out of the pin on the search button: it grows and
+     * fades away over the first two thirds of each cycle, then waits, so the
+     * button breathes rather than throbs.
+     *
+     * <p>Run from onStart/onStop rather than started once, because an
+     * animator left running behind another tab draws frames nobody is looking
+     * at for as long as the app is open.
+     */
+    private void startPulse() {
+        if (pulseAnimator != null) return;
+        pulseAnimator = ValueAnimator.ofFloat(0f, 1f);
+        pulseAnimator.setDuration(2400);
+        pulseAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        pulseAnimator.setInterpolator(null); // the shape of the swell is in the maths below
+        pulseAnimator.addUpdateListener(anim -> {
+            float t = (float) anim.getAnimatedValue();
+            float swell = Math.min(t / 0.7f, 1f);
+            float scale = 0.85f + 0.65f * swell;
+            citySearchPulse.setScaleX(scale);
+            citySearchPulse.setScaleY(scale);
+            citySearchPulse.setAlpha(0.5f * (1f - swell));
+        });
+        pulseAnimator.start();
+    }
+
+    private void stopPulse() {
+        if (pulseAnimator == null) return;
+        pulseAnimator.cancel();
+        pulseAnimator = null;
+        citySearchPulse.setAlpha(0f);
+    }
+
+    /**
+     * Dims the four distance chips until there is a position to measure from.
+     * "All" is never dimmed: it filters nothing, so it needs no position.
+     */
+    private void updateRadiusChipsEnabled() {
+        for (int step = 0; step < radiusChips.length - 1; step++) {
+            radiusChips[step].setEnabled(hasLocation);
         }
         findViewById(R.id.radiusHint).setVisibility(hasLocation ? View.GONE : View.VISIBLE);
     }
@@ -288,7 +343,7 @@ public class MainActivity extends AppCompatActivity {
         isManualLocation = false;
         searchEditText.setText("");
         citySearchEditText.setText("");
-        radiusToggleGroup.check(R.id.radiusAll);
+        selectRadius(RADIUS_ALL);
         shouldScrollToTop = true;
         Toast.makeText(this, R.string.search_using_location, Toast.LENGTH_SHORT).show();
         // Back to the fix already in hand straight away: the next one may be
@@ -301,9 +356,30 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupCitySearch() {
-        ArrayAdapter<String> cityAdapter = new ArrayAdapter<>(this, 
-            android.R.layout.simple_dropdown_item_1line, US_COASTAL_CITIES);
-        citySearchEditText.setAdapter(cityAdapter);
+        citySearchEditText.setAdapter(new CityAdapter());
+        // Typing opens the list too, without going through openCityList, so
+        // the width is set as soon as the field has one.
+        cityField.post(() -> citySearchEditText.setDropDownWidth(cityField.getWidth()));
+
+        // The field reads as a picker, so tapping it anywhere has to open the
+        // list - an empty box that only drops down once you have typed a
+        // letter looks broken under a caret.
+        citySearchEditText.setOnClickListener(v -> openCityList());
+        citySearchEditText.setOnFocusChangeListener((v, focused) -> {
+            if (focused) openCityList();
+        });
+
+        // The caret turns over while the list is down, the way the design's
+        // does. There is no "dropdown closed" callback, so the dismiss
+        // listener is where it turns back.
+        citySearchEditText.setOnDismissListener(() -> turnCaret(false));
+        citySearchEditText.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            @Override public void afterTextChanged(Editable s) {
+                turnCaret(citySearchEditText.isPopupShowing());
+            }
+        });
 
         citySearchButton.setOnClickListener(v -> {
             String cityName = citySearchEditText.getText().toString();
@@ -313,9 +389,54 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void openCityList() {
+        // The list belongs to the field, so it is cut to the field's width.
+        // MATCH_PARENT would spread it across the whole window instead, and
+        // the width is only known once the card has been laid out.
+        if (cityField.getWidth() > 0) {
+            citySearchEditText.setDropDownWidth(cityField.getWidth());
+        }
+        citySearchEditText.showDropDown();
+        turnCaret(true);
+    }
+
+    private void turnCaret(boolean open) {
+        cityCaret.animate().rotation(open ? 180f : 0f).setDuration(200).start();
+    }
+
+    /**
+     * The coastal-city list. The state is drawn on the right in its own colour
+     * rather than trailing the name behind a comma, so a column of cities
+     * reads as a column of names; the entries themselves stay "City, ST",
+     * because that is the string the geocoder is handed and the string the
+     * field shows once one is picked.
+     */
+    private final class CityAdapter extends ArrayAdapter<String> {
+        CityAdapter() {
+            super(MainActivity.this, R.layout.item_city, R.id.cityName, US_COASTAL_CITIES);
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+            View row = convertView != null ? convertView
+                : LayoutInflater.from(getContext()).inflate(R.layout.item_city, parent, false);
+            String entry = getItem(position);
+            int comma = entry == null ? -1 : entry.lastIndexOf(", ");
+            ((TextView) row.findViewById(R.id.cityName))
+                .setText(comma < 0 ? entry : entry.substring(0, comma));
+            ((TextView) row.findViewById(R.id.cityState))
+                .setText(comma < 0 ? "" : entry.substring(comma + 2));
+            return row;
+        }
+    }
+
     private void searchByCity(String cityName) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        // The button says what it is doing rather than only going dead.
         citySearchButton.setEnabled(false);
+        citySearchButton.setAlpha(0.6f);
+        citySearchLabel.setText(R.string.find_nearby_searching);
         geocoderExecutor.execute(() -> {
             List<Address> addresses = null;
             String errorMessage = null;
@@ -329,6 +450,8 @@ public class MainActivity extends AppCompatActivity {
             String error = errorMessage;
             runOnUiThread(() -> {
                 citySearchButton.setEnabled(true);
+                citySearchButton.setAlpha(1f);
+                citySearchLabel.setText(R.string.find_nearby_beaches);
                 if (error != null) {
                     Toast.makeText(this, error, Toast.LENGTH_SHORT).show();
                 } else if (results != null && !results.isEmpty()) {
@@ -344,26 +467,34 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void setupRadiusSpinner() {
-        radiusStep = RADIUS_ALL;
-        currentRadiusMiles = Double.MAX_VALUE;
-        radiusToggleGroup.check(R.id.radiusAll);
-        updateRadiusButtonLabels();
-
-        radiusToggleGroup.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
-            if (!isChecked) return;
-            radiusStep = stepFor(checkedId);
-            currentRadiusMiles = radiusMiles(radiusStep);
-            updateList();
-        });
+    private void setupRadiusChips() {
+        updateRadiusChipLabels();
+        for (int i = 0; i < radiusChips.length; i++) {
+            // The last chip is "All", which is no step at all.
+            final int step = i == radiusChips.length - 1 ? RADIUS_ALL : i;
+            radiusChips[i].setOnClickListener(v -> {
+                if (radiusStep == step) return;
+                selectRadius(step);
+                updateList();
+            });
+        }
+        selectRadius(RADIUS_ALL);
     }
 
-    /** Which step a chip is, or {@link #RADIUS_ALL} for the one that filters nothing. */
-    private static int stepFor(int checkedId) {
-        for (int step = 0; step < RADIUS_BUTTON_IDS.length; step++) {
-            if (RADIUS_BUTTON_IDS[step] == checkedId) return step;
+    /**
+     * Moves the tray to a step and cuts the list at it. Selection is drawn by
+     * the chip's own background and colour states; only the weight has to be
+     * set by hand, because a typeface is not a state a selector can hold.
+     */
+    private void selectRadius(int step) {
+        radiusStep = step;
+        currentRadiusMiles = radiusMiles(step);
+        for (int i = 0; i < radiusChips.length; i++) {
+            boolean on = (i == radiusChips.length - 1) ? step == RADIUS_ALL : step == i;
+            radiusChips[i].setSelected(on);
+            radiusChips[i].setTypeface(
+                Typeface.create(on ? "sans-serif-medium" : "sans-serif", Typeface.NORMAL));
         }
-        return RADIUS_ALL;
     }
 
     /**
@@ -381,9 +512,15 @@ public class MainActivity extends AppCompatActivity {
     private void setupSearch() {
         searchEditText.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-            @Override public void onTextChanged(CharSequence s, int start, int before, int count) { updateList(); }
+            @Override public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // The clear mark is only worth its place once there is
+                // something to clear.
+                searchClearButton.setVisibility(s.length() == 0 ? View.GONE : View.VISIBLE);
+                updateList();
+            }
             @Override public void afterTextChanged(Editable s) {}
         });
+        searchClearButton.setOnClickListener(v -> searchEditText.setText(""));
     }
 
     private void requestLocation() {
@@ -465,7 +602,7 @@ public class MainActivity extends AppCompatActivity {
         currentLat = latitude;
         currentLon = longitude;
         hasLocation = true;
-        updateRadiusButtonsEnabled();
+        updateRadiusChipsEnabled();
         updateList();
     }
 
@@ -505,14 +642,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Fills the hero verdict card and the four stat tiles for the closest
-     * beach, or hides them when there is nothing to report on.
+     * Fills the hero card - the verdict, the sentence behind it and the four
+     * readings it is drawn from - for the closest beach, or hides it when
+     * there is nothing to report on.
      */
     private void bindVerdict(Beach beach) {
         nearestBeach = beach;
         if (beach == null) {
             verdictCard.setVisibility(View.GONE);
-            statGrid.setVisibility(View.GONE);
             // Nothing to name yet, so the kicker would only repeat the title.
             headerKickerRow.setVisibility(View.GONE);
             headerTitle.setText(R.string.header_title_default);
@@ -520,7 +657,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         verdictCard.setVisibility(View.VISIBLE);
-        statGrid.setVisibility(View.VISIBLE);
 
         // "Near you" is a claim about where the phone is. Until a fix or a
         // searched city says where that is, the list is only sorted from a
@@ -533,11 +669,10 @@ public class MainActivity extends AppCompatActivity {
         SafetyLevel level = SafetyLevel.evaluate(beach);
         int color = ContextCompat.getColor(this,
             level != null ? level.getColorRes() : R.color.text_secondary);
+        int ring = ContextCompat.getColor(this,
+            level != null ? level.getTintRes() : R.color.surface_alt);
 
-        verdictBand.setBackgroundColor(color);
-        verdictIcon.setImageResource(
-            level != null ? level.getIconRes() : R.drawable.ic_warning_circle);
-        ImageViewCompat.setImageTintList(verdictIcon, ColorStateList.valueOf(color));
+        paintVerdictDot(color, ring);
         verdictText.setText(level != null ? level.getVerdictRes() : R.string.verdict_unknown);
         verdictText.setTextColor(color);
         verdictMeta.setText(updatedLine(beach));
@@ -565,23 +700,43 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * "Santa Monica Pier · updated 12 min ago". Before any reading has landed
-     * there is nothing to date, so it is only the name; the verdict beside it
+     * The safety colour as a dot in a ring of its own tint - the one mark that
+     * carries the verdict, where a coloured band across the card and a badge
+     * beside the text used to carry it between them.
+     */
+    private void paintVerdictDot(int color, int ringColor) {
+        GradientDrawable ring = new GradientDrawable();
+        ring.setShape(GradientDrawable.OVAL);
+        ring.setColor(ringColor);
+        GradientDrawable dot = new GradientDrawable();
+        dot.setShape(GradientDrawable.OVAL);
+        dot.setColor(color);
+
+        LayerDrawable layers = new LayerDrawable(new Drawable[] {ring, dot});
+        int inset = Math.round(4 * getResources().getDisplayMetrics().density);
+        layers.setLayerInset(1, inset, inset, inset, inset);
+        verdictDot.setBackground(layers);
+    }
+
+    /**
+     * "Updated 12m ago", beside the verdict. The beach is not named here - the
+     * header above the card already names it. Before any reading has landed
+     * there is nothing to date, so the line stays empty; the verdict beside it
      * already says conditions are still being checked.
      */
     private String updatedLine(Beach beach) {
         BeachConditions conditions = beach.getConditions();
-        if (conditions == null) return beach.getName();
+        if (conditions == null) return "";
         long minutes = (System.currentTimeMillis() - conditions.getFetchedAtMillis()) / 60_000L;
-        if (minutes < 1) return getString(R.string.verdict_updated_now, beach.getName());
-        if (minutes < 60) return getString(R.string.verdict_updated_minutes, beach.getName(), minutes);
-        return getString(R.string.verdict_updated_hours, beach.getName(), minutes / 60);
+        if (minutes < 1) return getString(R.string.verdict_updated_now);
+        if (minutes < 60) return getString(R.string.verdict_updated_minutes, minutes);
+        return getString(R.string.verdict_updated_hours, minutes / 60);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        updateRadiusButtonLabels();
+        updateRadiusChipLabels();
         if (adapter != null) {
             adapter.notifyDataSetChanged();
         }
@@ -608,12 +763,11 @@ public class MainActivity extends AppCompatActivity {
      * lives on another screen: coming back from it should leave the list
      * showing what the chip now says, not what it said before.
      */
-    private void updateRadiusButtonLabels() {
+    private void updateRadiusChipLabels() {
         int[] steps = UnitConverter.useMetric(this) ? RADIUS_STEPS_KM : RADIUS_STEPS_MILES;
         String unit = UnitConverter.distanceUnit(this);
-        for (int step = 0; step < RADIUS_BUTTON_IDS.length; step++) {
-            ((Button) findViewById(RADIUS_BUTTON_IDS[step]))
-                .setText(getString(R.string.radius_step, steps[step], unit));
+        for (int step = 0; step < steps.length; step++) {
+            radiusChips[step].setText(getString(R.string.radius_step, steps[step], unit));
         }
         currentRadiusMiles = radiusMiles(radiusStep);
     }
@@ -622,6 +776,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         locationService.stopLocationUpdates();
+        stopPulse();
     }
 
     @Override

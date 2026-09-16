@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  A radius chip's label. Sea when the chip is on, muted when it is off, and
+  fainter still when there is no position to measure a radius from.
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:alpha="0.38" android:color="@color/text_secondary" android:state_enabled="false" />
+    <item android:color="@color/primary" android:state_selected="true" />
+    <item android:color="@color/text_secondary" />
+</selector>
