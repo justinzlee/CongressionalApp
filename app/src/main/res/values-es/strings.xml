@@ -607,6 +607,23 @@
     <string name="wildlife_pnw_whale_body">Pasan migrando en diciembre y enero y otra vez de marzo a junio, y unas cuantas se alimentan frente a los cabos todo el verano. Busca el soplo desde los miradores sobre la playa.</string>
     <string name="wildlife_pnw_note_title">Olas traicioneras</string>
     <string name="wildlife_pnw_note_body">Esta costa lanza olas muy arriba de la playa sin avisar y arrastra troncos con ellas. Nunca le des la espalda al agua, nunca te sientes en un tronco de playa, y aléjate de las rocas que la marea puede aislar.</string>
+
+    <!-- California central y del norte -->
+    <string name="wildlife_region_norcal">California central y del norte</string>
+    <string name="wildlife_norcal_nettle_title">Ortiga de mar del Pacífico</string>
+    <string name="wildlife_norcal_nettle_body">Una campana dorada con largos brazos granates, que florece en la bahía de Monterey a finales del verano. La picadura arde una o dos horas, y un tentáculo suelto en la orilla pica aunque la medusa ya no esté.</string>
+    <string name="wildlife_norcal_white_title">Tiburón blanco</string>
+    <string name="wildlife_norcal_white_body">Este es el Triángulo Rojo, y los tiburones blancos jóvenes pasan el verano frente a las playas de la bahía de Monterey. Cazan rayas en la arena, no nadadores, y las mordeduras siguen siendo raras, pero no te metas al agua cerca de las colonias de focas ni al amanecer o al anochecer.</string>
+    <string name="wildlife_norcal_eseal_title">Elefante marino del norte</string>
+    <string name="wildlife_norcal_eseal_body">Dos toneladas de animal que corre más que tú sobre la arena. Salen a tierra en Año Nuevo, Point Reyes y Piedras Blancas para criar y mudar el pelaje. Mantente a 30 metros y nunca te cruces entre uno y el mar.</string>
+    <string name="wildlife_norcal_otter_title">Nutria marina</string>
+    <string name="wildlife_norcal_otter_body">Flotan en grupo entre las algas desde Monterey hasta Morro Bay. Acercarse la aparta de su comida y una nutria acorralada muerde fuerte, así que obsérvalas desde la arena y rodéalas de lejos en el agua.</string>
+    <string name="wildlife_norcal_seal_title">Cría de foca común</string>
+    <string name="wildlife_norcal_seal_body">La cría nace entre marzo y junio y la madre la deja en la arena mientras se alimenta. Mantente a 45 metros y lleva al perro con correa: una madre que no se atreve a salir pierde a la cría.</string>
+    <string name="wildlife_norcal_tidepool_title">Estrellas de mar ocres y anémonas</string>
+    <string name="wildlife_norcal_tidepool_body">Casi todas estas pozas están dentro de áreas marinas protegidas donde no se puede sacar nada. Pisa la roca desnuda y vuelve a dejar cada piedra que levantes tal como estaba.</string>
+    <string name="wildlife_norcal_note_title">El agua no se calienta</string>
+    <string name="wildlife_norcal_note_body">El afloramiento mantiene esta costa cerca de los 11 °C todo el verano. Un frío así te corta la respiración en la primera ola y te quita las fuerzas en minutos; por eso todos los que están en el agua llevan traje de neopreno.</string>
     <!-- Tu propia foto de una playa. Que cambie la imagen principal es la
          confirmación de que entró o se quitó, así que solo los fallos hablan. -->
     <string name="photo_add">Agregar una foto</string>
