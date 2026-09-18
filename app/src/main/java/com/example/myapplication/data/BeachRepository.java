@@ -1,5 +1,6 @@
 package com.example.myapplication.data;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 
 import com.example.myapplication.R;
@@ -12,6 +13,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -30,6 +34,33 @@ public class BeachRepository {
      * to the same window.
      */
     public static final long FRESH_FOR_MS = 5 * 60 * 1000L;
+
+    /**
+     * How soon a beach that came back with nothing is asked about again, while
+     * a screen is open on it. Long enough that a whole batch failing does not
+     * turn into a tight loop, short enough that a reading dropped on the way in
+     * lands before the user has finished reading the list.
+     */
+    private static final long RETRY_AFTER_MS = 20 * 1000L;
+
+    /**
+     * The ceiling that wait doubles towards while readings keep failing. At the
+     * freshness window, a phone that has been out of signal for a while is
+     * asking about as often as a phone whose readings simply went stale.
+     */
+    private static final long MAX_RETRY_WAIT_MS = FRESH_FOR_MS;
+
+    /**
+     * Runs the retry after its wait. One daemon thread for the process: it is
+     * idle but for the few seconds a retry takes to hand work to the network
+     * pool, and a daemon can never hold the process open.
+     */
+    private static final ScheduledExecutorService RETRY_CLOCK =
+        Executors.newSingleThreadScheduledExecutor(runnable -> {
+            Thread thread = new Thread(runnable, "beach-conditions-retry");
+            thread.setDaemon(true);
+            return thread;
+        });
 
     private static volatile BeachRepository instance;
 
@@ -67,10 +98,13 @@ public class BeachRepository {
 
     /** Guards against a second screen kicking off a duplicate fan-out. */
     private final AtomicBoolean refreshing = new AtomicBoolean(false);
-    /** Listeners waiting on the in-flight refresh; cleared when it finishes. */
+    /** The screens watching for readings, until each drops its own. */
     private final List<OnDataRefreshListener> listeners = new CopyOnWriteArrayList<>();
     private final AtomicInteger outstanding = new AtomicInteger();
-    private volatile long refreshedAt;
+    /** Whether a retry is already on the clock, so a pass queues one, not one per batch. */
+    private final AtomicBoolean retryScheduled = new AtomicBoolean(false);
+    /** How long the next retry waits; doubles on failure, reset on success. */
+    private volatile long retryWaitMs = RETRY_AFTER_MS;
 
     public interface OnDataRefreshListener {
         void onDataRefreshed();
@@ -407,54 +441,70 @@ public class BeachRepository {
     }
 
     /**
-     * Brings every beach's conditions up to date, then reports back as each
-     * batch lands so the list fills in progressively.
+     * Brings the beaches whose readings are missing or stale up to date, then
+     * reports back as each batch lands so the list fills in progressively.
      *
-     * <p>Cheap to call from anywhere: if the data is still fresh the listener
-     * is told immediately and nothing touches the network, and if a refresh is
-     * already running the listener simply joins it rather than starting a
-     * second copy.
+     * <p>Cheap to call from anywhere: a beach whose reading is still current is
+     * not asked about again, so with everything fresh this touches no network
+     * at all, and a caller arriving while a pass is in flight joins it rather
+     * than starting a second copy.
+     *
+     * <p>The listener stays registered until {@link #stopListening} drops it,
+     * so a screen left sitting open is told when a reading that failed the
+     * first time finally lands.
      */
     public void refreshAllData(OnDataRefreshListener listener) {
         if (listener != null) {
             listeners.add(listener);
         }
+        // A screen has just come to the front, so whatever is missing is worth
+        // trying for promptly again, however long the last wait had grown to.
+        retryWaitMs = RETRY_AFTER_MS;
+        fetchDue(listener);
+    }
 
-        boolean fresh = System.currentTimeMillis() - refreshedAt < FRESH_FOR_MS;
-        if (fresh || !refreshing.compareAndSet(false, true)) {
-            // Already current, or someone else's fan-out is in flight. Hand
-            // back what is cached now; an in-flight refresh will call again as
-            // its results arrive.
+    /**
+     * Stops telling a screen about arriving readings. Screens drop their
+     * listener as they leave the front: one held past that keeps the activity
+     * alive and redraws a screen nobody is looking at.
+     */
+    public void stopListening(OnDataRefreshListener listener) {
+        listeners.remove(listener);
+    }
+
+    /**
+     * Asks about every beach that needs asking about, in batches.
+     *
+     * @param listener told at once when there is nothing to fetch, so a screen
+     *                 that asked still gets to draw what is already cached
+     */
+    private void fetchDue(@Nullable OnDataRefreshListener listener) {
+        List<Beach> due = beachesDue(System.currentTimeMillis());
+        if (due.isEmpty() || !refreshing.compareAndSet(false, true)) {
+            // Everything current, or someone else's fan-out is already in
+            // flight. Hand back what is cached now; a pass in flight will call
+            // again as its results arrive.
             if (listener != null) {
                 listener.onDataRefreshed();
-                if (fresh) listeners.remove(listener);
             }
             return;
         }
 
-        List<Beach> snapshot = getBeaches();
-        if (snapshot.isEmpty()) {
-            settle(false);
-            return;
-        }
-
-        // The list is fetched in batches rather than one request per beach.
+        // The beaches are fetched in batches rather than one request each.
         // Open-Meteo takes many coordinates in a single call, so this is a
         // handful of requests for the whole coastline instead of one per beach
-        // — which at this size would be hundreds of round trips on every
-        // refresh, most of them for beaches nobody is looking at. Photos are
+        // — which at this size would be hundreds of round trips. Photos are
         // curated rather than fetched, so weather is all that goes out.
         int batchSize = WeatherClient.BATCH_SIZE;
-        outstanding.set((snapshot.size() + batchSize - 1) / batchSize);
+        outstanding.set((due.size() + batchSize - 1) / batchSize);
 
-        for (int start = 0; start < snapshot.size(); start += batchSize) {
-            final int offset = start;
-            int size = Math.min(batchSize, snapshot.size() - start);
-            double[] latitudes = new double[size];
-            double[] longitudes = new double[size];
-            for (int i = 0; i < size; i++) {
-                latitudes[i] = snapshot.get(start + i).getLatitude();
-                longitudes[i] = snapshot.get(start + i).getLongitude();
+        for (int start = 0; start < due.size(); start += batchSize) {
+            List<Beach> batch = due.subList(start, Math.min(start + batchSize, due.size()));
+            double[] latitudes = new double[batch.size()];
+            double[] longitudes = new double[batch.size()];
+            for (int i = 0; i < batch.size(); i++) {
+                latitudes[i] = batch.get(i).getLatitude();
+                longitudes[i] = batch.get(i).getLongitude();
             }
 
             weatherClient.getBeachConditions(latitudes, longitudes,
@@ -467,13 +517,14 @@ public class BeachRepository {
                         if (conditions == null) {
                             // Leave the beach without conditions: SafetyLevel
                             // reads that as "no verdict yet" rather than
-                            // inventing one.
+                            // inventing one. It stays due, so the retry below
+                            // asks about it again.
                             return;
                         }
-                        synchronized (beaches) {
-                            int at = offset + index;
-                            beaches.set(at, beaches.get(at).withConditions(conditions));
-                        }
+                        // Matched by id rather than by position: a pass covers
+                        // only the beaches that were due, which is neither the
+                        // whole list nor in its order.
+                        updateConditions(batch.get(index).getId(), conditions);
                         changed = true;
                     }
 
@@ -486,27 +537,85 @@ public class BeachRepository {
     }
 
     /**
-     * Records one finished request: tells the waiting screens when it changed
-     * something, and closes the refresh out once the last one is in.
+     * The beaches worth asking about: those showing nothing yet, and those
+     * whose reading has aged past {@link #FRESH_FOR_MS}.
+     *
+     * <p>Freshness is per beach, read off the reading's own timestamp, rather
+     * than one window over the whole list. A single window made a batch that
+     * failed indistinguishable from one that had just been fetched: the
+     * twenty-five beaches in it kept the "Checking conditions" they started
+     * with, and because the list as a whole counted as current, nothing asked
+     * about them again. Opening one was the only thing that still fetched it,
+     * the beach screen fetching its own beach — so a beach nobody opened could
+     * sit there unchecked for as long as the app stayed open.
+     */
+    @VisibleForTesting
+    List<Beach> beachesDue(long now) {
+        List<Beach> due = new ArrayList<>();
+        for (Beach beach : getBeaches()) {
+            BeachConditions conditions = beach.getConditions();
+            if (conditions == null || now - conditions.getFetchedAtMillis() >= FRESH_FOR_MS) {
+                due.add(beach);
+            }
+        }
+        return due;
+    }
+
+    /**
+     * Records one finished request: tells the watching screens when it changed
+     * something, and closes the pass out once the last one is in.
      */
     private void settle(boolean changed) {
         if (changed) {
+            // Something got through, so the network is there: whatever is still
+            // missing deserves the short wait again rather than the long one a
+            // run of failures had backed off to.
+            retryWaitMs = RETRY_AFTER_MS;
             for (OnDataRefreshListener waiting : listeners) {
                 waiting.onDataRefreshed();
             }
         }
         if (outstanding.decrementAndGet() <= 0) {
-            refreshedAt = System.currentTimeMillis();
             refreshing.set(false);
-            // Screens that have since been left must not be retained until the
-            // next refresh happens to come along.
-            listeners.clear();
+            scheduleRetry();
         }
     }
 
-    /** Drops the freshness window so the next call refetches. */
-    public void invalidate() {
-        refreshedAt = 0L;
+    /**
+     * Asks again, shortly, about the beaches that came back with nothing.
+     *
+     * <p>Without this a dropped request left its beaches on "Checking
+     * conditions" for as long as the screen stayed open, because the only thing
+     * that ever started a pass was a screen coming to the front. Runs only
+     * while a screen is watching, stops as soon as every beach has a reading,
+     * and backs off while they keep coming back empty, so a phone out of signal
+     * is not asking every twenty seconds indefinitely.
+     */
+    private void scheduleRetry() {
+        if (listeners.isEmpty() || !anyWithoutConditions()) {
+            return;
+        }
+        if (!retryScheduled.compareAndSet(false, true)) {
+            return;
+        }
+        long wait = retryWaitMs;
+        retryWaitMs = Math.min(wait * 2, MAX_RETRY_WAIT_MS);
+        RETRY_CLOCK.schedule(() -> {
+            retryScheduled.set(false);
+            if (!listeners.isEmpty()) {
+                fetchDue(null);
+            }
+        }, wait, TimeUnit.MILLISECONDS);
+    }
+
+    /** Whether any beach is still showing nothing at all. */
+    private boolean anyWithoutConditions() {
+        for (Beach beach : getBeaches()) {
+            if (beach.getConditions() == null) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<Beach> getBeaches() {

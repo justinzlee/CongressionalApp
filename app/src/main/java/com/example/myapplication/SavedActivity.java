@@ -34,6 +34,17 @@ public class       SavedActivity extends AppCompatActivity {
     private BeachRepository repository;
     private SavedBeachStore store;
 
+    /**
+     * Redraws the verdicts as readings land, including the ones that arrive
+     * from a retry minutes after this screen opened. Held as a field so that it
+     * can be handed back when this screen leaves the front.
+     */
+    private final BeachRepository.OnDataRefreshListener onReadingsLanded = () -> runOnUiThread(() -> {
+        bindSaved();
+        // Alerts derived from these readings only exist once they land.
+        TabBar.refreshAlertBadge(this);
+    });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,11 +72,13 @@ public class       SavedActivity extends AppCompatActivity {
         // doing when the tab first opened. Within the repository's freshness
         // window this costs nothing. Conditions arrive asynchronously; redraw
         // once they land so the verdicts are not stuck on "Checking conditions".
-        repository.refreshAllData(() -> runOnUiThread(() -> {
-            bindSaved();
-            // Alerts derived from these readings only exist once they land.
-            TabBar.refreshAlertBadge(this);
-        }));
+        repository.refreshAllData(onReadingsLanded);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        repository.stopListening(onReadingsLanded);
     }
 
     private void bindSaved() {

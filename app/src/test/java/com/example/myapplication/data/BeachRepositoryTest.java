@@ -1,6 +1,7 @@
 package com.example.myapplication.data;
 
 import com.example.myapplication.model.Beach;
+import com.example.myapplication.model.BeachConditions;
 import com.example.myapplication.model.HelpLocation;
 import com.example.myapplication.model.HelpType;
 import com.example.myapplication.util.UnitConverter;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -325,6 +327,54 @@ public class BeachRepositoryTest {
     public void search_noMatch_returnsEmptyList() {
         BeachRepository repo = BeachRepository.newForTesting();
         assertTrue(repo.searchBeaches("NoSuchBeachXYZ").isEmpty());
+    }
+
+    /** A reading taken at a given moment, with nothing in it worth reading. */
+    private static BeachConditions readingAt(long fetchedAtMillis) {
+        return new BeachConditions(70.0, 3, 5.0, 1.0, 10.0, fetchedAtMillis);
+    }
+
+    private static Set<String> dueIds(BeachRepository repo, long now) {
+        return repo.beachesDue(now).stream().map(Beach::getId).collect(Collectors.toSet());
+    }
+
+    /**
+     * Every beach starts with nothing to show, so every beach is worth asking
+     * about. Freshness used to be one window over the whole list, which meant a
+     * request that came back with nothing was indistinguishable from one that
+     * had just succeeded: the beaches it covered kept the "Checking conditions"
+     * they started with, and nothing asked about them again for five minutes.
+     * Opening one was the only thing that still fetched it.
+     */
+    @Test
+    public void everyBeachWithoutAReadingIsDue() {
+        BeachRepository repo = BeachRepository.newForTesting();
+        assertEquals(EXPECTED_BEACH_COUNT, repo.beachesDue(System.currentTimeMillis()).size());
+    }
+
+    /** The beach that did land a reading is the one that is left alone. */
+    @Test
+    public void aBeachWithAFreshReadingIsNotAskedAboutAgain() {
+        BeachRepository repo = BeachRepository.newForTesting();
+        long now = System.currentTimeMillis();
+        String fetched = repo.getBeaches().get(0).getId();
+        repo.updateConditions(fetched, readingAt(now));
+
+        Set<String> due = dueIds(repo, now);
+        assertFalse("a beach whose reading just landed is asked about again", due.contains(fetched));
+        assertEquals("the beaches that came back with nothing are still due",
+            EXPECTED_BEACH_COUNT - 1, due.size());
+    }
+
+    /** And it is due again as soon as that reading ages out. */
+    @Test
+    public void aReadingPastTheFreshnessWindowIsDueAgain() {
+        BeachRepository repo = BeachRepository.newForTesting();
+        long now = System.currentTimeMillis();
+        String stale = repo.getBeaches().get(0).getId();
+        repo.updateConditions(stale, readingAt(now - BeachRepository.FRESH_FOR_MS));
+
+        assertTrue(dueIds(repo, now).contains(stale));
     }
 
     @Test
