@@ -35,6 +35,18 @@ public class AlertsActivity extends AppCompatActivity {
 
     private AlertSeenStore seenStore;
 
+    /**
+     * Rebuilds the list as readings land, including the ones that arrive from a
+     * retry minutes after this screen opened. Held as a field so that it can be
+     * handed back when this screen leaves the front.
+     */
+    private final BeachRepository.OnDataRefreshListener onReadingsLanded = () -> runOnUiThread(() -> {
+        if (!getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) return;
+        bindAlerts();
+        seenStore.markSeen(BeachAlert.from(this, alertBeaches()));
+        TabBar.refreshAlertBadge(this);
+    });
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,12 +80,13 @@ public class AlertsActivity extends AppCompatActivity {
         // half of these alerts are worked out from them, so ask on the way in
         // (free while they are fresh). Rows that land later only count as read
         // if this screen is still the one in front when they do.
-        BeachRepository.getInstance().refreshAllData(() -> runOnUiThread(() -> {
-            if (!getLifecycle().getCurrentState().isAtLeast(Lifecycle.State.RESUMED)) return;
-            bindAlerts();
-            seenStore.markSeen(BeachAlert.from(this, alertBeaches()));
-            TabBar.refreshAlertBadge(this);
-        }));
+        BeachRepository.getInstance().refreshAllData(onReadingsLanded);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        BeachRepository.getInstance().stopListening(onReadingsLanded);
     }
 
     /** How many alert rows the screen will draw, worst first. */

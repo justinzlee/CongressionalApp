@@ -104,6 +104,19 @@ public class MainActivity extends AppCompatActivity {
     /** The beach the verdict card speaks for; what the SOS sheet reports. */
     private Beach nearestBeach;
 
+    /**
+     * Redraws the list as readings land, including the ones that arrive from a
+     * retry minutes after this screen opened. Held as a field rather than made
+     * afresh on each resume so that it can be handed back when this screen
+     * leaves the front, and so resuming twice does not register it twice.
+     */
+    private final BeachRepository.OnDataRefreshListener onReadingsLanded = () -> runOnUiThread(() -> {
+        updateList();
+        // Some alerts are worked out from these readings, so the badge is
+        // only right once they have landed.
+        TabBar.refreshAlertBadge(this);
+    });
+
     private double currentLat = 34.0522; // Default LA
     private double currentLon = -118.2437;
     private double realLat = 34.0522;
@@ -749,12 +762,15 @@ public class MainActivity extends AppCompatActivity {
         // app first opened — hours old after an afternoon in the background,
         // under a line saying "updated just now". Within the repository's
         // freshness window this costs nothing.
-        repository.refreshAllData(() -> runOnUiThread(() -> {
-            updateList();
-            // Some alerts are worked out from these readings, so the badge is
-            // only right once they have landed.
-            TabBar.refreshAlertBadge(this);
-        }));
+        repository.refreshAllData(onReadingsLanded);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        // A reading landing behind a screen nobody is looking at has nowhere to
+        // go, and a listener left registered holds this activity alive.
+        repository.stopListening(onReadingsLanded);
     }
 
     /**
