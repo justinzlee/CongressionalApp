@@ -190,6 +190,51 @@ public class WildlifeGuideActivity extends AppCompatActivity {
                     R.string.wildlife_gulf_sargassum_body, Risk.HARMLESS),
             }),
 
+        // Georgia and the Carolinas. Warm enough for the Gulf's animals, but
+        // the surf is Atlantic and the shore birds and turtles are its own.
+        new Coast(R.string.wildlife_region_southeast,
+            new String[] {
+                "GA1", "GA2", "SC1", "SC2", "SC3",
+                "NC1", "NC2", "NC3", "NC4", "NC5" },
+            R.string.wildlife_se_note_title, R.string.wildlife_se_note_body,
+            new Species[] {
+                new Species(R.string.wildlife_se_nettle_title,
+                    R.string.wildlife_se_nettle_body, Risk.CAN_STING, Sting.JELLYFISH),
+                new Species(R.string.wildlife_se_manowar_title,
+                    R.string.wildlife_se_manowar_body, Risk.CAN_STING, Sting.MAN_O_WAR),
+                new Species(R.string.wildlife_se_ray_title,
+                    R.string.wildlife_se_ray_body, Risk.CAN_STING, Sting.STINGRAY),
+                new Species(R.string.wildlife_se_shark_title,
+                    R.string.wildlife_se_shark_body, Risk.GIVE_ROOM),
+                new Species(R.string.wildlife_se_dolphin_title,
+                    R.string.wildlife_se_dolphin_body, Risk.PROTECTED),
+                new Species(R.string.wildlife_se_turtle_title,
+                    R.string.wildlife_se_turtle_body, Risk.PROTECTED),
+                new Species(R.string.wildlife_se_cannonball_title,
+                    R.string.wildlife_se_cannonball_body, Risk.HARMLESS),
+            }),
+
+        // Virginia through Delaware. Half of what people meet here they meet
+        // in the bays behind the beach rather than in the surf.
+        new Coast(R.string.wildlife_region_midatlantic,
+            new String[] {
+                "VA1", "VA2", "MD1", "MD2", "DE1", "DE2" },
+            R.string.wildlife_ma_note_title, R.string.wildlife_ma_note_body,
+            new Species[] {
+                new Species(R.string.wildlife_ma_nettle_title,
+                    R.string.wildlife_ma_nettle_body, Risk.CAN_STING, Sting.JELLYFISH),
+                new Species(R.string.wildlife_ma_ray_title,
+                    R.string.wildlife_ma_ray_body, Risk.GIVE_ROOM),
+                new Species(R.string.wildlife_ma_horses_title,
+                    R.string.wildlife_ma_horses_body, Risk.GIVE_ROOM),
+                new Species(R.string.wildlife_ma_plover_title,
+                    R.string.wildlife_ma_plover_body, Risk.PROTECTED),
+                new Species(R.string.wildlife_ma_horseshoe_title,
+                    R.string.wildlife_ma_horseshoe_body, Risk.HARMLESS),
+                new Species(R.string.wildlife_ma_shark_title,
+                    R.string.wildlife_ma_shark_body, Risk.HARMLESS),
+            }),
+
         new Coast(R.string.wildlife_region_northeast,
             new String[] {
                 "NY1", "NY2", "NY3", "NY4", "NY5", "NY6",
@@ -228,6 +273,71 @@ public class WildlifeGuideActivity extends AppCompatActivity {
                     R.string.wildlife_pnw_eagle_body, Risk.HARMLESS),
                 new Species(R.string.wildlife_pnw_whale_title,
                     R.string.wildlife_pnw_whale_body, Risk.HARMLESS),
+            }),
+
+        // Hawaii. The only coast in the app where the reef is underfoot, so
+        // the urchin first aid the sting guide has always carried finally has
+        // a card pointing at it.
+        new Coast(R.string.wildlife_region_hawaii,
+            new String[] {
+                "HI1", "HI2", "HI3", "HI4", "HI5", "HI6", "HI7" },
+            R.string.wildlife_hi_note_title, R.string.wildlife_hi_note_body,
+            new Species[] {
+                new Species(R.string.wildlife_hi_box_title,
+                    R.string.wildlife_hi_box_body, Risk.CAN_STING, Sting.JELLYFISH),
+                new Species(R.string.wildlife_hi_manowar_title,
+                    R.string.wildlife_hi_manowar_body, Risk.CAN_STING, Sting.MAN_O_WAR),
+                new Species(R.string.wildlife_hi_urchin_title,
+                    R.string.wildlife_hi_urchin_body, Risk.CAN_STING, Sting.SEA_URCHIN),
+                new Species(R.string.wildlife_hi_tiger_title,
+                    R.string.wildlife_hi_tiger_body, Risk.GIVE_ROOM),
+                new Species(R.string.wildlife_hi_monkseal_title,
+                    R.string.wildlife_hi_monkseal_body, Risk.PROTECTED),
+                new Species(R.string.wildlife_hi_honu_title,
+                    R.string.wildlife_hi_honu_body, Risk.PROTECTED),
+                new Species(R.string.wildlife_hi_spinner_title,
+                    R.string.wildlife_hi_spinner_body, Risk.PROTECTED),
+            }),
+
+        // Fresh water, so nothing here stings the way the salt-water coasts
+        // do. What the lakes have instead is the water itself.
+        new Coast(R.string.wildlife_region_greatlakes,
+            new String[] {
+                "MI1", "MI2", "IL1", "IN1", "WI1", "OH1", "MN1", "NY7" },
+            R.string.wildlife_gl_note_title, R.string.wildlife_gl_note_body,
+            new Species[] {
+                new Species(R.string.wildlife_gl_itch_title,
+                    R.string.wildlife_gl_itch_body, Risk.CAN_STING),
+                new Species(R.string.wildlife_gl_algae_title,
+                    R.string.wildlife_gl_algae_body, Risk.GIVE_ROOM),
+                new Species(R.string.wildlife_gl_mussels_title,
+                    R.string.wildlife_gl_mussels_body, Risk.GIVE_ROOM),
+                new Species(R.string.wildlife_gl_plover_title,
+                    R.string.wildlife_gl_plover_body, Risk.PROTECTED),
+                new Species(R.string.wildlife_gl_jelly_title,
+                    R.string.wildlife_gl_jelly_body, Risk.HARMLESS),
+                new Species(R.string.wildlife_gl_sturgeon_title,
+                    R.string.wildlife_gl_sturgeon_body, Risk.HARMLESS),
+            }),
+
+        new Coast(R.string.wildlife_region_caribbean,
+            new String[] { "PR1", "PR2", "PR3" },
+            R.string.wildlife_pr_note_title, R.string.wildlife_pr_note_body,
+            new Species[] {
+                new Species(R.string.wildlife_pr_manowar_title,
+                    R.string.wildlife_pr_manowar_body, Risk.CAN_STING, Sting.MAN_O_WAR),
+                new Species(R.string.wildlife_pr_sealice_title,
+                    R.string.wildlife_pr_sealice_body, Risk.CAN_STING, Sting.SEA_LICE),
+                new Species(R.string.wildlife_pr_urchin_title,
+                    R.string.wildlife_pr_urchin_body, Risk.CAN_STING, Sting.SEA_URCHIN),
+                new Species(R.string.wildlife_pr_firecoral_title,
+                    R.string.wildlife_pr_firecoral_body, Risk.CAN_STING, Sting.JELLYFISH),
+                new Species(R.string.wildlife_pr_turtle_title,
+                    R.string.wildlife_pr_turtle_body, Risk.PROTECTED),
+                new Species(R.string.wildlife_pr_manatee_title,
+                    R.string.wildlife_pr_manatee_body, Risk.PROTECTED),
+                new Species(R.string.wildlife_pr_reef_title,
+                    R.string.wildlife_pr_reef_body, Risk.PROTECTED),
             }),
     };
 
