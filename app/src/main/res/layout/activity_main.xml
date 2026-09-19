@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
 <LinearLayout
+    android:id="@+id/appContent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
@@ -704,58 +705,69 @@
 
 </LinearLayout>
 
-    <!-- Home screen: shown on top of the app at launch, then automatically
-         reveals the app underneath after a short delay -->
+    <!-- Launch screen: the Flagline mark over open sea, held while the app
+         behind it finds its feet, then crossed out to it. Drawn on top of the
+         real screen rather than in its own activity, so there is nothing to
+         start and nothing to tear down - it simply stops being there. -->
     <FrameLayout
-        android:id="@+id/welcomeOverlay"
+        android:id="@+id/splashOverlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.example.myapplication.WaveRevealOverlay
-            android:id="@+id/welcomeRevealView"
+        <com.example.myapplication.FlaglineSplashView
+            android:id="@+id/splashBackdrop"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:importantForAccessibility="no" />
 
+        <!-- Raised off dead centre, so the column reads as sitting above the
+             surf rather than floating in the middle of it. -->
         <LinearLayout
-            android:id="@+id/welcomeContent"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:gravity="center"
+            android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:translationY="-64dp">
+            android:translationY="-35dp">
 
-            <!-- The bare mark, not the icon tile: the opening screen already
-                 has a brand ground of its own to sit on. -->
-            <ImageView
-                android:layout_width="96dp"
-                android:layout_height="96dp"
-                android:contentDescription="@null"
-                android:src="@drawable/ic_sandbar_mark" />
+            <com.example.myapplication.FlaglineMarkView
+                android:id="@+id/splashMark"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:importantForAccessibility="no" />
 
+            <!-- The sheet sets the wordmark in Poppins 600. Android ships
+                 Roboto, whose weights step 500 then 700 with nothing between,
+                 and at 46sp the 500 reads thin beside the drawn mark, so the
+                 wordmark takes the bold. -->
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/splashWordmark"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:fontFamily="sans-serif-medium"
+                android:layout_marginTop="26dp"
+                android:fontFamily="sans-serif"
+                android:gravity="center_horizontal"
+                android:includeFontPadding="false"
                 android:letterSpacing="-0.035"
                 android:text="@string/app_name"
-                android:textColor="@color/on_wave"
-                android:textSize="40sp" />
+                android:textColor="@color/brand_shell"
+                android:textSize="46sp"
+                android:textStyle="bold" />
 
-            <!-- Descriptor, set quiet in mono under the wordmark -->
+            <!-- Tracking is animated open on the way in, so the padding that
+                 keeps it optically centred is set in code alongside it. -->
             <TextView
-                android:layout_width="wrap_content"
+                android:id="@+id/splashTagline"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:alpha="0.65"
+                android:layout_marginTop="12dp"
                 android:fontFamily="monospace"
-                android:letterSpacing="0.24"
-                android:paddingStart="3dp"
-                android:paddingEnd="0dp"
+                android:gravity="center_horizontal"
+                android:letterSpacing="0.26"
+                android:maxLines="1"
                 android:text="@string/app_tagline"
                 android:textAllCaps="true"
-                android:textColor="@color/on_wave"
+                android:textColor="@color/brand_foam"
                 android:textSize="12sp" />
 
         </LinearLayout>

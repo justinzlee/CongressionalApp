@@ -134,13 +134,6 @@
     <!-- Held well above the night sea and sky so the kite still reads. -->
     <color name="placeholder_kite_sail">#4E93A8</color>
 
-    <!-- Welcome intro: the same Sea ramp as light mode, dimmed a step so
-         the reveal does not flash white on a night screen. -->
-    <color name="wave_deep">#0A4757</color>
-    <color name="wave_shallow">#2E93A3</color>
-    <color name="wave_foam">#CDEAEF</color>
-    <color name="on_wave">#EBF7F9</color>
-
     <!-- Beach map: the design's own dark set for the card's kicker, its
          controls and its pills. The markers are the same in both themes. -->
     <color name="map_kicker">#7E9298</color>

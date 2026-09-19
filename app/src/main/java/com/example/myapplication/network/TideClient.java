@@ -67,7 +67,7 @@ public class TideClient {
                     .addQueryParameter("units", "english")
                     .addQueryParameter("time_zone", "gmt")
                     .addQueryParameter("format", "json")
-                    .addQueryParameter("application", "Sandbar")
+                    .addQueryParameter("application", "Flagline")
                     .addQueryParameter("begin_date", beginDate(System.currentTimeMillis()))
                     .addQueryParameter("range", String.valueOf(RANGE_HOURS))
                     .addQueryParameter("station", stationId)

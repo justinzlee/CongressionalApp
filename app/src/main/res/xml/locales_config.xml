@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  The languages Sandbar ships. Android 13 and up reads this to list the app in
+  The languages Flagline ships. Android 13 and up reads this to list the app in
   the system's per-app language screen, so the setting inside the app and the
   one in Settings offer the same choices.
 -->

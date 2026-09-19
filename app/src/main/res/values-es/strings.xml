@@ -8,8 +8,8 @@
       Where a sentence is assembled from parts in code, the whole sentence lives
       here so the words can be ordered the way Spanish orders them.
     -->
-    <string name="app_name">Sandbar</string>
-    <string name="app_tagline">Seguridad en la playa</string>
+    <string name="app_name">Flagline</string>
+    <string name="app_tagline">Infórmate antes de nadar</string>
     <string name="ai_safety_advisor">Asesor de seguridad</string>
     <string name="weather_conditions">Condiciones del tiempo</string>
     <string name="air_temp">Temp. del aire</string>
