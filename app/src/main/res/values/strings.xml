@@ -632,6 +632,97 @@
     <string name="wildlife_norcal_tidepool_body">Most of these pools sit inside marine protected areas where nothing may be taken. Walk on bare rock, and set back any stone you turn exactly as it lay.</string>
     <string name="wildlife_norcal_note_title">The water does not warm up</string>
     <string name="wildlife_norcal_note_body">Upwelling holds this coast in the low 50s°F through the summer. Cold that deep pulls the breath out of you on the first wave and takes your strength in minutes, which is why everyone in the water is wearing a wetsuit.</string>
+
+    <!-- The Southeast Atlantic: Georgia and the Carolinas -->
+    <string name="wildlife_region_southeast">Southeast Atlantic</string>
+    <string name="wildlife_se_nettle_title">Atlantic sea nettle</string>
+    <string name="wildlife_se_nettle_body">A white bell the size of a saucer with long trailing arms, thickest from July to September. The sting burns for an hour and a broken arm in the surf stings on its own.</string>
+    <string name="wildlife_se_manowar_title">Portuguese man o\' war</string>
+    <string name="wildlife_se_manowar_body">Blown onto these beaches on winter and spring easterlies. The blue float is the size of a hand and the threads behind it reach further than you would believe, so give a stranded one the whole width of the beach.</string>
+    <string name="wildlife_se_ray_title">Southern stingray</string>
+    <string name="wildlife_se_ray_body">Buried on the sand flats and in the sloughs behind the bars, right where people stand. Shuffle your feet through the shallows and it leaves before you reach it.</string>
+    <string name="wildlife_se_shark_title">Blacktip and spinner shark</string>
+    <string name="wildlife_se_shark_body">They follow the mullet run down this coast in spring and autumn and feed in the trough close in. Stay out of water boiling with bait and birds, out of murky water, and off the water at dawn and dusk.</string>
+    <string name="wildlife_se_dolphin_title">Strand-feeding dolphin</string>
+    <string name="wildlife_se_dolphin_body">Only in the Lowcountry do bottlenose dolphins drive fish clear out of the water and onto a mud bank. Watch from 50 yards back and stay off the bank: a dolphin that will not strand goes hungry.</string>
+    <string name="wildlife_se_turtle_title">Loggerhead nests</string>
+    <string name="wildlife_se_turtle_body">These beaches are the north end of the loggerhead\'s nesting range, from May to August. Leave the marked nests alone, fill in any hole you dig, and keep lights off the sand at night.</string>
+    <string name="wildlife_se_cannonball_title">Cannonball jelly</string>
+    <string name="wildlife_se_cannonball_body">A firm brown dome the size of a grapefruit, washed up by the thousand in late summer. This is the one you can pick up — the sting barely registers on skin.</string>
+    <string name="wildlife_se_note_title">Rip currents run here</string>
+    <string name="wildlife_se_note_body">The Outer Banks lose more swimmers to rip currents than almost anywhere else in the country: the bars are broken and the water leaving the beach takes the gaps. Swim where a lifeguard is, and if you are pulled out, swim along the beach, not against it.</string>
+
+    <!-- The Mid-Atlantic: Virginia, Maryland and Delaware -->
+    <string name="wildlife_region_midatlantic">Mid-Atlantic</string>
+    <string name="wildlife_ma_nettle_title">Sea nettle</string>
+    <string name="wildlife_ma_nettle_body">Thick in the Chesapeake and the coastal bays from July to September, and far thinner on the ocean side. The sting is sharp but short, and hot water settles it.</string>
+    <string name="wildlife_ma_ray_title">Cownose ray</string>
+    <string name="wildlife_ma_ray_body">Schools of hundreds move through the bays and past the beaches all summer, wingtips breaking the surface. They swim rather than bury, and the barb at the base of the tail is for defence, so watch them go by and never corner one.</string>
+    <string name="wildlife_ma_horseshoe_title">Horseshoe crab</string>
+    <string name="wildlife_ma_horseshoe_body">Delaware Bay holds the biggest spawning run on earth each May, and the shorebirds that feed on the eggs come with it. The animal is harmless and the pointed tail is a lever, not a stinger — turn one back over by the shell.</string>
+    <string name="wildlife_ma_horses_title">Assateague\'s wild horses</string>
+    <string name="wildlife_ma_horses_body">They look tame on the sand and they are not: they bite and kick every year. The Park Service asks for 40 feet, which is a bus length, and feeding one is both illegal and how it learns to mug people for food.</string>
+    <string name="wildlife_ma_plover_title">Piping plover and least tern</string>
+    <string name="wildlife_ma_plover_body">Both nest straight onto the open sand here, in a scrape you would not see until you stepped on it. Stay outside the roped areas from March to August and keep dogs off that stretch entirely.</string>
+    <string name="wildlife_ma_shark_title">Sandbar shark</string>
+    <string name="wildlife_ma_shark_body">The mouth of the Chesapeake is one of the great nurseries for them on this coast. They stay out past the bar eating crabs and rays and are not interested in swimmers.</string>
+    <string name="wildlife_ma_note_title">Beside the groins</string>
+    <string name="wildlife_ma_note_body">These beaches are held in place by rock groins and inlet jetties, and water leaving the beach runs out alongside them. Swim a good distance clear of any rock, and never swim through an inlet.</string>
+
+    <!-- Hawaii -->
+    <string name="wildlife_region_hawaii">Hawaii</string>
+    <string name="wildlife_hi_box_title">Box jellyfish</string>
+    <string name="wildlife_hi_box_body">Eight to ten days after a full moon they arrive in numbers on the south-facing shores, Waikiki among them, and the lifeguards post signs. The sting is worse than a man o\' war\'s and can keep hurting for hours.</string>
+    <string name="wildlife_hi_manowar_title">Portuguese man o\' war</string>
+    <string name="wildlife_hi_manowar_body">Strong trades push them onto the windward beaches any time of year. Blue float, long invisible thread, and it stings the same lying on the sand as in the water.</string>
+    <string name="wildlife_hi_urchin_title">Wana, the spiny sea urchin</string>
+    <string name="wildlife_hi_urchin_body">Black needles wedged into every ledge and crack on the reef. The spines are brittle and snap off under the skin, so look before you put a hand or a foot down and wear something on your feet on the reef.</string>
+    <string name="wildlife_hi_monkseal_title">Hawaiian monk seal</string>
+    <string name="wildlife_hi_monkseal_body">There are only about 1,600 left, and one asleep on the sand is resting, not stranded. Federal law asks for 50 feet, or 150 from a mother with a pup, and that is the whole of what is required of you.</string>
+    <string name="wildlife_hi_honu_title">Honu, the green sea turtle</string>
+    <string name="wildlife_hi_honu_body">They bask on the sand and graze the reef in plain sight. Stay 10 feet back and never touch one: it is protected under state and federal law, and a turtle that will not haul out loses the rest it came for.</string>
+    <string name="wildlife_hi_spinner_title">Spinner dolphin</string>
+    <string name="wildlife_hi_spinner_body">They hunt all night and come into the bays to sleep by day, which is when swimmers find them. It is against federal rules to approach within 50 yards, and a rested pod feeds; a disturbed one does not.</string>
+    <string name="wildlife_hi_tiger_title">Tiger shark</string>
+    <string name="wildlife_hi_tiger_body">Present around every island all year, and bites stay rare. Stay out of water made brown by rain, away from stream mouths and from anyone fishing, and out at dawn and dusk.</string>
+    <string name="wildlife_hi_note_title">The wave breaks on sand</string>
+    <string name="wildlife_hi_note_body">Hawaii\'s shorebreak drops onto dry sand in a foot of water and breaks necks and shoulders every year — more people are hurt by it than by everything on this list put together. Never turn your back on it, and never dive into it head first.</string>
+
+    <!-- The Great Lakes -->
+    <string name="wildlife_region_greatlakes">Great Lakes</string>
+    <string name="wildlife_gl_itch_title">Swimmer\'s itch</string>
+    <string name="wildlife_gl_itch_body">A parasite of ducks and snails burrows into skin in warm shallow water and dies there, leaving itchy red welts an hour later. Towel off hard the moment you come out and rinse, and it mostly does not take hold.</string>
+    <string name="wildlife_gl_algae_title">Blue-green algae</string>
+    <string name="wildlife_gl_algae_body">Late summer blooms turn the water the colour of spilled paint and carry a toxin. Water that looks like pea soup or has a scum on it means stay out, and keep dogs out — a dog that drinks it can die the same day.</string>
+    <string name="wildlife_gl_mussels_title">Zebra and quagga mussels</string>
+    <string name="wildlife_gl_mussels_body">They crust every rock, pier leg and breakwall in the lakes, and the shells cut like broken glass. Wear something on your feet anywhere you are not on clean sand.</string>
+    <string name="wildlife_gl_plover_title">Piping plover</string>
+    <string name="wildlife_gl_plover_body">Fewer than a hundred pairs nest on the whole of the Great Lakes, on the open sand at places like Sleeping Bear and Indiana Dunes. Keep outside the fenced areas and keep dogs on the lead near them.</string>
+    <string name="wildlife_gl_jelly_title">Freshwater jellyfish</string>
+    <string name="wildlife_gl_jelly_body">Penny-sized and clear, appearing in warm calm water at the end of summer. It is a real jellyfish and it cannot sting through human skin.</string>
+    <string name="wildlife_gl_sturgeon_title">Lake sturgeon</string>
+    <string name="wildlife_gl_sturgeon_body">Up to six feet of armoured fish, little changed since the dinosaurs and protected or tightly limited in every lake state. It has no teeth and vacuums the bottom for insects, and seeing one is luck rather than danger.</string>
+    <string name="wildlife_gl_note_title">The current beside a pier</string>
+    <string name="wildlife_gl_note_body">A wind blowing along the shore sends water racing out beside every pier and breakwall, and that current drowns more people on these lakes than anything in the water does. Swim away from the structures, and stay off them altogether when waves are washing over.</string>
+
+    <!-- Puerto Rico -->
+    <string name="wildlife_region_caribbean">Puerto Rico</string>
+    <string name="wildlife_pr_manowar_title">Portuguese man o\' war</string>
+    <string name="wildlife_pr_manowar_body">The trades drive them onto the north coast, worst from December to April. The blue float on the sand is still attached to threads you cannot see.</string>
+    <string name="wildlife_pr_sealice_title">Sea lice</string>
+    <string name="wildlife_pr_sealice_body">Thimble jellyfish larvae, too small to see, worst in spring and early summer. You feel nothing in the water and come up hours later with a rash exactly where your swimsuit sat.</string>
+    <string name="wildlife_pr_urchin_title">Erizo, the long-spined urchin</string>
+    <string name="wildlife_pr_urchin_body">Black spines a hand long, packed into the reef and under every ledge. They snap off in the skin, so never put a bare foot on the reef.</string>
+    <string name="wildlife_pr_firecoral_title">Fire coral</string>
+    <string name="wildlife_pr_firecoral_body">A mustard-brown crust with pale tips, growing over the reef and on old ropes and wrecks. Brushing it burns for hours and welts the next day, and it looks nothing like the fire it delivers.</string>
+    <string name="wildlife_pr_turtle_title">Green and hawksbill turtles</string>
+    <string name="wildlife_pr_turtle_body">They nest on these beaches from March to August, Culebra above all. The nests, the hatchlings and the turtles themselves are protected — watch from a distance and keep lights off the sand.</string>
+    <string name="wildlife_pr_manatee_title">Antillean manatee</string>
+    <string name="wildlife_pr_manatee_body">Endangered, and found in the calm bays and river mouths along this coast. Do not follow, feed or swim towards one; boats are what kill them, so a manatee needs the channel more than you need the photograph.</string>
+    <string name="wildlife_pr_reef_title">The reef itself</string>
+    <string name="wildlife_pr_reef_body">Standing on coral kills a colony that took decades to grow, and a coral cut goes septic more readily than any other graze. Float over it, and if you must rest, rest on sand.</string>
+    <string name="wildlife_pr_note_title">Resacas</string>
+    <string name="wildlife_pr_note_body">Winter swell out of the North Atlantic hits this coast hard from December to March, and the water it piles onto the beach leaves through the gaps in the reef as a rip. Swim at a beach with a lifeguard, and if the reef has a channel, that is where the current runs.</string>
     <!-- Your own photo of a beach. The hero changing is the confirmation that
          one landed or was taken away, so only the failures need words. -->
     <string name="photo_add">Add a photo</string>

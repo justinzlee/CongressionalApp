@@ -626,6 +626,97 @@
     <string name="wildlife_norcal_tidepool_body">Casi todas estas pozas están dentro de áreas marinas protegidas donde no se puede sacar nada. Pisa la roca desnuda y vuelve a dejar cada piedra que levantes tal como estaba.</string>
     <string name="wildlife_norcal_note_title">El agua no se calienta</string>
     <string name="wildlife_norcal_note_body">El afloramiento mantiene esta costa cerca de los 11 °C todo el verano. Un frío así te corta la respiración en la primera ola y te quita las fuerzas en minutos; por eso todos los que están en el agua llevan traje de neopreno.</string>
+
+    <!-- Atlántico sureste: Georgia y las Carolinas -->
+    <string name="wildlife_region_southeast">Atlántico sureste</string>
+    <string name="wildlife_se_nettle_title">Ortiga de mar atlántica</string>
+    <string name="wildlife_se_nettle_body">Una campana blanca del tamaño de un plato con brazos largos colgando, más abundante de julio a septiembre. La picadura arde una hora y un brazo suelto en el oleaje pica por su cuenta.</string>
+    <string name="wildlife_se_manowar_title">Carabela portuguesa</string>
+    <string name="wildlife_se_manowar_body">La traen a estas playas los vientos del este de invierno y primavera. El flotador azul cabe en una mano y los hilos que lleva detrás llegan mucho más lejos de lo que parece, así que dale toda la playa a una varada.</string>
+    <string name="wildlife_se_ray_title">Raya látigo americana</string>
+    <string name="wildlife_se_ray_body">Enterrada en los bajos de arena y en los canales detrás de las barras, justo donde la gente se para. Arrastra los pies por lo bajito y se va antes de que llegues.</string>
+    <string name="wildlife_se_shark_title">Tiburón puntas negras y tiburón macuira</string>
+    <string name="wildlife_se_shark_body">Siguen los cardúmenes de lisa por esta costa en primavera y otoño y comen en el canal junto a la orilla. No te metas donde el agua hierva de carnada y aves, ni en agua turbia, ni al amanecer o al anochecer.</string>
+    <string name="wildlife_se_dolphin_title">Delfín que vara para comer</string>
+    <string name="wildlife_se_dolphin_body">Solo en el Lowcountry los delfines nariz de botella empujan peces fuera del agua hasta un banco de lodo. Míralo desde 45 metros y no pises el banco: un delfín que no vara se queda sin comer.</string>
+    <string name="wildlife_se_turtle_title">Nidos de tortuga caguama</string>
+    <string name="wildlife_se_turtle_body">Estas playas son el límite norte de la zona de anidación de la caguama, de mayo a agosto. Deja en paz los nidos marcados, tapa cualquier hoyo que hagas y mantén las luces fuera de la arena de noche.</string>
+    <string name="wildlife_se_cannonball_title">Medusa bala de cañón</string>
+    <string name="wildlife_se_cannonball_body">Una cúpula marrón y firme del tamaño de una toronja, varada por miles a finales de verano. Esta sí se puede levantar: la picadura casi no se siente en la piel.</string>
+    <string name="wildlife_se_note_title">Aquí hay corrientes de resaca</string>
+    <string name="wildlife_se_note_body">Los Outer Banks pierden más nadadores por corrientes de resaca que casi cualquier otro lugar del país: las barras están rotas y el agua que sale de la playa se va por los huecos. Métete donde haya salvavidas, y si te jala, nada paralelo a la playa, no contra la corriente.</string>
+
+    <!-- Atlántico medio: Virginia, Maryland y Delaware -->
+    <string name="wildlife_region_midatlantic">Atlántico medio</string>
+    <string name="wildlife_ma_nettle_title">Ortiga de mar</string>
+    <string name="wildlife_ma_nettle_body">Abundante en la bahía de Chesapeake y en las bahías costeras de julio a septiembre, y mucho menos del lado del océano. La picadura es fuerte pero corta, y el agua caliente la calma.</string>
+    <string name="wildlife_ma_ray_title">Raya gavilán</string>
+    <string name="wildlife_ma_ray_body">Cardúmenes de cientos pasan por las bahías y frente a las playas todo el verano, con las puntas de las aletas fuera del agua. Nadan en vez de enterrarse, y la púa en la base de la cola es defensa, así que míralas pasar y nunca acorrales a una.</string>
+    <string name="wildlife_ma_horseshoe_title">Cangrejo herradura</string>
+    <string name="wildlife_ma_horseshoe_body">La bahía de Delaware tiene el mayor desove del planeta cada mayo, y con él llegan las aves playeras que comen los huevos. El animal es inofensivo y la cola puntiaguda es una palanca, no un aguijón: si ves uno bocarriba, voltéalo por el caparazón.</string>
+    <string name="wildlife_ma_horses_title">Los caballos salvajes de Assateague</string>
+    <string name="wildlife_ma_horses_body">Parecen mansos en la arena y no lo son: cada año muerden y patean a alguien. El servicio de parques pide 12 metros, el largo de un autobús, y darles de comer es ilegal y es como aprenden a asaltar a la gente por comida.</string>
+    <string name="wildlife_ma_plover_title">Chorlito silbador y charrán mínimo</string>
+    <string name="wildlife_ma_plover_body">Los dos anidan directo sobre la arena abierta, en un hueco que no verías hasta pisarlo. Quédate fuera de las zonas acordonadas de marzo a agosto y no lleves perros a ese tramo.</string>
+    <string name="wildlife_ma_shark_title">Tiburón trozo</string>
+    <string name="wildlife_ma_shark_body">La boca de la bahía de Chesapeake es una de las grandes guarderías de esta costa. Se quedan más allá de la barra comiendo cangrejos y rayas, y los nadadores no les interesan.</string>
+    <string name="wildlife_ma_note_title">Junto a los espigones</string>
+    <string name="wildlife_ma_note_body">Estas playas se sostienen con espigones de roca y escolleras de entrada, y el agua que sale de la playa se va pegada a ellos. Aléjate bien de cualquier roca al nadar, y nunca nades por una entrada de bahía.</string>
+
+    <!-- Hawái -->
+    <string name="wildlife_region_hawaii">Hawái</string>
+    <string name="wildlife_hi_box_title">Avispa de mar</string>
+    <string name="wildlife_hi_box_body">De ocho a diez días después de la luna llena llegan en cantidad a las costas del sur, Waikiki entre ellas, y los salvavidas ponen los letreros. La picadura es peor que la de una carabela portuguesa y puede doler durante horas.</string>
+    <string name="wildlife_hi_manowar_title">Carabela portuguesa</string>
+    <string name="wildlife_hi_manowar_body">Los vientos alisios fuertes las empujan a las playas de barlovento en cualquier época. Flotador azul, hilo largo e invisible, y pica igual tirada en la arena que en el agua.</string>
+    <string name="wildlife_hi_urchin_title">Wana, el erizo espinoso</string>
+    <string name="wildlife_hi_urchin_body">Agujas negras metidas en cada repisa y grieta del arrecife. Las espinas son frágiles y se quiebran bajo la piel, así que mira antes de apoyar una mano o un pie y usa calzado sobre el arrecife.</string>
+    <string name="wildlife_hi_monkseal_title">Foca monje de Hawái</string>
+    <string name="wildlife_hi_monkseal_body">Quedan unas 1,600, y una dormida en la arena está descansando, no varada. La ley federal pide 15 metros, o 45 si es una madre con cría, y eso es todo lo que se te pide.</string>
+    <string name="wildlife_hi_honu_title">Honu, la tortuga verde</string>
+    <string name="wildlife_hi_honu_body">Se asolean en la arena y pastan el arrecife a plena vista. Quédate a 3 metros y nunca la toques: está protegida por ley estatal y federal, y una tortuga que no sale del agua pierde el descanso que venía a buscar.</string>
+    <string name="wildlife_hi_spinner_title">Delfín tornillo</string>
+    <string name="wildlife_hi_spinner_body">Cazan toda la noche y entran a las bahías a dormir de día, que es cuando los nadadores los encuentran. Las reglas federales prohíben acercarse a menos de 45 metros, y un grupo que descansa come; uno molestado, no.</string>
+    <string name="wildlife_hi_tiger_title">Tiburón tigre</string>
+    <string name="wildlife_hi_tiger_body">Está alrededor de todas las islas todo el año, y las mordidas siguen siendo raras. No te metas en agua enturbiada por la lluvia, ni cerca de desembocaduras ni de quien esté pescando, ni al amanecer o al anochecer.</string>
+    <string name="wildlife_hi_note_title">La ola rompe sobre la arena</string>
+    <string name="wildlife_hi_note_body">El shorebreak de Hawái cae sobre arena seca con un palmo de agua y cada año rompe cuellos y hombros: lastima a más gente que todo lo de esta lista junto. Nunca le des la espalda, y nunca te claves de cabeza en él.</string>
+
+    <!-- Los Grandes Lagos -->
+    <string name="wildlife_region_greatlakes">Grandes Lagos</string>
+    <string name="wildlife_gl_itch_title">Picazón del nadador</string>
+    <string name="wildlife_gl_itch_body">Un parásito de patos y caracoles se mete en la piel en agua templada y poco profunda y muere ahí, y una hora después deja ronchas rojas que pican. Sécate fuerte con la toalla apenas salgas y enjuágate, y casi nunca prende.</string>
+    <string name="wildlife_gl_algae_title">Algas verdiazules</string>
+    <string name="wildlife_gl_algae_body">Los florecimientos de final de verano dejan el agua del color de la pintura derramada y llevan una toxina. Si el agua parece sopa de chícharo o tiene nata encima, no te metas, y saca a los perros: un perro que la bebe puede morir el mismo día.</string>
+    <string name="wildlife_gl_mussels_title">Mejillón cebra y quagga</string>
+    <string name="wildlife_gl_mussels_body">Cubren cada roca, pilote y rompeolas de los lagos, y las conchas cortan como vidrio roto. Usa algo en los pies en cualquier sitio que no sea arena limpia.</string>
+    <string name="wildlife_gl_plover_title">Chorlito silbador</string>
+    <string name="wildlife_gl_plover_body">Menos de cien parejas anidan en todos los Grandes Lagos, sobre la arena abierta en sitios como Sleeping Bear e Indiana Dunes. Quédate fuera de las zonas cercadas y lleva a los perros con correa cerca de ellas.</string>
+    <string name="wildlife_gl_jelly_title">Medusa de agua dulce</string>
+    <string name="wildlife_gl_jelly_body">Del tamaño de una moneda y transparente, aparece en agua tibia y quieta a finales de verano. Es una medusa de verdad y no puede picar a través de la piel humana.</string>
+    <string name="wildlife_gl_sturgeon_title">Esturión lacustre</string>
+    <string name="wildlife_gl_sturgeon_body">Hasta casi dos metros de pez acorazado, casi sin cambios desde los dinosaurios y protegido o muy limitado en todos los estados de los lagos. No tiene dientes y aspira insectos del fondo; verlo es suerte, no peligro.</string>
+    <string name="wildlife_gl_note_title">La corriente junto a un muelle</string>
+    <string name="wildlife_gl_note_body">Un viento que sopla a lo largo de la orilla lanza el agua a toda velocidad junto a cada muelle y rompeolas, y esa corriente ahoga a más gente en estos lagos que cualquier cosa que viva en ellos. Aléjate nadando de las estructuras, y no te subas a ellas cuando las olas las estén bañando.</string>
+
+    <!-- Puerto Rico -->
+    <string name="wildlife_region_caribbean">Puerto Rico</string>
+    <string name="wildlife_pr_manowar_title">Carabela portuguesa</string>
+    <string name="wildlife_pr_manowar_body">Los alisios las empujan a la costa norte, peor de diciembre a abril. El flotador azul en la arena sigue unido a hilos que no puedes ver.</string>
+    <string name="wildlife_pr_sealice_title">Picazón de mar</string>
+    <string name="wildlife_pr_sealice_body">Larvas de medusa dedal, demasiado pequeñas para verlas, peores en primavera y principios de verano. En el agua no sientes nada y horas después sale un sarpullido justo donde iba el traje de baño.</string>
+    <string name="wildlife_pr_urchin_title">Erizo negro de espinas largas</string>
+    <string name="wildlife_pr_urchin_body">Espinas negras de un palmo, apretadas en el arrecife y debajo de cada repisa. Se quiebran dentro de la piel, así que nunca pongas un pie descalzo sobre el arrecife.</string>
+    <string name="wildlife_pr_firecoral_title">Coral de fuego</string>
+    <string name="wildlife_pr_firecoral_body">Una costra color mostaza con las puntas pálidas, que crece sobre el arrecife y sobre cabos viejos y restos de naufragio. Rozarlo arde horas y al día siguiente deja ronchas, y no se parece en nada al fuego que suelta.</string>
+    <string name="wildlife_pr_turtle_title">Tortuga verde y carey</string>
+    <string name="wildlife_pr_turtle_body">Anidan en estas playas de marzo a agosto, sobre todo en Culebra. Los nidos, las crías y las tortugas están protegidos: mira de lejos y mantén las luces fuera de la arena.</string>
+    <string name="wildlife_pr_manatee_title">Manatí antillano</string>
+    <string name="wildlife_pr_manatee_body">En peligro de extinción, y está en las bahías tranquilas y las desembocaduras de esta costa. No lo sigas, no lo alimentes y no nades hacia él; lo que los mata son las lanchas, así que necesita el canal más de lo que tú necesitas la foto.</string>
+    <string name="wildlife_pr_reef_title">El arrecife mismo</string>
+    <string name="wildlife_pr_reef_body">Pararse sobre el coral mata una colonia que tardó décadas en crecer, y una cortada de coral se infecta más fácil que cualquier otro raspón. Flota por encima, y si necesitas descansar, hazlo sobre arena.</string>
+    <string name="wildlife_pr_note_title">Resacas</string>
+    <string name="wildlife_pr_note_body">La marejada de invierno del Atlántico Norte golpea fuerte esta costa de diciembre a marzo, y el agua que amontona en la playa se va por los huecos del arrecife como corriente de resaca. Métete en una playa con salvavidas, y si el arrecife tiene un canal, ahí es por donde corre.</string>
     <!-- Tu propia foto de una playa. Que cambie la imagen principal es la
          confirmación de que entró o se quitó, así que solo los fallos hablan. -->
     <string name="photo_add">Agregar una foto</string>
