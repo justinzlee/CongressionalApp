@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
@@ -646,11 +647,21 @@ public class BeachRepository {
     }
 
 
+    /**
+     * Beaches whose name contains the query, ignoring case.
+     *
+     * <p>Case is folded against {@link Locale#ROOT} rather than the phone's
+     * own locale. The beach names are English, and a locale whose casing rules
+     * differ from English's would fold the two sides of this comparison
+     * apart: on a Turkish phone the default rules lowercase the I of Imperial
+     * Beach to a dotless ı, which the typed "imperial" then no longer matches.
+     */
     public List<Beach> searchBeaches(String query) {
         synchronized (beaches) {
             if (query == null || query.isEmpty()) return new ArrayList<>(beaches);
+            String needle = query.toLowerCase(Locale.ROOT);
             return beaches.stream()
-                .filter(b -> b.getName().toLowerCase().contains(query.toLowerCase()))
+                .filter(b -> b.getName().toLowerCase(Locale.ROOT).contains(needle))
                 .collect(Collectors.toList());
         }
     }

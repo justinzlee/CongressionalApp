@@ -11,6 +11,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -184,6 +185,28 @@ public class BeachRepositoryTest {
             String photo = url.split("\\?")[0];
             assertTrue(beach.getName() + " repeats a photo another beach already shows: " + photo,
                 seen.add(photo));
+        }
+    }
+
+    /**
+     * Search still finds a beach on a phone whose locale lowercases letters
+     * differently from English. Turkish is the case that bites: its rules
+     * lowercase I to a dotless ı, so folding "Imperial Beach" with the default
+     * locale and the typed "imperial" with nothing produced two strings that
+     * no longer matched, and the beach could not be found at all.
+     */
+    @Test
+    public void searchIgnoresCaseWhateverThePhonesLocaleIs() {
+        Locale before = Locale.getDefault();
+        try {
+            Locale.setDefault(new Locale("tr", "TR"));
+            BeachRepository repository = BeachRepository.newForTesting();
+            assertFalse("Imperial Beach is not findable by lower-case search",
+                repository.searchBeaches("imperial").isEmpty());
+            assertFalse("Imperial Beach is not findable by upper-case search",
+                repository.searchBeaches("IMPERIAL").isEmpty());
+        } finally {
+            Locale.setDefault(before);
         }
     }
 
