@@ -188,6 +188,25 @@ public class BeachRepositoryTest {
     }
 
     /**
+     * Every photo comes from Wikimedia Commons. That is not a preference for
+     * one host: the check that a picture is of the beach it is filed under
+     * rests on the geotag and the licence Commons publishes beside the file,
+     * and a URL from anywhere else can be neither checked that way nor relied
+     * on to still be there next month. Coronado spent a while hotlinked to a
+     * travel publisher's image CDN, which was both of those problems at once.
+     */
+    @Test
+    public void everyPhotoComesFromWikimediaCommons() {
+        for (Beach beach : BeachRepository.newForTesting().getBeaches()) {
+            String url = beach.getImageUrl();
+            if (url == null) continue;
+            assertTrue(beach.getName() + " shows a photo from outside Wikimedia Commons, "
+                    + "where its geotag and licence cannot be checked: " + url,
+                url.startsWith("https://upload.wikimedia.org/wikipedia/commons/"));
+        }
+    }
+
+    /**
      * The beaches whose photo has been checked to be of that beach: geotagged
      * on the sand on Wikimedia Commons, or showing a landmark nowhere else has
      * (Scripps Pier, the Hotel del Coronado, Haystack Rock). Every other beach
@@ -206,11 +225,21 @@ public class BeachRepositoryTest {
         // Sourced from Wikimedia Commons by geotag, then looked at one by one:
         // a geotag on its own is not enough. Three Brück & Sohn postcards of
         // Santa Catalina are tagged on the sand at San Onofre, fifty miles up
-        // the coast, which is why San Onofre still has no picture.
+        // the coast, and the beaches on Catalina itself still have no picture
+        // for want of one that shows the sand rather than the town.
         "CA13", "CA17", "CA19", "CA23", "LA11", "LA13", "LA14", "LA15", "LA16", "LA18",
         "LA23", "LA24", "LA25", "LA26", "LA27", "CC6", "CC8", "CC10", "CC11", "CC12",
         "CC16", "CC17", "CC19", "CC20", "SF4", "SF5", "SF6", "SF7", "SF8", "SF9",
-        "NCA1", "NCA2", "OR5", "WA5", "HI7", "NC5"));
+        "NCA1", "NCA2", "OR5", "WA5", "HI7", "NC5",
+        // A second pass over the beaches still showing the drawn shoreline.
+        // Every candidate within 700m was looked at; most were rejected —
+        // a street in Mission Beach, a bike sign at Avila, the Coast Guard
+        // station rather than the beach at Nauset, a salt marsh at
+        // Hammonasset — and these are the ones that were actually of the
+        // beach they are filed under.
+        "LA1", "CA7", "CA12", "CA14", "CA15", "CA16", "CA18", "CA21", "LA17", "LA19",
+        "LA20", "LA21", "CC14", "CC15", "FL14", "FL15", "NC2", "NC4", "VA1", "MA3",
+        "TX3", "PR3"));
 
     @Test
     public void onlyCheckedPhotosAreShown() {

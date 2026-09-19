@@ -146,8 +146,12 @@ public class BeachRepository {
             "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/La_Jolla_Shores_photo_Don_Ramey_Logan.jpg/1280px-La_Jolla_Shores_photo_Don_Ramey_Logan.jpg",
             "9410230"));
 
+        // Coronado's picture used to be hotlinked off a travel publisher's
+        // image CDN — the one photo in this list not from Wikimedia Commons,
+        // served at somebody else's pleasure and under nobody's licence. This
+        // one is CC BY-SA and geotagged on Coronado's own sand.
         beaches.add(new Beach("CA2", "Coronado Beach", 32.6859, -117.1831, null, null, null,
-            "https://img2.10bestmedia.com/Images/Photos/422054/Coronado-Beach_54_990x660.jpg?auto=webp&width=800&quality=75",
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Coronado_beach_lifeguard_station.jpg/1280px-Coronado_beach_lifeguard_station.jpg",
             "TWC0405"));
         beaches.add(new Beach("CA3", "Ocean Beach", 32.7495, -117.2553, null, null, null,
             "https://upload.wikimedia.org/wikipedia/commons/9/9f/Sunset_pier.jpg", "TWC0405"));
@@ -158,7 +162,8 @@ public class BeachRepository {
             "9410230"));
 
         beaches.add(new Beach("LA1", "Santa Monica Pier", 34.0099, -118.4960, null, null, null,
-            null, "9410840"));
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Beach_Volleyball_and_the_Pier%2C_Santa_Monica%2C_CA_05.21.2007.jpg/1280px-Beach_Volleyball_and_the_Pier%2C_Santa_Monica%2C_CA_05.21.2007.jpg",
+            "9410840"));
         beaches.add(new Beach("LA2", "Huntington Beach", 33.6557, -118.0043, null, null, null,
             "https://upload.wikimedia.org/wikipedia/commons/2/2a/Huntington_Beach_%288256933262%29.jpg",
             "9410583"));
@@ -198,23 +203,23 @@ public class BeachRepository {
 
         // San Diego County
         add("CA6", "Pacific Beach", 32.7970, -117.2560, "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/San_Diego_coastline%2C_California%2C_USA26.jpg/1280px-San_Diego_coastline%2C_California%2C_USA26.jpg", "9410230");
-        add("CA7", "Mission Beach", 32.7708, -117.2520, "9410230");
+        add("CA7", "Mission Beach", 32.7708, -117.2520, "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7c/Mission_Beach%2C_San_Diego%2C_CA_92109%2C_USA_-_panoramio_%284%29.jpg/1280px-Mission_Beach%2C_San_Diego%2C_CA_92109%2C_USA_-_panoramio_%284%29.jpg", "9410230");
         add("CA8", "Del Mar City Beach", 32.9595, -117.2673, "https://upload.wikimedia.org/wikipedia/commons/thumb/7/72/Del_Mar%2C_CA_-_panoramio_%281%29.jpg/1280px-Del_Mar%2C_CA_-_panoramio_%281%29.jpg", "9410230");
         add("CA9", "Torrey Pines State Beach", 32.9337, -117.2590, "https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Torrey_Pines_Sunset_%2816018375041%29.jpg/1280px-Torrey_Pines_Sunset_%2816018375041%29.jpg", "9410230");
         add("CA10", "Imperial Beach", 32.5793, -117.1350, "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Imperial_Beach%2C_CA%2C_USA_-_panoramio_%2829%29.jpg/1280px-Imperial_Beach%2C_CA%2C_USA_-_panoramio_%2829%29.jpg", "9410120");
         add("CA11", "Oceanside Beach", 33.1928, -117.3861, "https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Oceanside%2C_California_Beach.jpg/1280px-Oceanside%2C_California_Beach.jpg", "TWC0419");
-        add("CA12", "Silver Strand State Beach", 32.6322, -117.1393, "9410120");
+        add("CA12", "Silver Strand State Beach", 32.6322, -117.1393, "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/Spotlight_-_panoramio.jpg/1280px-Spotlight_-_panoramio.jpg", "9410120");
         add("CA13", "Cardiff State Beach", 33.0128, -117.2810, "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Cardiff_Beach_looking_south.jpg/1280px-Cardiff_Beach_looking_south.jpg", "9410230");
-        add("CA14", "Swami's Beach", 33.0345, -117.2945, "9410230");
-        add("CA15", "Fletcher Cove, Solana Beach", 32.9925, -117.2740, "9410230");
-        add("CA16", "South Carlsbad State Beach", 33.1081, -117.3234, "9410230");
+        add("CA14", "Swami's Beach", 33.0345, -117.2945, "https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/Swami%27s_Beach%2C_Encinitas_%288133630046%29.jpg/1280px-Swami%27s_Beach%2C_Encinitas_%288133630046%29.jpg", "9410230");
+        add("CA15", "Fletcher Cove, Solana Beach", 32.9925, -117.2740, "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/San_Diego_County_%2829165960554%29.jpg/1280px-San_Diego_County_%2829165960554%29.jpg", "9410230");
+        add("CA16", "South Carlsbad State Beach", 33.1081, -117.3234, "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/Powerplant_Paradise_%28Unsplash%29.jpg/1280px-Powerplant_Paradise_%28Unsplash%29.jpg", "9410230");
         add("CA17", "Windansea Beach", 32.8318, -117.2807, "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Windansea_Beach%2C_San_Diego%2C_United_States_%28Unsplash_HkZKfLKzlq4%29.jpg/1280px-Windansea_Beach%2C_San_Diego%2C_United_States_%28Unsplash_HkZKfLKzlq4%29.jpg", "9410230");
-        add("CA18", "La Jolla Cove", 32.8503, -117.2717, "9410230");
+        add("CA18", "La Jolla Cove", 32.8503, -117.2717, "https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/La_Jolla_-_panoramio_-_tarosys.jpg/1280px-La_Jolla_-_panoramio_-_tarosys.jpg", "9410230");
         add("CA19", "Black's Beach", 32.8890, -117.2530, "https://upload.wikimedia.org/wikipedia/commons/thumb/9/93/Black%27s_Beach_4_2017-10-19.jpg/1280px-Black%27s_Beach_4_2017-10-19.jpg", "9410230");
         add("CA20", "Tourmaline Surfing Park", 32.8055, -117.2617, "9410230");
         // San Onofre is nearer the San Clemente station than anything in San
         // Diego Bay: La Jolla is fifty miles down the coast.
-        add("CA21", "San Onofre State Beach", 33.3770, -117.5680, "TWC0419");
+        add("CA21", "San Onofre State Beach", 33.3770, -117.5680, "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Nuke_Plant%2C_Great_White_Shark_Breeding_Ground%2C_%5E_Surfspot%2C_Dogpatch_San_Onofre_-_panoramio.jpg/1280px-Nuke_Plant%2C_Great_White_Shark_Breeding_Ground%2C_%5E_Surfspot%2C_Dogpatch_San_Onofre_-_panoramio.jpg", "TWC0419");
         // The two halves of Ponto, at the south end of Carlsbad, either
         // side of the Batiquitos Lagoon outlet. OpenStreetMap maps South
         // Ponto as a beach of its own and carries North Ponto on the same
@@ -244,15 +249,15 @@ public class BeachRepository {
         add("LA14", "Aliso Beach", 33.5093, -117.7548, "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/Aliso_Beach_-_panoramio.jpg/1280px-Aliso_Beach_-_panoramio.jpg", "9410580");
         add("LA15", "Crystal Cove State Beach", 33.5715, -117.8370, "https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/Crystal_Cove_Beach_Cottages_35_Crystal_Cove_Newport_Beach%2C_CA_92657%2C_USA_-_panoramio_%2816%29.jpg/1280px-Crystal_Cove_Beach_Cottages_35_Crystal_Cove_Newport_Beach%2C_CA_92657%2C_USA_-_panoramio_%2816%29.jpg", "9410580");
         add("LA16", "Corona del Mar State Beach", 33.5930, -117.8730, "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Corona_Del_Mar%2C_Newport_Beach%2C_CA%2C_USA_-_panoramio.jpg/1280px-Corona_Del_Mar%2C_Newport_Beach%2C_CA%2C_USA_-_panoramio.jpg", "9410580");
-        add("LA17", "Bolsa Chica State Beach", 33.6880, -118.0400, "9410583");
+        add("LA17", "Bolsa Chica State Beach", 33.6880, -118.0400, "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/CA_Orange_County_%2826115241105%29.jpg/1280px-CA_Orange_County_%2826115241105%29.jpg", "9410583");
         add("LA18", "Sunset Beach, California", 33.7180, -118.0710, "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Sunset-Beach.jpg/1280px-Sunset-Beach.jpg", "9410583");
 
         // Los Angeles County. Alamitos Beach and Cabrillo Beach both face into
         // San Pedro Bay, so they read from the harbour stations rather than
         // from Santa Monica Bay on the other side of the peninsula.
-        add("LA19", "Hermosa Beach", 33.8620, -118.4022, "9410738");
-        add("LA20", "Torrance Beach", 33.8099, -118.3927, "9410738");
-        add("LA21", "Dockweiler State Beach", 33.9393, -118.4425, "9410777");
+        add("LA19", "Hermosa Beach", 33.8620, -118.4022, "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Hermosa_Beach_%288260461388%29.jpg/1280px-Hermosa_Beach_%288260461388%29.jpg", "9410738");
+        add("LA20", "Torrance Beach", 33.8099, -118.3927, "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Palos_Verdes_%2831198254890%29.jpg/1280px-Palos_Verdes_%2831198254890%29.jpg", "9410738");
+        add("LA21", "Dockweiler State Beach", 33.9393, -118.4425, "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c6/Pacific_Ocean_with_sand_at_Dockweiler_Beach.jpg/1280px-Pacific_Ocean_with_sand_at_Dockweiler_Beach.jpg", "9410777");
         add("LA22", "Cabrillo Beach, San Pedro", 33.7080, -118.2810, "9410650");
         add("LA23", "Alamitos Beach, Long Beach", 33.7615, -118.1650, "https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/Long_Beach_%2831036781442%29.jpg/1280px-Long_Beach_%2831036781442%29.jpg", "9410678");
         add("LA24", "Will Rogers State Beach", 34.0325, -118.5330, "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Will_Rogers_State_Beach_1.JPG/1280px-Will_Rogers_State_Beach_1.JPG", "9410840");
@@ -282,8 +287,8 @@ public class BeachRepository {
         // North of Point Conception. Port San Luis is the only station between
         // Point Arguello and San Simeon, so Morro Rock reads from it too.
         add("CC13", "Avila Beach", 35.1790, -120.7320, "9412110");
-        add("CC14", "Morro Rock Beach", 35.3700, -120.8650, "9412110");
-        add("CC15", "Moonstone Beach, Cambria", 35.5748, -121.1140, "9412553");
+        add("CC14", "Morro Rock Beach", 35.3700, -120.8650, "https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/The_Jetty_at_Morro_Bay_-_panoramio.jpg/1280px-The_Jetty_at_Morro_Bay_-_panoramio.jpg", "9412110");
+        add("CC15", "Moonstone Beach, Cambria", 35.5748, -121.1140, "https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Big_Surf%21_%2846214181982%29.jpg/1280px-Big_Surf%21_%2846214181982%29.jpg", "9412553");
         add("CC16", "Pfeiffer Beach, Big Sur", 36.2378, -121.8155, "https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Pfeiffer_Beach_%288611951581%29.jpg/1280px-Pfeiffer_Beach_%288611951581%29.jpg", "9413375");
         add("CC17", "Asilomar State Beach", 36.6210, -121.9395, "https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/Asilomar_State_Beach_-_2023-02-22_-_1.jpg/1280px-Asilomar_State_Beach_-_2023-02-22_-_1.jpg", "9413450");
         add("CC18", "Marina State Beach", 36.6930, -121.8090, "9413450");
@@ -332,7 +337,7 @@ public class BeachRepository {
         add("HI7", "Lanikai Beach", 21.3925, -157.7150, "https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Lanikai_beach%2C_Oahu_Hawaii.JPG/1280px-Lanikai_beach%2C_Oahu_Hawaii.JPG", "1612376");
 
         // Texas
-        add("TX3", "Port Aransas Beach", 27.8277, -97.0528, "8775270");
+        add("TX3", "Port Aransas Beach", 27.8277, -97.0528, "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Port_Aransas_-Mustang_Island_Beach_-_panoramio.jpg/1280px-Port_Aransas_-Mustang_Island_Beach_-_panoramio.jpg", "8775270");
         add("TX4", "Corpus Christi Beach", 27.8180, -97.3890, "8775296");
 
         // Louisiana, Mississippi, Alabama
@@ -347,7 +352,7 @@ public class BeachRepository {
         add("FL9", "Cocoa Beach", 28.3200, -80.6070, "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ab/Cocoa_Beach_Surf_%283879446691%29.jpg/1280px-Cocoa_Beach_Surf_%283879446691%29.jpg", "8721649");
         add("FL10", "Smathers Beach, Key West", 24.5510, -81.7660, "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bc/Early_morning_Smathers_Beach_Key_West.JPG/1280px-Early_morning_Smathers_Beach_Key_West.JPG", "8724557");
         add("FL11", "St. Augustine Beach", 29.8500, -81.2650, "https://upload.wikimedia.org/wikipedia/commons/thumb/8/85/Dune_Rise_-_panoramio.jpg/1280px-Dune_Rise_-_panoramio.jpg", "8720587");
-        add("FL14", "Jacksonville Beach", 30.2889, -81.3888, "8720291");
+        add("FL14", "Jacksonville Beach", 30.2889, -81.3888, "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Fishing_Pier%2C_Jacksonville_Beach_%28Florida%29.jpg/1280px-Fishing_Pier%2C_Jacksonville_Beach_%28Florida%29.jpg", "8720291");
         add("FL16", "Vero Beach", 27.6501, -80.3540, "8722105");
 
         // Florida — Gulf side and Panhandle
@@ -356,7 +361,7 @@ public class BeachRepository {
         add("FL7", "Pensacola Beach", 30.3305, -87.1402, "https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/PensacolaBeachgulfpier.jpg/1280px-PensacolaBeachgulfpier.jpg", "8729807");
         add("FL12", "Naples Beach", 26.1310, -81.8070, "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Naples_-_a_dream_beach%2C_the_Naples_Municipal_Beach_%2815871623455%29.jpg/1280px-Naples_-_a_dream_beach%2C_the_Naples_Municipal_Beach_%2815871623455%29.jpg", "8725110");
         add("FL13", "Fort Myers Beach", 26.4520, -81.9500, "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Fort_Myers_Beach_-_panoramio_%281%29.jpg/1280px-Fort_Myers_Beach_-_panoramio_%281%29.jpg", "8725383");
-        add("FL15", "Sanibel Island", 26.4315, -82.1149, "8725383");
+        add("FL15", "Sanibel Island", 26.4315, -82.1149, "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Sanibel_S_-_panoramio.jpg/1280px-Sanibel_S_-_panoramio.jpg", "8725383");
 
         // Georgia and the Carolinas
         add("GA1", "Tybee Island Beach", 32.0000, -80.8450, "8670892");
@@ -365,13 +370,13 @@ public class BeachRepository {
         add("SC2", "Folly Beach", 32.6550, -79.9400, "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f7/Folly_Pier_-_panoramio_%281%29.jpg/1280px-Folly_Pier_-_panoramio_%281%29.jpg", "TEC3127");
         add("SC3", "Coligny Beach, Hilton Head", 32.1400, -80.7500, "8669167");
         add("NC1", "Wrightsville Beach", 34.2080, -77.7960, "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/Surfer_Dude_-_Flickr_-_Michael_A._Richardson.jpg/1280px-Surfer_Dude_-_Flickr_-_Michael_A._Richardson.jpg", "8658163");
-        add("NC2", "Nags Head", 35.9570, -75.6240, "8652226");
+        add("NC2", "Nags Head", 35.9570, -75.6240, "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Nags_Head%2C_United_States_%28Unsplash%29.jpg/1280px-Nags_Head%2C_United_States_%28Unsplash%29.jpg", "8652226");
         add("NC3", "Cape Hatteras", 35.2250, -75.5280, "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Cape_Point_looking_west_toward_South_Beach_at_mid-tide_01-26-2021_%2851759671005%29.jpg/1280px-Cape_Point_looking_west_toward_South_Beach_at_mid-tide_01-26-2021_%2851759671005%29.jpg", "TEC2789");
-        add("NC4", "Atlantic Beach", 34.6990, -76.7400, "8656590");
+        add("NC4", "Atlantic Beach", 34.6990, -76.7400, "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Sandy_Atlantic_beach_%28Unsplash%29.jpg/1280px-Sandy_Atlantic_beach_%28Unsplash%29.jpg", "8656590");
         add("NC5", "Carolina Beach", 34.0350, -77.8880, "https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Entrance_to_the_beach_%2852974421823%29.jpg/1280px-Entrance_to_the_beach_%2852974421823%29.jpg", "8658559");
 
         // Virginia, Maryland, Delaware
-        add("VA1", "Virginia Beach", 36.8530, -75.9780, "8639168");
+        add("VA1", "Virginia Beach", 36.8530, -75.9780, "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Virginia_Beach%2C_United_States_%28Unsplash%29.jpg/1280px-Virginia_Beach%2C_United_States_%28Unsplash%29.jpg", "8639168");
         add("VA2", "Sandbridge Beach", 36.7284, -75.9369, "8639428");
         add("MD1", "Ocean City, Maryland", 38.3360, -75.0840, "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Ocean_City%2C_Maryland_-_panoramio_%284%29.jpg/1280px-Ocean_City%2C_Maryland_-_panoramio_%284%29.jpg", "8570280");
         add("MD2", "Assateague Island", 38.2372, -75.1366, "8570280");
@@ -397,7 +402,7 @@ public class BeachRepository {
         add("RI2", "Misquamicut State Beach", 41.3232, -71.8025, "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Misquamicut_Beach%2C_RI_2010-08-07_2.JPG/1280px-Misquamicut_Beach%2C_RI_2010-08-07_2.JPG", "8458694");
         add("MA1", "Revere Beach", 42.4130, -70.9900, "https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Revere%2C_MA%2C_USA_-_panoramio_%2810%29.jpg/1280px-Revere%2C_MA%2C_USA_-_panoramio_%2810%29.jpg", "8443970");
         add("MA2", "Nauset Beach", 41.7900, -69.9350, "8447435");
-        add("MA3", "Coast Guard Beach", 41.8390, -69.9460, "8447435");
+        add("MA3", "Coast Guard Beach", 41.8390, -69.9460, "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/1CoastGuardBeachMA20160922_063241.jpg/1280px-1CoastGuardBeachMA20160922_063241.jpg", "8447435");
         add("MA4", "Good Harbor Beach", 42.6180, -70.6390, "8441841");
         add("MA5", "Crane Beach", 42.6820, -70.7660, "8441241");
         add("NH1", "Hampton Beach", 42.9080, -70.8100, "8429489");
@@ -421,7 +426,7 @@ public class BeachRepository {
         // Puerto Rico
         add("PR1", "Flamenco Beach", 18.3270, -65.3160, "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Culebra%2C_Puerto_Rico_-_panoramio.jpg/1280px-Culebra%2C_Puerto_Rico_-_panoramio.jpg", "9752235");
         add("PR2", "Condado Beach", 18.4600, -66.0730, "https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Condado_Beach.jpg/1280px-Condado_Beach.jpg", "9755371");
-        add("PR3", "Isla Verde Beach", 18.4460, -66.0120, "9754986");
+        add("PR3", "Isla Verde Beach", 18.4460, -66.0120, "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/View_from_the_room_in_San_Juan%2C_Puerto_Rico.jpg/1280px-View_from_the_room_in_San_Juan%2C_Puerto_Rico.jpg", "9754986");
     }
 
     /**
