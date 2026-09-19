@@ -57,6 +57,20 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <!--
+      What the window is painted with between the icon being tapped and the
+      first frame of the launch screen. Without it the window opens on the
+      app's sand ground and the deep sea arrives as a flash of the wrong
+      colour. MainActivity drops it again once the launch screen has handed
+      over, so nothing is left painting behind an opaque screen.
+
+      Not repeated in values-night: the launch screen is the brand's own
+      ground and is the deep sea in both themes.
+    -->
+    <style name="Theme.MyApplication.Launch">
+        <item name="android:windowBackground">@color/brand_deep</item>
+    </style>
+
     <!-- Shape scale -->
     <style name="ShapeAppearance.App.Corner.ExtraSmall" parent="ShapeAppearance.Material3.Corner.ExtraSmall">
         <item name="cornerSize">4dp</item>

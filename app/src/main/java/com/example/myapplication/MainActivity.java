@@ -6,6 +6,8 @@ import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -28,6 +30,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.view.WindowCompat;
+import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.myapplication.ai.SafetyNote;
@@ -38,6 +42,7 @@ import com.example.myapplication.model.Beach;
 import com.example.myapplication.model.BeachConditions;
 import com.example.myapplication.model.SafetyLevel;
 import com.example.myapplication.util.EdgeToEdge;
+import com.example.myapplication.util.Motion;
 import com.example.myapplication.util.UnitConverter;
 import com.google.android.material.card.MaterialCardView;
 import java.io.IOException;
@@ -49,7 +54,7 @@ import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
-    /** Whether the welcome intro has run since the app process started. */
+    /** Whether the launch screen has run since the app process started. */
     private static boolean hasPlayedIntro = false;
 
     /**
@@ -254,50 +259,187 @@ public class MainActivity extends AppCompatActivity {
         // Conditions are asked for in onResume, which runs on the way in too.
         updateList(); // Initial update
 
-        setupWelcomeOverlay(savedInstanceState);
+        setupSplash(savedInstanceState);
     }
 
-    private void setupWelcomeOverlay(Bundle savedInstanceState) {
-        View welcomeOverlay = findViewById(R.id.welcomeOverlay);
-        View welcomeContent = findViewById(R.id.welcomeContent);
-        WaveRevealOverlay revealView = findViewById(R.id.welcomeRevealView);
+    /**
+     * The launch screen: the sun rises, the pole draws down, its four flags
+     * unfurl one after another, the wordmark wipes up and the tagline settles,
+     * and then the whole thing crosses out to the app underneath.
+     *
+     * <p>The times below are the identity sheet's own, counted in milliseconds
+     * from the moment the screen starts. The two custom views run the drawn
+     * parts of the sequence on their own clocks; what is left here is the two
+     * pieces of real text and the handover.
+     */
+    private void setupSplash(Bundle savedInstanceState) {
+        View overlay = findViewById(R.id.splashOverlay);
 
-        // The intro belongs to launching the app, not to this activity being
-        // constructed: coming back from another tab, a rotation, or a
+        // The launch screen belongs to launching the app, not to this activity
+        // being constructed: coming back from another tab, a rotation, or a
         // low-memory recreation must not replay it. The flag is static so it
         // lasts the whole process and resets only on a genuine cold start.
         if (savedInstanceState != null || hasPlayedIntro) {
-            welcomeOverlay.setVisibility(View.GONE);
+            overlay.setVisibility(View.GONE);
+            releaseLaunchBackground();
             return;
         }
         hasPlayedIntro = true;
 
-        revealView.setWaterColors(
-            getColor(R.color.wave_deep),
-            getColor(R.color.wave_shallow),
-            getColor(R.color.wave_foam));
+        FlaglineSplashView backdrop = findViewById(R.id.splashBackdrop);
+        FlaglineMarkView mark = findViewById(R.id.splashMark);
+        TextView wordmark = findViewById(R.id.splashWordmark);
+        TextView tagline = findViewById(R.id.splashTagline);
+        View content = findViewById(R.id.appContent);
 
-        // Hold on the logo/name for a beat, then reveal automatically - no
-        // tap required.
-        welcomeOverlay.postDelayed(() -> {
-            // The water pulls back like an outgoing tide: the swell sweeps
-            // down and off the bottom of the screen, trailing foam lines and
-            // fading out to reveal the app underneath.
-            ValueAnimator revealAnimator = ValueAnimator.ofFloat(0f, 1f);
-            revealAnimator.setDuration(1400);
-            revealAnimator.setInterpolator(new android.view.animation.AccelerateDecelerateInterpolator());
-            revealAnimator.addUpdateListener(anim -> revealView.setProgress((float) anim.getAnimatedValue()));
-            revealAnimator.addListener(new AnimatorListenerAdapter() {
+        // Deep sea behind the status and navigation bars for as long as the
+        // launch screen is up, whichever way the phone's theme is set.
+        setSystemBarsLight(true);
+
+        if (Motion.isReduced(this)) {
+            // Nothing moves: the settled frame, faded in, and a shorter hold.
+            backdrop.play();
+            mark.play();
+            overlay.setAlpha(0f);
+            overlay.animate().alpha(1f).setDuration(REDUCED_FADE_IN).start();
+            overlay.postDelayed(() -> dismissSplash(overlay, content, backdrop, mark),
+                REDUCED_HOLD);
+            return;
+        }
+
+        backdrop.play();
+        mark.play();
+        playWordmark(wordmark);
+        playTagline(tagline);
+
+        overlay.postDelayed(() -> dismissSplash(overlay, content, backdrop, mark), SPLASH_HOLD);
+    }
+
+    /** How long the launch screen holds before it starts leaving. */
+    private static final long SPLASH_HOLD = 2700;
+    private static final long SPLASH_EXIT = 650;
+    /** The app underneath comes up while the launch screen is still going. */
+    private static final long CONTENT_ENTER_DELAY = 120;
+    private static final long CONTENT_ENTER = 500;
+    private static final long REDUCED_FADE_IN = 200;
+    private static final long REDUCED_HOLD = 1200;
+
+    private static final long WORDMARK_DELAY = 1050, WORDMARK_DURATION = 800;
+    private static final long TAGLINE_DELAY = 1400, TAGLINE_DURATION = 950;
+    /** How far the wordmark travels as it is revealed, in dp. */
+    private static final float WORDMARK_RISE = 26f;
+    private static final float TAGLINE_TRACKING_FROM = .62f;
+    private static final float TAGLINE_TRACKING_TO = .26f;
+
+    /**
+     * The wordmark wipes up: it is revealed from its own baseline upward while
+     * it rises the last few pixels into place. The reveal is a clip on the view
+     * rather than a mask in the layout, so nothing above or below it moves.
+     */
+    private void playWordmark(TextView wordmark) {
+        float rise = WORDMARK_RISE * getResources().getDisplayMetrics().density;
+        wordmark.setAlpha(0f);
+        ValueAnimator wipe = ValueAnimator.ofFloat(0f, 1f);
+        wipe.setStartDelay(WORDMARK_DELAY);
+        wipe.setDuration(WORDMARK_DURATION);
+        wipe.setInterpolator(Motion.WIPE);
+        wipe.addUpdateListener(anim -> {
+            float p = (float) anim.getAnimatedValue();
+            wordmark.setAlpha(1f);
+            wordmark.setTranslationY(rise * (1f - p));
+            wordmark.setClipBounds(new Rect(
+                0, 0, wordmark.getWidth(), Math.round(wordmark.getHeight() * p)));
+        });
+        wipe.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                wordmark.setClipBounds(null);
+            }
+        });
+        wipe.start();
+    }
+
+    /**
+     * The tagline settles: its letters start far apart and draw together.
+     *
+     * <p>Android puts a letter's tracking after it, including the last one, so
+     * a centred line drifts left by one gap. The matching padding is set on the
+     * way through, or the tagline would slide sideways as it tightens.
+     */
+    private void playTagline(TextView tagline) {
+        ValueAnimator settle = ValueAnimator.ofFloat(TAGLINE_TRACKING_FROM, TAGLINE_TRACKING_TO);
+        settle.setStartDelay(TAGLINE_DELAY);
+        settle.setDuration(TAGLINE_DURATION);
+        settle.setInterpolator(Motion.DRAW);
+        tagline.setAlpha(0f);
+        settle.addUpdateListener(anim -> {
+            float tracking = (float) anim.getAnimatedValue();
+            tagline.setLetterSpacing(tracking);
+            tagline.setPadding(Math.round(tracking * tagline.getTextSize()), 0, 0, 0);
+            tagline.setAlpha(anim.getAnimatedFraction());
+        });
+        settle.start();
+    }
+
+    /**
+     * Hands the screen over: the launch screen fades and swells past the edge
+     * of the phone while the app rises into the gap it leaves.
+     */
+    private void dismissSplash(View overlay, View content,
+                               FlaglineSplashView backdrop, FlaglineMarkView mark) {
+        if (overlay.getVisibility() != View.VISIBLE) return;
+
+        content.setAlpha(0f);
+        content.animate()
+            .alpha(1f)
+            .setStartDelay(CONTENT_ENTER_DELAY)
+            .setDuration(CONTENT_ENTER)
+            .start();
+
+        overlay.animate()
+            .alpha(0f)
+            .scaleX(1.07f)
+            .scaleY(1.07f)
+            .setDuration(SPLASH_EXIT)
+            .setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    welcomeOverlay.setVisibility(View.GONE);
+                    backdrop.stop();
+                    mark.stop();
+                    overlay.setVisibility(View.GONE);
+                    content.setAlpha(1f);
+                    setSystemBarsLight(false);
+                    releaseLaunchBackground();
                 }
-            });
-            revealAnimator.start();
+            })
+            .start();
+    }
 
-            // The logo fades as the water slides out from under it.
-            welcomeContent.animate().alpha(0f).setDuration(500).start();
-        }, 1200);
+    /**
+     * Drops the deep sea the window opened on. It has done its job by now -
+     * the screen in front of it is opaque - and a window background left in
+     * place only paints a full screen of colour nobody can see.
+     */
+    private void releaseLaunchBackground() {
+        getWindow().setBackgroundDrawable(null);
+    }
+
+    /**
+     * Which way the status and navigation bar icons are drawn.
+     *
+     * @param overSea true while the launch screen owns the screen, which is
+     *                dark in both themes; false hands the bars back to the
+     *                theme, where only night mode wants light icons.
+     */
+    private void setSystemBarsLight(boolean overSea) {
+        boolean night = (getResources().getConfiguration().uiMode
+            & Configuration.UI_MODE_NIGHT_MASK)
+            == Configuration.UI_MODE_NIGHT_YES;
+        boolean darkIcons = !overSea && !night;
+        WindowInsetsControllerCompat bars = WindowCompat.getInsetsController(
+            getWindow(), getWindow().getDecorView());
+        bars.setAppearanceLightStatusBars(darkIcons);
+        bars.setAppearanceLightNavigationBars(darkIcons);
     }
 
     @Override

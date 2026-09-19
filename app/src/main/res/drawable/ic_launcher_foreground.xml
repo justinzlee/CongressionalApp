@@ -1,35 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Sandbar mark, icon lockup: three stacked bands for water, sun and sand,
-  right-aligned so the stack leans the way the wordmark does.
+  Flagline mark, icon lockup: a warning flag on its pole with the waterline
+  running beneath it, drawn in sand and coral on the sea tile.
 
-  An adaptive icon only shows the middle 72dp of its 108dp canvas, so the
-  design's 64x64 mark box is drawn here at 52dp (0.8125 scale) on that visible
-  area - a little over the design's 60%, which a mask this tight can carry.
+  The identity sheet's 128 px icon draws its 64-box mark at 100 px, so the ink
+  covers about 69% of the tile. An adaptive icon only shows the middle 72dp of
+  its 108dp canvas, so the same proportion here is 0.88 of the mark box, which
+  puts the ink inside 29..79 on both axes - clear of every mask.
 
-  Centring is optical, not arithmetic. Two corrections, both scaled with the
-  mark: the ink sits low in the 64-box, so the stack lifts by half a band; and
-  because the bands right-align and the widest one is on top, the mark's mass
-  sits up and to the right of its bounding box, so the whole thing shifts 2.6
-  left and 1.2 down (roughly half the centroid offset each way). Ink lands
-  centred on 51.9, 55.0 rather than dead-centre 54, 54.
+  The group transform does the scaling, so the paths below are the identity
+  sheet's own path data, unaltered and readable against the handoff.
+
+  The launch screen flies four flags on this pole rather than one; an icon that
+  has to survive 32 px does not have room for four, and the sheet is explicit
+  that the flag and pole are the parts that may never be dropped.
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
     android:viewportWidth="108"
     android:viewportHeight="108">
-    <!-- Water: sand-coloured on the teal tile -->
-    <path
-        android:fillColor="#EDE6DA"
-        android:pathData="M34.41875,39.94375 H69.35625 A3.65625,3.65625 0 0 1 69.35625,47.25625 H34.41875 A3.65625,3.65625 0 0 1 34.41875,39.94375 Z" />
-    <!-- Sun: the amber keeps the middle -->
-    <path
-        android:fillColor="#F7A828"
-        android:pathData="M42.54375,51.31875 H69.35625 A3.65625,3.65625 0 0 1 69.35625,58.63125 H42.54375 A3.65625,3.65625 0 0 1 42.54375,51.31875 Z" />
-    <!-- Sand: drops to 50% so it reads as the band furthest up the beach -->
-    <path
-        android:fillColor="#EDE6DA"
-        android:fillAlpha="0.5"
-        android:pathData="M51.48125,62.69375 H69.35625 A3.65625,3.65625 0 0 1 69.35625,70.00625 H51.48125 A3.65625,3.65625 0 0 1 51.48125,62.69375 Z" />
+    <group
+        android:scaleX="0.88"
+        android:scaleY="0.88"
+        android:translateX="26.72"
+        android:translateY="25.84">
+        <!-- Waterline: foam, under everything else -->
+        <path
+            android:pathData="M5,51c9,0 9,-5 18,-5s9,5 18,5 9,-5 16,-5"
+            android:strokeColor="#9CD3DB"
+            android:strokeWidth="4.5"
+            android:strokeLineCap="round" />
+        <!-- Pole: sand -->
+        <path
+            android:pathData="M18,8v48"
+            android:strokeColor="#EDE6DA"
+            android:strokeWidth="6"
+            android:strokeLineCap="round" />
+        <!-- Flag: coral, the one colour reserved for the mark -->
+        <path
+            android:fillColor="#EA5C41"
+            android:pathData="M21,11h29l-10,12 10,12H21z" />
+    </group>
 </vector>

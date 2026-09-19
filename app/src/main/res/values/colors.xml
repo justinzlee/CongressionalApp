@@ -96,17 +96,23 @@
     <color name="tile_wave_bg">#00000000</color>
     <color name="tile_visibility_bg">#00000000</color>
 
-    <!-- Home / welcome screen: the wave reveal now rides the Sea ramp
-         rather than its own blues, so the intro hands off to a palette
-         the rest of the app shares. -->
-    <color name="wave_deep">#147384</color>
-    <color name="wave_shallow">#9CD3DB</color>
-    <color name="wave_foam">#FDFBF7</color>
-    <color name="on_wave">#06303D</color>
-
-    <!-- Brand mark. Sun amber is the one colour the Sandbar mark keeps in
-         both themes, so it is defined here only and inherited by night. -->
+    <!--
+      Flagline brand. The identity sheet's own palette, and the one set of
+      colours in this file that values-night deliberately does NOT override:
+      the launch screen is the brand's own ground rather than a surface of the
+      app, so it is the deep sea at midday and at midnight alike. The app's
+      interface keeps using the theme-aware tokens above.
+    -->
+    <color name="brand_deep">#0A4757</color>
+    <color name="brand_sea">#147384</color>
+    <color name="brand_mid">#2E93A3</color>
+    <color name="brand_shallow">#61B4C1</color>
+    <color name="brand_foam">#9CD3DB</color>
+    <color name="brand_sand">#EDE6DA</color>
+    <color name="brand_shell">#FDFBF7</color>
+    <color name="brand_flag">#EA5C41</color>
     <color name="brand_sun">#F7A828</color>
+
 
     <!-- Beach-photo placeholder. A drawn daylight shoreline, shown where there
          is no verified photo of that beach: sky over sea over sand, with an

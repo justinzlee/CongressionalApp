@@ -74,7 +74,7 @@ public class BeachPhotoStore {
         this.prefs = app.getSharedPreferences(SettingsActivity.PREFS_NAME, Context.MODE_PRIVATE);
         this.importer = new PhotoImporter(app);
         this.remoteHeaders = new LazyHeaders.Builder()
-            .setHeader("User-Agent", "Sandbar/1.0 (https://github.com/justinzlee/CongressionalApp) Android")
+            .setHeader("User-Agent", "Flagline/1.0 (https://github.com/justinzlee/CongressionalApp) Android")
             .build();
     }
 

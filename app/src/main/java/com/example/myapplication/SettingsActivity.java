@@ -23,7 +23,7 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String KEY_LANGUAGE = "language";
 
     /**
-     * The languages Sandbar is written in, as the tags stored against {@link
+     * The languages Flagline is written in, as the tags stored against {@link
      * #KEY_LANGUAGE}. They match res/xml/locales_config.xml, which is what
      * Android 13 and up reads for its own per-app language screen, so neither
      * list can grow without the other.
@@ -72,7 +72,7 @@ public class SettingsActivity extends AppCompatActivity {
      *
      * <p>On Android 13 and up this asks the system rather than our own
      * preference, because there the language can also be changed from the
-     * phone's Settings — res/xml/locales_config.xml is what lists Sandbar on
+     * phone's Settings — res/xml/locales_config.xml is what lists Flagline on
      * that screen. A row here reading "System default" under a Spanish app
      * would be this screen arguing with the one next door. Below 13 there is no
      * such screen and the preference is the only record there is.
