@@ -1009,7 +1009,7 @@
     <string name="contact_developers_subtitle">Escríbele al equipo con preguntas o comentarios</string>
     <string name="contact_intro_title">Contacta a los desarrolladores</string>
     <string name="contact_intro_body">¿Tienes comentarios, un error que reportar o una idea? Mándanos un correo y te respondemos.</string>
-    <string name="contact_email_address">leezacharyjustin@gmail.com</string>
+    <string name="contact_email_address">supportflagline@gmail.com</string>
     <string name="contact_topic_label">Tema</string>
     <string name="contact_topic_general">General</string>
     <string name="contact_topic_bug">Reporte de error</string>
@@ -1021,6 +1021,6 @@
     <string name="contact_message_hint">Escribe tu mensaje aquí…</string>
     <string name="contact_send_button">Enviar correo</string>
     <string name="contact_chooser_title">Enviar correo con…</string>
-    <string name="contact_no_email_app">No se encontró una app de correo. Puedes escribirnos a leezacharyjustin@gmail.com</string>
+    <string name="contact_no_email_app">No se encontró una app de correo. Puedes escribirnos a supportflagline@gmail.com</string>
     <string name="contact_empty_message_error">Escribe un mensaje antes de enviar.</string>
 </resources>

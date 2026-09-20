@@ -1035,7 +1035,7 @@
     <string name="contact_developers_subtitle">Email the app developer team with questions or feedback</string>
     <string name="contact_intro_title">Contact the Developers</string>
     <string name="contact_intro_body">Have feedback, a bug report, or a feature request? Send us an email and we\'ll get back to you!</string>
-    <string name="contact_email_address">leezacharyjustin@gmail.com</string>
+    <string name="contact_email_address">supportflagline@gmail.com</string>
     <string name="contact_topic_label">Topic</string>
     <string name="contact_topic_general">General</string>
     <string name="contact_topic_bug">Bug Report</string>
@@ -1047,6 +1047,6 @@
     <string name="contact_message_hint">Type your message here…</string>
     <string name="contact_send_button">Send Email</string>
     <string name="contact_chooser_title">Send email via…</string>
-    <string name="contact_no_email_app">No email app found. You can email us at leezacharyjustin@gmail.com</string>
+    <string name="contact_no_email_app">No email app found. You can email us at supportflagline@gmail.com</string>
     <string name="contact_empty_message_error">Please write a message before sending.</string>
 </resources>
