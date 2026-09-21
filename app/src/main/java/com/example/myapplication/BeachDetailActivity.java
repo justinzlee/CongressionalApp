@@ -72,6 +72,9 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
 
+/**
+ * I don't want to lose my github streak
+ */
 public class BeachDetailActivity extends AppCompatActivity {
     public static final String EXTRA_BEACH_ID = "extra_beach_id";
 
