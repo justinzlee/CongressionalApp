@@ -998,6 +998,7 @@
     <string name="map_zoom_out">Alejar</string>
     <string name="map_satellite">Satélite</string>
     <string name="map_plain">Simple</string>
+    <string name="map_two_finger_hint">Usa dos dedos para mover el mapa</string>
     <string name="map_legend_tower">Torre de salvavidas · punto de ayuda</string>
     <string name="map_you">Tú · %1$s</string>
     <string name="map_description">Mapa de %1$s</string>
