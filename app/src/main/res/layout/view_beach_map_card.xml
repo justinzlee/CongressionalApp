@@ -90,6 +90,25 @@
             android:layout_height="match_parent"
             android:importantForAccessibility="no" />
 
+        <!-- Answers a one-finger drag across the map, which the page leaves
+             alone and the map no longer takes. Shown and faded in code. -->
+        <TextView
+            android:id="@+id/mapGestureHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:alpha="0"
+            android:background="@drawable/bg_map_hint"
+            android:elevation="6dp"
+            android:fontFamily="sans-serif-medium"
+            android:importantForAccessibility="no"
+            android:paddingHorizontal="14dp"
+            android:paddingVertical="8dp"
+            android:text="@string/map_two_finger_hint"
+            android:textColor="@color/map_hud_text"
+            android:textSize="12sp"
+            android:visibility="gone" />
+
         <LinearLayout
             android:id="@+id/mapZoom"
             android:layout_width="wrap_content"

@@ -8,6 +8,7 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -66,6 +67,7 @@ public class BeachMapCard extends LinearLayout {
     private final TextView satelliteButton;
     private final TextView plainButton;
     private final View legendTower;
+    private final TextView gestureHint;
 
     @Nullable private MapView map;
     @Nullable private TilesOverlay labels;
@@ -77,6 +79,7 @@ public class BeachMapCard extends LinearLayout {
     private boolean scalePending;
 
     private final Runnable updateScale = this::updateScale;
+    private final Runnable hideGestureHint = this::hideGestureHint;
 
     public BeachMapCard(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -95,6 +98,7 @@ public class BeachMapCard extends LinearLayout {
         satelliteButton = findViewById(R.id.mapSatellite);
         plainButton = findViewById(R.id.mapPlain);
         legendTower = findViewById(R.id.mapLegendTower);
+        gestureHint = findViewById(R.id.mapGestureHint);
         findViewById(R.id.mapZoom).setClipToOutline(true);
         findViewById(R.id.mapStyle).setClipToOutline(true);
 
@@ -117,7 +121,7 @@ public class BeachMapCard extends LinearLayout {
 
     private void buildMap(Context context) {
         Context app = context.getApplicationContext();
-        MapView map = new MapView(context, new MapTileProviderBasic(app, MapTiles.SATELLITE));
+        MapView map = new PageMapView(context, new MapTileProviderBasic(app, MapTiles.SATELLITE));
         map.setTilesScaledToDpi(true);
         map.setMultiTouchControls(true);
         map.getZoomController().setVisibility(CustomZoomButtonsController.Visibility.NEVER);
@@ -291,17 +295,87 @@ public class BeachMapCard extends LinearLayout {
     }
 
     /**
-     * A drag that starts on the map moves the map. Left to the page, the
-     * scroll view around it would claim every vertical drag as a scroll, and
-     * the map could only ever be moved sideways.
+     * The map sits in a scrolling page and is over half a screen tall, so one
+     * finger belongs to the page and two to the map. Were it the other way
+     * round, a thumb scrolling down the page would land on the map, drag it off
+     * the beach, and never get past to the cards below it.
+     *
+     * <p>A one-finger drag the page does not take — a sideways one — moves
+     * nothing, so it is answered with the hint rather than left to feel broken.
+     * Taps still reach the map, so a double tap zooms, and the buttons are there
+     * for anyone with a hand free for only one finger.
      */
-    @Override
-    public boolean onInterceptTouchEvent(MotionEvent event) {
-        if (event.getActionMasked() == MotionEvent.ACTION_DOWN && getParent() != null
-                && event.getY() >= mapFrame.getTop() && event.getY() < mapFrame.getBottom()) {
-            getParent().requestDisallowInterceptTouchEvent(true);
+    private final class PageMapView extends MapView {
+        private final int touchSlop;
+        private float downX;
+        private float downY;
+        private boolean twoFingers;
+        private boolean dragged;
+
+        PageMapView(Context context, MapTileProviderBasic tiles) {
+            super(context, tiles);
+            touchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
         }
-        return super.onInterceptTouchEvent(event);
+
+        @Override
+        public boolean dispatchTouchEvent(MotionEvent event) {
+            switch (event.getActionMasked()) {
+                case MotionEvent.ACTION_DOWN:
+                    downX = event.getX();
+                    downY = event.getY();
+                    twoFingers = false;
+                    dragged = false;
+                    break;
+                case MotionEvent.ACTION_POINTER_DOWN:
+                    // From here the gesture is the map's, in every direction,
+                    // including after one of the two fingers lifts.
+                    twoFingers = true;
+                    if (getParent() != null) getParent().requestDisallowInterceptTouchEvent(true);
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    if (twoFingers) break;
+                    float dx = Math.abs(event.getX() - downX);
+                    float dy = Math.abs(event.getY() - downY);
+                    if (!dragged && Math.max(dx, dy) > touchSlop) {
+                        dragged = true;
+                        // A mostly vertical drag is about to be taken by the
+                        // page, which is what it was meant for; only a
+                        // sideways one is left with nothing to do.
+                        if (dx > dy) showGestureHint();
+                    }
+                    return true;
+                case MotionEvent.ACTION_UP:
+                    // The map saw a finger go down and come up without seeing
+                    // it move, which it would take for a tap. Two quick
+                    // swipes would zoom it in.
+                    if (dragged && !twoFingers) {
+                        MotionEvent cancel = MotionEvent.obtain(event);
+                        cancel.setAction(MotionEvent.ACTION_CANCEL);
+                        super.dispatchTouchEvent(cancel);
+                        cancel.recycle();
+                        return true;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            return super.dispatchTouchEvent(event);
+        }
+    }
+
+    private void showGestureHint() {
+        removeCallbacks(hideGestureHint);
+        gestureHint.animate().cancel();
+        gestureHint.setVisibility(VISIBLE);
+        gestureHint.animate().alpha(1f).setDuration(150).start();
+        // Timed here rather than as the animation's start delay, which
+        // "Remove animations" scales to nothing along with the fade.
+        postDelayed(hideGestureHint, 1800);
+    }
+
+    private void hideGestureHint() {
+        gestureHint.animate().alpha(0f).setDuration(250)
+            .withEndAction(() -> gestureHint.setVisibility(GONE)).start();
     }
 
     // ── Lifecycle, forwarded by the screen ───────────────────────────────
@@ -316,6 +390,7 @@ public class BeachMapCard extends LinearLayout {
 
     /** Lets go of the map's tile threads and cache, which would otherwise outlive the screen. */
     public void onDestroy() {
+        removeCallbacks(hideGestureHint);
         MapView map = this.map;
         if (map == null) return;
         // The label layer is only among the map's overlays while the plain
