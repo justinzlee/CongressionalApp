@@ -130,6 +130,11 @@
     <string name="lifeguards_title">Salvavidas</string>
     <string name="lifeguards_none">No hay puesto de salvavidas registrado en esta playa. Nunca nades solo.</string>
     <string name="lifeguards_nearest">%1$s es la ayuda más cercana registrada.</string>
+    <plurals name="lifeguards_mapped">
+        <item quantity="one">Hay una torre de salvavidas marcada en el mapa.</item>
+        <item quantity="many">Hay %1$d de torres de salvavidas marcadas en el mapa.</item>
+        <item quantity="other">Hay %1$d torres de salvavidas marcadas en el mapa.</item>
+    </plurals>
     <string name="stat_surf">Oleaje</string>
     <string name="stat_uv">UV</string>
     <string name="stat_wind">Viento</string>
@@ -957,7 +962,17 @@
     <string name="parking_mostly_free">Casi todo estacionamiento gratis cerca</string>
     <string name="parking_paid">Solo estacionamiento de paga</string>
     <string name="parking_mixed">Estacionamiento gratis y de paga cerca</string>
-    <string name="parking_detail">%1$d estacionamientos y %2$d tramos de calle a 10 minutos a pie</string>
+    <string name="parking_detail">%1$s y %2$s a 10 minutos a pie</string>
+    <plurals name="parking_lots">
+        <item quantity="one">%1$d estacionamiento</item>
+        <item quantity="many">%1$d de estacionamientos</item>
+        <item quantity="other">%1$d estacionamientos</item>
+    </plurals>
+    <plurals name="parking_streets">
+        <item quantity="one">%1$d tramo de calle</item>
+        <item quantity="many">%1$d de tramos de calle</item>
+        <item quantity="other">%1$d tramos de calle</item>
+    </plurals>
     <string name="parking_capacity">Unos %1$d lugares mapeados</string>
     <string name="parking_caveat">Muestra lo que existe, no lo que está libre ahora.</string>
 
