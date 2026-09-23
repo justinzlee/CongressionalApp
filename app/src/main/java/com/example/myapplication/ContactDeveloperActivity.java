@@ -111,9 +111,20 @@ public class ContactDeveloperActivity extends AppCompatActivity {
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, finalSubject);
         emailIntent.putExtra(Intent.EXTRA_TEXT, messageText);
 
+        // A chooser resolves whether or not anything is behind it, so wrapping
+        // it in a catch never caught a phone with no email app — it just opened
+        // an empty "No apps can perform this action" sheet. The mail intent
+        // itself gives a straight answer, which the <queries> entry in the
+        // manifest keeps visible under the package filtering of API 30 and up.
+        if (emailIntent.resolveActivity(getPackageManager()) == null) {
+            Toast.makeText(this, R.string.contact_no_email_app, Toast.LENGTH_LONG).show();
+            return;
+        }
+
         try {
             startActivity(Intent.createChooser(emailIntent, getString(R.string.contact_chooser_title)));
         } catch (ActivityNotFoundException e) {
+            // The mail app went away between resolving and launching.
             Toast.makeText(this, R.string.contact_no_email_app, Toast.LENGTH_LONG).show();
         }
     }

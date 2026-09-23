@@ -133,6 +133,12 @@
     <string name="lifeguards_title">Lifeguards</string>
     <string name="lifeguards_none">No lifeguard station is listed for this beach. Never swim alone.</string>
     <string name="lifeguards_nearest">%1$s is the nearest help on record.</string>
+    <!-- The Lifeguards card when the app has no station on record but
+         OpenStreetMap maps towers along the sand, as the beach map shows. -->
+    <plurals name="lifeguards_mapped">
+        <item quantity="one">%1$d lifeguard tower is mapped along this beach.</item>
+        <item quantity="other">%1$d lifeguard towers are mapped along this beach.</item>
+    </plurals>
     <string name="stat_surf">Surf</string>
     <string name="stat_uv">UV</string>
     <string name="stat_wind">Wind</string>
@@ -990,7 +996,18 @@
     <string name="parking_mostly_free">Mostly free parking nearby</string>
     <string name="parking_paid">Paid parking only</string>
     <string name="parking_mixed">Free and paid parking nearby</string>
-    <string name="parking_detail">%1$d car parks, %2$d street stretches within a 10-minute walk</string>
+    <!-- Two counted phrases rather than one sentence with two numbers in it,
+         because a plural can only agree with one count at a time and either
+         of these can come back as 1. -->
+    <string name="parking_detail">%1$s, %2$s within a 10-minute walk</string>
+    <plurals name="parking_lots">
+        <item quantity="one">%1$d car park</item>
+        <item quantity="other">%1$d car parks</item>
+    </plurals>
+    <plurals name="parking_streets">
+        <item quantity="one">%1$d street stretch</item>
+        <item quantity="other">%1$d street stretches</item>
+    </plurals>
     <string name="parking_capacity">About %1$d spaces mapped</string>
     <string name="parking_caveat">Shows what exists, not what\'s free right now.</string>
 

@@ -6,6 +6,16 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- Package visibility is filtered from API 30 on, and targetSdk is 35, so
+         without this Contact Developers cannot tell whether the phone has an
+         email app before it offers to open one. -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.SENDTO" />
+            <data android:scheme="mailto" />
+        </intent>
+    </queries>
+
     <application
         android:name=".BeachSafetyApp"
         android:allowBackup="true"

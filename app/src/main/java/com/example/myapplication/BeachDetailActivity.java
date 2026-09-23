@@ -66,6 +66,7 @@ import com.example.myapplication.util.UnitConverter;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -112,6 +113,14 @@ public class BeachDetailActivity extends AppCompatActivity {
     private AirQualityClient airClient;
     private RainfallClient rainClient;
     private ParkingClient parkingClient;
+
+    /**
+     * The lifeguard towers OpenStreetMap has along this beach, once they land.
+     * The map is not the only thing that wants them: the app's own records name
+     * a station for only two beaches, so without these the Lifeguards card sat
+     * beside a map of towers insisting none were listed.
+     */
+    private List<HelpLocation> mappedTowers = Collections.emptyList();
 
     /**
      * The three readings that arrive after the forecast does. Held rather than
@@ -581,24 +590,35 @@ public class BeachDetailActivity extends AppCompatActivity {
 
     /** "Lifeguard tower nearby · 2.4 mi away" under the beach name. */
     private void bindMeta() {
-        boolean guarded = beach.getNearestHelp().stream()
+        boolean guarded = !mappedTowers.isEmpty() || beach.getNearestHelp().stream()
             .anyMatch(h -> h.getType() == HelpType.LIFEGUARD_TOWER);
         String guardText = getString(guarded ? R.string.guarded_yes : R.string.guarded_no);
         ((TextView) findViewById(R.id.detailBeachMeta)).setText(guardText);
     }
 
+    /**
+     * The Lifeguards card. A station the app has on record is named, since a
+     * name is the most useful thing to read; failing that the towers
+     * OpenStreetMap maps along the sand are counted, so the card agrees with
+     * the map beside it instead of calling a towered beach unlisted.
+     */
     private void bindLifeguards() {
         TextView lifeguards = findViewById(R.id.detailLifeguards);
         List<HelpLocation> help = beach.getNearestHelp();
-        HelpLocation tower = help.stream()
+        HelpLocation recorded = help.stream()
             .filter(h -> h.getType() == HelpType.LIFEGUARD_TOWER)
             .findFirst()
-            .orElse(help.isEmpty() ? null : help.get(0));
+            .orElse(null);
 
-        if (tower == null) {
-            lifeguards.setText(R.string.lifeguards_none);
+        if (recorded != null) {
+            lifeguards.setText(getString(R.string.lifeguards_nearest, recorded.getName()));
+        } else if (!mappedTowers.isEmpty()) {
+            lifeguards.setText(getResources().getQuantityString(
+                R.plurals.lifeguards_mapped, mappedTowers.size(), mappedTowers.size()));
+        } else if (!help.isEmpty()) {
+            lifeguards.setText(getString(R.string.lifeguards_nearest, help.get(0).getName()));
         } else {
-            lifeguards.setText(getString(R.string.lifeguards_nearest, tower.getName()));
+            lifeguards.setText(R.string.lifeguards_none);
         }
     }
 
@@ -632,8 +652,14 @@ public class BeachDetailActivity extends AppCompatActivity {
 
         new LifeguardClient(this).getTowers(beach.getId(), beach.getLatitude(), beach.getLongitude(),
             towers -> runOnUiThread(() -> {
-                if (towers == null || isFinishing() || isDestroyed()) return;
+                if (towers == null || towers.isEmpty() || isFinishing() || isDestroyed()) return;
+                mappedTowers = towers;
                 mapCard.addTowers(towers);
+                // The patrol line and the Lifeguards card were drawn from the
+                // app's own records before these arrived; redraw them now that
+                // the map has towers on it.
+                bindMeta();
+                bindLifeguards();
             }));
     }
 
@@ -870,7 +896,10 @@ public class BeachDetailActivity extends AppCompatActivity {
                     .setText(parking.getSummaryRes());
                 ((TextView) findViewById(R.id.detailParkingDetail)).setText(
                     getString(R.string.parking_detail,
-                        parking.getLots(), parking.getStreetSide()));
+                        getResources().getQuantityString(R.plurals.parking_lots,
+                            parking.getLots(), parking.getLots()),
+                        getResources().getQuantityString(R.plurals.parking_streets,
+                            parking.getStreetSide(), parking.getStreetSide())));
             }
         }
     }
