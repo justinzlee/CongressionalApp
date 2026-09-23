@@ -66,6 +66,7 @@ import com.example.myapplication.util.UnitConverter;
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -124,6 +125,14 @@ public class BeachDetailActivity extends AppCompatActivity {
     @Nullable private ParkingSummary parking;
 
     private BeachMapCard mapCard;
+
+    /**
+     * Lifeguard towers OpenStreetMap has around this beach, once they land.
+     * Empty until then, and when nothing is mapped. The map, the patrol line,
+     * the Lifeguards card and the activity scores all read these alongside
+     * the app's own records, so none of them can disagree with another.
+     */
+    private List<HelpLocation> mappedTowers = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -579,10 +588,9 @@ public class BeachDetailActivity extends AppCompatActivity {
             isSaved ? R.color.primary : R.color.divider)));
     }
 
-    /** "Lifeguard tower nearby · 2.4 mi away" under the beach name. */
+    /** "Lifeguard tower nearby" under the beach name. */
     private void bindMeta() {
-        boolean guarded = beach.getNearestHelp().stream()
-            .anyMatch(h -> h.getType() == HelpType.LIFEGUARD_TOWER);
+        boolean guarded = recordedTower() != null || !mappedTowers.isEmpty();
         String guardText = getString(guarded ? R.string.guarded_yes : R.string.guarded_no);
         ((TextView) findViewById(R.id.detailBeachMeta)).setText(guardText);
     }
@@ -590,16 +598,29 @@ public class BeachDetailActivity extends AppCompatActivity {
     private void bindLifeguards() {
         TextView lifeguards = findViewById(R.id.detailLifeguards);
         List<HelpLocation> help = beach.getNearestHelp();
-        HelpLocation tower = help.stream()
+        HelpLocation recorded = recordedTower();
+
+        if (recorded != null) {
+            lifeguards.setText(getString(R.string.lifeguards_nearest, recorded.getName()));
+        } else if (!mappedTowers.isEmpty()) {
+            // OpenStreetMap towers often carry no name, or only a number, so
+            // they are counted rather than named; the map shows where they are.
+            lifeguards.setText(getResources().getQuantityString(
+                R.plurals.lifeguards_mapped, mappedTowers.size(), mappedTowers.size()));
+        } else if (!help.isEmpty()) {
+            lifeguards.setText(getString(R.string.lifeguards_nearest, help.get(0).getName()));
+        } else {
+            lifeguards.setText(R.string.lifeguards_none);
+        }
+    }
+
+    /** The first lifeguard tower in the app's own records, if it has one. */
+    @Nullable
+    private HelpLocation recordedTower() {
+        return beach.getNearestHelp().stream()
             .filter(h -> h.getType() == HelpType.LIFEGUARD_TOWER)
             .findFirst()
-            .orElse(help.isEmpty() ? null : help.get(0));
-
-        if (tower == null) {
-            lifeguards.setText(R.string.lifeguards_none);
-        } else {
-            lifeguards.setText(getString(R.string.lifeguards_nearest, tower.getName()));
-        }
+            .orElse(null);
     }
 
     /**
@@ -634,6 +655,12 @@ public class BeachDetailActivity extends AppCompatActivity {
             towers -> runOnUiThread(() -> {
                 if (towers == null || isFinishing() || isDestroyed()) return;
                 mapCard.addTowers(towers);
+                mappedTowers = new ArrayList<>(towers);
+                bindMeta();
+                bindLifeguards();
+                // Cached towers land straight away, inside onCreate and before
+                // the stores the scores read exist; onResume scores them then.
+                if (rockStore != null) bindGoodFor();
             }));
     }
 
@@ -870,7 +897,10 @@ public class BeachDetailActivity extends AppCompatActivity {
                     .setText(parking.getSummaryRes());
                 ((TextView) findViewById(R.id.detailParkingDetail)).setText(
                     getString(R.string.parking_detail,
-                        parking.getLots(), parking.getStreetSide()));
+                        getResources().getQuantityString(R.plurals.parking_lots,
+                            parking.getLots(), parking.getLots()),
+                        getResources().getQuantityString(R.plurals.parking_streets,
+                            parking.getStreetSide(), parking.getStreetSide())));
             }
         }
     }
@@ -909,7 +939,7 @@ public class BeachDetailActivity extends AppCompatActivity {
         in.water = water;
         in.parking = parking;
         in.rockRating = rockStore.ratingFor(beach.getId());
-        in.guarded = guardedState(beach);
+        in.guarded = guardedState(beach, mappedTowers);
         in.worstHazard = worstHazardSeverity();
         return in;
     }
@@ -918,10 +948,12 @@ public class BeachDetailActivity extends AppCompatActivity {
     /**
      * Whether this beach is patrolled, or null when the app has no help data
      * for it. An empty list means nobody recorded any, not that there is none —
-     * see {@link ActivityScorer.Inputs#guarded}.
+     * see {@link ActivityScorer.Inputs#guarded}. A tower OpenStreetMap has
+     * mapped counts as patrolled.
      */
     @Nullable
-    private static Boolean guardedState(Beach beach) {
+    private static Boolean guardedState(Beach beach, List<HelpLocation> mappedTowers) {
+        if (!mappedTowers.isEmpty()) return true;
         if (beach.getNearestHelp().isEmpty()) return null;
         return beach.getNearestHelp().stream()
             .anyMatch(h -> h.getType() == HelpType.LIFEGUARD_TOWER);

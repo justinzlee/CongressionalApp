@@ -111,10 +111,22 @@ public class ContactDeveloperActivity extends AppCompatActivity {
         emailIntent.putExtra(Intent.EXTRA_SUBJECT, finalSubject);
         emailIntent.putExtra(Intent.EXTRA_TEXT, messageText);
 
+        // The chooser itself always resolves, so it would open empty ("No apps
+        // can perform this action") rather than throw. Ask first whether
+        // anything handles mailto: — which the manifest's <queries> entry lets
+        // us see — and give the address instead when nothing does.
+        if (emailIntent.resolveActivity(getPackageManager()) == null) {
+            showNoEmailApp();
+            return;
+        }
         try {
             startActivity(Intent.createChooser(emailIntent, getString(R.string.contact_chooser_title)));
         } catch (ActivityNotFoundException e) {
-            Toast.makeText(this, R.string.contact_no_email_app, Toast.LENGTH_LONG).show();
+            showNoEmailApp();
         }
+    }
+
+    private void showNoEmailApp() {
+        Toast.makeText(this, R.string.contact_no_email_app, Toast.LENGTH_LONG).show();
     }
 }
