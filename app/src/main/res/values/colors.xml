@@ -15,7 +15,6 @@
     <color name="primary">#147384</color>
     <color name="primary_variant">#0A4757</color>
     <color name="on_primary">#EBF7F9</color>
-    <color name="accent_soft">#EBF7F9</color>
 
     <!-- Sand: 00 ground, 50 card, 100 recessed, 200 hairline, 600 muted
          text, Ink body text. -->
@@ -50,16 +49,11 @@
 
     <!-- Legacy aliases kept so existing layouts and code keep resolving -->
     <color name="error">#E03C21</color>
-    <color name="safe_green">#1DA46A</color>
     <color name="advisor_bg">#EBF7F9</color>
-    <color name="water_accent">#147384</color>
     <color name="secondary">#BF730B</color>
-    <color name="secondary_variant">#8F5406</color>
     <color name="on_secondary">#FFF8E6</color>
     <color name="tertiary_gold">#BF730B</color>
     <!-- The header is a flat sand ground, not a colored band. -->
-    <color name="ocean_gradient_start">#FDFBF7</color>
-    <color name="ocean_gradient_end">#FDFBF7</color>
     <!-- Text/icons over photo scrims, which stay dark in both themes -->
     <color name="on_hero">#FFFFFF</color>
 
@@ -82,19 +76,9 @@
     <color name="uv_very_high">#E03C21</color>
     <color name="uv_extreme">#85230F</color>
 
-    <!-- Stat tile icons, following the design's own tile treatment:
-         UV in Sun 800, surf in Sea 600, the rest muted sand. -->
+    <!-- Stat tile icons: temperature in Sun 800, the rest muted sand. -->
     <color name="icon_temp">#BF730B</color>
-    <color name="icon_uv">#8F5406</color>
     <color name="icon_wind">#6E6659</color>
-    <color name="icon_wave">#0F5C6D</color>
-    <color name="icon_visibility">#6E6659</color>
-
-    <color name="tile_temp_bg">#00000000</color>
-    <color name="tile_uv_bg">#00000000</color>
-    <color name="tile_wind_bg">#00000000</color>
-    <color name="tile_wave_bg">#00000000</color>
-    <color name="tile_visibility_bg">#00000000</color>
 
     <!--
       Flagline brand. The identity sheet's own palette, and the one set of
@@ -112,7 +96,6 @@
     <color name="brand_shell">#FDFBF7</color>
     <color name="brand_flag">#EA5C41</color>
     <color name="brand_sun">#F7A828</color>
-
 
     <!-- Beach-photo placeholder. A drawn daylight shoreline, shown where there
          is no verified photo of that beach: sky over sea over sand, with an

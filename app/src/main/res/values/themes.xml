@@ -52,11 +52,6 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.MyApplication.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
     <!--
       What the window is painted with between the icon being tapped and the
       first frame of the launch screen. Without it the window opens on the

@@ -10,8 +10,6 @@
     -->
     <string name="app_name">Flagline</string>
     <string name="app_tagline">Infórmate antes de nadar</string>
-    <string name="ai_safety_advisor">Asesor de seguridad</string>
-    <string name="weather_conditions">Condiciones del tiempo</string>
     <string name="air_temp">Temp. del aire</string>
     <string name="water_temp">Temp. del agua</string>
     <string name="uv_index">Índice UV</string>
@@ -27,9 +25,7 @@
     <string name="tide_unavailable">No disponible</string>
     <string name="tide_none">Sin mareas</string>
     <string name="placeholder_dashes">--</string>
-    <string name="safety_alerts">Avisos de seguridad</string>
     <string name="no_major_hazards">No hay peligros importantes reportados.</string>
-    <string name="conditions_unavailable">Condiciones no disponibles</string>
     <string name="select_coastal_city">Elige una ciudad costera</string>
     <string name="beach_name_hint">Nombre de la playa</string>
     <string name="radius_label">Radio de búsqueda</string>
@@ -44,16 +40,11 @@
     <string name="search_clear">Borrar el nombre de la playa</string>
     <string name="nearby_beaches">Playas cercanas</string>
     <string name="nearby_report_action">Reporte de playas cercanas</string>
-    <string name="nearby_report_title">Playas cerca de ti</string>
-    <string name="nearby_report_fetching_location">Obteniendo tu ubicación actual…</string>
-    <string name="nearby_report_location_failed">No se pudo obtener tu ubicación: %1$s</string>
-    <string name="nearby_report_permission_needed">Se necesita permiso de ubicación para el reporte de playas cercanas</string>
     <!-- Bajo una playa de la lista, y los chips de radio encima. Los dos van
          en la unidad que tenga puesta Ajustes. -->
     <string name="distance_away">a %1$.1f millas</string>
     <string name="distance_away_km">a %1$.1f km</string>
     <string name="radius_step">%1$d %2$s</string>
-    <string name="hazards_label">Peligros: %1$s</string>
     <string name="beach_image_desc">Foto de la playa</string>
     <string name="empty_state_title">No hay playas que mostrar</string>
     <string name="empty_state_subtitle">Prueba con otra ciudad o amplía el radio de búsqueda.</string>
@@ -107,7 +98,6 @@
 
     <!-- Rótulos de sección -->
     <string name="back">Atrás</string>
-    <string name="detail_meta">%1$s · a %2$s</string>
     <string name="guarded_yes">Torre de salvavidas cerca</string>
     <string name="guarded_no">Sin vigilancia registrada</string>
     <string name="section_conditions">Condiciones</string>
@@ -240,7 +230,6 @@
     <string name="drowning_act_title">¿Crees que alguien se está ahogando?</string>
     <string name="drowning_act_body">Grita a un salvavidas y señala. Si no hay salvavidas, llama al 911. Lánzale cualquier cosa que flote y no entres al agua sin ella: te hundirá. Puede que tengas menos de un minuto.</string>
 
-
     <!-- Guía de banderas de advertencia -->
     <string name="flag_entry_title">Qué significan las banderas de la playa</string>
     <string name="flag_title">Banderas de advertencia</string>
@@ -286,8 +275,6 @@
     <string name="uv_band_extreme_body">La piel se quema en minutos. Sal del sol.</string>
     <string name="uv_beach_title">En la playa es peor</string>
     <string name="uv_beach_body">La arena y el agua te lo devuelven, y las nubes casi no lo frenan.</string>
-
-
 
     <!-- Práctica diaria -->
     <string name="quiz_correct">Correcto</string>
@@ -734,7 +721,6 @@
     <string name="photo_no_camera">Este dispositivo no tiene app de cámara.</string>
 
     <!-- Hoja de emergencia -->
-    <string name="sos_action">Ayuda de emergencia</string>
     <string name="sos_label">SOS</string>
     <string name="sos_title">Pedir ayuda</string>
     <string name="emergency_number">911</string>
@@ -752,14 +738,11 @@
 
     <!-- ══════ LO QUE LA GENTE REPORTA DESDE LA PLAYA ══════ -->
 
-    <string name="section_reports">Lo que reporta la gente aquí</string>
-
     <string name="time_just_now">ahora mismo</string>
 
     <!-- Piedras bajo los pies -->
     <string name="rocks_title">Piedras bajo los pies</string>
     <string name="rocks_title_for">Piedras en %1$s</string>
-    <string name="rocks_unrated">Todavía sin calificar</string>
     <string name="rocks_unrated_body">Nadie ha dicho cómo se siente la orilla aquí bajo los pies.</string>
     <string name="rocks_rate_cta">Calificar las piedras</string>
     <string name="rocks_rerate_cta">Cambiar esta calificación</string>
@@ -807,7 +790,6 @@
     <string name="sighting_species_jellyfish">Medusa</string>
     <string name="sighting_species_bird">Ave</string>
     <string name="sighting_species_other">Otra cosa</string>
-
 
     <string name="sighting_noun_shark">tiburón</string>
     <string name="sighting_noun_ray">raya</string>
@@ -885,7 +867,6 @@
     <string name="fit_soso">Regular</string>
     <string name="fit_poor">Mala</string>
 
-    <string name="fit_score">%1$d</string>
     <string name="fit_out_of">%1$d/100</string>
     <string name="fit_held_back">Limitada por %1$s</string>
     <string name="fit_helped_by">Favorecida por %1$s</string>
@@ -913,7 +894,6 @@
 
     <!-- ══════ ENTORNO ══════ -->
     <string name="section_environment">Entorno</string>
-    <string name="section_air_water">Aire y agua</string>
     <string name="aqi_label">Calidad del aire</string>
     <string name="aqi_value">ICA %1$d</string>
     <string name="aqi_good">Buena</string>
@@ -927,7 +907,6 @@
     <string name="aqi_advice_sensitive">Si tienes asma o problemas de corazón o pulmón, hoy tómatelo corto y suave. Los demás están bien.</string>
     <string name="aqi_advice_unhealthy">Todos deberían bajarle al ejercicio fuerte al aire libre. Los grupos sensibles, mejor adentro.</string>
     <string name="aqi_advice_hazardous">Quédate adentro. Esto es territorio de humo de incendios.</string>
-    <string name="aqi_pollutants">PM2.5 %1$.0f · PM10 %2$.0f µg/m³</string>
 
     <!-- ══════ AGUA ══════
          Cada una de estas dice lo que es: una predicción a partir de la lluvia
@@ -942,9 +921,6 @@
     <string name="water_sewage_body">Esta playa está lo bastante cerca de la desembocadura del río Tijuana como para caer bajo un aviso permanente. Revisa la lista de cierres vigente del condado de San Diego antes de nadar.</string>
     <string name="water_sewage_rain">Aguas negras y escurrimiento juntos</string>
     <string name="water_sewage_rain_body">Lluvia encima de los flujos transfronterizos: esta es la combinación que cierra las playas del sur del condado. Hoy no te metas al agua aquí.</string>
-    <string name="water_rain_since">Última lluvia %1$s</string>
-    <string name="water_rain_today">Llovió hoy</string>
-    <string name="water_rain_days">hace %1$d días</string>
 
     <!-- Los peligros que levantan las lecturas de aire y agua -->
     <string name="hazard_water_step_stay_out">No metas la cabeza al agua, y no nades si tienes una herida abierta.</string>
@@ -973,7 +949,6 @@
         <item quantity="many">%1$d de tramos de calle</item>
         <item quantity="other">%1$d tramos de calle</item>
     </plurals>
-    <string name="parking_capacity">Unos %1$d lugares mapeados</string>
     <string name="parking_caveat">Muestra lo que existe, no lo que está libre ahora.</string>
 
     <!--
@@ -981,11 +956,6 @@
       playas" — que estas cuentas nunca alcanzarán. Va escrita igual: cuesta
       cuatro renglones y deja la forma correcta ahí si algún día llega.
     -->
-    <plurals name="sighting_count">
-        <item quantity="one">%1$d avistamiento</item>
-        <item quantity="many">%1$d de avistamientos</item>
-        <item quantity="other">%1$d avistamientos</item>
-    </plurals>
 
     <plurals name="alert_count">
         <item quantity="one">%1$d aviso</item>
