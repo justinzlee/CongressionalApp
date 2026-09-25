@@ -732,7 +732,7 @@
     <string name="sos_directions_none">Esta playa no tiene un punto de ayuda registrado</string>
     <string name="sos_share_title">Enviar mi ubicación</string>
     <string name="sos_share_body">Comparte un punto del mapa con alguien</string>
-    <string name="sos_share_message">Estoy en %1$s. Mi ubicación: https://maps.google.com/?q=%2$f,%3$f</string>
+    <string name="sos_share_message">Estoy en %1$s. Mi ubicación: https://maps.google.com/?q=%2$s</string>
     <string name="sos_share_unknown">Necesito ayuda en la playa. Enviando mi ubicación.</string>
     <string name="sos_no_app">Ninguna app de este dispositivo puede hacer eso.</string>
 
