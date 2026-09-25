@@ -107,7 +107,7 @@ public class BeachAdapter extends RecyclerView.Adapter<BeachAdapter.BeachViewHol
         bindImage(holder, beach);
 
         // Verdict drives the row's chip colour and its one-line summary.
-        SafetyLevel level = SafetyLevel.evaluate(beach);
+        SafetyLevel level = SafetyLevel.evaluate(row.getContext(), beach);
         if (level != null) {
             int color = ContextCompat.getColor(row.getContext(), level.getColorRes());
             int tint = ContextCompat.getColor(row.getContext(), level.getTintRes());

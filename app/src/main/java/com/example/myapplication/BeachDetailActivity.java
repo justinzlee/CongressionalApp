@@ -711,7 +711,7 @@ public class BeachDetailActivity extends AppCompatActivity {
 
     /** Colours the chip over the photo with the beach's swim verdict. */
     private void bindVerdict() {
-        SafetyLevel level = SafetyLevel.evaluate(beach);
+        SafetyLevel level = SafetyLevel.evaluate(this, beach);
         int color = ContextCompat.getColor(this,
             level != null ? level.getColorRes() : R.color.text_secondary);
 

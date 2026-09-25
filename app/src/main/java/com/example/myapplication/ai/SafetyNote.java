@@ -5,12 +5,15 @@ import android.content.Context;
 import com.example.myapplication.R;
 import com.example.myapplication.model.Beach;
 import com.example.myapplication.model.BeachConditions;
+import com.example.myapplication.model.ConditionHazards;
 import com.example.myapplication.model.Hazard;
+import com.example.myapplication.model.HazardType;
 import com.example.myapplication.model.SafetyLevel;
 import com.example.myapplication.model.UvLevel;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 /**
  * Writes the one-paragraph plain-language note under the swim verdict — the
@@ -27,7 +30,13 @@ public class SafetyNote {
         StringBuilder note = new StringBuilder();
         note.append(describeSurf(context, beach.getConditions()));
 
-        String hazardText = describeHazards(context, beach.getHazards());
+        // The same hazards the verdict is judged on, so a shark reported this
+        // morning is named here rather than leaving a red verdict unexplained.
+        // Surf and UV are left out: the sentences either side already say them.
+        List<Hazard> hazards = ConditionHazards.merged(context, beach).stream()
+            .filter(h -> h.getType() != HazardType.HIGH_SURF && h.getType() != HazardType.UV_INDEX)
+            .collect(Collectors.toList());
+        String hazardText = describeHazards(context, hazards);
         if (hazardText != null) {
             note.append(' ').append(hazardText);
         }
