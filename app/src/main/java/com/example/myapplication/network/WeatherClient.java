@@ -220,8 +220,22 @@ public class WeatherClient {
                 // rest of the conditions still go through with a null wave
                 // height and the surf tile shows "--". A point the default
                 // model misses is asked of the fallback one first.
-                JsonObject marine = fetchCurrent(marineUrl);
-                if (!hasWave(marine)) {
+                //
+                // A marine call that fails outright - a timeout, a dropped
+                // connection - is the same missing reading. Letting it reach
+                // the catch below threw away the weather already in hand, so a
+                // slow wave service blanked the whole beach page, where the
+                // batched fetch for the list kept it.
+                JsonObject marine = null;
+                boolean marineAnswered = true;
+                try {
+                    marine = fetchCurrent(marineUrl);
+                } catch (IOException e) {
+                    marineAnswered = false;
+                }
+                // Not after a failed call: the fallback is the same host, and a
+                // second timeout would only hold the weather back longer.
+                if (marineAnswered && !hasWave(marine)) {
                     try {
                         JsonObject fallback = fetchCurrent(marineUrl + "&models=" + FALLBACK_WAVE_MODEL);
                         if (hasWave(fallback)) {
