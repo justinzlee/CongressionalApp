@@ -737,7 +737,7 @@
     <string name="sos_directions_none">No help location listed for this beach</string>
     <string name="sos_share_title">Send my location</string>
     <string name="sos_share_body">Share a map pin with someone</string>
-    <string name="sos_share_message">I\'m at %1$s. My location: https://maps.google.com/?q=%2$f,%3$f</string>
+    <string name="sos_share_message">I\'m at %1$s. My location: https://maps.google.com/?q=%2$s</string>
     <string name="sos_share_unknown">I need help at the beach. Sending my location.</string>
     <string name="sos_no_app">No app on this device can handle that.</string>
 

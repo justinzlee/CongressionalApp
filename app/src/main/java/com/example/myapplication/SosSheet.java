@@ -75,8 +75,14 @@ public final class SosSheet {
             dialog.dismiss();
             String message = beach == null
                 ? context.getString(R.string.sos_share_unknown)
+                // The coordinates are written in Locale.US, not left to the
+                // string: getString formats in the phone's locale, and on a
+                // phone set to Spain, Germany or anywhere else with a decimal
+                // comma that made the link "?q=32,715700,-117,161100", which a
+                // map reads as somewhere else or nowhere at all.
                 : context.getString(R.string.sos_share_message, beach.getName(),
-                    beach.getLatitude(), beach.getLongitude());
+                    String.format(Locale.US, "%f,%f",
+                        beach.getLatitude(), beach.getLongitude()));
             Intent share = new Intent(Intent.ACTION_SEND);
             share.setType("text/plain");
             share.putExtra(Intent.EXTRA_TEXT, message);
