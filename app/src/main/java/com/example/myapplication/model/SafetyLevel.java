@@ -93,12 +93,6 @@ public enum SafetyLevel {
     @StringRes public int getShortVerdictRes() { return shortVerdictRes; }
 
     /**
-     * Works out the verdict for a beach, or {@code null} when neither
-     * conditions nor hazards are known yet — callers should show a
-     * "checking conditions" state rather than implying the water is fine.
-     */
-    @Nullable
-    /**
      * The verdict, judged against every hazard the app would show for this
      * beach rather than only the ones written into the beach list.
      *
@@ -111,7 +105,12 @@ public enum SafetyLevel {
      *
      * <p>Reaches the same {@link ConditionHazards#merged} the hazard list is
      * built from, so the two cannot drift apart again by construction.
+     *
+     * <p>{@code null} when neither conditions nor hazards are known yet —
+     * callers should show a "checking conditions" state rather than implying
+     * the water is fine.
      */
+    @Nullable
     public static SafetyLevel evaluate(Context context, Beach beach) {
         if (beach == null) return null;
         return evaluate(beach, ConditionHazards.merged(context, beach));

@@ -821,7 +821,7 @@ public class MainActivity extends AppCompatActivity {
             ? R.string.header_kicker_searching : R.string.header_kicker_near_you);
         headerTitle.setText(beach.getName());
 
-        SafetyLevel level = SafetyLevel.evaluate(beach);
+        SafetyLevel level = SafetyLevel.evaluate(this, beach);
         int color = ContextCompat.getColor(this,
             level != null ? level.getColorRes() : R.color.text_secondary);
         int ring = ContextCompat.getColor(this,

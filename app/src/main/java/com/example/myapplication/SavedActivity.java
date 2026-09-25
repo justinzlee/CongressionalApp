@@ -117,7 +117,7 @@ public class       SavedActivity extends AppCompatActivity {
 
         ((TextView) row.findViewById(R.id.savedName)).setText(beach.getName());
 
-        SafetyLevel level = SafetyLevel.evaluate(beach);
+        SafetyLevel level = SafetyLevel.evaluate(this, beach);
         int color = ContextCompat.getColor(this,
             level != null ? level.getColorRes() : R.color.text_secondary);
         int tint = ContextCompat.getColor(this,
