@@ -3,7 +3,10 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    <path
-        android:fillColor="#000000"
-        android:pathData="M1,21h22L12,2 1,21zM13,18h-2v-2h2v2zM13,14h-2v-4h2v4z" />
+    <!-- Moves the drawing so its ink is centred in the 24x24 frame. -->
+    <group android:translateY="0.5">
+        <path
+            android:fillColor="#000000"
+            android:pathData="M1,21h22L12,2 1,21zM13,18h-2v-2h2v2zM13,14h-2v-4h2v4z" />
+    </group>
 </vector>

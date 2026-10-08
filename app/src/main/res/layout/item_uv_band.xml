@@ -15,17 +15,20 @@
     android:paddingBottom="12dp">
 
     <!-- Same fixed width as the flag key, so the two lessons line their
-         titles up at the same place. -->
+         titles up at the same place. The flag slot is that wide to hold a
+         double red; a sun is only ever one, so it is centred in the slot,
+         and the slot runs the full height of the row so the sun sits
+         against the title and body together rather than at the top. -->
     <LinearLayout
         android:layout_width="40dp"
-        android:layout_height="wrap_content"
-        android:gravity="center_vertical|start"
+        android:layout_height="match_parent"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/uvBandIcon"
-            android:layout_width="21dp"
-            android:layout_height="21dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:contentDescription="@null"
             android:src="@drawable/ic_sun"
             tools:tint="@color/uv_very_high" />

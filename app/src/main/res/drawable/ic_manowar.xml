@@ -10,28 +10,31 @@
     android:height="24dp"
     android:viewportWidth="24"
     android:viewportHeight="24">
-    <!-- Crest, standing above the float -->
-    <path
-        android:pathData="M7.4,8.6 C9,4.4 15,4.4 16.6,8.6"
-        android:strokeColor="#000000"
-        android:strokeWidth="1.6"
-        android:strokeLineCap="round" />
-    <!-- Float -->
-    <path
-        android:pathData="M6.2,9.4 C8,8.2 16,8.2 17.8,9.4 C17.2,11.8 15,13.2 12,13.2 C9,13.2 6.8,11.8 6.2,9.4 Z"
-        android:strokeColor="#000000"
-        android:strokeWidth="1.6"
-        android:strokeLineJoin="round"
-        android:strokeLineCap="round" />
-    <!-- Trailing threads, longer than a jellyfish's tentacles -->
-    <path
-        android:pathData="M9.6,13.1 C9,16.2 10.2,17.8 9.4,21.3"
-        android:strokeColor="#000000"
-        android:strokeWidth="1.5"
-        android:strokeLineCap="round" />
-    <path
-        android:pathData="M14.4,13.1 C13.8,16.2 15,17.8 14.2,21.3"
-        android:strokeColor="#000000"
-        android:strokeWidth="1.5"
-        android:strokeLineCap="round" />
+    <!-- Moves the drawing so its ink is centred in the 24x24 frame. -->
+    <group android:translateY="-1.35">
+        <!-- Crest, standing above the float -->
+        <path
+            android:pathData="M7.4,8.6 C9,4.4 15,4.4 16.6,8.6"
+            android:strokeColor="#000000"
+            android:strokeWidth="1.6"
+            android:strokeLineCap="round" />
+        <!-- Float -->
+        <path
+            android:pathData="M6.2,9.4 C8,8.2 16,8.2 17.8,9.4 C17.2,11.8 15,13.2 12,13.2 C9,13.2 6.8,11.8 6.2,9.4 Z"
+            android:strokeColor="#000000"
+            android:strokeWidth="1.6"
+            android:strokeLineJoin="round"
+            android:strokeLineCap="round" />
+        <!-- Trailing threads, longer than a jellyfish's tentacles -->
+        <path
+            android:pathData="M9.6,13.1 C9,16.2 10.2,17.8 9.4,21.3"
+            android:strokeColor="#000000"
+            android:strokeWidth="1.5"
+            android:strokeLineCap="round" />
+        <path
+            android:pathData="M14.4,13.1 C13.8,16.2 15,17.8 14.2,21.3"
+            android:strokeColor="#000000"
+            android:strokeWidth="1.5"
+            android:strokeLineCap="round" />
+    </group>
 </vector>

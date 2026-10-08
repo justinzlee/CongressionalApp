@@ -768,6 +768,7 @@
                 <ImageView
                     android:layout_width="19dp"
                     android:layout_height="19dp"
+                    android:layout_gravity="center_vertical"
                     android:contentDescription="@null"
                     android:src="@drawable/ic_lifebuoy"
                     app:tint="@color/primary" />
@@ -831,6 +832,7 @@
                 android:textSize="14sp"
                 app:cornerRadius="12dp"
                 app:icon="@drawable/ic_dolphin"
+                app:iconGravity="textStart"
                 app:strokeColor="@color/divider" />
 
         </LinearLayout>
