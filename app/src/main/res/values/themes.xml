@@ -288,7 +288,9 @@
         <item name="android:paddingTop">9dp</item>
         <item name="android:paddingBottom">9dp</item>
         <item name="android:maxLines">1</item>
-        <item name="android:textSize">15sp</item>
+        <!-- Five across: at 13sp "100 km" still fits its fifth of the row at
+             130% system font size. -->
+        <item name="android:textSize">13sp</item>
         <item name="android:textColor">@color/radius_chip_text</item>
     </style>
 
