@@ -10,6 +10,8 @@
     -->
     <string name="app_name">Flagline</string>
     <string name="app_tagline">Infórmate antes de nadar</string>
+    <string name="splash_checking">Revisando el agua en %1$s</string>
+    <string name="splash_checking_nearby">Buscando la playa más cercana</string>
     <string name="air_temp">Temp. del aire</string>
     <string name="water_temp">Temp. del agua</string>
     <string name="uv_index">Índice UV</string>

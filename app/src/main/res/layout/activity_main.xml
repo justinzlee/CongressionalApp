@@ -784,6 +784,41 @@
                 android:textColor="@color/brand_foam"
                 android:textSize="17sp" />
 
+            <!-- Shown only if the intro ends before the nearest beach has a
+                 reading: the launch screen then waits for it, and says what
+                 it is waiting for, rather than handing over to a card that
+                 says "Checking conditions". -->
+            <LinearLayout
+                android:id="@+id/splashWaiting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:alpha="0"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
+
+                <com.google.android.material.progressindicator.LinearProgressIndicator
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:indeterminate="true"
+                    android:importantForAccessibility="no"
+                    app:indicatorColor="@color/brand_foam"
+                    app:trackColor="@color/brand_foam_track"
+                    app:trackCornerRadius="2dp"
+                    app:trackThickness="3dp" />
+
+                <TextView
+                    android:id="@+id/splashStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:accessibilityLiveRegion="polite"
+                    android:gravity="center_horizontal"
+                    android:paddingHorizontal="32dp"
+                    android:textColor="@color/brand_foam"
+                    android:textSize="15sp" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </FrameLayout>

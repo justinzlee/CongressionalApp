@@ -99,6 +99,8 @@
     <color name="brand_mid">#2E93A3</color>
     <color name="brand_shallow">#61B4C1</color>
     <color name="brand_foam">#9CD3DB</color>
+    <!-- The launch screen's waiting bar runs over a track of the same foam. -->
+    <color name="brand_foam_track">#339CD3DB</color>
     <color name="brand_sand">#EDE6DA</color>
     <color name="brand_shell">#FDFBF7</color>
     <color name="brand_flag">#EA5C41</color>

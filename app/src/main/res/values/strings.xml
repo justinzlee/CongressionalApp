@@ -1,6 +1,9 @@
 <resources>
     <string name="app_name">Flagline</string>
     <string name="app_tagline">Know before you swim</string>
+    <!-- Under the launch screen while it waits for the nearest beach's reading -->
+    <string name="splash_checking">Checking the water at %1$s</string>
+    <string name="splash_checking_nearby">Finding the beach nearest you</string>
     <string name="air_temp">Air temp</string>
     <string name="water_temp">Water temp</string>
     <string name="uv_index">UV index</string>

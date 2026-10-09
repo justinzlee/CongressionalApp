@@ -311,14 +311,19 @@ public class MainActivity extends AppCompatActivity {
         // launch screen is up, whichever way the phone's theme is set.
         setSystemBarsLight(true);
 
+        splashLeave = () -> {
+            splashWaiting = false;
+            overlay.removeCallbacks(splashGiveUp);
+            dismissSplash(overlay, content, backdrop, mark);
+        };
+
         if (Motion.isReduced(this)) {
             // Nothing moves: the settled frame, faded in, and a shorter hold.
             backdrop.play();
             mark.play();
             overlay.setAlpha(0f);
             overlay.animate().alpha(1f).setDuration(REDUCED_FADE_IN).start();
-            overlay.postDelayed(() -> dismissSplash(overlay, content, backdrop, mark),
-                REDUCED_HOLD);
+            overlay.postDelayed(this::onIntroFinished, REDUCED_HOLD);
             return;
         }
 
@@ -327,11 +332,71 @@ public class MainActivity extends AppCompatActivity {
         playWordmark(wordmark);
         playTagline(tagline);
 
-        overlay.postDelayed(() -> dismissSplash(overlay, content, backdrop, mark), SPLASH_HOLD);
+        overlay.postDelayed(this::onIntroFinished, SPLASH_HOLD);
     }
+
+    /**
+     * The intro has played. If the beach the verdict card speaks for already
+     * has a reading, hand over now. If not, wait on this screen, saying what
+     * for, until it lands - so the first thing seen is a verdict rather than
+     * "Checking conditions" - but never past {@link #SPLASH_MAX_WAIT}: a slow
+     * network must not keep someone from the app, the SOS button included.
+     */
+    private void onIntroFinished() {
+        if (splashLeave == null) return;
+        if (nearestBeachHasReading()) {
+            splashLeave.run();
+            return;
+        }
+        splashWaiting = true;
+        updateSplashStatus();
+        View waiting = findViewById(R.id.splashWaiting);
+        waiting.animate().alpha(1f).setDuration(SPLASH_STATUS_FADE).start();
+        findViewById(R.id.splashOverlay).postDelayed(splashGiveUp, SPLASH_MAX_WAIT);
+    }
+
+    /** Whether the verdict card's beach has anything to say yet. */
+    private boolean nearestBeachHasReading() {
+        return nearestBeach != null && nearestBeach.getConditions() != null;
+    }
+
+    /**
+     * Called whenever the verdict card is rebound: names the beach being
+     * waited on, which can change when the location fix lands, and leaves as
+     * soon as it has a reading.
+     */
+    private void onVerdictBound() {
+        if (!splashWaiting) return;
+        if (nearestBeachHasReading()) {
+            splashLeave.run();
+        } else {
+            updateSplashStatus();
+        }
+    }
+
+    private void updateSplashStatus() {
+        TextView status = findViewById(R.id.splashStatus);
+        status.setText(nearestBeach != null
+            ? getString(R.string.splash_checking, nearestBeach.getName())
+            : getString(R.string.splash_checking_nearby));
+    }
+
+    /** Leaves the launch screen; set up in setupSplash, null until then. */
+    private Runnable splashLeave;
+    /** Whether the launch screen is holding on for the nearest beach's reading. */
+    private boolean splashWaiting;
+    private final Runnable splashGiveUp = () -> {
+        if (splashLeave != null && splashWaiting) splashLeave.run();
+    };
 
     /** How long the launch screen holds before it starts leaving. */
     private static final long SPLASH_HOLD = 2700;
+    /**
+     * The longest the launch screen waits on past the intro for the nearest
+     * beach's reading: about eight seconds from tapping the icon, all told.
+     */
+    private static final long SPLASH_MAX_WAIT = 5300;
+    private static final long SPLASH_STATUS_FADE = 300;
     private static final long SPLASH_EXIT = 650;
     /** The app underneath comes up while the launch screen is still going. */
     private static final long CONTENT_ENTER_DELAY = 120;
@@ -833,6 +898,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void bindVerdict(Beach beach) {
         nearestBeach = beach;
+        onVerdictBound();
         if (beach == null) {
             verdictCard.setVisibility(View.GONE);
             // Nothing to name yet, so the kicker would only repeat the title.
