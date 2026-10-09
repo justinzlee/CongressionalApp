@@ -8,33 +8,35 @@
     android:minHeight="56dp"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
+    android:gravity="center_vertical"
     android:orientation="horizontal"
     android:paddingHorizontal="16dp"
     android:paddingTop="14dp"
     android:paddingBottom="14dp">
 
     <!-- Fixed width so every title starts on the same line, whether the row
-         flies one flag or the two of a double red. -->
+         flies one flag or the two of a double red, and each flag - or the
+         pair - sits in the middle of it, level with the text beside it. -->
     <LinearLayout
         android:id="@+id/flagIcons"
-        android:layout_width="40dp"
+        android:layout_width="56dp"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical|start"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/flagIconPrimary"
-            android:layout_width="19dp"
-            android:layout_height="19dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
             android:contentDescription="@null"
             android:src="@drawable/ic_flag"
             tools:tint="@color/flag_red" />
 
         <ImageView
             android:id="@+id/flagIconSecondary"
-            android:layout_width="19dp"
-            android:layout_height="19dp"
-            android:layout_marginStart="1dp"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_marginStart="-6dp"
             android:contentDescription="@null"
             android:src="@drawable/ic_flag"
             android:visibility="gone"
