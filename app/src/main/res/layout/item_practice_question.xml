@@ -48,7 +48,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
             android:textColor="@color/primary"
-            android:textSize="15sp"
+            android:textSize="17sp"
             tools:text="That's right" />
 
         <TextView

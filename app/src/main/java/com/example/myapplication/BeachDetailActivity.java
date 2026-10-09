@@ -580,12 +580,8 @@ public class BeachDetailActivity extends AppCompatActivity {
     private void applySaveState(MaterialButton save, boolean isSaved) {
         save.setText(isSaved ? R.string.saved_beach : R.string.save_beach);
         save.setIconResource(isSaved ? R.drawable.ic_bookmark_filled : R.drawable.ic_bookmark);
-        int color = ContextCompat.getColor(this,
-            isSaved ? R.color.primary : R.color.text_primary);
-        save.setTextColor(color);
-        save.setIconTint(ColorStateList.valueOf(color));
-        save.setStrokeColor(ColorStateList.valueOf(ContextCompat.getColor(this,
-            isSaved ? R.color.primary : R.color.divider)));
+        // Colour comes from Widget.App.Button.Secondary; saved or not, it is
+        // the same action, and the filled bookmark is what says which.
     }
 
     /** "Lifeguard tower nearby" under the beach name. */

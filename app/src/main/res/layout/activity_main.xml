@@ -85,16 +85,16 @@
                     android:letterSpacing="0.04"
                     android:text="@string/sos_label"
                     android:textColor="@color/danger"
-                    android:textSize="13sp" />
+                    android:textSize="15sp" />
             </LinearLayout>
 
             <ImageButton
                 android:id="@+id/myLocationButton"
-                android:layout_width="38dp"
-                android:layout_height="38dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
                 android:contentDescription="@string/nearby_report_action"
-                android:padding="9dp"
+                android:padding="14dp"
                 android:src="@drawable/ic_location"
                 app:tint="@color/text_secondary" />
         </LinearLayout>
@@ -149,10 +149,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/surface"
-                app:cardCornerRadius="20dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
                 app:strokeColor="@color/divider"
-                app:strokeWidth="1dp">
+                app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -188,7 +188,7 @@
                             android:layout_marginStart="10dp"
                             android:fontFamily="sans-serif-medium"
                             android:textColor="@color/safe"
-                            android:textSize="15sp"
+                            android:textSize="17sp"
                             tools:text="Good to swim" />
 
                         <TextView
@@ -299,20 +299,11 @@
                          is an offer rather than a call. -->
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/verdictDetailsButton"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        style="@style/Widget.App.Button.Secondary"
                         android:layout_width="match_parent"
-                        android:layout_height="46dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="14dp"
-                        android:fontFamily="sans-serif-medium"
-                        android:insetBottom="0dp"
-                        android:insetTop="0dp"
-                        android:letterSpacing="0"
-                        android:text="@string/beach_details"
-                        android:textAllCaps="false"
-                        android:textColor="@color/primary"
-                        android:textSize="14sp"
-                        app:cornerRadius="13dp"
-                        app:strokeColor="@color/divider" />
+                        android:text="@string/beach_details" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -323,7 +314,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="9dp"
                 android:text="@string/section_search"
-                android:textAppearance="@style/TextAppearance.App.Caption" />
+                android:textAppearance="@style/TextAppearance.App.Section" />
 
             <!--
               Two fields, a radius, and one action, in a card that keeps the
@@ -336,10 +327,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:cardBackgroundColor="@color/surface"
-                app:cardCornerRadius="20dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
                 app:strokeColor="@color/divider"
-                app:strokeWidth="1dp">
+                app:strokeWidth="0dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -392,7 +383,7 @@
                                 android:popupBackground="@drawable/bg_search_menu"
                                 android:textColor="@color/text_primary"
                                 android:textColorHint="@color/text_secondary"
-                                android:textSize="14.5sp" />
+                                android:textSize="17sp" />
 
                             <ImageView
                                 android:id="@+id/cityCaret"
@@ -437,7 +428,7 @@
                                 android:paddingEnd="0dp"
                                 android:textColor="@color/text_primary"
                                 android:textColorHint="@color/text_secondary"
-                                android:textSize="14.5sp" />
+                                android:textSize="17sp" />
 
                             <ImageButton
                                 android:id="@+id/searchClearButton"
@@ -510,7 +501,7 @@
                             android:layout_marginTop="8dp"
                             android:text="@string/radius_needs_location"
                             android:textAppearance="@style/TextAppearance.App.Subtitle"
-                            android:textSize="11.5sp" />
+                            android:textSize="13sp" />
                     </LinearLayout>
 
                     <View
@@ -560,7 +551,7 @@
                                 android:layout_marginStart="-16dp"
                                 android:contentDescription="@null"
                                 android:src="@drawable/ic_map_pin"
-                                app:tint="@color/primary" />
+                                app:tint="@color/on_primary" />
 
                             <TextView
                                 android:id="@+id/citySearchLabel"
@@ -569,8 +560,8 @@
                                 android:layout_marginStart="9dp"
                                 android:fontFamily="sans-serif-medium"
                                 android:text="@string/find_nearby_beaches"
-                                android:textColor="@color/primary"
-                                android:textSize="14.5sp" />
+                                android:textColor="@color/on_primary"
+                                android:textSize="17sp" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -613,7 +604,7 @@
                         android:fontFamily="sans-serif-medium"
                         android:text="@string/activity_title"
                         android:textColor="@color/primary_variant"
-                        android:textSize="15sp" />
+                        android:textSize="17sp" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -644,14 +635,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="@string/nearby_beaches"
-                    android:textAppearance="@style/TextAppearance.App.Caption" />
+                    android:textAppearance="@style/TextAppearance.App.Section" />
 
                 <TextView
                     android:id="@+id/beachCountBadge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/TextAppearance.App.Subtitle"
-                    android:textSize="12sp"
+                    android:textSize="13sp"
                     tools:text="12 beaches" />
             </LinearLayout>
 
@@ -768,7 +759,7 @@
                 android:text="@string/app_tagline"
                 android:textAllCaps="true"
                 android:textColor="@color/brand_foam"
-                android:textSize="12sp" />
+                android:textSize="13sp" />
 
         </LinearLayout>
 

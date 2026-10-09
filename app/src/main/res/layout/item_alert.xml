@@ -40,7 +40,7 @@
                 android:layout_weight="1"
                 android:fontFamily="sans-serif-medium"
                 android:textColor="@color/text_primary"
-                android:textSize="14.5sp"
+                android:textSize="17sp"
                 tools:text="Rip current" />
 
             <TextView
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:textAppearance="@style/TextAppearance.App.Subtitle"
-                android:textSize="11sp"
+                android:textSize="13sp"
                 tools:text="Moderate" />
         </LinearLayout>
 
@@ -70,7 +70,7 @@
             android:background="@drawable/bg_tag_chip"
             android:paddingHorizontal="9dp"
             android:paddingVertical="3dp"
-            android:textSize="11sp"
+            android:textSize="13sp"
             tools:text="La Jolla Shores" />
     </LinearLayout>
 </LinearLayout>

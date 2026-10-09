@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-medium"
         android:textColor="@color/text_primary"
-        android:textSize="19sp"
+        android:textSize="20sp"
         tools:text="Seal, washed up" />
 
     <TextView
@@ -61,7 +61,7 @@
             android:fontFamily="sans-serif-medium"
             android:text="@string/sighting_share_cta"
             android:textColor="@color/text_primary"
-            android:textSize="16sp" />
+            android:textSize="17sp" />
     </LinearLayout>
 
     <LinearLayout
@@ -91,6 +91,6 @@
             android:fontFamily="sans-serif-medium"
             android:text="@string/sighting_delete"
             android:textColor="@color/text_primary"
-            android:textSize="15sp" />
+            android:textSize="17sp" />
     </LinearLayout>
 </LinearLayout>

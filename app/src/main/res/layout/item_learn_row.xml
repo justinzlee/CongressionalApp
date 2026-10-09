@@ -34,7 +34,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
             android:textColor="@color/text_primary"
-            android:textSize="15sp"
+            android:textSize="17sp"
             tools:text="How to spot a rip current" />
 
         <TextView

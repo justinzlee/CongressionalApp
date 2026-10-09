@@ -14,5 +14,5 @@
     android:paddingHorizontal="13dp"
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
-    android:textSize="12.5sp"
+    android:textSize="15sp"
     tools:text="Southern California" />

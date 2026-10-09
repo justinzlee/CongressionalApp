@@ -33,7 +33,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-medium"
             android:textColor="@color/text_primary"
-            android:textSize="14sp"
+            android:textSize="17sp"
             tools:text="Rip current" />
 
         <TextView

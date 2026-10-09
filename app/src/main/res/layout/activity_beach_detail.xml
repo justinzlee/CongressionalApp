@@ -21,6 +21,7 @@
         <!-- Arrow and word are one target, so "Back" goes back like the arrow -->
         <LinearLayout
             android:id="@+id/detailBackButton"
+            android:minHeight="48dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
@@ -45,7 +46,7 @@
                 android:layout_marginStart="2dp"
                 android:text="@string/back"
                 android:textColor="@color/primary"
-                android:textSize="12.5sp" />
+                android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -70,10 +71,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="168dp"
                 app:cardBackgroundColor="@color/surface"
-                app:cardCornerRadius="12dp"
+                app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
                 app:strokeColor="@color/divider"
-                app:strokeWidth="1dp">
+                app:strokeWidth="0dp">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -103,15 +104,15 @@
                          things sitting on the picture never collide. -->
                     <ImageView
                         android:id="@+id/detailPhotoButton"
-                        android:layout_width="34dp"
-                        android:layout_height="34dp"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
                         android:layout_gravity="top|end"
-                        android:layout_margin="11dp"
+                        android:layout_margin="8dp"
                         android:background="@drawable/bg_hero_button"
                         android:clickable="true"
                         android:contentDescription="@string/photo_add"
                         android:focusable="true"
-                        android:padding="8dp"
+                        android:padding="13dp"
                         android:src="@drawable/ic_camera"
                         app:tint="@color/on_hero" />
 
@@ -141,7 +142,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginStart="6dp"
                             android:textColor="@color/safe"
-                            android:textSize="11.5sp"
+                            android:textSize="13sp"
                             tools:text="Good to swim" />
                     </LinearLayout>
                 </FrameLayout>
@@ -172,22 +173,14 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/detailSaveButton"
-                style="@style/Widget.Material3.Button.OutlinedButton"
+                style="@style/Widget.App.Button.Secondary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="14dp"
-                android:fontFamily="sans-serif-medium"
-                android:letterSpacing="0"
                 android:text="@string/save_beach"
-                android:textAllCaps="false"
-                android:textColor="@color/text_primary"
-                android:textSize="14sp"
-                app:cornerRadius="8dp"
                 app:icon="@drawable/ic_bookmark"
                 app:iconGravity="textStart"
-                app:iconPadding="8dp"
-                app:iconTint="@color/text_primary"
-                app:strokeColor="@color/divider" />
+                app:iconPadding="8dp" />
 
             <!-- Fading rule -->
             <View
@@ -202,7 +195,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:text="@string/section_conditions"
-                android:textAppearance="@style/TextAppearance.App.Caption" />
+                android:textAppearance="@style/TextAppearance.App.Section" />
 
             <!-- Wave height gets a card of its own - the swell as a sea to
                  look at - with the rest of the conditions as tiles under it. -->
@@ -431,7 +424,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginBottom="10dp"
                     android:text="@string/section_environment"
-                    android:textAppearance="@style/TextAppearance.App.Caption" />
+                    android:textAppearance="@style/TextAppearance.App.Section" />
 
                 <!-- Air quality -->
                 <LinearLayout
@@ -466,14 +459,14 @@
                             android:fontFamily="sans-serif-medium"
                             android:text="@string/aqi_label"
                             android:textColor="@color/text_primary"
-                            android:textSize="15sp" />
+                            android:textSize="17sp" />
 
                         <TextView
                             android:id="@+id/detailAqiValue"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-medium"
-                            android:textSize="15sp"
+                            android:textSize="17sp"
                             tools:text="AQI 68"
                             tools:textColor="@color/caution" />
                     </LinearLayout>
@@ -485,7 +478,7 @@
                         android:layout_marginTop="5dp"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/text_primary"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         tools:text="Moderate" />
 
                     <TextView
@@ -531,14 +524,14 @@
                             android:fontFamily="sans-serif-medium"
                             android:text="@string/water_label"
                             android:textColor="@color/text_primary"
-                            android:textSize="15sp" />
+                            android:textSize="17sp" />
 
                         <TextView
                             android:id="@+id/detailWaterStatus"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="sans-serif-medium"
-                            android:textSize="14sp"
+                            android:textSize="17sp"
                             tools:text="Likely clean"
                             tools:textColor="@color/safe" />
                     </LinearLayout>
@@ -585,7 +578,7 @@
                             android:fontFamily="sans-serif-medium"
                             android:text="@string/rocks_title"
                             android:textColor="@color/text_primary"
-                            android:textSize="15sp" />
+                            android:textSize="17sp" />
 
                         <TextView
                             android:id="@+id/detailRocksValue"
@@ -645,7 +638,7 @@
                         android:layout_marginTop="10dp"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/primary"
-                        android:textSize="14sp"
+                        android:textSize="17sp"
                         tools:text="Rate the rocks" />
                 </LinearLayout>
 
@@ -681,7 +674,7 @@
                             android:fontFamily="sans-serif-medium"
                             android:text="@string/parking_label"
                             android:textColor="@color/text_primary"
-                            android:textSize="15sp" />
+                            android:textSize="17sp" />
                     </LinearLayout>
 
                     <TextView
@@ -691,7 +684,7 @@
                         android:layout_marginTop="5dp"
                         android:fontFamily="sans-serif-medium"
                         android:textColor="@color/text_primary"
-                        android:textSize="13sp"
+                        android:textSize="15sp"
                         tools:text="Mostly free parking nearby" />
 
                     <TextView
@@ -732,7 +725,7 @@
                     android:layout_marginTop="24dp"
                     android:layout_marginBottom="10dp"
                     android:text="@string/section_good_for"
-                    android:textAppearance="@style/TextAppearance.App.Caption" />
+                    android:textAppearance="@style/TextAppearance.App.Section" />
 
                 <LinearLayout
                     android:id="@+id/detailActivityList"
@@ -748,7 +741,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="10dp"
                 android:text="@string/section_watch_for"
-                android:textAppearance="@style/TextAppearance.App.Caption" />
+                android:textAppearance="@style/TextAppearance.App.Section" />
 
             <LinearLayout
                 android:id="@+id/hazardList"
@@ -786,7 +779,7 @@
                         android:fontFamily="sans-serif-medium"
                         android:text="@string/lifeguards_title"
                         android:textColor="@color/primary_variant"
-                        android:textSize="14sp" />
+                        android:textSize="17sp" />
 
                     <TextView
                         android:id="@+id/detailLifeguards"
@@ -805,7 +798,7 @@
                 android:layout_marginTop="24dp"
                 android:layout_marginBottom="8dp"
                 android:text="@string/sighting_section"
-                android:textAppearance="@style/TextAppearance.App.Caption" />
+                android:textAppearance="@style/TextAppearance.App.Section" />
 
             <TextView
                 android:id="@+id/detailSightingsEmpty"
@@ -824,16 +817,13 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/detailSightingCta"
-                style="@style/Widget.Material3.Button.OutlinedButton"
+                style="@style/Widget.App.Button.Secondary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/sighting_add_cta"
-                android:textSize="14sp"
-                app:cornerRadius="12dp"
                 app:icon="@drawable/ic_dolphin"
-                app:iconGravity="textStart"
-                app:strokeColor="@color/divider" />
+                app:iconGravity="textStart" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

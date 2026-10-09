@@ -20,6 +20,7 @@
         <!-- Arrow and word are one target, so "Back" goes back like the arrow -->
         <LinearLayout
             android:id="@+id/guideBackButton"
+            android:minHeight="48dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
@@ -44,7 +45,7 @@
                 android:layout_marginStart="2dp"
                 android:text="@string/back"
                 android:textColor="@color/primary"
-                android:textSize="12.5sp" />
+                android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -95,7 +96,7 @@
                     android:fontFamily="sans-serif-medium"
                     android:text="@string/guide_caught_title"
                     android:textColor="@color/danger"
-                    android:textSize="15sp" />
+                    android:textSize="17sp" />
 
                 <TextView
                     android:layout_width="match_parent"

@@ -85,7 +85,7 @@
                         android:fontFamily="sans-serif-medium"
                         android:text="@string/practice_entry_title"
                         android:textColor="@color/primary"
-                        android:textSize="16sp" />
+                        android:textSize="17sp" />
 
                     <TextView
                         android:id="@+id/learnPracticeSubtitle"
@@ -118,7 +118,7 @@
                 android:lineSpacingMultiplier="1.5"
                 android:text="@string/learn_footnote"
                 android:textAppearance="@style/TextAppearance.App.Subtitle"
-                android:textSize="11.5sp" />
+                android:textSize="13sp" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

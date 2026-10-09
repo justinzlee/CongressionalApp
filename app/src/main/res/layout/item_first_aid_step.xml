@@ -16,7 +16,7 @@
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
         android:textColor="@color/primary"
-        android:textSize="11.5sp"
+        android:textSize="13sp"
         tools:text="1" />
 
     <ImageView

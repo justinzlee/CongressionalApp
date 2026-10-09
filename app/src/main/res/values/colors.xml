@@ -16,10 +16,11 @@
     <color name="primary_variant">#0A4757</color>
     <color name="on_primary">#EBF7F9</color>
 
-    <!-- Sand: 00 ground, 50 card, 100 recessed, 200 hairline, 600 muted
-         text, Ink body text. -->
-    <color name="background">#FDFBF7</color>
-    <color name="surface">#F6F1E8</color>
+    <!-- Sand: the ground is a step darker than the cards, so a card stands
+         off the page by its own lightness instead of by an outline. 100
+         recessed, 200 hairline, 600 muted text, Ink body text. -->
+    <color name="background">#F2ECE2</color>
+    <color name="surface">#FFFDF9</color>
     <color name="surface_alt">#EDE6DA</color>
     <color name="divider">#DCD3C4</color>
     <color name="text_primary">#211F1B</color>
@@ -34,9 +35,9 @@
          backgrounds only ("pair with Sun 800 text"). Caution therefore
          takes Sun 700, which clears AA both on Sand 00 and on its tint -
          which matters most in the sunlight this app is read in. -->
-    <color name="safe">#1DA46A</color>
-    <color name="caution">#BF730B</color>
-    <color name="danger">#E03C21</color>
+    <color name="safe">#127A4D</color>
+    <color name="caution">#9A5B06</color>
+    <color name="danger">#B42E17</color>
     <color name="safe_tint">#E2F6EC</color>
     <color name="caution_tint">#FEF0D0</color>
     <color name="danger_tint">#FEE1DA</color>
@@ -48,7 +49,7 @@
     <color name="search_footer">#0D147384</color>
 
     <!-- Legacy aliases kept so existing layouts and code keep resolving -->
-    <color name="error">#E03C21</color>
+    <color name="error">#B42E17</color>
     <color name="advisor_bg">#EBF7F9</color>
     <color name="secondary">#BF730B</color>
     <color name="on_secondary">#FFF8E6</color>
@@ -197,8 +198,8 @@
     <color name="map_hud_edge">#DCD3C4</color>
     <color name="map_hud_text">#211F1B</color>
     <color name="map_hud_text_quiet">#6E6659</color>
-    <!-- The look that is on, Satellite or Plain: the design's blue in both themes -->
-    <color name="map_hud_active">#1E6F9F</color>
+    <!-- The look that is on, Satellite or Plain: the one accent, like every other selected control -->
+    <color name="map_hud_active">@color/primary</color>
     <color name="map_hud_active_text">#FFFFFF</color>
     <color name="map_hud_ripple">#1F000000</color>
     <color name="map_chip">#CCFDFBF7</color>

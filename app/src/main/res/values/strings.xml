@@ -1,14 +1,14 @@
 <resources>
     <string name="app_name">Flagline</string>
     <string name="app_tagline">Know before you swim</string>
-    <string name="air_temp">Air Temp</string>
-    <string name="water_temp">Water Temp</string>
-    <string name="uv_index">UV Index</string>
-    <string name="wind_speed">Wind Speed</string>
-    <string name="wave_height">Wave Height</string>
+    <string name="air_temp">Air temp</string>
+    <string name="water_temp">Water temp</string>
+    <string name="uv_index">UV index</string>
+    <string name="wind_speed">Wind speed</string>
+    <string name="wave_height">Wave height</string>
     <string name="visibility">Visibility</string>
-    <string name="low_tide">Low Tide</string>
-    <string name="high_tide">High Tide</string>
+    <string name="low_tide">Low tide</string>
+    <string name="high_tide">High tide</string>
     <!-- Countdown under a tide time, so "5:04" is never mistaken for today when it is tomorrow -->
     <string name="tide_checking">Checking&#8230;</string>
     <string name="tide_now">Turning now</string>
@@ -19,35 +19,35 @@
     <string name="tide_none">No tides</string>
     <string name="placeholder_dashes">--</string>
     <string name="no_major_hazards">No major hazards reported.</string>
-    <string name="select_coastal_city">Select Coastal City</string>
-    <string name="beach_name_hint">Beach Name</string>
-    <string name="radius_label">Search Radius</string>
+    <string name="select_coastal_city">Select a coastal city</string>
+    <string name="beach_name_hint">Beach name</string>
+    <string name="radius_label">Search radius</string>
     <string name="radius_needs_location">Search a city or enable location to filter by distance</string>
     <string name="radius_all">All</string>
     <string name="search_using_location">Using real-time location</string>
     <string name="search_near_city">Searching near: %1$s</string>
     <string name="search_city_not_found">Location not found</string>
     <string name="search_network_error">Network error</string>
-    <string name="find_nearby_beaches">Find Nearby Beaches</string>
+    <string name="find_nearby_beaches">Find nearby beaches</string>
     <!-- On the search button while the city is being looked up -->
     <string name="find_nearby_searching">Searching…</string>
     <string name="search_clear">Clear the beach name</string>
-    <string name="nearby_beaches">Nearby Beaches</string>
-    <string name="nearby_report_action">Nearby Beach Report</string>
+    <string name="nearby_beaches">Nearby beaches</string>
+    <string name="nearby_report_action">Nearby beach report</string>
     <!-- Under a beach in the list, and the radius chips above it. Both sit in
          whichever unit Settings is on. -->
     <string name="distance_away">%1$.1f miles away</string>
     <string name="distance_away_km">%1$.1f km away</string>
     <string name="radius_step">%1$d %2$s</string>
-    <string name="beach_image_desc">Beach Image</string>
+    <string name="beach_image_desc">Beach photo</string>
     <string name="empty_state_title">No beaches to show</string>
     <string name="empty_state_subtitle">Try a different city or widen your search radius.</string>
     <string name="settings_title">Settings</string>
     <string name="units_section_title">Units</string>
-    <string name="use_metric_title">Use Metric System</string>
+    <string name="use_metric_title">Use metric units</string>
     <string name="use_metric_subtitle">Converts temperature to °C, wind to km/h, and waves to meters.</string>
     <string name="display_section_title">Display</string>
-    <string name="use_dark_mode_title">Dark Mode</string>
+    <string name="use_dark_mode_title">Dark mode</string>
     <string name="use_dark_mode_subtitle">Follows your phone until you switch it here.</string>
     <!-- Language. The list is short enough that a row plus a sheet beats a
          whole screen, and the names are written in their own language so a
@@ -1015,21 +1015,21 @@
 
     <!-- ══════ SUPPORT & CONTACT ══════ -->
     <string name="support_section_title">Support &amp; Feedback</string>
-    <string name="contact_developers_title">Contact Developers</string>
+    <string name="contact_developers_title">Contact us</string>
     <string name="contact_developers_subtitle">Email the app developer team with questions or feedback</string>
-    <string name="contact_intro_title">Contact the Developers</string>
+    <string name="contact_intro_title">Contact us</string>
     <string name="contact_intro_body">Have feedback, a bug report, or a feature request? Send us an email and we\'ll get back to you!</string>
     <string name="contact_email_address">supportflagline@gmail.com</string>
     <string name="contact_topic_label">Topic</string>
     <string name="contact_topic_general">General</string>
-    <string name="contact_topic_bug">Bug Report</string>
-    <string name="contact_topic_feature">Feature Idea</string>
-    <string name="contact_topic_data">Beach Data</string>
+    <string name="contact_topic_bug">Bug report</string>
+    <string name="contact_topic_feature">Feature idea</string>
+    <string name="contact_topic_data">Beach data</string>
     <string name="contact_subject_label">Subject</string>
     <string name="contact_subject_hint">Enter subject</string>
     <string name="contact_message_label">Message</string>
     <string name="contact_message_hint">Type your message here…</string>
-    <string name="contact_send_button">Send Email</string>
+    <string name="contact_send_button">Send email</string>
     <string name="contact_chooser_title">Send email via…</string>
     <string name="contact_no_email_app">No email app found. You can email us at supportflagline@gmail.com</string>
     <string name="contact_empty_message_error">Please write a message before sending.</string>

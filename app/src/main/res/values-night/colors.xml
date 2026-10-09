@@ -127,7 +127,8 @@
     <color name="map_hud_edge">#22343A</color>
     <color name="map_hud_text">#EAF1F0</color>
     <color name="map_hud_text_quiet">#9FB1B5</color>
-    <color name="map_hud_active_text">#EAF1F0</color>
+    <color name="map_hud_active">@color/primary</color>
+    <color name="map_hud_active_text">#08181C</color>
     <color name="map_hud_ripple">#33FFFFFF</color>
     <color name="map_chip">#CC0B1418</color>
     <color name="map_chip_text">#8FA3A8</color>

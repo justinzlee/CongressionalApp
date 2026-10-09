@@ -25,7 +25,9 @@
         <item name="colorSurfaceContainerLowest">@color/background</item>
         <item name="colorSurfaceContainerHigh">@color/surface_alt</item>
         <item name="colorSurfaceContainerHighest">@color/surface_alt</item>
-        <item name="colorOutline">@color/divider</item>
+        <!-- Outlines on controls (switch tracks, text fields) need 3:1, which
+             a hairline divider is not. -->
+        <item name="colorOutline">@color/text_secondary</item>
         <item name="colorOutlineVariant">@color/divider</item>
         <item name="colorError">@color/error</item>
 
@@ -47,6 +49,10 @@
         <item name="android:navigationBarColor">@color/background</item>
         <item name="android:windowLightStatusBar" tools:targetApi="23">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
+
+        <!-- One button system: a filled primary for the screen's main action,
+             a tinted secondary for everything else. -->
+        <item name="materialButtonStyle">@style/Widget.App.Button</item>
 
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -83,58 +89,98 @@
         <item name="cornerSize">14dp</item>
     </style>
 
-    <!-- Type. Headings are weight 500, body 400. -->
+    <!--
+      Type. Five steps, read outdoors in bright sun: large title 32, screen
+      title 28, section 20, body 17, secondary 15, and nothing smaller than
+      13. Hierarchy comes from size and weight; labels are sentence case and
+      untracked rather than small capitals.
+    -->
+    <!-- Large title on the top-level tabs: Alerts, Saved, Learn, Settings -->
     <style name="TextAppearance.App.Display" parent="TextAppearance.Material3.TitleLarge">
-        <item name="android:textSize">20sp</item>
+        <item name="android:textSize">32sp</item>
         <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:letterSpacing">-0.015</item>
+        <item name="android:letterSpacing">-0.02</item>
         <item name="android:textColor">@color/text_primary</item>
     </style>
     <!-- Screen headline, e.g. the beach name on the detail screen -->
     <style name="TextAppearance.App.Headline" parent="TextAppearance.Material3.HeadlineSmall">
-        <item name="android:textSize">26sp</item>
+        <item name="android:textSize">28sp</item>
         <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:letterSpacing">-0.015</item>
+        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+    <!-- A section of a screen: Conditions, Environment, Do this -->
+    <style name="TextAppearance.App.Section" parent="TextAppearance.Material3.TitleMedium">
+        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">-0.01</item>
         <item name="android:textColor">@color/text_primary</item>
     </style>
     <style name="TextAppearance.App.Title" parent="TextAppearance.Material3.TitleMedium">
         <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:letterSpacing">0</item>
         <item name="android:textColor">@color/text_primary</item>
     </style>
     <style name="TextAppearance.App.Subtitle" parent="TextAppearance.Material3.BodySmall">
         <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textSize">12.5sp</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:letterSpacing">0</item>
         <item name="android:textColor">@color/text_secondary</item>
     </style>
     <style name="TextAppearance.App.Body" parent="TextAppearance.Material3.BodyMedium">
-        <item name="android:textSize">13.5sp</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:letterSpacing">0</item>
         <item name="android:textColor">@color/text_primary</item>
-        <item name="android:lineSpacingMultiplier">1.5</item>
+        <item name="android:lineSpacingMultiplier">1.3</item>
     </style>
-    <!-- Section kickers: 11sp, uppercase, wide tracking, muted -->
+    <!-- Group headers over a list, counts, and form labels: quiet, sentence case -->
     <style name="TextAppearance.App.Caption" parent="TextAppearance.Material3.LabelSmall">
-        <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textSize">11sp</item>
-        <item name="android:letterSpacing">0.09</item>
-        <item name="android:textAllCaps">true</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/text_secondary</item>
     </style>
-    <!-- Stat tile labels sit a touch smaller than section kickers -->
+    <!-- Stat tile labels -->
     <style name="TextAppearance.App.TileLabel" parent="TextAppearance.Material3.LabelSmall">
         <item name="android:fontFamily">sans-serif</item>
-        <item name="android:textSize">10.5sp</item>
-        <item name="android:letterSpacing">0.09</item>
-        <item name="android:textAllCaps">true</item>
+        <item name="android:textSize">13sp</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/text_secondary</item>
     </style>
     <style name="TextAppearance.App.StatValue" parent="TextAppearance.Material3.TitleMedium">
         <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textSize">17sp</item>
+        <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/text_primary</item>
     </style>
 
     <!-- Widgets -->
+
+    <!-- Buttons. Primary: filled sea, 50dp, the one main action on a screen.
+         Secondary: a sea-tinted fill with sea text, no outline, for every
+         other action. Both 17sp medium, sentence case, 12dp corners. -->
+    <style name="Widget.App.Button" parent="Widget.Material3.Button">
+        <item name="android:minHeight">50dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="cornerRadius">12dp</item>
+        <item name="backgroundTint">@color/primary</item>
+        <item name="android:textColor">@color/on_primary</item>
+        <item name="iconTint">@color/on_primary</item>
+        <item name="elevation">0dp</item>
+    </style>
+    <style name="Widget.App.Button.Secondary">
+        <item name="backgroundTint">@color/accent_tint</item>
+        <item name="android:textColor">@color/primary</item>
+        <item name="iconTint">@color/primary</item>
+        <item name="strokeWidth">0dp</item>
+    </style>
 
     <!-- Stat tile: label row over a value, on a hairline surface card -->
     <style name="Widget.App.StatTile" parent="">
@@ -158,8 +204,8 @@
         <item name="android:gravity">center_vertical</item>
     </style>
     <style name="Widget.App.StatTileIcon" parent="">
-        <item name="android:layout_width">13dp</item>
-        <item name="android:layout_height">13dp</item>
+        <item name="android:layout_width">16dp</item>
+        <item name="android:layout_height">16dp</item>
         <item name="android:contentDescription">@null</item>
         <item name="tint">@color/text_secondary</item>
     </style>
@@ -179,8 +225,8 @@
     <style name="Widget.App.StatTileCaption" parent="">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">1dp</item>
-        <item name="android:textSize">11.5sp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:textSize">13sp</item>
         <item name="android:textColor">@color/text_secondary</item>
     </style>
 
@@ -209,7 +255,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">5dp</item>
         <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
@@ -242,7 +288,7 @@
         <item name="android:paddingTop">9dp</item>
         <item name="android:paddingBottom">9dp</item>
         <item name="android:maxLines">1</item>
-        <item name="android:textSize">12.5sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/radius_chip_text</item>
     </style>
 
@@ -260,8 +306,8 @@
         <item name="android:focusable">true</item>
     </style>
     <style name="Widget.App.TabIcon" parent="">
-        <item name="android:layout_width">21dp</item>
-        <item name="android:layout_height">21dp</item>
+        <item name="android:layout_width">24dp</item>
+        <item name="android:layout_height">24dp</item>
         <item name="android:contentDescription">@null</item>
         <item name="tint">@color/text_secondary</item>
     </style>
@@ -269,7 +315,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">3dp</item>
-        <item name="android:textSize">9.5sp</item>
+        <item name="android:textSize">11sp</item>
         <item name="android:textColor">@color/text_secondary</item>
     </style>
 
@@ -309,7 +355,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">6dp</item>
         <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textSize">13sp</item>
+        <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/text_secondary</item>
     </style>
 
@@ -340,7 +386,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:layout_marginStart">12dp</item>
         <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">17sp</item>
         <item name="android:textColor">@color/text_primary</item>
     </style>
 

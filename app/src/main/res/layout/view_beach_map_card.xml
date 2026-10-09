@@ -26,11 +26,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="monospace"
-                android:letterSpacing="0.16"
+                android:letterSpacing="0"
                 android:text="@string/map_kicker"
-                android:textAllCaps="true"
+                android:textAllCaps="false"
                 android:textColor="@color/map_kicker"
-                android:textSize="10sp" />
+                android:textSize="13sp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -40,7 +40,7 @@
                 android:text="@string/map_title"
                 android:textColor="@color/text_primary"
                 android:textFontWeight="600"
-                android:textSize="13sp" />
+                android:textSize="15sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -69,7 +69,7 @@
                 android:text="@string/map_recenter"
                 android:textColor="@color/text_primary"
                 android:textFontWeight="600"
-                android:textSize="12sp" />
+                android:textSize="13sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -106,7 +106,7 @@
             android:paddingVertical="8dp"
             android:text="@string/map_two_finger_hint"
             android:textColor="@color/map_hud_text"
-            android:textSize="12sp"
+            android:textSize="13sp"
             android:visibility="gone" />
 
         <LinearLayout
@@ -164,7 +164,7 @@
             android:paddingHorizontal="10dp"
             android:paddingVertical="6dp"
             android:textColor="@color/map_chip_text"
-            android:textSize="10sp"
+            android:textSize="13sp"
             tools:text="190 m" />
 
         <LinearLayout
@@ -188,7 +188,7 @@
                 android:letterSpacing="0.02"
                 android:text="@string/map_satellite"
                 android:textFontWeight="600"
-                android:textSize="11sp"
+                android:textSize="13sp"
                 tools:background="@color/map_hud_active"
                 tools:textColor="@color/map_hud_active_text" />
 
@@ -207,7 +207,7 @@
                 android:letterSpacing="0.02"
                 android:text="@string/map_plain"
                 android:textFontWeight="600"
-                android:textSize="11sp"
+                android:textSize="13sp"
                 tools:textColor="@color/map_hud_text_quiet" />
         </LinearLayout>
     </FrameLayout>
@@ -245,7 +245,7 @@
                 android:layout_marginStart="6dp"
                 android:text="@string/map_legend_tower"
                 android:textColor="@color/text_secondary"
-                android:textSize="11sp" />
+                android:textSize="13sp" />
         </LinearLayout>
 
         <Space
@@ -263,6 +263,6 @@
             android:alpha="0.7"
             android:text="@string/map_attribution"
             android:textColor="@color/text_secondary"
-            android:textSize="9.5sp" />
+            android:textSize="13sp" />
     </LinearLayout>
 </merge>

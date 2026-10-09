@@ -51,7 +51,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif-medium"
                 android:textColor="@color/text_primary"
-                android:textSize="15sp"
+                android:textSize="17sp"
                 tools:text="Seal" />
 
             <TextView
@@ -62,7 +62,7 @@
                 android:background="@drawable/bg_tag_chip"
                 android:paddingHorizontal="7dp"
                 android:paddingVertical="2dp"
-                android:textSize="11sp"
+                android:textSize="13sp"
                 tools:text="Washed up" />
         </LinearLayout>
 

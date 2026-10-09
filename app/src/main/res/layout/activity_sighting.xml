@@ -35,6 +35,7 @@
 
         <LinearLayout
             android:id="@+id/sightingBackButton"
+            android:minHeight="48dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackground"
@@ -59,7 +60,7 @@
                 android:layout_marginStart="2dp"
                 android:text="@string/back"
                 android:textColor="@color/primary"
-                android:textSize="12.5sp" />
+                android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -92,7 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
                 android:text="@string/sighting_what"
-                android:textAppearance="@style/TextAppearance.App.Caption" />
+                android:textAppearance="@style/TextAppearance.App.Section" />
 
             <!-- Filled from SightingSpecies at runtime, three cards to a row.
                  See item_species_choice.xml for why this is not written out. -->
@@ -109,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
                 android:text="@string/sighting_where"
-                android:textAppearance="@style/TextAppearance.App.Caption" />
+                android:textAppearance="@style/TextAppearance.App.Section" />
 
             <LinearLayout
                 android:id="@+id/sightingInWater"
@@ -174,7 +175,7 @@
                         android:fontFamily="sans-serif-medium"
                         android:text="@string/sighting_stranded_title"
                         android:textColor="@color/danger"
-                        android:textSize="14sp" />
+                        android:textSize="17sp" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -220,7 +221,7 @@
                         android:fontFamily="sans-serif-medium"
                         android:text="@string/sighting_shark_title"
                         android:textColor="@color/danger"
-                        android:textSize="14sp" />
+                        android:textSize="17sp" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -307,7 +308,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="22dp"
                 android:text="@string/sighting_save"
-                android:textSize="15sp"
+                android:textSize="17sp"
                 app:cornerRadius="12dp" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>

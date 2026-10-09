@@ -23,7 +23,7 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/text_primary"
-        android:textSize="14sp" />
+        android:textSize="17sp" />
 
     <TextView
         android:id="@+id/cityState"
@@ -31,5 +31,5 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:textColor="@color/text_secondary"
-        android:textSize="11sp" />
+        android:textSize="13sp" />
 </LinearLayout>

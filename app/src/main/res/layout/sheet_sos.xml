@@ -35,7 +35,7 @@
             android:fontFamily="sans-serif-medium"
             android:text="@string/sos_title"
             android:textColor="@color/text_primary"
-            android:textSize="19sp" />
+            android:textSize="20sp" />
     </LinearLayout>
 
     <TextView
@@ -78,7 +78,7 @@
                 android:fontFamily="sans-serif-medium"
                 android:text="@string/sos_call_title"
                 android:textColor="@color/text_primary"
-                android:textSize="16sp" />
+                android:textSize="17sp" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -120,7 +120,7 @@
                 android:fontFamily="sans-serif-medium"
                 android:text="@string/sos_directions_title"
                 android:textColor="@color/text_primary"
-                android:textSize="15sp" />
+                android:textSize="17sp" />
 
             <TextView
                 android:id="@+id/sosDirectionsBody"
@@ -163,7 +163,7 @@
                 android:fontFamily="sans-serif-medium"
                 android:text="@string/sos_share_title"
                 android:textColor="@color/text_primary"
-                android:textSize="15sp" />
+                android:textSize="17sp" />
 
             <TextView
                 android:layout_width="match_parent"
