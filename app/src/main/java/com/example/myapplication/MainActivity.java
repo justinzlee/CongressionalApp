@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
     private AutoCompleteTextView citySearchEditText;
     private View cityField;
     private ImageView cityCaret;
-    private View citySearchButton, citySearchPulse;
+    private View citySearchButton, citySearchPulse, sosPulse;
     private TextView citySearchLabel;
     /** The five radius chips, steps first and "All" last. */
     private final TextView[] radiusChips = new TextView[5];
@@ -213,6 +213,21 @@ public class MainActivity extends AppCompatActivity {
         citySearchButton = findViewById(R.id.citySearchButton);
         citySearchLabel = findViewById(R.id.citySearchLabel);
         citySearchPulse = findViewById(R.id.citySearchPulse);
+        sosPulse = findViewById(R.id.sosPulse);
+        // The ring is the pill's own shape, so it follows the pill's size,
+        // which moves with the language and the system font size.
+        findViewById(R.id.sosButton).addOnLayoutChangeListener(
+            (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+                ViewGroup.LayoutParams ring = sosPulse.getLayoutParams();
+                if (ring.width != v.getWidth() || ring.height != v.getHeight()) {
+                    // Posted: asking for a layout from inside one is dropped.
+                    v.post(() -> {
+                        ring.width = v.getWidth();
+                        ring.height = v.getHeight();
+                        sosPulse.setLayoutParams(ring);
+                    });
+                }
+            });
         for (int i = 0; i < RADIUS_CHIP_IDS.length; i++) {
             radiusChips[i] = findViewById(RADIUS_CHIP_IDS[i]);
         }
@@ -473,6 +488,13 @@ public class MainActivity extends AppCompatActivity {
             citySearchPulse.setScaleX(scale);
             citySearchPulse.setScaleY(scale);
             citySearchPulse.setAlpha(0.5f * (1f - swell));
+
+            // The SOS ring keeps the same breath, wider and brighter: a red
+            // ping out of the pill.
+            float sosScale = 1f + 0.5f * swell;
+            sosPulse.setScaleX(sosScale);
+            sosPulse.setScaleY(sosScale);
+            sosPulse.setAlpha(0.95f * (1f - swell));
         });
         pulseAnimator.start();
     }
@@ -482,6 +504,7 @@ public class MainActivity extends AppCompatActivity {
         pulseAnimator.cancel();
         pulseAnimator = null;
         citySearchPulse.setAlpha(0f);
+        sosPulse.setAlpha(0f);
     }
 
     /**

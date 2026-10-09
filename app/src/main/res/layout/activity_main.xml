@@ -19,6 +19,8 @@
       being cut short - the kicker and the actions sit above it instead.
     -->
     <LinearLayout
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,7 +35,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:clipChildren="false">
 
             <LinearLayout
                 android:id="@+id/headerKickerRow"
@@ -59,34 +62,53 @@
                     android:textAppearance="@style/TextAppearance.App.Caption" />
             </LinearLayout>
 
-            <!-- Emergency: every action behind this opens a real system app -->
-            <LinearLayout
-                android:id="@+id/sosButton"
+            <!-- Emergency: every action behind this opens a real system app.
+                 The ring behind it swells and fades so the way to help is the
+                 one thing on the screen that moves. The ring starts at 0dp and
+                 MainActivity sizes it to the pill: a plain View asked to
+                 match_parent inside a wrap_content frame takes all the room it
+                 is offered, and stretched the frame down the whole screen. -->
+            <FrameLayout
                 android:layout_width="wrap_content"
-                android:layout_height="38dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
-                android:background="@drawable/bg_sos_button"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingHorizontal="13dp">
+                android:clipChildren="false">
 
-                <ImageView
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:contentDescription="@null"
-                    android:src="@drawable/ic_first_aid"
-                    app:tint="@color/danger" />
+                <View
+                    android:id="@+id/sosPulse"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:alpha="0"
+                    android:background="@drawable/bg_sos_pulse"
+                    android:importantForAccessibility="no" />
 
-                <TextView
+                <LinearLayout
+                    android:id="@+id/sosButton"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="6dp"
-                    android:fontFamily="sans-serif-medium"
-                    android:letterSpacing="0.04"
-                    android:text="@string/sos_label"
-                    android:textColor="@color/danger"
-                    android:textSize="15sp" />
-            </LinearLayout>
+                    android:layout_height="38dp"
+                    android:background="@drawable/bg_sos_button"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="13dp">
+
+                    <ImageView
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:contentDescription="@null"
+                        android:src="@drawable/ic_first_aid"
+                        app:tint="@color/danger" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:letterSpacing="0.04"
+                        android:text="@string/sos_label"
+                        android:textColor="@color/danger"
+                        android:textSize="15sp" />
+                </LinearLayout>
+            </FrameLayout>
 
             <ImageButton
                 android:id="@+id/myLocationButton"

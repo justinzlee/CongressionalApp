@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The ring that swells out from the SOS pill and fades. Drawn solid; the
+     swell and fade are the view's own scale and alpha, animated in
+     MainActivity alongside the search button's pulse. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <stroke android:width="3dp" android:color="@color/danger" />
+    <corners android:radius="999dp" />
+</shape>
