@@ -58,6 +58,9 @@ public final class SosSheet {
         if (help == null) {
             directionsBody.setText(R.string.sos_directions_none);
             directions.setEnabled(false);
+            // Off the sea tint, so an action that can't be taken doesn't look
+            // like one that can.
+            directions.setBackgroundResource(R.drawable.bg_surface_card);
             directions.setAlpha(0.5f);
         } else {
             directionsBody.setText(help.getName());

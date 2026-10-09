@@ -711,21 +711,24 @@
             android:layout_height="match_parent"
             android:importantForAccessibility="no" />
 
-        <!-- Raised off dead centre, so the column reads as sitting above the
-             surf rather than floating in the middle of it. -->
+        <!-- The mark sits exactly where Android's own splash put the launcher
+             icon a moment earlier - dead centre, the same height of pole - so
+             the hand-over from the system splash is a continuation rather
+             than a jump. The words appear below it. -->
+        <com.example.myapplication.FlaglineMarkView
+            android:id="@+id/splashMark"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_gravity="center"
+            android:importantForAccessibility="no" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="150dp"
             android:gravity="center_horizontal"
-            android:orientation="vertical"
-            android:translationY="-35dp">
-
-            <com.example.myapplication.FlaglineMarkView
-                android:id="@+id/splashMark"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:importantForAccessibility="no" />
+            android:orientation="vertical">
 
             <!-- The sheet sets the wordmark in Poppins 600. Android ships
                  Roboto, whose weights step 500 then 700 with nothing between,
@@ -735,7 +738,6 @@
                 android:id="@+id/splashWordmark"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="26dp"
                 android:fontFamily="sans-serif"
                 android:gravity="center_horizontal"
                 android:includeFontPadding="false"
@@ -752,14 +754,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp"
-                android:fontFamily="monospace"
+                android:fontFamily="sans-serif"
                 android:gravity="center_horizontal"
-                android:letterSpacing="0.26"
+                android:letterSpacing="0"
                 android:maxLines="1"
                 android:text="@string/app_tagline"
-                android:textAllCaps="true"
                 android:textColor="@color/brand_foam"
-                android:textSize="13sp" />
+                android:textSize="17sp" />
 
         </LinearLayout>
 

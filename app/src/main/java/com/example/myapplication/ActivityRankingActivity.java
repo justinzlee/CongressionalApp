@@ -141,6 +141,8 @@ public class ActivityRankingActivity extends AppCompatActivity {
             if (params instanceof ViewGroup.MarginLayoutParams) {
                 // Four across, sharing the width evenly.
                 ((ViewGroup.MarginLayoutParams) params).width = 0;
+                // Segments of one tray sit edge to edge.
+                ((ViewGroup.MarginLayoutParams) params).setMarginEnd(0);
             }
             if (params instanceof android.widget.LinearLayout.LayoutParams) {
                 ((android.widget.LinearLayout.LayoutParams) params).weight = 1;
@@ -162,17 +164,20 @@ public class ActivityRankingActivity extends AppCompatActivity {
         bindRanking();
     }
 
-    /** The selected chip fills with the brand colour; the rest stay hairlines. */
+    /**
+     * One segment of the tray: the selected one takes the sea tint, the rest
+     * sit flat on the tray, the same as the radius setting on the home screen.
+     */
     private void paintChip(TextView chip, boolean isSelected) {
         chip.setTextColor(ContextCompat.getColor(this,
-            isSelected ? R.color.on_primary : R.color.text_secondary));
+            isSelected ? R.color.primary : R.color.text_secondary));
         Drawable background = chip.getBackground();
         if (background instanceof GradientDrawable) {
             GradientDrawable shape = (GradientDrawable) background.mutate();
-            shape.setColor(ContextCompat.getColor(this,
-                isSelected ? R.color.primary : R.color.surface));
-            shape.setStroke(Math.round(getResources().getDisplayMetrics().density),
-                ContextCompat.getColor(this, isSelected ? R.color.primary : R.color.divider));
+            shape.setColor(isSelected
+                ? ContextCompat.getColor(this, R.color.accent_tint)
+                : android.graphics.Color.TRANSPARENT);
+            shape.setStroke(0, android.graphics.Color.TRANSPARENT);
         }
     }
 

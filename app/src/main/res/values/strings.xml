@@ -779,7 +779,7 @@
 
     <string name="rocks_your_rating">Your rating</string>
     <string name="rocks_photo_heading">Your photo of the shore</string>
-    <string name="rocks_photo_note">Optional, and it stays on this phone. It is what lets the next person see whether they would have called it the same number.</string>
+    <string name="rocks_photo_note">Optional, and it stays on this phone. It lets the next person check your number.</string>
     <string name="rocks_photo_add">Add a photo</string>
     <string name="rocks_save">Save rating</string>
     <string name="rocks_saved">Rating saved.</string>
@@ -1018,7 +1018,7 @@
     <string name="contact_developers_title">Contact us</string>
     <string name="contact_developers_subtitle">Email the app developer team with questions or feedback</string>
     <string name="contact_intro_title">Contact us</string>
-    <string name="contact_intro_body">Have feedback, a bug report, or a feature request? Send us an email and we\'ll get back to you!</string>
+    <string name="contact_intro_body">Feedback, a bug or an idea? Email us and we\'ll reply.</string>
     <string name="contact_email_address">supportflagline@gmail.com</string>
     <string name="contact_topic_label">Topic</string>
     <string name="contact_topic_general">General</string>

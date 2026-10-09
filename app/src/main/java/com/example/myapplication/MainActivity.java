@@ -328,8 +328,10 @@ public class MainActivity extends AppCompatActivity {
     private static final long TAGLINE_DELAY = 1400, TAGLINE_DURATION = 950;
     /** How far the wordmark travels as it is revealed, in dp. */
     private static final float WORDMARK_RISE = 26f;
-    private static final float TAGLINE_TRACKING_FROM = .62f;
-    private static final float TAGLINE_TRACKING_TO = .26f;
+    // Sentence-case tagline: it draws together from slightly open to normal
+    // tracking, rather than settling into spaced-out capitals.
+    private static final float TAGLINE_TRACKING_FROM = .12f;
+    private static final float TAGLINE_TRACKING_TO = 0f;
 
     /**
      * The wordmark wipes up: it is revealed from its own baseline upward while

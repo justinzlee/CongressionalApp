@@ -769,7 +769,7 @@
 
     <string name="rocks_your_rating">Tu calificación</string>
     <string name="rocks_photo_heading">Tu foto de la orilla</string>
-    <string name="rocks_photo_note">Opcional, y se queda en este teléfono. Es lo que deja que la siguiente persona vea si le habría puesto el mismo número.</string>
+    <string name="rocks_photo_note">Opcional, y se queda en este teléfono. Ayuda a la siguiente persona a comprobar tu número.</string>
     <string name="rocks_photo_add">Agregar una foto</string>
     <string name="rocks_save">Guardar calificación</string>
     <string name="rocks_saved">Calificación guardada.</string>

@@ -85,11 +85,13 @@ public class ContactDeveloperActivity extends AppCompatActivity {
         Drawable background = card.getBackground();
         if (background instanceof GradientDrawable) {
             GradientDrawable shape = (GradientDrawable) background.mutate();
-            shape.setColor(ContextCompat.getColor(this, selected ? R.color.accent_tint : R.color.surface));
-            shape.setStroke(Math.round(getResources().getDisplayMetrics().density),
-                ContextCompat.getColor(this, selected ? R.color.primary : R.color.divider));
+            // A segment of the tray, like the radius setting on the home screen
+            shape.setColor(selected
+                ? ContextCompat.getColor(this, R.color.accent_tint)
+                : android.graphics.Color.TRANSPARENT);
+            shape.setStroke(0, android.graphics.Color.TRANSPARENT);
         }
-        card.setTextColor(ContextCompat.getColor(this, selected ? R.color.primary : R.color.text_primary));
+        card.setTextColor(ContextCompat.getColor(this, selected ? R.color.primary : R.color.text_secondary));
     }
 
     private void sendEmail() {

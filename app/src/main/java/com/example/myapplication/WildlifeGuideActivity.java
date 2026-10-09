@@ -435,18 +435,17 @@ public class WildlifeGuideActivity extends AppCompatActivity {
 
     /** The selected coast fills with the brand colour; the rest stay hairlines. */
     private void paintChip(TextView chip, boolean selected) {
+        // Selected takes the sea tint, the rest a plain card fill: no outlines.
         int color = ContextCompat.getColor(this,
-            selected ? R.color.primary : R.color.surface);
-        int edge = ContextCompat.getColor(this,
-            selected ? R.color.primary : R.color.divider);
+            selected ? R.color.accent_tint : R.color.surface);
         chip.setTextColor(ContextCompat.getColor(this,
-            selected ? R.color.on_primary : R.color.text_secondary));
+            selected ? R.color.primary : R.color.text_secondary));
 
         Drawable background = chip.getBackground();
         if (background instanceof GradientDrawable) {
             GradientDrawable shape = (GradientDrawable) background.mutate();
             shape.setColor(color);
-            shape.setStroke(Math.round(getResources().getDisplayMetrics().density), edge);
+            shape.setStroke(0, android.graphics.Color.TRANSPARENT);
         }
     }
 
