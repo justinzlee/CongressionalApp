@@ -6,6 +6,7 @@
   the home screen can never disagree.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -85,6 +86,7 @@
                 android:orientation="vertical"
                 android:background="@drawable/bg_surface_card"
                 android:clipToOutline="true"
+                tools:targetApi="31"
                 android:divider="@drawable/divider_inset"
                 android:showDividers="middle" />
 

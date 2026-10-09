@@ -1014,8 +1014,8 @@
     <string name="map_attribution">© Esri · © OpenStreetMap</string>
 
     <!-- ══════ SUPPORT & CONTACT ══════ -->
-    <string name="support_section_title">Support &amp; Feedback</string>
-    <string name="contact_developers_title">Contact us</string>
+    <string name="support_section_title">Support &amp; feedback</string>
+    <string name="contact_developers_title">Contact developers</string>
     <string name="contact_developers_subtitle">Email the app developer team with questions or feedback</string>
     <string name="contact_intro_title">Contact us</string>
     <string name="contact_intro_body">Feedback, a bug or an idea? Email us and we\'ll reply.</string>

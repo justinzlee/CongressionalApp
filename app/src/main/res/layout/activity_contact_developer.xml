@@ -85,7 +85,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
+                    <!-- Hidden: the screen title above already says this. -->
 
                     <ImageView
                         android:layout_width="22dp"

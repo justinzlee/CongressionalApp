@@ -991,7 +991,7 @@
 
     <!-- ══════ SOPORTE Y CONTACTO ══════ -->
     <string name="support_section_title">Soporte y comentarios</string>
-    <string name="contact_developers_title">Contáctanos</string>
+    <string name="contact_developers_title">Contactar a los desarrolladores</string>
     <string name="contact_developers_subtitle">Escríbele al equipo con preguntas o comentarios</string>
     <string name="contact_intro_title">Contáctanos</string>
     <string name="contact_intro_body">¿Tienes comentarios, un error que reportar o una idea? Mándanos un correo y te respondemos.</string>

@@ -705,11 +705,22 @@ public class BeachDetailActivity extends AppCompatActivity {
         return R.color.safe;
     }
 
+    /**
+     * The chip sits on the photo's dark scrim in both themes, so it takes the
+     * bright version of each safety colour rather than the light-mode text one.
+     */
+    private static int onHero(int colorRes) {
+        if (colorRes == R.color.safe) return R.color.safe_on_hero;
+        if (colorRes == R.color.caution) return R.color.caution_on_hero;
+        if (colorRes == R.color.danger) return R.color.danger_on_hero;
+        return colorRes;
+    }
+
     /** Colours the chip over the photo with the beach's swim verdict. */
     private void bindVerdict() {
         SafetyLevel level = SafetyLevel.evaluate(this, beach);
         int color = ContextCompat.getColor(this,
-            level != null ? level.getColorRes() : R.color.text_secondary);
+            level != null ? onHero(level.getColorRes()) : R.color.on_hero);
 
         verdictIcon.setImageResource(
             level != null ? level.getIconRes() : R.drawable.ic_warning_circle);

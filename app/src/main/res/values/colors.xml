@@ -57,6 +57,12 @@
     <!-- The header is a flat sand ground, not a colored band. -->
     <!-- Text/icons over photo scrims, which stay dark in both themes -->
     <color name="on_hero">#FFFFFF</color>
+    <!-- The verdict over a photo. The scrim under it is dark in both themes,
+         so it takes the bright (night) safety colours in both, not the
+         darkened light-mode text colours above. Not repeated in values-night. -->
+    <color name="safe_on_hero">#55CE9B</color>
+    <color name="caution_on_hero">#FACE6B</color>
+    <color name="danger_on_hero">#F4947F</color>
 
     <!-- Beach warning flags. These are the physical colors of the flags
          flying on the beach, so unlike everything above they are the same
