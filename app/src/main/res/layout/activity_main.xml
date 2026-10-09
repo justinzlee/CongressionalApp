@@ -186,9 +186,9 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="10dp"
-                            android:fontFamily="sans-serif-medium"
+                            android:fontFamily="@font/barlow_semi_condensed_semibold"
                             android:textColor="@color/safe"
-                            android:textSize="17sp"
+                            android:textSize="24sp"
                             tools:text="Good to swim" />
 
                         <TextView

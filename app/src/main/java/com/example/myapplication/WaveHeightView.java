@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewOutlineProvider;
 
 import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import com.example.myapplication.util.UnitConverter;
 
@@ -136,7 +137,10 @@ public class WaveHeightView extends View {
 
         // The number keeps a soft halo of the sky's own tone - dark at night,
         // light by day - so it stays legible where it overlaps the back swells.
-        numberPaint.setTypeface(Typeface.create("sans-serif-medium", Typeface.NORMAL));
+        // The reading in the app's display face, like every other reading.
+        Typeface display = ResourcesCompat.getFont(context, R.font.barlow_semi_condensed_semibold);
+        numberPaint.setTypeface(display != null
+            ? display : Typeface.create("sans-serif-medium", Typeface.NORMAL));
         numberPaint.setColor(ContextCompat.getColor(context, R.color.wave_card_number));
         numberPaint.setLetterSpacing(-0.03f);
         numberPaint.setFontFeatureSettings("tnum");

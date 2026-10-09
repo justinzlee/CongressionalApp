@@ -90,30 +90,35 @@
     </style>
 
     <!--
-      Type. Five steps, read outdoors in bright sun: large title 32, screen
-      title 28, section 20, body 17, secondary 15, and nothing smaller than
-      13. Hierarchy comes from size and weight; labels are sentence case and
-      untracked rather than small capitals.
+      Type. Headings, readings and the verdict are set in Barlow Semi
+      Condensed, after the painted lettering on lifeguard towers and beach
+      signs: built to be read from a distance in hard sun. Body copy stays
+      in the system sans. Steps: large title 34, screen title 30, section 22,
+      readings 22-24, body 17, secondary 15, and nothing smaller than 13.
+      Barlow sets narrower than Roboto, so its sizes sit a step up to match.
     -->
     <!-- Large title on the top-level tabs: Alerts, Saved, Learn, Settings -->
     <style name="TextAppearance.App.Display" parent="TextAppearance.Material3.TitleLarge">
-        <item name="android:textSize">32sp</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:textSize">34sp</item>
+        <item name="android:fontFamily">@font/barlow_semi_condensed_semibold</item>
+        <item name="fontFamily">@font/barlow_semi_condensed_semibold</item>
+        <item name="android:letterSpacing">0</item>
         <item name="android:textColor">@color/text_primary</item>
     </style>
     <!-- Screen headline, e.g. the beach name on the detail screen -->
     <style name="TextAppearance.App.Headline" parent="TextAppearance.Material3.HeadlineSmall">
-        <item name="android:textSize">28sp</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:letterSpacing">-0.02</item>
+        <item name="android:textSize">30sp</item>
+        <item name="android:fontFamily">@font/barlow_semi_condensed_semibold</item>
+        <item name="fontFamily">@font/barlow_semi_condensed_semibold</item>
+        <item name="android:letterSpacing">0</item>
         <item name="android:textColor">@color/text_primary</item>
     </style>
     <!-- A section of a screen: Conditions, Environment, Do this -->
     <style name="TextAppearance.App.Section" parent="TextAppearance.Material3.TitleMedium">
-        <item name="android:textSize">20sp</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:letterSpacing">-0.01</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:fontFamily">@font/barlow_semi_condensed_semibold</item>
+        <item name="fontFamily">@font/barlow_semi_condensed_semibold</item>
+        <item name="android:letterSpacing">0</item>
         <item name="android:textColor">@color/text_primary</item>
     </style>
     <style name="TextAppearance.App.Title" parent="TextAppearance.Material3.TitleMedium">
@@ -151,8 +156,9 @@
         <item name="android:textColor">@color/text_secondary</item>
     </style>
     <style name="TextAppearance.App.StatValue" parent="TextAppearance.Material3.TitleMedium">
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textSize">20sp</item>
+        <item name="android:fontFamily">@font/barlow_semi_condensed_medium</item>
+        <item name="fontFamily">@font/barlow_semi_condensed_medium</item>
+        <item name="android:textSize">22sp</item>
         <item name="android:textColor">@color/text_primary</item>
     </style>
 
@@ -254,8 +260,9 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginTop">5dp</item>
-        <item name="android:fontFamily">sans-serif-medium</item>
-        <item name="android:textSize">22sp</item>
+        <item name="android:fontFamily">@font/barlow_semi_condensed_medium</item>
+        <item name="fontFamily">@font/barlow_semi_condensed_medium</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
