@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="11dp"
-        android:lineSpacingMultiplier="1.5"
+        android:lineSpacingMultiplier="1.3"
         android:textAppearance="@style/TextAppearance.App.Title"
         tools:text="You are swimming and realise a current is pulling you away from the beach. What do you do?" />
 
@@ -29,7 +29,12 @@
         android:id="@+id/practiceOptions"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" />
+        android:orientation="vertical"
+        android:background="@drawable/bg_surface_card"
+        android:clipToOutline="true"
+                tools:targetApi="31"
+                android:divider="@drawable/divider_inset"
+        android:showDividers="middle" />
 
     <LinearLayout
         android:id="@+id/practiceAnswer"
@@ -56,7 +61,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:lineSpacingMultiplier="1.5"
+            android:lineSpacingMultiplier="1.3"
             android:textAppearance="@style/TextAppearance.App.Body"
             tools:text="A rip is a river heading out, and it is faster than you are." />
     </LinearLayout>

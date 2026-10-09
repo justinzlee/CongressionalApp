@@ -76,7 +76,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:orientation="vertical" />
+                android:orientation="vertical"
+                android:background="@drawable/bg_surface_card"
+                android:clipToOutline="true"
+                android:divider="@drawable/divider_inset"
+                android:showDividers="middle" />
 
             <!-- The disclaimer that goes on every real flag board -->
             <LinearLayout
@@ -99,7 +103,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:lineSpacingMultiplier="1.5"
+                    android:lineSpacingMultiplier="1.3"
                     android:text="@string/flag_no_flags_body"
                     android:textAppearance="@style/TextAppearance.App.Body" />
             </LinearLayout>

@@ -127,7 +127,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:lineSpacingMultiplier="1.5"
+                    android:lineSpacingMultiplier="1.3"
                     android:textAppearance="@style/TextAppearance.App.Body" />
             </LinearLayout>
 

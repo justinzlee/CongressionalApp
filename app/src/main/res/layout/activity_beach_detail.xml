@@ -731,7 +731,12 @@
                     android:id="@+id/detailActivityList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" />
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_surface_card"
+                    android:clipToOutline="true"
+                tools:targetApi="31"
+                android:divider="@drawable/divider_inset"
+                    android:showDividers="middle" />
             </LinearLayout>
 
             <!-- ══════ WHAT TO WATCH FOR ══════ -->
@@ -747,7 +752,12 @@
                 android:id="@+id/hazardList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:orientation="vertical"
+                android:background="@drawable/bg_surface_card"
+                android:clipToOutline="true"
+                tools:targetApi="31"
+                android:divider="@drawable/divider_inset"
+                android:showDividers="middle" />
 
             <!-- ══════ LIFEGUARDS ══════ -->
             <LinearLayout

@@ -109,7 +109,7 @@
                 android:id="@+id/stingFeels"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lineSpacingMultiplier="1.5"
+                android:lineSpacingMultiplier="1.3"
                 android:textAppearance="@style/TextAppearance.App.Body"
                 android:textColor="@color/text_secondary"
                 tools:text="You almost never see it coming." />
@@ -151,7 +151,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:lineSpacingMultiplier="1.5"
+                    android:lineSpacingMultiplier="1.3"
                     android:text="@string/sting_911_body"
                     android:textAppearance="@style/TextAppearance.App.Body" />
             </LinearLayout>
@@ -188,7 +188,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="18dp"
-                android:lineSpacingMultiplier="1.5"
+                android:lineSpacingMultiplier="1.3"
                 android:text="@string/sting_footnote"
                 android:textAppearance="@style/TextAppearance.App.Subtitle"
                 android:textSize="13sp" />

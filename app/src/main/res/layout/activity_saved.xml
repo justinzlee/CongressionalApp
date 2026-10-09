@@ -54,7 +54,12 @@
                 android:id="@+id/savedList"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical" />
+                android:orientation="vertical"
+                android:background="@drawable/bg_surface_card"
+                android:clipToOutline="true"
+                tools:targetApi="31"
+                android:divider="@drawable/divider_inset"
+                android:showDividers="middle" />
 
             <LinearLayout
                 android:id="@+id/savedEmpty"

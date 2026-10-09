@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The hairline between rows inside one grouped card. Inset from the left
+     so it starts under the row's content, never at the card's edge, and only
+     ever drawn between rows (showDividers="middle"). -->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:insetLeft="16dp">
+    <shape android:shape="rectangle">
+        <size android:height="1dp" />
+        <solid android:color="@color/divider" />
+    </shape>
+</inset>

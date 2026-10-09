@@ -4,13 +4,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:minHeight="56dp"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="9dp"
-    android:background="@drawable/bg_surface_card"
+    android:background="@android:color/transparent"
     android:orientation="horizontal"
-    android:paddingHorizontal="13dp"
-    android:paddingTop="12dp"
-    android:paddingBottom="12dp">
+    android:paddingHorizontal="16dp"
+    android:paddingTop="14dp"
+    android:paddingBottom="14dp">
 
     <TextView
         android:id="@+id/guideNumber"
