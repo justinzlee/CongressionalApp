@@ -547,6 +547,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void openCityList() {
+        // Focus also comes back on its own when the screen is rebuilt (a theme
+        // switch, a rotation), before the window exists to hold a popup.
+        // Showing the list then crashes, and nobody asked for it anyway.
+        if (citySearchEditText.getWindowToken() == null) return;
+
         // The list belongs to the field, so it is cut to the field's width.
         // MATCH_PARENT would spread it across the whole window instead, and
         // the width is only known once the card has been laid out.
