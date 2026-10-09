@@ -323,7 +323,7 @@ public class WeatherClient {
      */
     private List<JsonObject> fetchCurrents(String url, int expected) throws IOException {
         Request request = new Request.Builder().url(url).build();
-        try (Response response = Http.CLIENT.newCall(request).execute()) {
+        try (Response response = Http.openMeteo(request)) {
             if (!response.isSuccessful() || response.body() == null) {
                 return Collections.emptyList();
             }
