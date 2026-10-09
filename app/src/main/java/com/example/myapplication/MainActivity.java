@@ -792,11 +792,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateList() {
-        // The list is measured from here, so the readings are fetched from
-        // here outwards too: the beaches on screen first.
-        if (hasLocation || isManualLocation) {
-            repository.setFocus(currentLat, currentLon);
-        }
         String query = searchEditText.getText().toString();
         List<Beach> filteredBeaches = repository.searchBeaches(query).stream()
             .filter(b -> {

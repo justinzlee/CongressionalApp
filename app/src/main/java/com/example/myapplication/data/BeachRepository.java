@@ -52,19 +52,6 @@ public class BeachRepository {
     private static final long MAX_RETRY_WAIT_MS = FRESH_FOR_MS;
 
     /**
-     * Batches in flight at once. Open-Meteo turns away calls that arrive too
-     * many at a time, and {@code Http} keeps a third slot free for the beach
-     * screen's own call, so it is never stuck behind the list.
-     */
-    private static final int PARALLEL_BATCHES = 2;
-
-    /**
-     * The size of each worker's first batch: about what the verdict card and
-     * the top of the list show, so those fill in first.
-     */
-    private static final int FIRST_BATCH_SIZE = 8;
-
-    /**
      * Runs the retry after its wait. One daemon thread for the process: it is
      * idle but for the few seconds a retry takes to hand work to the network
      * pool, and a daemon can never hold the process open.
@@ -114,15 +101,7 @@ public class BeachRepository {
     private final AtomicBoolean refreshing = new AtomicBoolean(false);
     /** The screens watching for readings, until each drops its own. */
     private final List<OnDataRefreshListener> listeners = new CopyOnWriteArrayList<>();
-    /** Workers still taking batches in the current pass. */
     private final AtomicInteger outstanding = new AtomicInteger();
-    /** Beaches due in the current pass that no worker has taken yet. */
-    private final List<Beach> pending = new ArrayList<>();
-    /** Batches handed out so far this pass; guarded by {@link #pending}. */
-    private int batchesTaken;
-    /** Where the person is looking from; NaN until a screen says. */
-    private volatile double focusLatitude = Double.NaN;
-    private volatile double focusLongitude = Double.NaN;
     /** Whether a retry is already on the clock, so a pass queues one, not one per batch. */
     private final AtomicBoolean retryScheduled = new AtomicBoolean(false);
     /** How long the next retry waits; doubles on failure, reset on success. */
@@ -500,8 +479,7 @@ public class BeachRepository {
     }
 
     /**
-     * Asks about every beach that needs asking about, in batches, nearest to
-     * the {@linkplain #setFocus focus} first.
+     * Asks about every beach that needs asking about, in batches.
      *
      * @param listener told at once when there is nothing to fetch, so a screen
      *                 that asked still gets to draw what is already cached
@@ -521,115 +499,46 @@ public class BeachRepository {
         // The beaches are fetched in batches rather than one request each.
         // Open-Meteo takes many coordinates in a single call, so this is a
         // handful of requests for the whole coastline instead of one per beach
-        // - which at this size would be hundreds of round trips. Photos are
+        // — which at this size would be hundreds of round trips. Photos are
         // curated rather than fetched, so weather is all that goes out.
-        //
-        // The batches are not cut up front. Two workers each take the next one
-        // as they come free, and "next" is decided then: the nearest of the
-        // beaches still waiting. So the beaches on screen are asked about
-        // first, and a location that arrives halfway through a pass - the fix
-        // usually lands a second or two after the screen opens - still pulls
-        // its own beaches to the front of what is left. Handing every batch to
-        // the network pool at once instead had Open-Meteo turning some away as
-        // too many at a time, and parked the rest in the pool where the beach
-        // screen's own calls queued behind them.
-        synchronized (pending) {
-            pending.clear();
-            pending.addAll(due);
-            batchesTaken = 0;
-        }
-        outstanding.set(PARALLEL_BATCHES);
-        for (int i = 0; i < PARALLEL_BATCHES; i++) {
-            fetchNextBatch();
-        }
-    }
+        int batchSize = WeatherClient.BATCH_SIZE;
+        outstanding.set((due.size() + batchSize - 1) / batchSize);
 
-    /**
-     * Where the person is looking from: their location, or the city they
-     * searched. Beaches nearest it are fetched first, so the verdict card and
-     * the top of the list fill in before beaches nobody has scrolled to.
-     */
-    public void setFocus(double latitude, double longitude) {
-        focusLatitude = latitude;
-        focusLongitude = longitude;
-    }
+        for (int start = 0; start < due.size(); start += batchSize) {
+            List<Beach> batch = due.subList(start, Math.min(start + batchSize, due.size()));
+            double[] latitudes = new double[batch.size()];
+            double[] longitudes = new double[batch.size()];
+            for (int i = 0; i < batch.size(); i++) {
+                latitudes[i] = batch.get(i).getLatitude();
+                longitudes[i] = batch.get(i).getLongitude();
+            }
 
-    /** One worker's turn: fetch the nearest waiting beaches, then go again. */
-    private void fetchNextBatch() {
-        List<Beach> batch = takeNextBatch();
-        if (batch.isEmpty()) {
-            finishWorker();
-            return;
-        }
-        double[] latitudes = new double[batch.size()];
-        double[] longitudes = new double[batch.size()];
-        for (int i = 0; i < batch.size(); i++) {
-            latitudes[i] = batch.get(i).getLatitude();
-            longitudes[i] = batch.get(i).getLongitude();
-        }
+            weatherClient.getBeachConditions(latitudes, longitudes,
+                new WeatherClient.BatchCallback() {
+                    /** Whether this batch changed anything worth redrawing for. */
+                    private boolean changed;
 
-        weatherClient.getBeachConditions(latitudes, longitudes,
-            new WeatherClient.BatchCallback() {
-                /** Whether this batch changed anything worth redrawing for. */
-                private boolean changed;
-
-                @Override
-                public void onPoint(int index, BeachConditions conditions) {
-                    if (conditions == null) {
-                        // Leave the beach without conditions: SafetyLevel
-                        // reads that as "no verdict yet" rather than
-                        // inventing one. It stays due, so the retry below
-                        // asks about it again.
-                        return;
+                    @Override
+                    public void onPoint(int index, BeachConditions conditions) {
+                        if (conditions == null) {
+                            // Leave the beach without conditions: SafetyLevel
+                            // reads that as "no verdict yet" rather than
+                            // inventing one. It stays due, so the retry below
+                            // asks about it again.
+                            return;
+                        }
+                        // Matched by id rather than by position: a pass covers
+                        // only the beaches that were due, which is neither the
+                        // whole list nor in its order.
+                        updateConditions(batch.get(index).getId(), conditions);
+                        changed = true;
                     }
-                    // Matched by id rather than by position: a pass covers
-                    // only the beaches that were due, which is neither the
-                    // whole list nor in its order.
-                    updateConditions(batch.get(index).getId(), conditions);
-                    changed = true;
-                }
 
-                @Override
-                public void onComplete() {
-                    settle(changed);
-                    fetchNextBatch();
-                }
-            });
-    }
-
-    /**
-     * Removes and returns the waiting beaches nearest the focus. The first
-     * batches of a pass are small, so what is on screen lands quickly; the
-     * rest go in full batches, since each call costs a round trip whatever
-     * its size.
-     */
-    @VisibleForTesting
-    List<Beach> takeNextBatch() {
-        synchronized (pending) {
-            if (pending.isEmpty()) {
-                return Collections.emptyList();
-            }
-            double lat = focusLatitude;
-            double lon = focusLongitude;
-            if (!Double.isNaN(lat)) {
-                pending.sort(Comparator.comparingDouble(b ->
-                    UnitConverter.calculateDistance(lat, lon, b.getLatitude(), b.getLongitude())));
-            }
-            int size = batchesTaken < PARALLEL_BATCHES ? FIRST_BATCH_SIZE : WeatherClient.BATCH_SIZE;
-            batchesTaken++;
-            List<Beach> batch = new ArrayList<>(pending.subList(0, Math.min(size, pending.size())));
-            pending.subList(0, batch.size()).clear();
-            return batch;
-        }
-    }
-
-    /** Loads a pass's waiting beaches without starting it, for the tests. */
-    @VisibleForTesting
-    void queueForTesting(List<Beach> due) {
-        synchronized (pending) {
-            pending.clear();
-            pending.addAll(due);
-            batchesTaken = 0;
+                    @Override
+                    public void onComplete() {
+                        settle(changed);
+                    }
+                });
         }
     }
 
@@ -660,7 +569,7 @@ public class BeachRepository {
 
     /**
      * Records one finished request: tells the watching screens when it changed
-     * something.
+     * something, and closes the pass out once the last one is in.
      */
     private void settle(boolean changed) {
         if (changed) {
@@ -672,10 +581,6 @@ public class BeachRepository {
                 waiting.onDataRefreshed();
             }
         }
-    }
-
-    /** A worker found nothing left to take; the last one out closes the pass. */
-    private void finishWorker() {
         if (outstanding.decrementAndGet() <= 0) {
             refreshing.set(false);
             scheduleRetry();
