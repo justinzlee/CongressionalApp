@@ -66,6 +66,41 @@ public final class ActivityScorer {
         return capped(fit, activity, beach, in);
     }
 
+    /**
+     * Whether a beach is patrolled, for {@link Inputs#guarded}: true when a
+     * lifeguard tower is on record for it or OpenStreetMap has one mapped near
+     * it, false when help is on record but none of it is a tower, and null when
+     * nothing is known either way.
+     *
+     * <p>One rule for every screen that scores. The beach screen counted the
+     * mapped towers and the ranking did not, so a beach could be "held back by
+     * the lack of lifeguards" in the list and patrolled on its own page.
+     *
+     * @param mappedTowers towers OpenStreetMap has around the beach, or null
+     *                     when they have not been looked up
+     */
+    @Nullable
+    public static Boolean guardedState(Beach beach, @Nullable List<HelpLocation> mappedTowers) {
+        if (mappedTowers != null && !mappedTowers.isEmpty()) return true;
+        if (beach.getNearestHelp().isEmpty()) return null;
+        for (HelpLocation help : beach.getNearestHelp()) {
+            if (help.getType() == HelpType.LIFEGUARD_TOWER) return true;
+        }
+        return false;
+    }
+
+    /** The most severe of these hazards, or null if there are none. */
+    @Nullable
+    public static Severity worstOf(List<Hazard> hazards) {
+        Severity worst = null;
+        for (Hazard hazard : hazards) {
+            if (worst == null || hazard.getSeverity().ordinal() > worst.ordinal()) {
+                worst = hazard.getSeverity();
+            }
+        }
+        return worst;
+    }
+
     /** All four, for the beach screen. */
     public static List<ActivityFit> scoreAll(Beach beach, Inputs in) {
         List<ActivityFit> all = new ArrayList<>();
@@ -87,7 +122,7 @@ public final class ActivityScorer {
     private static List<ActivityFit.Factor> swim(Inputs in) {
         List<ActivityFit.Factor> factors = new ArrayList<>();
 
-        if (in.water != null) {
+        if (in.water != null && in.water.isInformative()) {
             factors.add(new ActivityFit.Factor(
                 R.string.factor_water, in.water.cleanlinessScore(), 3.0));
         }
@@ -138,7 +173,7 @@ public final class ActivityScorer {
             factors.add(new ActivityFit.Factor(R.string.factor_wind,
                 band(in.conditions.getWindSpeed(), 0, 8, -1, 25), 2.0));
         }
-        if (in.water != null) {
+        if (in.water != null && in.water.isInformative()) {
             // Lower weight than swimming, not because surfers are safe from it
             // but because they are in the water briefly and mostly above it.
             factors.add(new ActivityFit.Factor(
@@ -216,7 +251,7 @@ public final class ActivityScorer {
             factors.add(new ActivityFit.Factor(R.string.factor_wind,
                 band(in.conditions.getWindSpeed(), 0, 12, -1, 30), 2.0));
         }
-        if (in.water != null) {
+        if (in.water != null && in.water.isInformative()) {
             // Lower than swimming: you are not in it. Not zero: people eat what
             // they catch, and a sewage advisory is a reason not to.
             factors.add(new ActivityFit.Factor(

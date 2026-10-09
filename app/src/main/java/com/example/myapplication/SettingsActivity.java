@@ -7,10 +7,15 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Switch;
 import android.widget.TextView;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.core.os.LocaleListCompat;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import com.example.myapplication.util.EdgeToEdge;
 import com.google.android.material.materialswitch.MaterialSwitch;
 
@@ -207,6 +212,20 @@ public class SettingsActivity extends AppCompatActivity {
             boolean next = !toggle.isChecked();
             toggle.setChecked(next);
             callback.onToggled(next);
+        });
+        // The switch inside is neither focusable nor clickable - the row is
+        // the target - so TalkBack only ever met a row it read as a button,
+        // with no word of whether the setting was on. The row now reports
+        // itself as the switch it stands for, with its state.
+        ViewCompat.setAccessibilityDelegate(row, new AccessibilityDelegateCompat() {
+            @Override
+            public void onInitializeAccessibilityNodeInfo(
+                    @NonNull View host, @NonNull AccessibilityNodeInfoCompat info) {
+                super.onInitializeAccessibilityNodeInfo(host, info);
+                info.setClassName(Switch.class.getName());
+                info.setCheckable(true);
+                info.setChecked(toggle.isChecked());
+            }
         });
     }
 }

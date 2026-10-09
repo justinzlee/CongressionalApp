@@ -41,6 +41,7 @@ public class WaveHeightCard extends LinearLayout {
     private final TextView tag;
     private final TextView advice;
     private final TextView scaleLabel;
+    private final SwellLoaderView loader;
     private final WaveHeightView water;
     private final WaveScaleView scale;
 
@@ -60,6 +61,7 @@ public class WaveHeightCard extends LinearLayout {
         tag = findViewById(R.id.waveCardTag);
         advice = findViewById(R.id.waveCardAdvice);
         scaleLabel = findViewById(R.id.waveCardScaleLabel);
+        loader = findViewById(R.id.waveCardLoader);
         water = findViewById(R.id.waveCardWater);
         scale = findViewById(R.id.waveCardScale);
 
@@ -83,13 +85,29 @@ public class WaveHeightCard extends LinearLayout {
         title.setText(styled);
     }
 
-    /** @param feet the beach's swell height, or null while none is known */
+    /**
+     * While the forecast is still on its way: the sea settles at rest with no
+     * number on it, the loader stands where the severity tag will go, and the
+     * advice line says what is happening rather than that there is no reading.
+     */
+    public void setLoading() {
+        tag.setVisibility(GONE);
+        loader.setVisibility(VISIBLE);
+        advice.setText(R.string.wave_advice_loading);
+        water.setContentDescription(getContext().getString(R.string.wave_advice_loading));
+        water.setLoading(true);
+        animateTo(NO_READING_FT, false);
+    }
+
+    /** @param feet the beach's swell height, or null when none could be had */
     public void setReading(Double feet) {
         boolean known = feet != null;
         // A reading past the top of the scale still shows its real number - the
         // sea and the marker just saturate.
         float target = known ? feet.floatValue() : NO_READING_FT;
 
+        loader.setVisibility(GONE);
+        water.setLoading(false);
         if (known) {
             WaveScale.Level level = WaveScale.levelFor(target);
             tag.setVisibility(VISIBLE);
@@ -106,7 +124,11 @@ public class WaveHeightCard extends LinearLayout {
             water.setContentDescription(
                 getContext().getString(R.string.wave_card_reading_unknown));
         }
+        animateTo(target, known);
+    }
 
+    /** Eases the sea to a height: up from flat the first time, from where it is after. */
+    private void animateTo(float target, boolean known) {
         if (animator != null) animator.cancel();
         float from = firstReading ? 0f : shownFt;
         long duration = firstReading ? RISE_MS : UPDATE_MS;

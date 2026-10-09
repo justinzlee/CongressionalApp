@@ -6,6 +6,8 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,15 +71,32 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 import java.util.TimeZone;
 
 /**
- * I don't want to lose my github streak
+ * One beach in full: the swim verdict over its photograph, the readings it is
+ * drawn from, the map, the air, water and parking, what it is good for today,
+ * what to watch for, and what people have reported there.
+ *
+ * <p>Most of the screen arrives after it opens — the forecast, the tides, the
+ * air, the rainfall and the parking are five separate calls that land in their
+ * own time. Until each one does, its place on screen shows a {@link
+ * SwellLoaderView} rather than a dash or an empty box, so "still asking" and
+ * "nothing there" never look the same. A reading that could not be had says
+ * so; the forecast, which carries most of the page, also offers to try again,
+ * and anything that failed is asked for again the next time the screen comes
+ * back to the front.
  */
 public class BeachDetailActivity extends AppCompatActivity {
     public static final String EXTRA_BEACH_ID = "extra_beach_id";
+
+    /**
+     * How often the tide countdowns are rewritten while the screen is in
+     * front. "In 3h 20m" is worked out from the clock, not fetched, so it can
+     * be kept true for free; left alone it went on counting from whenever the
+     * forecast landed.
+     */
+    private static final long TIDE_TICK_MS = 30_000L;
 
     /**
      * Where a camera capture is being written. Held across a save/restore
@@ -98,7 +117,40 @@ public class BeachDetailActivity extends AppCompatActivity {
     private TextView verdictText, advisorSummary;
     private View verdictChip;
     private WaveHeightCard waveCard;
-    private TextView lowTide, lowTideCountdown, highTide, highTideCountdown;
+    private TextView lowTideCountdown, highTideCountdown;
+
+    // Each tile's value and the loader that stands in for it until it lands.
+    private ReadingSlot uvSlot, windSlot, airTempSlot, waterTempSlot, visibilitySlot;
+    private ReadingSlot lowTideSlot, highTideSlot;
+    private TextView conditionsError;
+
+    /** Where one of the screen's calls stands. */
+    private enum Fetch {
+        /** Not asked for yet: its place shows a loader, since it is about to be. */
+        NOT_ASKED,
+        /** Out now. A second copy is never sent while one is. */
+        ASKING,
+        ANSWERED,
+        /** Came back with nothing: worth asking again on the way back in. */
+        FAILED
+    }
+
+    private Fetch weatherFetch = Fetch.NOT_ASKED;
+    private Fetch tideFetch = Fetch.NOT_ASKED;
+    private Fetch airFetch = Fetch.NOT_ASKED;
+    private Fetch waterFetch = Fetch.NOT_ASKED;
+    private Fetch parkingFetch = Fetch.NOT_ASKED;
+
+    /** The last tide forecast, kept so the countdowns can be redrawn without refetching. */
+    @Nullable private TideForecast tideForecast;
+    private final Handler clock = new Handler(Looper.getMainLooper());
+    private final Runnable tideTick = new Runnable() {
+        @Override
+        public void run() {
+            if (tideForecast != null) updateTideDisplay(tideForecast);
+            clock.postDelayed(this, TIDE_TICK_MS);
+        }
+    };
 
     private ImageView heroImage;
     private View heroScrim;
@@ -140,11 +192,7 @@ public class BeachDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_beach_detail);
 
         String beachId = getIntent().getStringExtra(EXTRA_BEACH_ID);
-        BeachRepository repository = BeachRepository.getInstance();
-        beach = repository.getBeaches().stream()
-                .filter(b -> Objects.equals(b.getId(), beachId))
-                .findFirst()
-                .orElse(null);
+        beach = BeachRepository.getInstance().findById(beachId);
 
         if (beach == null) {
             finish();
@@ -164,10 +212,19 @@ public class BeachDetailActivity extends AppCompatActivity {
         advisorSummary = findViewById(R.id.advisorSummary);
         waveCard = findViewById(R.id.detailWaveCard);
         waveCard.setBeachName(beach.getName());
-        lowTide = findViewById(R.id.detailLowTide);
         lowTideCountdown = findViewById(R.id.detailLowTideCountdown);
-        highTide = findViewById(R.id.detailHighTide);
         highTideCountdown = findViewById(R.id.detailHighTideCountdown);
+
+        uvSlot = slot(R.id.detailUvIndex, R.id.detailUvLoader);
+        windSlot = slot(R.id.detailWindSpeed, R.id.detailWindLoader);
+        airTempSlot = slot(R.id.detailAirTemp, R.id.detailAirTempLoader);
+        waterTempSlot = slot(R.id.detailWaterTemp, R.id.detailWaterTempLoader);
+        visibilitySlot = slot(R.id.detailVisibility, R.id.detailVisibilityLoader);
+        lowTideSlot = slot(R.id.detailLowTide, R.id.detailLowTideLoader);
+        highTideSlot = slot(R.id.detailHighTide, R.id.detailHighTideLoader);
+
+        conditionsError = findViewById(R.id.detailConditionsError);
+        conditionsError.setOnClickListener(v -> retryConditions());
 
         heroImage = findViewById(R.id.beachDetailImage);
         heroScrim = findViewById(R.id.detailHeroScrim);
@@ -200,10 +257,17 @@ public class BeachDetailActivity extends AppCompatActivity {
         if (beach.getConditions() != null) {
             updateConditionsDisplay(beach.getConditions());
         } else {
-            // Settle the sea at its resting level while the forecast is still
-            // in flight, rather than leaving the card blank until it lands.
-            waveCard.setReading(null);
+            // Loaders in every tile, and the sea settled at rest, while the
+            // forecast is still in flight - rather than a page of dashes that
+            // reads the same as "there is no reading".
+            showConditionsLoading();
         }
+        // The tide tiles take their loaders in fetchTides, from onStart.
+        // Air, water and parking show their cards from the start, each with a
+        // loader where its reading will go, so the page does not grow under
+        // the reader's thumb as they land one by one.
+        bindEnvironment();
+        bindGoodFor();
 
         weatherClient = new WeatherClient();
         tideClient = new TideClient();
@@ -214,6 +278,10 @@ public class BeachDetailActivity extends AppCompatActivity {
         // way in and again whenever this screen comes back to the front.
     }
 
+    private ReadingSlot slot(int valueId, int loaderId) {
+        return new ReadingSlot(findViewById(valueId), findViewById(loaderId));
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -221,16 +289,30 @@ public class BeachDetailActivity extends AppCompatActivity {
         // Left open in the background, this screen used to come back showing
         // an hours-old reading as if it were current, beside a tide countdown
         // that had long since run out. The shared list's freshness window
-        // keeps a quick trip away from refetching.
+        // keeps a quick trip away from refetching; anything that failed last
+        // time is asked for again regardless, since that is the reading the
+        // page is missing.
         long now = System.currentTimeMillis();
-        if (now - fetchedAt >= BeachRepository.FRESH_FOR_MS) {
-            fetchedAt = now;
+        boolean due = now - fetchedAt >= BeachRepository.FRESH_FOR_MS;
+        if (due) fetchedAt = now;
+
+        // The forecast is skipped while the one in hand is still fresh. A
+        // beach opened from the list usually arrives with a reading the list
+        // fetched a minute ago, and asking Open-Meteo for the same numbers
+        // again only spends a call against its rate limit.
+        if (weatherFetch == Fetch.FAILED || (due && !hasFreshConditions(now))) {
             fetchRealTimeData();
-            fetchTides();
-            fetchAirQuality();
-            fetchWaterQuality();
-            fetchParking();
         }
+        if (due || tideFetch == Fetch.FAILED) fetchTides();
+        if (due || airFetch == Fetch.FAILED) fetchAirQuality();
+        if (due || waterFetch == Fetch.FAILED) fetchWaterQuality();
+        if (due || parkingFetch == Fetch.FAILED) fetchParking();
+    }
+
+    private boolean hasFreshConditions(long now) {
+        BeachConditions conditions = beach.getConditions();
+        return conditions != null
+            && now - conditions.getFetchedAtMillis() < BeachRepository.FRESH_FOR_MS;
     }
 
     /**
@@ -253,16 +335,21 @@ public class BeachDetailActivity extends AppCompatActivity {
         // shingle is a problem walking in and an advantage to fish over.
         bindGoodFor();
         mapCard.onResume();
+        // Brings the countdowns up to date straight away, then keeps them so.
+        clock.removeCallbacks(tideTick);
+        tideTick.run();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
         mapCard.onPause();
+        clock.removeCallbacks(tideTick);
     }
 
     @Override
     protected void onDestroy() {
+        clock.removeCallbacksAndMessages(null);
         // Null when onCreate turned away a beach it could not find.
         if (mapCard != null) mapCard.onDestroy();
         super.onDestroy();
@@ -725,7 +812,16 @@ public class BeachDetailActivity extends AppCompatActivity {
         verdictIcon.setImageResource(
             level != null ? level.getIconRes() : R.drawable.ic_warning_circle);
         ImageViewCompat.setImageTintList(verdictIcon, ColorStateList.valueOf(color));
-        verdictText.setText(level != null ? level.getVerdictRes() : R.string.verdict_unknown);
+        // With nothing to judge from, the chip says which kind of nothing: the
+        // forecast still on its way, or a forecast that could not be had.
+        // "Checking conditions" over a request that has already failed would
+        // promise an answer that is not coming.
+        if (level != null) {
+            verdictText.setText(level.getVerdictRes());
+        } else {
+            verdictText.setText(weatherFetch == Fetch.FAILED
+                ? R.string.verdict_unavailable : R.string.verdict_unknown);
+        }
         verdictText.setTextColor(color);
 
         Drawable background = verdictChip.getBackground();
@@ -748,42 +844,65 @@ public class BeachDetailActivity extends AppCompatActivity {
     private void fetchTides() {
         String station = beach.getTideStation();
         if (station == null) {
-            bindNoTide(lowTide, lowTideCountdown);
-            bindNoTide(highTide, highTideCountdown);
+            bindNoTide(lowTideSlot, lowTideCountdown);
+            bindNoTide(highTideSlot, highTideCountdown);
             return;
+        }
+        if (tideFetch == Fetch.ASKING) return;
+        tideFetch = Fetch.ASKING;
+        if (tideForecast == null) {
+            lowTideSlot.loading();
+            highTideSlot.loading();
+            lowTideCountdown.setText(R.string.tide_checking);
+            highTideCountdown.setText(R.string.tide_checking);
         }
         tideClient.getTideForecast(station, new TideClient.TideCallback() {
             @Override
             public void onSuccess(TideForecast forecast) {
-                runOnUiThread(() -> updateTideDisplay(forecast));
+                runOnUiThread(() -> {
+                    if (isFinishing() || isDestroyed()) return;
+                    tideFetch = Fetch.ANSWERED;
+                    tideForecast = forecast;
+                    updateTideDisplay(forecast);
+                });
             }
 
             @Override
             public void onFailure(Exception e) {
                 runOnUiThread(() -> {
-                    bindTide(null, null, lowTide, lowTideCountdown);
-                    bindTide(null, null, highTide, highTideCountdown);
+                    if (isFinishing() || isDestroyed()) return;
+                    tideFetch = Fetch.FAILED;
+                    // A forecast already in hand covers two days, so a failed
+                    // refresh goes on counting down from it; only with nothing
+                    // to fall back on does the tile say it is not available.
+                    if (tideForecast != null) {
+                        updateTideDisplay(tideForecast);
+                    } else {
+                        bindTide(null, null, lowTideSlot, lowTideCountdown);
+                        bindTide(null, null, highTideSlot, highTideCountdown);
+                    }
                 });
             }
         });
     }
 
-    private void bindNoTide(TextView time, TextView countdown) {
-        time.setText(R.string.placeholder_dashes);
+    private void bindNoTide(ReadingSlot time, TextView countdown) {
+        time.show(R.string.placeholder_dashes);
         countdown.setText(R.string.tide_none);
     }
 
     private void updateTideDisplay(TideForecast forecast) {
         long now = System.currentTimeMillis();
         TimeZone zone = forecast.getZone();
-        bindTide(forecast.getNextLow(now), zone, lowTide, lowTideCountdown);
-        bindTide(forecast.getNextHigh(now), zone, highTide, highTideCountdown);
+        bindTide(forecast.getNextLow(now), zone, lowTideSlot, lowTideCountdown);
+        bindTide(forecast.getNextHigh(now), zone, highTideSlot, highTideCountdown);
     }
 
     /** One tide cube: the clock time on top, how long until it underneath. */
-    private void bindTide(Tide tide, TimeZone zone, TextView time, TextView countdown) {
+    private void bindTide(@Nullable Tide tide, @Nullable TimeZone zone,
+                          ReadingSlot time, TextView countdown) {
         if (tide == null) {
-            time.setText(R.string.placeholder_dashes);
+            time.show(R.string.placeholder_dashes);
             countdown.setText(R.string.tide_unavailable);
             return;
         }
@@ -791,8 +910,8 @@ public class BeachDetailActivity extends AppCompatActivity {
         // The beach's clock, not the phone's - they differ on a trip - and the
         // reader's 12/24-hour preference.
         DateFormat format = android.text.format.DateFormat.getTimeFormat(this);
-        format.setTimeZone(zone);
-        time.setText(format.format(new Date(tide.getTimeMillis())));
+        if (zone != null) format.setTimeZone(zone);
+        time.show(format.format(new Date(tide.getTimeMillis())));
         countdown.setText(formatCountdown(tide.getTimeMillis() - System.currentTimeMillis()));
     }
 
@@ -814,16 +933,26 @@ public class BeachDetailActivity extends AppCompatActivity {
     // activity scores on arrival because every score is a blend that may
     // include it. Everything here is free and keyless: Open-Meteo for the air
     // and the rainfall, OpenStreetMap for the parking.
+    //
+    // A refresh that comes back empty keeps whatever reading was already on
+    // screen rather than blanking it; the card only says "not available" when
+    // there was never anything to show.
 
     private void fetchAirQuality() {
+        if (airFetch == Fetch.ASKING) return;
+        airFetch = Fetch.ASKING;
+        bindEnvironment();
         airClient.getAirQuality(beach.getLatitude(), beach.getLongitude(), result ->
             runOnUiThread(() -> {
                 if (isFinishing() || isDestroyed()) return;
-                air = result;
-                // Share it, so a smoky day reaches the Alerts tab and its
-                // badge rather than only the screen that fetched it.
-                LiveReadings.putAir(beach.getId(), result);
-                bindAirWater();
+                airFetch = result == null ? Fetch.FAILED : Fetch.ANSWERED;
+                if (result != null) {
+                    air = result;
+                    // Share it, so a smoky day reaches the Alerts tab and its
+                    // badge rather than only the screen that fetched it.
+                    LiveReadings.putAir(beach.getId(), result);
+                }
+                bindEnvironment();
                 bindGoodFor();
                 bindHazards();
             }));
@@ -836,103 +965,181 @@ public class BeachDetailActivity extends AppCompatActivity {
      * an inconvenience or a closure.
      */
     private void fetchWaterQuality() {
+        if (waterFetch == Fetch.ASKING) return;
+        waterFetch = Fetch.ASKING;
+        bindEnvironment();
         rainClient.getRecentRain(beach.getLatitude(), beach.getLongitude(), dailyRainMm ->
             runOnUiThread(() -> {
                 if (isFinishing() || isDestroyed()) return;
-                water = WaterQuality.evaluate(beach, dailyRainMm);
-                LiveReadings.putWater(beach.getId(), water);
-                bindAirWater();
+                WaterQuality evaluated = WaterQuality.evaluate(beach, dailyRainMm);
+                // An empty series is the client's way of saying the call
+                // failed; see WaterQuality#isInformative.
+                waterFetch = evaluated.hasRainfall() ? Fetch.ANSWERED : Fetch.FAILED;
+                if (evaluated.hasRainfall() || water == null || !water.hasRainfall()) {
+                    water = evaluated;
+                    LiveReadings.putWater(beach.getId(), evaluated);
+                }
+                bindEnvironment();
                 bindGoodFor();
                 bindHazards();
             }));
     }
 
     private void fetchParking() {
+        if (parkingFetch == Fetch.ASKING) return;
+        parkingFetch = Fetch.ASKING;
+        bindEnvironment();
         parkingClient.getParking(beach.getId(), beach.getLatitude(), beach.getLongitude(),
             result -> runOnUiThread(() -> {
                 if (isFinishing() || isDestroyed()) return;
-                parking = result;
-                bindAirWater();
+                parkingFetch = result == null ? Fetch.FAILED : Fetch.ANSWERED;
+                if (result != null) parking = result;
+                bindEnvironment();
                 bindGoodFor();
             }));
     }
 
-    /** The cards, each appearing only once its own reading has landed. */
+    /**
+     * The air, water and parking cards. They are on screen from the start, so
+     * the page keeps its length as they fill: each shows its reading once it
+     * has landed, a loader where the reading will go until then, and says
+     * plainly when it could not be had.
+     */
     private void bindEnvironment() {
-        View section = findViewById(R.id.detailEnvironmentSection);
-        if (section != null) {
-            section.setVisibility(View.VISIBLE);
-        }
-
-        View aqiCard = findViewById(R.id.detailAqiCard);
-        if (air == null) {
-            if (aqiCard != null) aqiCard.setVisibility(View.GONE);
-        } else {
-            if (aqiCard != null) {
-                aqiCard.setVisibility(View.VISIBLE);
-                TextView value = findViewById(R.id.detailAqiValue);
-                value.setText(getString(R.string.aqi_value, air.getUsAqi()));
-                value.setTextColor(ContextCompat.getColor(this, air.getColorRes()));
-                ((TextView) findViewById(R.id.detailAqiBand)).setText(air.getLabelRes());
-                ((TextView) findViewById(R.id.detailAqiAdvice)).setText(air.getAdviceRes());
-            }
-        }
-
-        View waterCard = findViewById(R.id.detailWaterCard);
-        if (water == null) {
-            if (waterCard != null) waterCard.setVisibility(View.GONE);
-        } else {
-            if (waterCard != null) {
-                waterCard.setVisibility(View.VISIBLE);
-                int color = ContextCompat.getColor(this, water.getStatus().colorRes);
-                TextView status = findViewById(R.id.detailWaterStatus);
-                status.setText(water.getStatus().labelRes);
-                status.setTextColor(color);
-                ImageViewCompat.setImageTintList(
-                    findViewById(R.id.detailWaterIcon), ColorStateList.valueOf(color));
-                ((TextView) findViewById(R.id.detailWaterBody)).setText(water.getStatus().bodyRes);
-            }
-        }
-
-        View parkingCard = findViewById(R.id.detailParkingCard);
-        if (parking == null) {
-            if (parkingCard != null) parkingCard.setVisibility(View.GONE);
-        } else {
-            if (parkingCard != null) {
-                parkingCard.setVisibility(View.VISIBLE);
-                ((TextView) findViewById(R.id.detailParkingSummary))
-                    .setText(parking.getSummaryRes());
-                ((TextView) findViewById(R.id.detailParkingDetail)).setText(
-                    getString(R.string.parking_detail,
-                        getResources().getQuantityString(R.plurals.parking_lots,
-                            parking.getLots(), parking.getLots()),
-                        getResources().getQuantityString(R.plurals.parking_streets,
-                            parking.getStreetSide(), parking.getStreetSide())));
-            }
-        }
+        bindAirCard();
+        bindWaterCard();
+        bindParkingCard();
     }
 
-    private void bindAirWater() {
-        bindEnvironment();
+    private void bindAirCard() {
+        findViewById(R.id.detailAqiCard).setVisibility(View.VISIBLE);
+        TextView value = findViewById(R.id.detailAqiValue);
+        View loader = findViewById(R.id.detailAqiLoader);
+        TextView band = findViewById(R.id.detailAqiBand);
+        TextView advice = findViewById(R.id.detailAqiAdvice);
+
+        if (air != null) {
+            value.setText(getString(R.string.aqi_value, air.getUsAqi()));
+            value.setTextColor(ContextCompat.getColor(this, air.getColorRes()));
+            reveal(value, loader);
+            band.setText(air.getLabelRes());
+            band.setTextColor(ContextCompat.getColor(this, R.color.text_primary));
+            advice.setText(air.getAdviceRes());
+            advice.setVisibility(View.VISIBLE);
+            return;
+        }
+        boolean failed = airFetch == Fetch.FAILED;
+        value.setVisibility(View.GONE);
+        loader.setVisibility(failed ? View.GONE : View.VISIBLE);
+        band.setText(failed ? R.string.aqi_unavailable : R.string.aqi_loading);
+        band.setTextColor(ContextCompat.getColor(this, R.color.text_secondary));
+        advice.setVisibility(View.GONE);
     }
+
+    private void bindWaterCard() {
+        findViewById(R.id.detailWaterCard).setVisibility(View.VISIBLE);
+        TextView status = findViewById(R.id.detailWaterStatus);
+        View loader = findViewById(R.id.detailWaterLoader);
+        TextView body = findViewById(R.id.detailWaterBody);
+
+        int color;
+        if (water != null && water.isInformative()) {
+            color = ContextCompat.getColor(this, water.getStatus().colorRes);
+            status.setText(water.getStatus().labelRes);
+            reveal(status, loader);
+            body.setText(water.getStatus().bodyRes);
+        } else if (waterFetch == Fetch.FAILED) {
+            // Not "Likely clean": nobody checked whether it rained.
+            color = ContextCompat.getColor(this, R.color.text_secondary);
+            status.setText(R.string.water_unknown);
+            loader.setVisibility(View.GONE);
+            status.setVisibility(View.VISIBLE);
+            body.setText(R.string.water_unknown_body);
+        } else {
+            color = ContextCompat.getColor(this, R.color.text_secondary);
+            status.setVisibility(View.GONE);
+            loader.setVisibility(View.VISIBLE);
+            body.setText(R.string.water_loading);
+        }
+        status.setTextColor(color);
+        ImageViewCompat.setImageTintList(
+            findViewById(R.id.detailWaterIcon), ColorStateList.valueOf(color));
+    }
+
+    private void bindParkingCard() {
+        findViewById(R.id.detailParkingCard).setVisibility(View.VISIBLE);
+        View loader = findViewById(R.id.detailParkingLoader);
+        TextView summary = findViewById(R.id.detailParkingSummary);
+        TextView detail = findViewById(R.id.detailParkingDetail);
+        View caveat = findViewById(R.id.detailParkingCaveat);
+
+        boolean known = parking != null;
+        boolean failed = !known && parkingFetch == Fetch.FAILED;
+        loader.setVisibility(known || failed ? View.GONE : View.VISIBLE);
+        detail.setVisibility(known ? View.VISIBLE : View.GONE);
+        caveat.setVisibility(known ? View.VISIBLE : View.GONE);
+        summary.setTextColor(ContextCompat.getColor(this,
+            known ? R.color.text_primary : R.color.text_secondary));
+
+        if (!known) {
+            summary.setText(failed ? R.string.parking_unavailable : R.string.parking_loading);
+            return;
+        }
+        summary.setText(parking.getSummaryRes());
+        detail.setText(getString(R.string.parking_detail,
+            getResources().getQuantityString(R.plurals.parking_lots,
+                parking.getLots(), parking.getLots()),
+            getResources().getQuantityString(R.plurals.parking_streets,
+                parking.getStreetSide(), parking.getStreetSide())));
+    }
+
+    /** A card's reading takes the loader's place, fading in if the loader was up. */
+    private static void reveal(View value, View loader) {
+        if (loader.getVisibility() != View.VISIBLE) {
+            value.setVisibility(View.VISIBLE);
+            return;
+        }
+        loader.setVisibility(View.GONE);
+        value.setAlpha(0f);
+        value.setVisibility(View.VISIBLE);
+        value.animate().alpha(1f).setDuration(220).start();
+    }
+
+    /** Marks the "still scoring" row, so a rebind leaves the one already rolling. */
+    private static final String LOADING_ROW = "loading";
 
     /**
      * The four activity scores.
      *
      * <p>Held back until there is a forecast to blend: scoring a beach on
      * parking alone would produce a confident-looking number about nothing.
+     * Until it lands the section holds its place with a loader, and it only
+     * steps aside when the forecast could not be had at all.
      */
     private void bindGoodFor() {
         View section = findViewById(R.id.detailGoodForSection);
+        ViewGroup list = findViewById(R.id.detailActivityList);
+        LayoutInflater inflater = LayoutInflater.from(this);
+
         if (beach.getConditions() == null) {
-            section.setVisibility(View.GONE);
+            if (weatherFetch == Fetch.FAILED) {
+                section.setVisibility(View.GONE);
+                return;
+            }
+            section.setVisibility(View.VISIBLE);
+            if (list.getChildCount() == 1 && LOADING_ROW.equals(list.getChildAt(0).getTag())) {
+                return;
+            }
+            list.removeAllViews();
+            View row = inflater.inflate(R.layout.item_loading_row, list, false);
+            row.setTag(LOADING_ROW);
+            ((TextView) row.findViewById(R.id.loadingRowText)).setText(R.string.good_for_loading);
+            list.addView(row);
             return;
         }
         section.setVisibility(View.VISIBLE);
 
-        ViewGroup list = findViewById(R.id.detailActivityList);
         list.removeAllViews();
-        LayoutInflater inflater = LayoutInflater.from(this);
         for (ActivityFit fit : ActivityScorer.scoreAll(beach, scorerInputs())) {
             list.addView(buildActivityRow(inflater, list, fit));
         }
@@ -946,36 +1153,9 @@ public class BeachDetailActivity extends AppCompatActivity {
         in.water = water;
         in.parking = parking;
         in.rockRating = rockStore.ratingFor(beach.getId());
-        in.guarded = guardedState(beach, mappedTowers);
-        in.worstHazard = worstHazardSeverity();
+        in.guarded = ActivityScorer.guardedState(beach, mappedTowers);
+        in.worstHazard = ActivityScorer.worstOf(ConditionHazards.merged(this, beach));
         return in;
-    }
-
-
-    /**
-     * Whether this beach is patrolled, or null when the app has no help data
-     * for it. An empty list means nobody recorded any, not that there is none —
-     * see {@link ActivityScorer.Inputs#guarded}. A tower OpenStreetMap has
-     * mapped counts as patrolled.
-     */
-    @Nullable
-    private static Boolean guardedState(Beach beach, List<HelpLocation> mappedTowers) {
-        if (!mappedTowers.isEmpty()) return true;
-        if (beach.getNearestHelp().isEmpty()) return null;
-        return beach.getNearestHelp().stream()
-            .anyMatch(h -> h.getType() == HelpType.LIFEGUARD_TOWER);
-    }
-
-    /** The most severe hazard currently on this beach, or null if there are none. */
-    @Nullable
-    private Severity worstHazardSeverity() {
-        Severity worst = null;
-        for (Hazard hazard : ConditionHazards.merged(this, beach)) {
-            if (worst == null || hazard.getSeverity().ordinal() > worst.ordinal()) {
-                worst = hazard.getSeverity();
-            }
-        }
-        return worst;
     }
 
     private View buildActivityRow(LayoutInflater inflater, ViewGroup parent, ActivityFit fit) {
@@ -1020,11 +1200,24 @@ public class BeachDetailActivity extends AppCompatActivity {
     }
 
     private void fetchRealTimeData() {
+        if (weatherFetch == Fetch.ASKING) return;
+        boolean wasFailed = weatherFetch == Fetch.FAILED;
+        weatherFetch = Fetch.ASKING;
+        if (wasFailed) {
+            // Asking again after "couldn't load", by a tap or on the way back
+            // in: the note goes, and the loaders come back while it asks.
+            conditionsError.setVisibility(View.GONE);
+            if (beach.getConditions() == null) showConditionsLoading();
+            bindVerdict();
+            bindGoodFor();
+        }
         weatherClient.getBeachConditions(beach.getLatitude(), beach.getLongitude(), new WeatherClient.WeatherCallback() {
             @Override
             public void onSuccess(BeachConditions conditions) {
                 runOnUiThread(() -> {
-                    updateConditionsDisplay(conditions);
+                    if (isFinishing() || isDestroyed()) return;
+                    weatherFetch = Fetch.ANSWERED;
+                    conditionsError.setVisibility(View.GONE);
                     // Re-judge with live numbers in hand. The hazard list is
                     // rebuilt too: it is partly derived from these readings,
                     // and leaving it on the empty state it was built with is
@@ -1035,6 +1228,7 @@ public class BeachDetailActivity extends AppCompatActivity {
                     // being the only place that knows.
                     BeachRepository.getInstance()
                         .updateConditions(beach.getId(), conditions);
+                    updateConditionsDisplay(conditions);
                     bindVerdict();
                     bindHazards();
                     // The scores are a blend that leans on these readings, so
@@ -1045,17 +1239,63 @@ public class BeachDetailActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Exception e) {
-                // Leave whatever static conditions were already shown.
+                runOnUiThread(() -> {
+                    if (isFinishing() || isDestroyed()) return;
+                    weatherFetch = Fetch.FAILED;
+                    showConditionsFailed();
+                });
             }
         });
     }
 
+    /** Every tile waiting on the forecast shows its loader, and the sea settles at rest. */
+    private void showConditionsLoading() {
+        uvSlot.loading();
+        windSlot.loading();
+        airTempSlot.loading();
+        waterTempSlot.loading();
+        visibilitySlot.loading();
+        waveCard.setLoading();
+    }
+
+    /**
+     * The forecast could not be had. With nothing on screen yet, the tiles go
+     * to dashes and the wave card to its no-reading state; an older reading
+     * that is already showing stays. Either way the note under the heading
+     * says what happened, and tapping it asks again.
+     */
+    private void showConditionsFailed() {
+        boolean nothingShown = beach.getConditions() == null;
+        if (nothingShown) {
+            String none = getString(R.string.placeholder_dashes);
+            uvSlot.show(none);
+            windSlot.show(none);
+            airTempSlot.show(none);
+            waterTempSlot.show(none);
+            visibilitySlot.show(none);
+            waveCard.setReading(null);
+        }
+        conditionsError.setText(nothingShown
+            ? R.string.conditions_error_none : R.string.conditions_error_stale);
+        conditionsError.setVisibility(View.VISIBLE);
+        bindVerdict();
+        bindGoodFor();
+    }
+
+    /** The note's tap: asks again for the forecast, and anything else that failed with it. */
+    private void retryConditions() {
+        fetchRealTimeData();
+        if (tideFetch == Fetch.FAILED) fetchTides();
+        if (airFetch == Fetch.FAILED) fetchAirQuality();
+        if (waterFetch == Fetch.FAILED) fetchWaterQuality();
+        if (parkingFetch == Fetch.FAILED) fetchParking();
+    }
+
     private void updateConditionsDisplay(BeachConditions conditions) {
-        TextView airTemp = findViewById(R.id.detailAirTemp);
         ImageView airTempIcon = findViewById(R.id.detailAirTempIcon);
 
         if (conditions.getAirTemperature() != null) {
-            airTemp.setText(UnitConverter.formatTemperature(this, conditions.getAirTemperature()));
+            airTempSlot.show(UnitConverter.formatTemperature(this, conditions.getAirTemperature()));
 
             // The tile's own label icon carries the cold/warm/hot reading, so
             // there is only ever one thermometer on the tile.
@@ -1076,15 +1316,14 @@ public class BeachDetailActivity extends AppCompatActivity {
             airTempIcon.setImageResource(iconRes);
             ImageViewCompat.setImageTintList(airTempIcon, ColorStateList.valueOf(color));
         } else {
-            airTemp.setText("--");
+            airTempSlot.show(R.string.placeholder_dashes);
         }
 
-        TextView waterTemp = findViewById(R.id.detailWaterTemp);
         ImageView waterTempIcon = findViewById(R.id.detailWaterTempIcon);
 
         if (conditions.getWaterTemperature() != null) {
             double wTemp = conditions.getWaterTemperature();
-            waterTemp.setText(UnitConverter.formatTemperature(this, wTemp));
+            waterTempSlot.show(UnitConverter.formatTemperature(this, wTemp));
 
             // Same thermometer as the air tile, on the sea's own scale:
             // 82°F is very warm water but only warm air.
@@ -1107,16 +1346,12 @@ public class BeachDetailActivity extends AppCompatActivity {
             waterTempIcon.setImageResource(iconRes);
             ImageViewCompat.setImageTintList(waterTempIcon, ColorStateList.valueOf(color));
         } else {
-            waterTemp.setText("--");
+            waterTempSlot.show(R.string.placeholder_dashes);
         }
 
         waveCard.setReading(conditions.getWaveHeight());
-        ((TextView) findViewById(R.id.detailUvIndex))
-            .setText(conditions.getFormattedUvIndex(this));
-        ((TextView) findViewById(R.id.detailVisibility))
-            .setText(UnitConverter.formatVisibility(this, conditions.getVisibility()));
-        ((TextView) findViewById(R.id.detailWindSpeed))
-            .setText(UnitConverter.formatWindSpeed(this, conditions.getWindSpeed()));
-        bindAirWater();
+        uvSlot.show(conditions.getFormattedUvIndex(this));
+        visibilitySlot.show(UnitConverter.formatVisibility(this, conditions.getVisibility()));
+        windSlot.show(UnitConverter.formatWindSpeed(this, conditions.getWindSpeed()));
     }
 }

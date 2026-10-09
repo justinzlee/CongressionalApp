@@ -15,25 +15,16 @@ import static org.junit.Assert.assertTrue;
 /**
  * Regression test for the radius-filter + distance-sort behavior in
  * MainActivity#updateList, exercised from three real-world reference points:
- * San Diego, Carlsbad, and an East Coast city (Miami). This mirrors the exact
- * filter/sort logic in MainActivity so a change to the location handling code
- * (e.g. distance calc, radius comparison, sort order) gets caught here without
- * needing an emulator.
+ * San Diego, Carlsbad, and an East Coast city (Miami). It runs the same
+ * {@link BeachRepository#nearestFirst} the screen does, so a change to the
+ * location handling code (e.g. distance calc, radius comparison, sort order)
+ * gets caught here without needing an emulator.
  */
 public class RegionalSearchFilterTest {
 
-    // Mirrors MainActivity.updateList()'s filter+sort pipeline.
+    // The pipeline MainActivity.updateList() runs, without its row limit.
     private List<Beach> filterAndSort(BeachRepository repo, double lat, double lon, double radiusMiles) {
-        return repo.getBeaches().stream()
-            .filter(b -> {
-                if (radiusMiles >= 1000.0) return true;
-                double d = UnitConverter.calculateDistance(lat, lon, b.getLatitude(), b.getLongitude());
-                return d <= radiusMiles;
-            })
-            .sorted((b1, b2) -> Double.compare(
-                UnitConverter.calculateDistance(lat, lon, b1.getLatitude(), b1.getLongitude()),
-                UnitConverter.calculateDistance(lat, lon, b2.getLatitude(), b2.getLongitude())))
-            .collect(Collectors.toList());
+        return BeachRepository.nearestFirst(repo.getBeaches(), lat, lon, radiusMiles, Integer.MAX_VALUE);
     }
 
     @Test

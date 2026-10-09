@@ -7,6 +7,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+import com.example.myapplication.R;
 import com.google.android.gms.location.CurrentLocationRequest;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -22,6 +23,8 @@ public class LocationService {
 
     public interface LocationUpdateListener {
         void onLocationUpdated(double latitude, double longitude);
+
+        /** @param error why there is no position, in the app's language, fit to show */
         void onLocationError(String error);
     }
 
@@ -41,11 +44,11 @@ public class LocationService {
         boolean hasFine = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         boolean hasCoarse = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         if (!hasFine && !hasCoarse) {
-            listener.onLocationError("Permission not granted");
+            listener.onLocationError(context.getString(R.string.location_permission_needed));
             return;
         }
         if (!isLocationEnabled()) {
-            listener.onLocationError("Location services are turned off");
+            listener.onLocationError(context.getString(R.string.location_off));
             return;
         }
 
@@ -53,9 +56,10 @@ public class LocationService {
             if (location != null) {
                 listener.onLocationUpdated(location.getLatitude(), location.getLongitude());
             } else {
-                listener.onLocationError("Last location unknown");
+                listener.onLocationError(context.getString(R.string.location_unavailable));
             }
-        }).addOnFailureListener(e -> listener.onLocationError(e.getMessage()));
+        }).addOnFailureListener(e -> listener.onLocationError(
+            context.getString(R.string.location_unavailable)));
     }
 
     /**
@@ -68,11 +72,11 @@ public class LocationService {
         boolean hasFine = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         boolean hasCoarse = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         if (!hasFine && !hasCoarse) {
-            listener.onLocationError("Permission not granted");
+            listener.onLocationError(context.getString(R.string.location_permission_needed));
             return;
         }
         if (!isLocationEnabled()) {
-            listener.onLocationError("Location services are turned off");
+            listener.onLocationError(context.getString(R.string.location_off));
             return;
         }
 
@@ -85,20 +89,21 @@ public class LocationService {
             if (location != null) {
                 listener.onLocationUpdated(location.getLatitude(), location.getLongitude());
             } else {
-                listener.onLocationError("Current location unknown");
+                listener.onLocationError(context.getString(R.string.location_unavailable));
             }
-        }).addOnFailureListener(e -> listener.onLocationError(e.getMessage()));
+        }).addOnFailureListener(e -> listener.onLocationError(
+            context.getString(R.string.location_unavailable)));
     }
 
     public void startLocationUpdates(LocationUpdateListener listener) {
         boolean hasFine = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         boolean hasCoarse = ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         if (!hasFine && !hasCoarse) {
-            listener.onLocationError("Permission not granted");
+            listener.onLocationError(context.getString(R.string.location_permission_needed));
             return;
         }
         if (!isLocationEnabled()) {
-            listener.onLocationError("Location services are turned off");
+            listener.onLocationError(context.getString(R.string.location_off));
             return;
         }
 
@@ -106,9 +111,14 @@ public class LocationService {
 
         // PRIORITY_HIGH_ACCURACY requires ACCESS_FINE_LOCATION and throws SecurityException
         // with only ACCESS_COARSE_LOCATION granted (e.g. user picked "approximate" access).
+        // High accuracy is kept for the SOS sheet's map pin; what is relaxed is
+        // how often it reports. The home screen ignores any fix within about
+        // fifty metres of the last, so a report every second or two of a phone
+        // lying still on a towel only woke the app to throw it away.
         int priority = hasFine ? Priority.PRIORITY_HIGH_ACCURACY : Priority.PRIORITY_BALANCED_POWER_ACCURACY;
-        LocationRequest locationRequest = new LocationRequest.Builder(priority, 2000)
-                .setMinUpdateIntervalMillis(1000)
+        LocationRequest locationRequest = new LocationRequest.Builder(priority, 5000)
+                .setMinUpdateIntervalMillis(2000)
+                .setMinUpdateDistanceMeters(10f)
                 .build();
 
         locationCallback = new LocationCallback() {
