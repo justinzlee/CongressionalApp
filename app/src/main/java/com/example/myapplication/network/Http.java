@@ -57,9 +57,11 @@ final class Http {
      * turns some of those away with 429 "Too many concurrent requests". The
      * batch turned away came back empty and its twenty-five beaches sat on
      * "Checking conditions" until the repository's retry, twenty seconds or
-     * more later. Two at a time still answers a batch in about a second.
+     * more later. The repository now runs two batches at a time; the third
+     * slot is for the beach screen's own call, so opening a beach never waits
+     * behind the list.
      */
-    private static final Semaphore OPEN_METEO_SLOTS = new Semaphore(2, true);
+    private static final Semaphore OPEN_METEO_SLOTS = new Semaphore(3, true);
 
     /** Open-Meteo's answer when it is busy, and how hard to keep asking. */
     private static final int TOO_MANY_REQUESTS = 429;
