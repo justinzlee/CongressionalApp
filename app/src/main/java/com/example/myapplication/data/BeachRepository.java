@@ -7,11 +7,12 @@ import com.example.myapplication.R;
 import com.example.myapplication.model.*;
 import com.example.myapplication.network.WeatherClient;
 import com.example.myapplication.util.UnitConverter;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executors;
@@ -647,44 +648,89 @@ public class BeachRepository {
     }
 
 
+    /** The beach with this id, or null if there is none. */
+    @Nullable
+    public Beach findById(@Nullable String beachId) {
+        if (beachId == null) return null;
+        synchronized (beaches) {
+            for (Beach beach : beaches) {
+                if (beachId.equals(beach.getId())) return beach;
+            }
+        }
+        return null;
+    }
+
     /**
-     * Beaches whose name contains the query, ignoring case.
+     * Beaches whose name contains the query, ignoring case and punctuation.
      *
      * <p>Case is folded against {@link Locale#ROOT} rather than the phone's
      * own locale. The beach names are English, and a locale whose casing rules
      * differ from English's would fold the two sides of this comparison
      * apart: on a Turkish phone the default rules lowercase the I of Imperial
      * Beach to a dotless ı, which the typed "imperial" then no longer matches.
+     *
+     * <p>Apostrophes and full stops are dropped from both sides, and the query
+     * is trimmed, because nobody types them the way the list spells them:
+     * "swamis" has to find Swami's Beach and "st augustine" St. Augustine
+     * Beach, and a space left after the last word should not empty the list.
      */
     public List<Beach> searchBeaches(String query) {
+        String needle = query == null ? "" : fold(query).trim();
         synchronized (beaches) {
-            if (query == null || query.isEmpty()) return new ArrayList<>(beaches);
-            String needle = query.toLowerCase(Locale.ROOT);
+            if (needle.isEmpty()) return new ArrayList<>(beaches);
             return beaches.stream()
-                .filter(b -> b.getName().toLowerCase(Locale.ROOT).contains(needle))
+                .filter(b -> fold(b.getName()).contains(needle))
                 .collect(Collectors.toList());
         }
     }
 
+    @VisibleForTesting
+    static String fold(String text) {
+        return text.toLowerCase(Locale.ROOT).replaceAll("['\u2019.]", "");
+    }
+
     /**
-     * Beaches within radiusMiles of (lat, lon), closest first. If none fall within
-     * the radius (e.g. the user is nowhere near a covered coastline), falls back to
-     * the closest fallbackCount beaches so a location-based report is never empty.
+     * The home list: these beaches within {@code radiusMiles} of a point,
+     * nearest first, cut at {@code limit}. A radius of a thousand miles or
+     * more filters nothing, which is what "All" asks for.
+     *
+     * <p>Each beach's distance is worked out once. The list used to sort on a
+     * comparator that worked out two for every comparison it made - a few
+     * thousand trigonometry calls over the whole coast on every keystroke in
+     * the search box and every location fix.
      */
-    public List<Beach> findNearbyBeaches(double lat, double lon, double radiusMiles, int fallbackCount) {
-        Comparator<Beach> byDistance = Comparator.comparingDouble(
-            b -> UnitConverter.calculateDistance(lat, lon, b.getLatitude(), b.getLongitude()));
-
-        List<Beach> withinRadius = getBeaches().stream()
-            .filter(b -> UnitConverter.calculateDistance(lat, lon, b.getLatitude(), b.getLongitude()) <= radiusMiles)
-            .sorted(byDistance)
+    public static List<Beach> nearestFirst(List<Beach> beaches, double lat, double lon,
+                                           double radiusMiles, int limit) {
+        boolean all = radiusMiles >= 1000.0;
+        return beaches.stream()
+            .map(b -> new AbstractMap.SimpleImmutableEntry<>(b, UnitConverter.calculateDistance(
+                lat, lon, b.getLatitude(), b.getLongitude())))
+            .filter(entry -> all || entry.getValue() <= radiusMiles)
+            .sorted(Map.Entry.comparingByValue())
+            .limit(limit)
+            .map(Map.Entry::getKey)
             .collect(Collectors.toList());
+    }
 
-        if (!withinRadius.isEmpty()) return withinRadius;
-
-        return getBeaches().stream()
-            .sorted(byDistance)
-            .limit(fallbackCount)
-            .collect(Collectors.toList());
+    /**
+     * The beach nearest a point, if one lies within {@code withinMiles} of it,
+     * else null. For the SOS sheet, which must not name a beach the user is
+     * nowhere near.
+     */
+    @Nullable
+    public Beach nearestTo(double lat, double lon, double withinMiles) {
+        Beach nearest = null;
+        double best = withinMiles;
+        synchronized (beaches) {
+            for (Beach beach : beaches) {
+                double miles = UnitConverter.calculateDistance(
+                    lat, lon, beach.getLatitude(), beach.getLongitude());
+                if (miles <= best) {
+                    best = miles;
+                    nearest = beach;
+                }
+            }
+        }
+        return nearest;
     }
 }

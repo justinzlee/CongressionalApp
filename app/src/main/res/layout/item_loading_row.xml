@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  A list section that is still being worked out: the loader and a line saying
+  what for, sized like one of the rows it stands in for so the card does not
+  jump when they arrive.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:minHeight="64dp"
+    android:orientation="horizontal"
+    android:paddingHorizontal="14dp"
+    android:paddingVertical="12dp">
+
+    <com.example.myapplication.SwellLoaderView
+        style="@style/Widget.App.SwellLoader"
+        android:importantForAccessibility="no" />
+
+    <TextView
+        android:id="@+id/loadingRowText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_weight="1"
+        android:accessibilityLiveRegion="polite"
+        android:textAppearance="@style/TextAppearance.App.Subtitle"
+        tools:text="@string/good_for_loading" />
+</LinearLayout>

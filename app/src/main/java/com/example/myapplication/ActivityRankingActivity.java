@@ -29,12 +29,10 @@ import com.example.myapplication.model.AirQuality;
 import com.example.myapplication.model.Beach;
 import com.example.myapplication.model.BeachConditions;
 import com.example.myapplication.model.ConditionHazards;
-import com.example.myapplication.model.Hazard;
-import com.example.myapplication.model.HelpType;
 import com.example.myapplication.model.ParkingSummary;
-import com.example.myapplication.model.Severity;
 import com.example.myapplication.model.WaterQuality;
 import com.example.myapplication.network.AirQualityClient;
+import com.example.myapplication.network.LifeguardClient;
 import com.example.myapplication.network.ParkingClient;
 import com.example.myapplication.network.RainfallClient;
 import com.example.myapplication.network.WeatherClient;
@@ -397,6 +395,7 @@ public class ActivityRankingActivity extends AppCompatActivity {
      */
     private List<ActivityFit> rank() {
         RockRatingStore rocks = new RockRatingStore(this);
+        LifeguardClient towers = new LifeguardClient(this);
 
         List<ActivityFit> fits = new ArrayList<>();
         for (int i = 0; i < beaches.size(); i++) {
@@ -409,37 +408,15 @@ public class ActivityRankingActivity extends AppCompatActivity {
             in.water = water[i];
             in.parking = parking[i];
             in.rockRating = rocks.ratingFor(beach.getId());
-            in.guarded = guardedState(beach);
-            in.worstHazard = worstHazard(beach);
+            // The towers its own page found, from the cache that page fills,
+            // so a beach patrolled on its page is patrolled here too.
+            in.guarded = ActivityScorer.guardedState(beach, towers.cachedTowers(beach.getId()));
+            in.worstHazard = ActivityScorer.worstOf(ConditionHazards.merged(this, beach));
 
             fits.add(ActivityScorer.score(selected, beach, in));
         }
         fits.sort(Comparator.comparingInt(ActivityFit::getScore).reversed());
         return fits;
-    }
-
-
-    /**
-     * Whether this beach is patrolled, or null when the app has no help data
-     * for it. An empty list means nobody recorded any, not that there is none —
-     * see {@link ActivityScorer.Inputs#guarded}.
-     */
-    @Nullable
-    private static Boolean guardedState(Beach beach) {
-        if (beach.getNearestHelp().isEmpty()) return null;
-        return beach.getNearestHelp().stream()
-            .anyMatch(h -> h.getType() == HelpType.LIFEGUARD_TOWER);
-    }
-
-    @Nullable
-    private Severity worstHazard(Beach beach) {
-        Severity worst = null;
-        for (Hazard hazard : ConditionHazards.merged(this, beach)) {
-            if (worst == null || hazard.getSeverity().ordinal() > worst.ordinal()) {
-                worst = hazard.getSeverity();
-            }
-        }
-        return worst;
     }
 
     private View buildRow(LayoutInflater inflater, ViewGroup parent, ActivityFit fit, int position) {

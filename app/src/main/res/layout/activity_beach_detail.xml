@@ -197,6 +197,31 @@
                 android:text="@string/section_conditions"
                 android:textAppearance="@style/TextAppearance.App.Section" />
 
+            <!-- Shown when the forecast could not be fetched: says so, and is
+                 the way to ask again, rather than leaving the tiles on dashes
+                 with no word as to why. -->
+            <TextView
+                android:id="@+id/detailConditionsError"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/bg_accent_note"
+                android:clickable="true"
+                android:drawablePadding="10dp"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackground"
+                android:gravity="center_vertical"
+                android:minHeight="48dp"
+                android:paddingHorizontal="14dp"
+                android:paddingVertical="10dp"
+                android:textColor="@color/primary_variant"
+                android:textSize="15sp"
+                android:visibility="gone"
+                app:drawableStartCompat="@drawable/ic_warning_circle"
+                app:drawableTint="@color/primary"
+                tools:text="@string/conditions_error_none"
+                tools:visibility="visible" />
+
             <!-- Wave height gets a card of its own - the swell as a sea to
                  look at - with the rest of the conditions as tiles under it. -->
             <com.example.myapplication.WaveHeightCard
@@ -225,10 +250,18 @@
                             android:text="@string/uv_index" />
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/detailUvIndex"
-                        style="@style/Widget.App.StatTileValue"
-                        tools:text="Low (0)" />
+                    <FrameLayout style="@style/Widget.App.StatTileValueSlot">
+
+                        <TextView
+                            android:id="@+id/detailUvIndex"
+                            style="@style/Widget.App.StatTileValue"
+                            android:layout_marginTop="0dp"
+                            tools:text="Low (0)" />
+
+                        <com.example.myapplication.SwellLoaderView
+                            android:id="@+id/detailUvLoader"
+                            style="@style/Widget.App.SwellLoader.InSlot" />
+                    </FrameLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -246,10 +279,18 @@
                             android:text="@string/wind_speed" />
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/detailWindSpeed"
-                        style="@style/Widget.App.StatTileValue"
-                        tools:text="3.3 mph" />
+                    <FrameLayout style="@style/Widget.App.StatTileValueSlot">
+
+                        <TextView
+                            android:id="@+id/detailWindSpeed"
+                            style="@style/Widget.App.StatTileValue"
+                            android:layout_marginTop="0dp"
+                            tools:text="3.3 mph" />
+
+                        <com.example.myapplication.SwellLoaderView
+                            android:id="@+id/detailWindLoader"
+                            style="@style/Widget.App.SwellLoader.InSlot" />
+                    </FrameLayout>
                 </LinearLayout>
 
             </LinearLayout>
@@ -277,10 +318,18 @@
                             android:text="@string/air_temp" />
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/detailAirTemp"
-                        style="@style/Widget.App.StatTileValue"
-                        tools:text="75.8°F" />
+                    <FrameLayout style="@style/Widget.App.StatTileValueSlot">
+
+                        <TextView
+                            android:id="@+id/detailAirTemp"
+                            style="@style/Widget.App.StatTileValue"
+                            android:layout_marginTop="0dp"
+                            tools:text="75.8°F" />
+
+                        <com.example.myapplication.SwellLoaderView
+                            android:id="@+id/detailAirTempLoader"
+                            style="@style/Widget.App.SwellLoader.InSlot" />
+                    </FrameLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -300,10 +349,18 @@
                             android:text="@string/water_temp" />
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/detailWaterTemp"
-                        style="@style/Widget.App.StatTileValue"
-                        tools:text="68.2°F" />
+                    <FrameLayout style="@style/Widget.App.StatTileValueSlot">
+
+                        <TextView
+                            android:id="@+id/detailWaterTemp"
+                            style="@style/Widget.App.StatTileValue"
+                            android:layout_marginTop="0dp"
+                            tools:text="68.2°F" />
+
+                        <com.example.myapplication.SwellLoaderView
+                            android:id="@+id/detailWaterTempLoader"
+                            style="@style/Widget.App.SwellLoader.InSlot" />
+                    </FrameLayout>
                 </LinearLayout>
             </LinearLayout>
 
@@ -330,11 +387,19 @@
                             android:text="@string/low_tide" />
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/detailLowTide"
-                        style="@style/Widget.App.StatTileValue"
-                        android:text="@string/placeholder_dashes"
-                        tools:text="5:04 AM" />
+                    <FrameLayout style="@style/Widget.App.StatTileValueSlot">
+
+                        <TextView
+                            android:id="@+id/detailLowTide"
+                            style="@style/Widget.App.StatTileValue"
+                            android:layout_marginTop="0dp"
+                            android:text="@string/placeholder_dashes"
+                            tools:text="5:04 AM" />
+
+                        <com.example.myapplication.SwellLoaderView
+                            android:id="@+id/detailLowTideLoader"
+                            style="@style/Widget.App.SwellLoader.InSlot" />
+                    </FrameLayout>
 
                     <TextView
                         android:id="@+id/detailLowTideCountdown"
@@ -358,11 +423,19 @@
                             android:text="@string/high_tide" />
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/detailHighTide"
-                        style="@style/Widget.App.StatTileValue"
-                        android:text="@string/placeholder_dashes"
-                        tools:text="11:18 AM" />
+                    <FrameLayout style="@style/Widget.App.StatTileValueSlot">
+
+                        <TextView
+                            android:id="@+id/detailHighTide"
+                            style="@style/Widget.App.StatTileValue"
+                            android:layout_marginTop="0dp"
+                            android:text="@string/placeholder_dashes"
+                            tools:text="11:18 AM" />
+
+                        <com.example.myapplication.SwellLoaderView
+                            android:id="@+id/detailHighTideLoader"
+                            style="@style/Widget.App.SwellLoader.InSlot" />
+                    </FrameLayout>
 
                     <TextView
                         android:id="@+id/detailHighTideCountdown"
@@ -392,10 +465,18 @@
                             android:text="@string/visibility" />
                     </LinearLayout>
 
-                    <TextView
-                        android:id="@+id/detailVisibility"
-                        style="@style/Widget.App.StatTileValue"
-                        tools:text="10.4 mi" />
+                    <FrameLayout style="@style/Widget.App.StatTileValueSlot">
+
+                        <TextView
+                            android:id="@+id/detailVisibility"
+                            style="@style/Widget.App.StatTileValue"
+                            android:layout_marginTop="0dp"
+                            tools:text="10.4 mi" />
+
+                        <com.example.myapplication.SwellLoaderView
+                            android:id="@+id/detailVisibilityLoader"
+                            style="@style/Widget.App.SwellLoader.InSlot" />
+                    </FrameLayout>
                 </LinearLayout>
             </LinearLayout>
 
@@ -469,6 +550,10 @@
                             android:textSize="17sp"
                             tools:text="AQI 68"
                             tools:textColor="@color/caution" />
+
+                        <com.example.myapplication.SwellLoaderView
+                            android:id="@+id/detailAqiLoader"
+                            style="@style/Widget.App.SwellLoader.Inline" />
                     </LinearLayout>
 
                     <TextView
@@ -534,6 +619,10 @@
                             android:textSize="17sp"
                             tools:text="Likely clean"
                             tools:textColor="@color/safe" />
+
+                        <com.example.myapplication.SwellLoaderView
+                            android:id="@+id/detailWaterLoader"
+                            style="@style/Widget.App.SwellLoader.Inline" />
                     </LinearLayout>
 
                     <TextView
@@ -675,6 +764,10 @@
                             android:text="@string/parking_label"
                             android:textColor="@color/text_primary"
                             android:textSize="17sp" />
+
+                        <com.example.myapplication.SwellLoaderView
+                            android:id="@+id/detailParkingLoader"
+                            style="@style/Widget.App.SwellLoader.Inline" />
                     </LinearLayout>
 
                     <TextView
@@ -696,6 +789,7 @@
                         tools:text="6 car parks, 3 street stretches within a 10-minute walk" />
 
                     <TextView
+                        android:id="@+id/detailParkingCaveat"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"

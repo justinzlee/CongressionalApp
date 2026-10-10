@@ -40,7 +40,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.EnumMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Reporting an animal seen at a beach: what it was, whether it was in the water
@@ -118,10 +117,7 @@ public class SightingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sighting);
 
         String beachId = getIntent().getStringExtra(EXTRA_BEACH_ID);
-        beach = BeachRepository.getInstance().getBeaches().stream()
-            .filter(b -> Objects.equals(b.getId(), beachId))
-            .findFirst()
-            .orElse(null);
+        beach = BeachRepository.getInstance().findById(beachId);
         if (beach == null) {
             finish();
             return;

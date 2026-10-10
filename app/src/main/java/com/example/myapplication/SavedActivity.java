@@ -29,7 +29,7 @@ import java.util.Set;
  * The beaches the user has saved, each showing its current swim verdict so
  * the list answers "where can I go today?" at a glance.
  */
-public class       SavedActivity extends AppCompatActivity {
+public class SavedActivity extends AppCompatActivity {
 
     private BeachRepository repository;
     private SavedBeachStore store;

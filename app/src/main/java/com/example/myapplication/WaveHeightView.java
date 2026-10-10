@@ -18,6 +18,7 @@ import android.view.ViewOutlineProvider;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 
+import com.example.myapplication.util.FrameLoop;
 import com.example.myapplication.util.UnitConverter;
 
 import java.util.Locale;
@@ -102,14 +103,18 @@ public class WaveHeightView extends View {
     private float shaderGradEnd = -1f;
 
     private long startNanos;
+    private final FrameLoop loop;
 
     private float heightFt;
     private boolean hasReading;
+    /** The forecast is still on its way: the sea moves, but carries no number. */
+    private boolean loading;
 
     public WaveHeightView(Context context, AttributeSet attrs) {
         super(context, attrs);
         density = context.getResources().getDisplayMetrics().density;
         cornerPx = 10f * density;
+        loop = new FrameLoop(this);
 
         skyTop = ContextCompat.getColor(context, R.color.wave_card_sky_top);
         skyBottom = ContextCompat.getColor(context, R.color.wave_card_sky_bottom);
@@ -168,6 +173,35 @@ public class WaveHeightView extends View {
         invalidate();
     }
 
+    /** @param loading true while the forecast is on its way; the number is left off */
+    public void setLoading(boolean loading) {
+        if (this.loading == loading) return;
+        this.loading = loading;
+        invalidate();
+    }
+
+    // The sea used to ask for a frame at the end of every draw for as long as
+    // it was attached, so it went on rolling sixty times a second after the
+    // page had been scrolled well past it. FrameLoop parks it out of sight.
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        loop.attach();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        loop.detach();
+        super.onDetachedFromWindow();
+    }
+
+    @Override
+    public void onVisibilityAggregated(boolean isVisible) {
+        super.onVisibilityAggregated(isVisible);
+        loop.onVisibilityAggregated(isVisible);
+    }
+
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
@@ -184,9 +218,10 @@ public class WaveHeightView extends View {
         int h = getHeight();
         if (w == 0 || h == 0) return;
 
+        // Under "Remove animations" the sea holds still at its first frame.
         long now = System.nanoTime();
         if (startNanos == 0L) startNanos = now;
-        float t = (now - startNanos) / 1_000_000_000f;
+        float t = loop.isReduced() ? 0f : (now - startNanos) / 1_000_000_000f;
 
         float ratio = Math.max(0f, Math.min(1f, heightFt / WaveScale.MAX_FT));
         float crest = Math.min(VB_H * (1f - ratio), CREST_FLOOR);
@@ -209,7 +244,7 @@ public class WaveHeightView extends View {
         canvas.drawRoundRect(0.5f * density, 0.5f * density,
             w - 0.5f * density, h - 0.5f * density, cornerPx, cornerPx, edgePaint);
 
-        if (isShown()) postInvalidateOnAnimation();
+        loop.next();
     }
 
     // -- the sea ------------------------------------------------------------
@@ -390,6 +425,9 @@ public class WaveHeightView extends View {
     // -- the reading over the water -----------------------------------------
 
     private void drawReading(Canvas canvas, int h, float crestPx) {
+        // The card's loader says the reading is coming; "--" on the water
+        // would say there is none.
+        if (loading) return;
         numberPaint.setTextSize(0.172f * h);
         unitPaint.setTextSize(0.085f * h);
         // The number rides just above the crest, stopping short of either edge.

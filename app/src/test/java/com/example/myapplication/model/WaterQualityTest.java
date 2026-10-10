@@ -155,4 +155,23 @@ public class WaterQualityTest {
         assertEquals(WaterQuality.Status.SEWAGE_RISK,
             WaterQuality.evaluate(southCounty(), new double[0]).getStatus());
     }
+
+    /**
+     * An empty series is how a failed rainfall fetch arrives. It must not be
+     * presented, or scored, as a checked dry spell: on a clean coast it says
+     * nothing at all, while a standing sewage advisory still does.
+     */
+    @Test
+    public void noRainfallIsNotAFinding() {
+        WaterQuality unchecked = WaterQuality.evaluate(cleanCoast(), new double[0]);
+        assertFalse(unchecked.hasRainfall());
+        assertFalse(unchecked.isInformative());
+
+        WaterQuality plume = WaterQuality.evaluate(southCounty(), new double[0]);
+        assertTrue("a standing advisory does not depend on the rain", plume.isInformative());
+
+        WaterQuality checked = WaterQuality.evaluate(cleanCoast(), DRY);
+        assertTrue(checked.hasRainfall());
+        assertTrue(checked.isInformative());
+    }
 }

@@ -85,6 +85,18 @@ public class LifeguardClient {
     }
 
     /**
+     * The towers already looked up for this beach, without asking anyone: what
+     * the cache holds while it is fresh, else null. For the screens that need
+     * the towers synchronously and would rather go without than wait — the
+     * ranking scores every beach in range at once, and the SOS sheet has to
+     * open instantly.
+     */
+    @Nullable
+    public List<HelpLocation> cachedTowers(String beachId) {
+        return readCache(beachId);
+    }
+
+    /**
      * Anything tagged as a lifeguard post: {@code emergency=lifeguard}, as
      * OpenStreetMap tags one now, and the older {@code lifeguard_tower},
      * {@code lifeguard_base} and {@code lifeguard_platform} values that plenty

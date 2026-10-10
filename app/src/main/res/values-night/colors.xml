@@ -152,4 +152,17 @@
     <color name="wave_card_number">#E9E9ED</color>
     <color name="wave_card_unit">#B2B6CA</color>
     <color name="wave_card_number_glow">#B3060A14</color>
+
+    <!-- The loader at night: the same picture as the wave card's night sea,
+         a moon where the sun was, and a buoy a shade brighter so it still
+         reads against the dark tile. -->
+    <color name="loader_sky">#1A3640</color>
+    <color name="loader_sun">#DCE6F2</color>
+    <color name="loader_swell_back">#2A6B7D</color>
+    <color name="loader_swell_front">#22708C</color>
+    <color name="loader_swell_deep">#12405F</color>
+    <color name="loader_buoy">#F0705A</color>
+    <color name="loader_buoy_band">#EAF1F0</color>
+    <color name="loader_buoy_rim">#99060A14</color>
+    <color name="loader_foam">#99BFE6EA</color>
 </resources>

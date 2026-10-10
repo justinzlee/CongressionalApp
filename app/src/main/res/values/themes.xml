@@ -227,6 +227,35 @@
         <item name="android:layout_marginTop">3dp</item>
         <item name="android:textAppearance">@style/TextAppearance.App.StatValue</item>
     </style>
+    <!--
+      Where a tile's value lands. The value and a SwellLoaderView share this
+      frame: the loader shows while the reading is on its way, and the value,
+      invisible until then, already holds the line at its own height so
+      nothing below moves when it arrives. See ReadingSlot.
+    -->
+    <style name="Widget.App.StatTileValueSlot" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">3dp</item>
+    </style>
+    <!-- The loader itself, at the size it was drawn for. -->
+    <style name="Widget.App.SwellLoader" parent="">
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">24dp</item>
+    </style>
+    <!-- In a value slot: over the start of the value's line, hidden until asked for. -->
+    <style name="Widget.App.SwellLoader.InSlot">
+        <item name="android:layout_gravity">start|center_vertical</item>
+        <item name="android:visibility">gone</item>
+    </style>
+    <!-- Beside a card title, where its reading will go: a size smaller. -->
+    <style name="Widget.App.SwellLoader.Inline">
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">20dp</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
     <!-- A quiet second line under a tile value, e.g. how far off a tide is -->
     <style name="Widget.App.StatTileCaption" parent="">
         <item name="android:layout_width">match_parent</item>
@@ -266,6 +295,13 @@
         <item name="android:textColor">@color/text_primary</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
+    </style>
+
+    <!-- The hero tile's value and its loader, as Widget.App.StatTileValueSlot. -->
+    <style name="Widget.App.HeroStatTileValueSlot" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">5dp</item>
     </style>
 
     <!-- A field inside the search card: the city picker and the name box. -->
