@@ -28,6 +28,9 @@
     <string name="radius_needs_location">Search a city or enable location to filter by distance</string>
     <string name="radius_all">All</string>
     <string name="search_using_location">Using real-time location</string>
+    <string name="location_permission_needed">Flagline doesn\'t have location access. Allow it in your phone\'s Settings to see the beaches nearest you.</string>
+    <string name="location_off">Location is turned off. Turn it on to see the beaches nearest you.</string>
+    <string name="location_unavailable">Couldn\'t get your location right now.</string>
     <string name="search_near_city">Searching near: %1$s</string>
     <string name="search_city_not_found">Location not found</string>
     <string name="search_network_error">Network error</string>
@@ -72,6 +75,11 @@
     <string name="verdict_danger_short">Not safe today</string>
     <string name="verdict_unknown">Checking conditions</string>
     <string name="verdict_unknown_note">Live conditions for this beach haven\'t loaded yet. Check the flags and signs on the beach before you swim.</string>
+    <!-- While a reading is on its way, and when it could not be had. -->
+    <string name="loading">Loading</string>
+    <string name="verdict_unavailable">Conditions unavailable</string>
+    <string name="conditions_error_none">Couldn\'t load live conditions. Tap to try again.</string>
+    <string name="conditions_error_stale">Couldn\'t refresh these conditions. Tap to try again.</string>
     <!-- Beside the verdict: how long ago this beach's readings came in. The
          beach is not named here - the header above the card already names it,
          and this line is set small enough that a name would crowd it out. -->
@@ -121,6 +129,7 @@
     <string name="wave_advice_moderate">Moderate swell. Strong swimmers only.</string>
     <string name="wave_advice_hazardous">Large surf and rip currents. Stay out of the water.</string>
     <string name="wave_advice_unknown">No surf reading for this beach yet. Check the flags on the beach before you swim.</string>
+    <string name="wave_advice_loading">Checking today\'s surf&#8230;</string>
     <string name="section_watch_for">What to watch for</string>
     <string name="section_search">Find a beach</string>
     <string name="lifeguards_title">Lifeguards</string>
@@ -741,7 +750,10 @@
     <string name="sos_share_title">Send my location</string>
     <string name="sos_share_body">Share a map pin with someone</string>
     <string name="sos_share_message">I\'m at %1$s. My location: https://maps.google.com/?q=%2$s</string>
-    <string name="sos_share_unknown">I need help at the beach. Sending my location.</string>
+    <string name="sos_share_unknown">I need help at the beach.</string>
+    <string name="sos_share_position">I need help. My location: https://maps.google.com/?q=%1$s</string>
+    <string name="sos_help_tower">Lifeguard tower</string>
+    <string name="sos_help_tower_named">Lifeguard tower %1$s</string>
     <string name="sos_no_app">No app on this device can handle that.</string>
 
     <!-- ══════ WHAT PEOPLE REPORT FROM THE BEACH ══════
@@ -884,6 +896,7 @@
          blend deserves - "looks good for" rather than "is good for". -->
 
     <string name="section_good_for">Good for today</string>
+    <string name="good_for_loading">Scoring today\'s activities&#8230;</string>
     <string name="activity_title">Best beach for…</string>
     <string name="activity_pick">What do you want to do?</string>
 
@@ -941,6 +954,8 @@
     <string name="aqi_advice_sensitive">If you have asthma, heart or lung trouble, keep it short and easy today. Everyone else is fine.</string>
     <string name="aqi_advice_unhealthy">Everyone should cut back on hard exercise outside. Sensitive groups should stay in.</string>
     <string name="aqi_advice_hazardous">Stay indoors. This is wildfire-smoke territory.</string>
+    <string name="aqi_loading">Checking the air&#8230;</string>
+    <string name="aqi_unavailable">Air quality isn\'t available right now.</string>
 
     <!-- ══════ WATER ══════
          Every one of these says what it is: a prediction from rainfall and
@@ -955,6 +970,9 @@
     <string name="water_sewage_body">This beach is close enough to the Tijuana River mouth to sit under a standing advisory. Check San Diego County\'s current closure list before you swim.</string>
     <string name="water_sewage_rain">Sewage and runoff together</string>
     <string name="water_sewage_rain_body">Rain on top of cross-border flows — this is the combination that closes the south county beaches. Don\'t get in the water here today.</string>
+    <string name="water_loading">Checking recent rain&#8230;</string>
+    <string name="water_unknown">Not checked</string>
+    <string name="water_unknown_body">Recent rainfall didn\'t load, so runoff can\'t be judged. Check local water-quality notices before you swim.</string>
 
     <!-- The hazards the air and water readings raise, in "What to watch for"
          and the Alerts tab -->
@@ -984,6 +1002,8 @@
         <item quantity="other">%1$d street stretches</item>
     </plurals>
     <string name="parking_caveat">Shows what exists, not what\'s free right now.</string>
+    <string name="parking_loading">Looking for parking nearby&#8230;</string>
+    <string name="parking_unavailable">Parking info isn\'t available right now.</string>
 
     <plurals name="alert_count">
         <item quantity="one">%1$d alert</item>

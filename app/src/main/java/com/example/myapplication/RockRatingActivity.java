@@ -35,7 +35,6 @@ import com.google.android.material.slider.Slider;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * Rating how rocky a beach is underfoot, from 0 to 10.
@@ -100,10 +99,7 @@ public class RockRatingActivity extends AppCompatActivity {
         setContentView(R.layout.activity_rock_rating);
 
         String beachId = getIntent().getStringExtra(EXTRA_BEACH_ID);
-        beach = BeachRepository.getInstance().getBeaches().stream()
-            .filter(b -> Objects.equals(b.getId(), beachId))
-            .findFirst()
-            .orElse(null);
+        beach = BeachRepository.getInstance().findById(beachId);
         if (beach == null) {
             finish();
             return;

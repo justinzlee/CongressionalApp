@@ -52,6 +52,12 @@
             android:textAllCaps="false"
             android:textSize="13sp"
             tools:text="Moderate" />
+
+        <!-- Where the tag will be once the swell is known. -->
+        <com.example.myapplication.SwellLoaderView
+            android:id="@+id/waveCardLoader"
+            style="@style/Widget.App.SwellLoader.Inline"
+            android:layout_marginTop="2dp" />
     </LinearLayout>
 
     <LinearLayout

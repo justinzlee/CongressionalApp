@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -280,5 +281,55 @@ public class ActivityScorerTest {
         }
         assertEquals(Arrays.asList(Activity.values()).size(),
             ActivityScorer.scoreAll(beach(), in).size());
+    }
+
+    // ── Shared inputs ────────────────────────────────────────────────────
+
+    /**
+     * A rainfall fetch that failed is left out of the blend rather than
+     * scored as spotless water: the beach and the ranking would otherwise
+     * both credit a dry three days nobody checked.
+     */
+    @Test
+    public void uncheckedWaterIsLeftOutOfTheBlend() {
+        ActivityScorer.Inputs without = inputs(2.0, 6.0, 80.0);
+        ActivityScorer.Inputs unchecked = inputs(2.0, 6.0, 80.0);
+        unchecked.water = WaterQuality.evaluate(beach(), new double[0]);
+
+        ActivityFit a = ActivityScorer.score(Activity.SWIM, beach(), without);
+        ActivityFit b = ActivityScorer.score(Activity.SWIM, beach(), unchecked);
+        assertEquals(a.getFactors().size(), b.getFactors().size());
+        assertEquals(a.getScore(), b.getScore());
+    }
+
+    /** One patrol rule for every screen that scores; see guardedState. */
+    @Test
+    public void guardedStateCountsRecordedAndMappedTowers() {
+        Beach unknown = beach();
+        assertNull("no help on record and none mapped: unknown, not unguarded",
+            ActivityScorer.guardedState(unknown, null));
+        assertNull(ActivityScorer.guardedState(unknown, Collections.emptyList()));
+
+        HelpLocation tower = new HelpLocation("7", HelpType.LIFEGUARD_TOWER, 32.86, -117.25);
+        assertEquals(Boolean.TRUE,
+            ActivityScorer.guardedState(unknown, Collections.singletonList(tower)));
+
+        Beach recorded = new Beach("CA1", "Test Beach", 32.86, -117.25,
+            Collections.emptyList(), null, Collections.singletonList(tower), null);
+        assertEquals(Boolean.TRUE, ActivityScorer.guardedState(recorded, null));
+
+        HelpLocation hospital = new HelpLocation("Hospital", HelpType.HOSPITAL, 32.9, -117.2);
+        Beach hospitalOnly = new Beach("CA1", "Test Beach", 32.86, -117.25,
+            Collections.emptyList(), null, Collections.singletonList(hospital), null);
+        assertEquals(Boolean.FALSE, ActivityScorer.guardedState(hospitalOnly, null));
+    }
+
+    @Test
+    public void worstOfPicksTheMostSevereHazard() {
+        assertNull(ActivityScorer.worstOf(Collections.emptyList()));
+        assertEquals(Severity.HIGH, ActivityScorer.worstOf(Arrays.asList(
+            new Hazard(HazardType.UV_INDEX, Severity.MODERATE, "uv", null),
+            new Hazard(HazardType.HIGH_SURF, Severity.HIGH, "surf", null),
+            new Hazard(HazardType.RIP_CURRENT, Severity.LOW, "rip", null))));
     }
 }

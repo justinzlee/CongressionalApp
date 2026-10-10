@@ -51,7 +51,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity {
     /** Whether the launch screen has run since the app process started. */
@@ -78,6 +77,23 @@ public class MainActivity extends AppCompatActivity {
      */
     private static final double REFIX_MILES = 0.03;
 
+    /**
+     * How close the phone has to be to a beach for the SOS sheet to say it is
+     * at that beach. Further out, the sheet still sends the phone's own
+     * position, but does not claim a beach somebody is nowhere near.
+     */
+    private static final double SOS_BEACH_MILES = 3.0;
+
+    /**
+     * Whether this run of the app has asked for location yet. The home screen
+     * used to ask every time it came to the front, so turning the dialog down
+     * once meant seeing it again on every return from a beach. Now it asks
+     * once per launch, and again only when "use my location" is tapped.
+     */
+    private static boolean askedForLocation = false;
+    /** Whether this run has already said why there is no position; once is enough. */
+    private static boolean explainedNoLocation = false;
+
     private BeachRepository repository;
     private LocationService locationService;
     private BeachAdapter adapter;
@@ -103,10 +119,11 @@ public class MainActivity extends AppCompatActivity {
     private View verdictDot;
     private TextView verdictText, verdictMeta, verdictNote;
     private View verdictDetailsButton;
-    private TextView statSurfValue, statUvValue, statWindValue, statTempValue;
+    /** The four readings in the card, each with a loader until its beach has one. */
+    private ReadingSlot statSurf, statUv, statWind, statTemp;
     /** The ring swelling out of the pin on the search button. */
     private ValueAnimator pulseAnimator;
-    /** The beach the verdict card speaks for; what the SOS sheet reports. */
+    /** The beach the verdict card speaks for. */
     private Beach nearestBeach;
 
     /**
@@ -243,13 +260,13 @@ public class MainActivity extends AppCompatActivity {
         verdictMeta = findViewById(R.id.verdictMeta);
         verdictNote = findViewById(R.id.verdictNote);
         verdictDetailsButton = findViewById(R.id.verdictDetailsButton);
-        statSurfValue = findViewById(R.id.statSurfValue);
-        statUvValue = findViewById(R.id.statUvValue);
-        statWindValue = findViewById(R.id.statWindValue);
-        statTempValue = findViewById(R.id.statTempValue);
+        statSurf = new ReadingSlot(findViewById(R.id.statSurfValue), findViewById(R.id.statSurfLoader));
+        statUv = new ReadingSlot(findViewById(R.id.statUvValue), findViewById(R.id.statUvLoader));
+        statWind = new ReadingSlot(findViewById(R.id.statWindValue), findViewById(R.id.statWindLoader));
+        statTemp = new ReadingSlot(findViewById(R.id.statTempValue), findViewById(R.id.statTempLoader));
 
         findViewById(R.id.myLocationButton).setOnClickListener(v -> useRealTimeLocation());
-        findViewById(R.id.sosButton).setOnClickListener(v -> SosSheet.show(this, nearestBeach));
+        findViewById(R.id.sosButton).setOnClickListener(v -> openSos());
 
         EdgeToEdge.applyBottomInset(findViewById(R.id.tabBar));
         TabBar.setup(this, TabBar.Tab.NOW);
@@ -527,8 +544,28 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        requestLocation();
+        requestLocation(false);
         startPulse();
+    }
+
+    /**
+     * The SOS sheet, about where the phone actually is.
+     *
+     * <p>It used to be handed the beach the verdict card speaks for, which is
+     * the top of the list - and the list is sorted around a searched city when
+     * one is picked, or around a default in Los Angeles before any fix has
+     * come in. So somebody in Oregon browsing San Diego, or anybody who had
+     * not granted location, was offered "You're nearest to Santa Monica Pier"
+     * and a message to send saying they were there. Now the sheet gets the
+     * phone's own last fix, and a beach only when that fix is on or near one.
+     */
+    private void openSos() {
+        if (!hasRealLocation) {
+            SosSheet.show(this, null, null, null);
+            return;
+        }
+        Beach here = repository.nearestTo(realLat, realLon, SOS_BEACH_MILES);
+        SosSheet.show(this, here, realLat, realLon);
     }
 
     /**
@@ -597,7 +634,7 @@ public class MainActivity extends AppCompatActivity {
         if (hasRealLocation) {
             updateUserLocation(realLat, realLon);
         }
-        requestLocation();
+        requestLocation(true);
     }
 
     private void setupCitySearch() {
@@ -773,23 +810,39 @@ public class MainActivity extends AppCompatActivity {
         searchClearButton.setOnClickListener(v -> searchEditText.setText(""));
     }
 
-    private void requestLocation() {
+    /** Request code for the location permission dialog. */
+    private static final int REQUEST_LOCATION = 1;
+    /** Whether the dialog now up was asked for by a tap rather than by opening the screen. */
+    private boolean locationAskedByTap;
+
+    /**
+     * Starts following the phone's position, asking for the permission first
+     * if it is not held.
+     *
+     * @param byTap true when the user tapped "use my location": they asked, so
+     *              the dialog is shown however many times it has been turned
+     *              down, and a refusal is explained. Otherwise it is shown at
+     *              most once per launch.
+     */
+    private void requestLocation(boolean byTap) {
         String[] permissions = {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
         };
-        
+
         boolean hasFine = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
         boolean hasCoarse = ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
 
-        if (!hasFine && !hasCoarse) {
-            ActivityCompat.requestPermissions(this, permissions, 1);
-        } else {
-            fetchLocation();
+        if (hasFine || hasCoarse) {
+            fetchLocation(byTap);
+        } else if (byTap || !askedForLocation) {
+            askedForLocation = true;
+            locationAskedByTap = byTap;
+            ActivityCompat.requestPermissions(this, permissions, REQUEST_LOCATION);
         }
     }
 
-    private void fetchLocation() {
+    private void fetchLocation(boolean byTap) {
         locationService.getLastLocation(new LocationService.LocationUpdateListener() {
             @Override
             public void onLocationUpdated(double latitude, double longitude) {
@@ -809,7 +862,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onLocationError(String error) {
                 updateList();
-                Toast.makeText(MainActivity.this, error, Toast.LENGTH_SHORT).show();
+                // Said once a launch, or whenever the user asked: repeated on
+                // every return to this screen it only trained people to
+                // ignore it.
+                if (byTap || !explainedNoLocation) {
+                    explainedNoLocation = true;
+                    Toast.makeText(MainActivity.this, error, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -858,19 +917,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateList() {
         String query = searchEditText.getText().toString();
-        List<Beach> filteredBeaches = repository.searchBeaches(query).stream()
-            .filter(b -> {
-                if (currentRadiusMiles >= 1000.0) return true; // Disable filter for "All"
-                double distanceMiles = UnitConverter.calculateDistance(currentLat, currentLon, b.getLatitude(), b.getLongitude());
-                return distanceMiles <= currentRadiusMiles;
-            })
-            .sorted((b1, b2) -> {
-                double d1 = UnitConverter.calculateDistance(currentLat, currentLon, b1.getLatitude(), b1.getLongitude());
-                double d2 = UnitConverter.calculateDistance(currentLat, currentLon, b2.getLatitude(), b2.getLongitude());
-                return Double.compare(d1, d2);
-            })
-            .limit(MAX_LISTED_BEACHES)
-            .collect(Collectors.toList());
+        List<Beach> filteredBeaches = BeachRepository.nearestFirst(
+            repository.searchBeaches(query), currentLat, currentLon,
+            currentRadiusMiles, MAX_LISTED_BEACHES);
 
         boolean showDistance = isManualLocation ? hasRealLocation : hasLocation;
         double displayLat = isManualLocation ? realLat : currentLat;
@@ -940,14 +989,20 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         });
 
+        // Until this beach has a reading, each tile shows the loader rather
+        // than a dash: the verdict above already says it is being checked.
         BeachConditions conditions = beach.getConditions();
-        statSurfValue.setText(conditions == null ? "--"
-            : UnitConverter.formatWaveHeight(this, conditions.getWaveHeight()));
-        statUvValue.setText(conditions == null ? "--" : conditions.getFormattedUvIndex(this));
-        statWindValue.setText(conditions == null ? "--"
-            : UnitConverter.formatWindSpeed(this, conditions.getWindSpeed()));
-        statTempValue.setText(conditions == null ? "--"
-            : UnitConverter.formatTemperature(this, conditions.getAirTemperature()));
+        if (conditions == null) {
+            statSurf.loading();
+            statUv.loading();
+            statWind.loading();
+            statTemp.loading();
+            return;
+        }
+        statSurf.show(UnitConverter.formatWaveHeight(this, conditions.getWaveHeight()));
+        statUv.show(conditions.getFormattedUvIndex(this));
+        statWind.show(UnitConverter.formatWindSpeed(this, conditions.getWindSpeed()));
+        statTemp.show(UnitConverter.formatTemperature(this, conditions.getAirTemperature()));
     }
 
     /**
@@ -988,9 +1043,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         updateRadiusChipLabels();
-        if (adapter != null) {
-            adapter.notifyDataSetChanged();
-        }
+        // updateList hands the adapter its rows afresh, which redraws every
+        // one - units, verdicts and photos included - so it needs no separate
+        // notify first.
         updateList();
         // Alerts may have been read since this screen was last in front.
         TabBar.refreshAlertBadge(this);
@@ -1042,12 +1097,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 1 && grantResults.length > 0) {
+        if (requestCode == REQUEST_LOCATION && grantResults.length > 0) {
             boolean anyGranted = false;
             for (int result : grantResults) {
                 if (result == PackageManager.PERMISSION_GRANTED) anyGranted = true;
             }
-            if (anyGranted) fetchLocation();
+            if (anyGranted) {
+                fetchLocation(locationAskedByTap);
+            } else if (locationAskedByTap) {
+                // Tapped, and still refused - or refused for good earlier, in
+                // which case Android answers without showing anything at all.
+                // Either way, say where it can be turned on.
+                Toast.makeText(this, R.string.location_permission_needed, Toast.LENGTH_LONG).show();
+            }
+            locationAskedByTap = false;
         }
     }
 }

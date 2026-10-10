@@ -254,10 +254,18 @@
                                 android:text="@string/stat_surf"
                                 android:textAppearance="@style/TextAppearance.App.TileLabel" />
 
-                            <TextView
-                                android:id="@+id/statSurfValue"
-                                style="@style/Widget.App.HeroStatTileValue"
-                                tools:text="2.8 ft" />
+                            <FrameLayout style="@style/Widget.App.HeroStatTileValueSlot">
+
+                                <TextView
+                                    android:id="@+id/statSurfValue"
+                                    style="@style/Widget.App.HeroStatTileValue"
+                                    android:layout_marginTop="0dp"
+                                    tools:text="2.8 ft" />
+
+                                <com.example.myapplication.SwellLoaderView
+                                    android:id="@+id/statSurfLoader"
+                                    style="@style/Widget.App.SwellLoader.InSlot" />
+                            </FrameLayout>
                         </LinearLayout>
 
                         <LinearLayout
@@ -270,10 +278,18 @@
                                 android:text="@string/stat_uv"
                                 android:textAppearance="@style/TextAppearance.App.TileLabel" />
 
-                            <TextView
-                                android:id="@+id/statUvValue"
-                                style="@style/Widget.App.HeroStatTileValue"
-                                tools:text="Moderate (5)" />
+                            <FrameLayout style="@style/Widget.App.HeroStatTileValueSlot">
+
+                                <TextView
+                                    android:id="@+id/statUvValue"
+                                    style="@style/Widget.App.HeroStatTileValue"
+                                    android:layout_marginTop="0dp"
+                                    tools:text="Moderate (5)" />
+
+                                <com.example.myapplication.SwellLoaderView
+                                    android:id="@+id/statUvLoader"
+                                    style="@style/Widget.App.SwellLoader.InSlot" />
+                            </FrameLayout>
                         </LinearLayout>
                     </LinearLayout>
 
@@ -293,10 +309,18 @@
                                 android:text="@string/stat_wind"
                                 android:textAppearance="@style/TextAppearance.App.TileLabel" />
 
-                            <TextView
-                                android:id="@+id/statWindValue"
-                                style="@style/Widget.App.HeroStatTileValue"
-                                tools:text="8.7 mph" />
+                            <FrameLayout style="@style/Widget.App.HeroStatTileValueSlot">
+
+                                <TextView
+                                    android:id="@+id/statWindValue"
+                                    style="@style/Widget.App.HeroStatTileValue"
+                                    android:layout_marginTop="0dp"
+                                    tools:text="8.7 mph" />
+
+                                <com.example.myapplication.SwellLoaderView
+                                    android:id="@+id/statWindLoader"
+                                    style="@style/Widget.App.SwellLoader.InSlot" />
+                            </FrameLayout>
                         </LinearLayout>
 
                         <LinearLayout
@@ -309,10 +333,18 @@
                                 android:text="@string/stat_water"
                                 android:textAppearance="@style/TextAppearance.App.TileLabel" />
 
-                            <TextView
-                                android:id="@+id/statTempValue"
-                                style="@style/Widget.App.HeroStatTileValue"
-                                tools:text="74.6°F" />
+                            <FrameLayout style="@style/Widget.App.HeroStatTileValueSlot">
+
+                                <TextView
+                                    android:id="@+id/statTempValue"
+                                    style="@style/Widget.App.HeroStatTileValue"
+                                    android:layout_marginTop="0dp"
+                                    tools:text="74.6°F" />
+
+                                <com.example.myapplication.SwellLoaderView
+                                    android:id="@+id/statTempLoader"
+                                    style="@style/Widget.App.SwellLoader.InSlot" />
+                            </FrameLayout>
                         </LinearLayout>
                     </LinearLayout>
 

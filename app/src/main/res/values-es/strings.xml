@@ -34,6 +34,9 @@
     <string name="radius_needs_location">Busca una ciudad o activa la ubicación para filtrar por distancia</string>
     <string name="radius_all">Todas</string>
     <string name="search_using_location">Usando tu ubicación en tiempo real</string>
+    <string name="location_permission_needed">Flagline no tiene acceso a tu ubicación. Permítelo en los Ajustes del teléfono para ver las playas más cercanas.</string>
+    <string name="location_off">La ubicación está desactivada. Actívala para ver las playas más cercanas.</string>
+    <string name="location_unavailable">No se pudo obtener tu ubicación ahora.</string>
     <string name="search_near_city">Buscando cerca de: %1$s</string>
     <string name="search_city_not_found">No se encontró la ubicación</string>
     <string name="search_network_error">Error de conexión</string>
@@ -74,6 +77,10 @@
     <string name="verdict_danger_short">Hoy no es seguro</string>
     <string name="verdict_unknown">Consultando condiciones</string>
     <string name="verdict_unknown_note">Todavía no llegan las condiciones en vivo de esta playa. Revisa las banderas y las señales de la playa antes de nadar.</string>
+    <string name="loading">Cargando</string>
+    <string name="verdict_unavailable">Condiciones no disponibles</string>
+    <string name="conditions_error_none">No se pudieron cargar las condiciones en vivo. Toca para reintentar.</string>
+    <string name="conditions_error_stale">No se pudieron actualizar estas condiciones. Toca para reintentar.</string>
     <string name="verdict_updated_now">Actualizado ahora mismo</string>
     <string name="verdict_updated_minutes">Actualizado hace %1$d min</string>
     <string name="verdict_updated_hours">Actualizado hace %1$d h</string>
@@ -117,6 +124,7 @@
     <string name="wave_advice_moderate">Marejada moderada. Solo para quien nade bien.</string>
     <string name="wave_advice_hazardous">Olas grandes y corrientes de resaca. No te metas al agua.</string>
     <string name="wave_advice_unknown">Todavía no hay lectura de oleaje para esta playa. Revisa las banderas de la playa antes de nadar.</string>
+    <string name="wave_advice_loading">Consultando el oleaje de hoy&#8230;</string>
     <string name="section_watch_for">A qué estar atento</string>
     <string name="section_search">Buscar una playa</string>
     <string name="lifeguards_title">Salvavidas</string>
@@ -735,7 +743,10 @@
     <string name="sos_share_title">Enviar mi ubicación</string>
     <string name="sos_share_body">Comparte un punto del mapa con alguien</string>
     <string name="sos_share_message">Estoy en %1$s. Mi ubicación: https://maps.google.com/?q=%2$s</string>
-    <string name="sos_share_unknown">Necesito ayuda en la playa. Enviando mi ubicación.</string>
+    <string name="sos_share_unknown">Necesito ayuda en la playa.</string>
+    <string name="sos_share_position">Necesito ayuda. Mi ubicación: https://maps.google.com/?q=%1$s</string>
+    <string name="sos_help_tower">Torre de salvavidas</string>
+    <string name="sos_help_tower_named">Torre de salvavidas %1$s</string>
     <string name="sos_no_app">Ninguna app de este dispositivo puede hacer eso.</string>
 
     <!-- ══════ LO QUE LA GENTE REPORTA DESDE LA PLAYA ══════ -->
@@ -852,6 +863,7 @@
     <!-- ══════ PARA QUÉ ES BUENA HOY ══════ -->
 
     <string name="section_good_for">Buena hoy para</string>
+    <string name="good_for_loading">Puntuando las actividades de hoy&#8230;</string>
     <string name="activity_title">La mejor playa para…</string>
     <string name="activity_pick">¿Qué quieres hacer?</string>
 
@@ -909,6 +921,8 @@
     <string name="aqi_advice_sensitive">Si tienes asma o problemas de corazón o pulmón, hoy tómatelo corto y suave. Los demás están bien.</string>
     <string name="aqi_advice_unhealthy">Todos deberían bajarle al ejercicio fuerte al aire libre. Los grupos sensibles, mejor adentro.</string>
     <string name="aqi_advice_hazardous">Quédate adentro. Esto es territorio de humo de incendios.</string>
+    <string name="aqi_loading">Consultando la calidad del aire&#8230;</string>
+    <string name="aqi_unavailable">La calidad del aire no está disponible ahora.</string>
 
     <!-- ══════ AGUA ══════
          Cada una de estas dice lo que es: una predicción a partir de la lluvia
@@ -923,6 +937,9 @@
     <string name="water_sewage_body">Esta playa está lo bastante cerca de la desembocadura del río Tijuana como para caer bajo un aviso permanente. Revisa la lista de cierres vigente del condado de San Diego antes de nadar.</string>
     <string name="water_sewage_rain">Aguas negras y escurrimiento juntos</string>
     <string name="water_sewage_rain_body">Lluvia encima de los flujos transfronterizos: esta es la combinación que cierra las playas del sur del condado. Hoy no te metas al agua aquí.</string>
+    <string name="water_loading">Consultando la lluvia reciente&#8230;</string>
+    <string name="water_unknown">Sin comprobar</string>
+    <string name="water_unknown_body">No se pudo cargar la lluvia reciente, así que no se puede valorar la escorrentía. Revisa los avisos locales de calidad del agua antes de nadar.</string>
 
     <!-- Los peligros que levantan las lecturas de aire y agua -->
     <string name="hazard_water_step_stay_out">No metas la cabeza al agua, y no nades si tienes una herida abierta.</string>
@@ -952,6 +969,8 @@
         <item quantity="other">%1$d tramos de calle</item>
     </plurals>
     <string name="parking_caveat">Muestra lo que existe, no lo que está libre ahora.</string>
+    <string name="parking_loading">Buscando estacionamiento cerca&#8230;</string>
+    <string name="parking_unavailable">La información de estacionamiento no está disponible ahora.</string>
 
     <!--
       El español tiene una categoría "many" para los millones — "un millón DE

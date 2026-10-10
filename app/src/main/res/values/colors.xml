@@ -248,4 +248,19 @@
     <color name="wave_card_number">#211F1B</color>
     <color name="wave_card_unit">#6E6659</color>
     <color name="wave_card_number_glow">#B3FDFBF7</color>
+
+    <!-- The loader that stands where a reading will land (SwellLoaderView):
+         a pill of daylight sea under a low sun, with a lifebuoy riding the
+         swell. The sky is a step bluer than the accent tint so the pill holds
+         its shape on a cream tile; the swells are the brand's own sea ramp,
+         and the buoy wears the flag colour the launch screen does. -->
+    <color name="loader_sky">#DDF0F3</color>
+    <color name="loader_sun">#F7A828</color>
+    <color name="loader_swell_back">#9CD3DB</color>
+    <color name="loader_swell_front">#2E93A3</color>
+    <color name="loader_swell_deep">#147384</color>
+    <color name="loader_buoy">#EA5C41</color>
+    <color name="loader_buoy_band">#FFFFFF</color>
+    <color name="loader_buoy_rim">#8C0A4757</color>
+    <color name="loader_foam">#D9FFFFFF</color>
 </resources>

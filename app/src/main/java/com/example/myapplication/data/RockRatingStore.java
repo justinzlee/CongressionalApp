@@ -36,12 +36,18 @@ public class RockRatingStore {
 
     private final Context app;
     private final SharedPreferences prefs;
-    private final PhotoImporter importer;
+
+    /**
+     * Made on first use. A store is built every time a hazard list is worked
+     * out - for every row of the home list, every alert and the tab badge -
+     * and nearly all of those only read a rating, so an importer (and the
+     * main-thread handler it holds) per store was spent for nothing.
+     */
+    @Nullable private PhotoImporter importer;
 
     public RockRatingStore(Context context) {
         this.app = context.getApplicationContext();
         this.prefs = app.getSharedPreferences(SettingsActivity.PREFS_NAME, Context.MODE_PRIVATE);
-        this.importer = new PhotoImporter(app);
     }
 
     /**
@@ -93,6 +99,7 @@ public class RockRatingStore {
      */
     public void submitPhoto(String beachId, Uri source, PhotoImporter.Callback callback) {
         File dir = new File(app.getFilesDir(), PHOTO_DIR);
+        if (importer == null) importer = new PhotoImporter(app);
         importer.importInto(dir, beachId, source, new PhotoImporter.Callback() {
             @Override
             public void onSaved(File photo) {

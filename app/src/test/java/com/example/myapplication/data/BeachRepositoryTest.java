@@ -436,4 +436,62 @@ public class BeachRepositoryTest {
         beaches.clear();
         assertEquals(EXPECTED_BEACH_COUNT, repo.getBeaches().size());
     }
+
+    /**
+     * Nobody types the list's punctuation. "swamis" has to find Swami's
+     * Beach, "st augustine" St. Augustine Beach, and a space left after the
+     * last word must not empty the list.
+     */
+    @Test
+    public void searchIgnoresApostrophesFullStopsAndStraySpaces() {
+        BeachRepository repo = BeachRepository.newForTesting();
+        assertTrue(names(repo.searchBeaches("swamis")).contains("Swami's Beach"));
+        assertTrue(names(repo.searchBeaches("Swami's")).contains("Swami's Beach"));
+        assertTrue(names(repo.searchBeaches("st augustine")).contains("St. Augustine Beach"));
+        assertTrue(names(repo.searchBeaches("malibu ")).contains("Malibu Lagoon"));
+        assertEquals(EXPECTED_BEACH_COUNT, repo.searchBeaches("   ").size());
+    }
+
+    @Test
+    public void findById_findsTheBeachOrNothing() {
+        BeachRepository repo = BeachRepository.newForTesting();
+        Beach shores = repo.findById("CA1");
+        assertNotNull(shores);
+        assertEquals("La Jolla Shores", shores.getName());
+        assertNull(repo.findById("NO_SUCH_BEACH"));
+        assertNull(repo.findById(null));
+    }
+
+    /**
+     * The SOS sheet names the beach a phone is on, and none when it is not
+     * near one: someone in Denver is not "nearest to" Galveston.
+     */
+    @Test
+    public void nearestTo_onlyNamesABeachThePhoneIsActuallyNear() {
+        BeachRepository repo = BeachRepository.newForTesting();
+        // A few hundred metres up the sand from the La Jolla Shores pin.
+        Beach near = repo.nearestTo(32.8605, -117.2555, 3.0);
+        assertNotNull(near);
+        assertEquals("CA1", near.getId());
+        // Downtown Denver.
+        assertNull(repo.nearestTo(39.7392, -104.9903, 3.0));
+    }
+
+    /** The home list's filter keeps the nearest first and stops at the limit. */
+    @Test
+    public void nearestFirst_sortsByDistanceAndHonoursTheLimit() {
+        BeachRepository repo = BeachRepository.newForTesting();
+        List<Beach> two = BeachRepository.nearestFirst(
+            repo.getBeaches(), 32.8589, -117.2558, Double.MAX_VALUE, 2);
+        assertEquals(2, two.size());
+        assertEquals("CA1", two.get(0).getId());
+        assertTrue(UnitConverter.calculateDistance(32.8589, -117.2558,
+                two.get(0).getLatitude(), two.get(0).getLongitude())
+            <= UnitConverter.calculateDistance(32.8589, -117.2558,
+                two.get(1).getLatitude(), two.get(1).getLongitude()));
+    }
+
+    private static List<String> names(List<Beach> beaches) {
+        return beaches.stream().map(Beach::getName).collect(Collectors.toList());
+    }
 }

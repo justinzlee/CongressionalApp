@@ -69,11 +69,14 @@ public final class WaterQuality {
     private final Status status;
     private final double recentRainMm;
     @Nullable private final Integer daysSinceRain;
+    private final boolean rainfallKnown;
 
-    private WaterQuality(Status status, double recentRainMm, @Nullable Integer daysSinceRain) {
+    private WaterQuality(Status status, double recentRainMm, @Nullable Integer daysSinceRain,
+                         boolean rainfallKnown) {
         this.status = status;
         this.recentRainMm = recentRainMm;
         this.daysSinceRain = daysSinceRain;
+        this.rainfallKnown = rainfallKnown;
     }
 
     public Status getStatus() { return status; }
@@ -85,6 +88,22 @@ public final class WaterQuality {
     @Nullable public Integer getDaysSinceRain() { return daysSinceRain; }
 
     public boolean isAdvisory() { return status != Status.LIKELY_CLEAN; }
+
+    /** Whether any rainfall came back to judge from at all. */
+    public boolean hasRainfall() { return rainfallKnown; }
+
+    /**
+     * Whether this says anything about the water.
+     *
+     * <p>A failed rainfall fetch arrives as an empty series, which reads as "no
+     * rain" and so as {@link Status#LIKELY_CLEAN}. That is the right way for
+     * the advisory to fail — no warning is invented from a network error — but
+     * it is not a finding: shown as "Likely clean", or scored as spotless water
+     * in the activity blend, it would be claiming a dry three days nobody
+     * checked. A standing sewage advisory still counts, because it does not
+     * depend on the rain.
+     */
+    public boolean isInformative() { return rainfallKnown || isAdvisory(); }
 
     /**
      * Works out the status from a beach and its recent rainfall.
@@ -126,7 +145,7 @@ public final class WaterQuality {
         } else {
             status = Status.LIKELY_CLEAN;
         }
-        return new WaterQuality(status, total, daysSince);
+        return new WaterQuality(status, total, daysSince, dailyRainMm.length > 0);
     }
 
     /**
