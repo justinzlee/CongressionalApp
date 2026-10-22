@@ -24,6 +24,11 @@ import okhttp3.Response;
  * answer. (overpass.kumi.systems, often listed as a third, is at present the
  * same machine as the second under another name, so trying it after the second
  * has failed would only double the wait.)
+ *
+ * <p>The "406 Not Acceptable" turned out to be about who was asking, not how
+ * much: overpass-api.de refuses OkHttp's default User-Agent outright and
+ * answers the same query from a named app. Every request therefore says it is
+ * Flagline, as the service's usage policy asks.
  */
 final class Overpass {
 
@@ -38,13 +43,15 @@ final class Overpass {
      * refuses, does so by never connecting — on each of its two addresses in
      * turn, so the shared client's ten seconds made that a twenty-second wait
      * before the next server was tried. But once connected, Overpass sends
-     * nothing until its whole answer is ready, and a busy instance took up to
-     * half a minute. Built from the shared client so it keeps the same
-     * connection pool and threads.
+     * nothing until its whole answer is ready, and a busy instance has taken
+     * forty seconds. Every caller is a background lookup that is cached for
+     * weeks once it lands, so waiting a minute for it is cheaper than giving
+     * up and asking again on the next visit. Built from the shared client so
+     * it keeps the same connection pool and threads.
      */
     private static final OkHttpClient CLIENT = Http.CLIENT.newBuilder()
         .connectTimeout(5, TimeUnit.SECONDS)
-        .readTimeout(30, TimeUnit.SECONDS)
+        .readTimeout(60, TimeUnit.SECONDS)
         .build();
 
     private Overpass() {
@@ -71,6 +78,7 @@ final class Overpass {
     private static String post(String endpoint, String query) throws IOException {
         Request request = new Request.Builder()
             .url(endpoint)
+            .header("User-Agent", Http.USER_AGENT)
             .post(RequestBody.create(query.getBytes(StandardCharsets.UTF_8)))
             .build();
         try (Response response = CLIENT.newCall(request).execute()) {

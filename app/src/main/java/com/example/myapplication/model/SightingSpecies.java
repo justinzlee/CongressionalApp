@@ -8,26 +8,28 @@ import com.example.myapplication.R;
 /**
  * What someone can say they saw at a beach.
  *
- * <p>Deliberately groups rather than species. An earlier version of this screen
- * offered dolphin, seal and sea lion, which asked the user to make an
- * identification they are usually not in a position to make — most animals
- * reported as seals on this coast are sea lions — and quietly refused every
- * other report a beach actually produces: the shark that closes the water, the
- * jellyfish bloom, the bird caught in line, the thing nobody could name. A
- * group the reporter can be confident about, plus a free-text note for the
- * detail, gets more true reports filed than a species list gets right.
+ * <p>Mostly groups rather than species. A list of species asks the user to make
+ * an identification they are usually not in a position to make, and quietly
+ * refuses every report that fits none of them: the jellyfish bloom, the bird
+ * caught in line, the thing nobody could name. A group the reporter can be
+ * confident about, plus a free-text note for the detail, gets more true reports
+ * filed than a species list gets right.
  *
  * <p>The groups are cut where the <em>advice</em> differs, not where biology
  * does. Shark and ray are apart not because they are hard to confuse but
  * because a shark in the water raises a warning on this beach and a ray does
- * not, and one card could not tell them apart. Everything a beach can throw up
- * that is none of these — seals and sea lions included — lands in {@link
- * #OTHER}, so the advice a stranding gives has to hold for any animal at all:
- * see {@code ReportHazards}.
+ * not. {@link #SEAL} covers sea lions too — most animals reported as seals on
+ * this coast are sea lions, and the advice for the two is the same — and is the
+ * one group that also asks whether the animal was alive or dead, because a
+ * dead one is a disease risk rather than an animal to give room to. {@link
+ * #SEAGULL} sits apart from {@link #BIRD} because gulls are the bird every
+ * beach has and the one that takes food out of people's hands; everything else
+ * with feathers is a bird. Whatever is none of these lands in {@link #OTHER},
+ * so the advice a stranding gives has to hold for any animal at all: see
+ * {@code ReportHazards}.
  *
  * <p>The declaration order is the order the cards are laid out in, three to a
- * row, so {@link #OTHER} last puts the none-of-these answer in the bottom right
- * where it belongs.
+ * row, which puts {@link #OTHER} last.
  */
 public enum SightingSpecies {
 
@@ -39,6 +41,10 @@ public enum SightingSpecies {
         R.string.sighting_noun_fish, R.drawable.ic_fish),
     JELLYFISH(R.string.sighting_species_jellyfish,
         R.string.sighting_noun_jellyfish, R.drawable.ic_jellyfish),
+    SEAL(R.string.sighting_species_seal,
+        R.string.sighting_noun_seal, R.drawable.ic_seal),
+    SEAGULL(R.string.sighting_species_seagull,
+        R.string.sighting_noun_seagull, R.drawable.ic_seagull),
     BIRD(R.string.sighting_species_bird,
         R.string.sighting_noun_bird, R.drawable.ic_bird),
     OTHER(R.string.sighting_species_other,
@@ -85,12 +91,13 @@ public enum SightingSpecies {
      * version — or a newer one — must not take the screen down.
      *
      * <p>Anything unrecognised becomes {@link #OTHER}, which is also where the
-     * {@code DOLPHIN}, {@code SEAL} and {@code SEA_LION} written by older builds
-     * land. That is the honest answer rather than a lossy one: those reports
-     * really were animals of a kind this build no longer names, and {@code
-     * OTHER} is the only value that claims nothing false about them.
+     * {@code DOLPHIN} written by older builds lands: that report really was an
+     * animal of a kind this build does not name, and {@code OTHER} is the only
+     * value that claims nothing false about it. The {@code SEA_LION} those
+     * builds wrote reads back as {@link #SEAL}, the card that now covers it.
      */
     public static SightingSpecies parse(String name) {
+        if ("SEA_LION".equals(name)) return SEAL;
         if (name != null) {
             for (SightingSpecies species : values()) {
                 if (species.name().equals(name)) {

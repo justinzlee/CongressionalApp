@@ -1,0 +1,1056 @@
+<resources>
+    <!--
+      French. Tutoiement throughout, for the same reason the Spanish uses "tú":
+      the English copy talks to one person standing on the sand, and "vous"
+      would put a counter between the app and the swimmer it is warning.
+
+      Beach names, NOAA station ids, US law names and the app's own name stay
+      as they are. Distances and temperatures are given in metric first, as the
+      Spanish does, with Fahrenheit kept where a reader may be checking a
+      thermometer marked in it. Where a sentence is assembled from parts in
+      code, the whole sentence lives here so the words can be ordered the way
+      French orders them.
+    -->
+    <string name="app_name">Flagline</string>
+    <string name="app_tagline">Renseigne-toi avant de nager</string>
+    <string name="splash_checking">On vérifie l\'eau à %1$s</string>
+    <string name="splash_checking_nearby">Recherche de la plage la plus proche</string>
+    <string name="air_temp">Temp. de l\'air</string>
+    <string name="water_temp">Temp. de l\'eau</string>
+    <string name="uv_index">Indice UV</string>
+    <string name="wind_speed">Vitesse du vent</string>
+    <string name="wave_height">Hauteur des vagues</string>
+    <string name="visibility">Visibilité</string>
+    <string name="low_tide">Marée basse</string>
+    <string name="high_tide">Marée haute</string>
+    <string name="tide_checking">Vérification…</string>
+    <string name="tide_now">Renverse en ce moment</string>
+    <string name="tide_in_minutes">dans %1$d min</string>
+    <string name="tide_in_hours_minutes">dans %1$d h %2$d min</string>
+    <string name="tide_unavailable">Indisponible</string>
+    <string name="tide_none">Pas de marée</string>
+    <string name="placeholder_dashes">--</string>
+    <string name="no_major_hazards">Aucun danger majeur signalé.</string>
+    <string name="select_coastal_city">Choisis une ville côtière</string>
+    <string name="beach_name_hint">Nom de la plage</string>
+    <string name="radius_label">Rayon de recherche</string>
+    <string name="radius_needs_location">Cherche une ville ou active la localisation pour filtrer par distance</string>
+    <string name="radius_all">Tout</string>
+    <string name="search_using_location">Localisation en temps réel</string>
+    <string name="location_permission_needed">Flagline n\'a pas accès à ta position. Autorise-le dans les Réglages de ton téléphone pour voir les plages les plus proches.</string>
+    <string name="location_off">La localisation est désactivée. Active-la pour voir les plages les plus proches.</string>
+    <string name="location_unavailable">Impossible d\'obtenir ta position pour le moment.</string>
+    <string name="search_near_city">Recherche près de : %1$s</string>
+    <string name="search_city_not_found">Lieu introuvable</string>
+    <string name="search_network_error">Erreur réseau</string>
+    <string name="find_nearby_beaches">Trouver des plages proches</string>
+    <string name="find_nearby_searching">Recherche…</string>
+    <string name="search_clear">Effacer le nom de la plage</string>
+    <string name="nearby_beaches">Plages proches</string>
+    <string name="nearby_report_action">Bulletin des plages proches</string>
+    <string name="distance_away">à %1$.1f miles</string>
+    <string name="distance_away_km">à %1$.1f km</string>
+    <string name="radius_step">%1$d %2$s</string>
+    <string name="beach_image_desc">Photo de la plage</string>
+    <string name="empty_state_title">Aucune plage à afficher</string>
+    <string name="empty_state_subtitle">Essaie une autre ville ou élargis le rayon de recherche.</string>
+    <string name="settings_title">Réglages</string>
+    <string name="units_section_title">Unités</string>
+    <string name="use_metric_title">Utiliser le système métrique</string>
+    <string name="use_metric_subtitle">Affiche la température en °C, le vent en km/h et les vagues en mètres.</string>
+    <string name="display_section_title">Affichage</string>
+    <string name="use_dark_mode_title">Mode sombre</string>
+    <string name="use_dark_mode_subtitle">Suit ton téléphone jusqu\'à ce que tu le changes ici.</string>
+    <string name="language_title">Langue</string>
+    <string name="language_system">Langue du système</string>
+    <string name="language_english">English</string>
+    <string name="language_spanish">Español</string>
+    <string name="settings_footnote">Les conditions proviennent de prévisions côtières publiques. Les photos des plages viennent de Wikimedia Commons. Respecte toujours les panneaux et les drapeaux sur la plage.</string>
+
+    <!-- Swim verdict -->
+    <string name="verdict_safe">Baignade possible</string>
+    <string name="verdict_safe_short">Baignade possible</string>
+    <string name="verdict_caution">Prudence</string>
+    <string name="verdict_caution_short">Prudence</string>
+    <string name="verdict_danger">Baignade dangereuse</string>
+    <string name="verdict_danger_short">Dangereux aujourd\'hui</string>
+    <string name="verdict_unknown">Vérification des conditions</string>
+    <string name="verdict_unknown_note">Les conditions en direct de cette plage ne sont pas encore chargées. Regarde les drapeaux et les panneaux sur la plage avant de te baigner.</string>
+    <string name="loading">Chargement</string>
+    <string name="verdict_unavailable">Conditions indisponibles</string>
+    <string name="conditions_error_none">Impossible de charger les conditions en direct. Touche pour réessayer.</string>
+    <string name="conditions_error_stale">Impossible d\'actualiser ces conditions. Touche pour réessayer.</string>
+    <string name="verdict_updated_now">Mis à jour à l\'instant</string>
+    <string name="verdict_updated_minutes">Mis à jour il y a %1$d min</string>
+    <string name="verdict_updated_hours">Mis à jour il y a %1$d h</string>
+    <string name="beach_details">Détails de la plage</string>
+
+    <string name="note_surf_unknown">Les relevés de houle de cette plage ne sont pas encore arrivés.</string>
+    <string name="note_surf_flat">L\'eau est presque plate en ce moment.</string>
+    <string name="note_surf_small">Il y a de petites vagues faciles à gérer.</string>
+    <string name="note_surf_moderate">Il y a une houle modérée.</string>
+    <string name="note_surf_heavy">Il y a une forte houle.</string>
+    <string name="note_hazard_one">Il y a une alerte %1$s ici.</string>
+    <string name="note_hazard_many">Il y a des alertes ici pour : %1$s.</string>
+    <string name="note_hazard_join">%1$s et %2$s</string>
+    <string name="note_uv">L\'UV est %1$s : couvre-toi et remets de la crème solaire.</string>
+    <string name="note_advice_danger">Reste hors de l\'eau et respecte les drapeaux et les panneaux de la plage.</string>
+    <string name="note_advice_caution">Baigne-toi entre les drapeaux et surveille de près toute personne dans l\'eau.</string>
+    <string name="note_advice_safe">Baigne-toi quand même entre les drapeaux, là où il y a une surveillance.</string>
+
+    <!-- Home header -->
+    <string name="header_kicker_near_you">Près de toi</string>
+    <string name="header_kicker_searching">Affichage</string>
+    <string name="header_title_default">Plages près de toi</string>
+
+    <string name="back">Retour</string>
+    <string name="guarded_yes">Poste de sauveteurs à proximité</string>
+    <string name="guarded_no">Aucune surveillance indiquée</string>
+    <string name="section_conditions">Conditions</string>
+
+    <!-- Wave height card -->
+    <string name="wave_card_today">Aujourd\'hui</string>
+    <string name="wave_card_headline">%1$s — %2$s</string>
+    <string name="wave_card_scale">Échelle %1$s %2$s</string>
+    <string name="wave_card_reading">Hauteur des vagues %1$s</string>
+    <string name="wave_card_reading_unknown">Hauteur des vagues indisponible</string>
+    <string name="wave_level_small">Petites</string>
+    <string name="wave_level_moderate">Modérées</string>
+    <string name="wave_level_hazardous">Dangereuses</string>
+    <string name="wave_advice_small">Vagues petites à modérées. Convient à la plupart des nageurs.</string>
+    <string name="wave_advice_moderate">Houle modérée. Nageurs confirmés seulement.</string>
+    <string name="wave_advice_hazardous">Grosses vagues et courants d\'arrachement. Reste hors de l\'eau.</string>
+    <string name="wave_advice_unknown">Pas encore de relevé de houle pour cette plage. Regarde les drapeaux sur la plage avant de te baigner.</string>
+    <string name="wave_advice_loading">Vérification de la houle du jour…</string>
+    <string name="section_watch_for">À surveiller</string>
+    <string name="section_search">Trouver une plage</string>
+    <string name="lifeguards_title">Sauveteurs</string>
+    <string name="lifeguards_none">Aucun poste de sauveteurs n\'est indiqué pour cette plage. Ne te baigne jamais seul.</string>
+    <string name="lifeguards_nearest">%1$s est le secours le plus proche connu.</string>
+    <plurals name="lifeguards_mapped">
+        <item quantity="one">%1$d poste de sauveteurs est indiqué sur la carte.</item>
+        <item quantity="many">%1$d de postes de sauveteurs sont indiqués sur la carte.</item>
+        <item quantity="other">%1$d postes de sauveteurs sont indiqués sur la carte.</item>
+    </plurals>
+    <string name="stat_surf">Houle</string>
+    <string name="stat_uv">UV</string>
+    <string name="stat_wind">Vent</string>
+    <string name="stat_water">Temp. de l\'air</string>
+    <string name="surf_suffix">Houle %1$s</string>
+
+    <!-- Hazard names -->
+    <string name="hazard_high_surf">Forte houle</string>
+    <string name="hazard_rip_current">Courant d\'arrachement</string>
+    <string name="hazard_marine_life">Faune marine</string>
+    <string name="hazard_water_quality">Qualité de l\'eau</string>
+    <string name="hazard_air_quality">Qualité de l\'air</string>
+    <string name="hazard_pollution">Pollution</string>
+    <string name="hazard_rocks">Rochers et ouvrages</string>
+    <string name="hazard_uv_index">Indice UV</string>
+    <string name="hazard_high_surf_inline">forte houle</string>
+    <string name="hazard_rip_current_inline">courant d\'arrachement</string>
+    <string name="hazard_marine_life_inline">faune marine</string>
+    <string name="hazard_water_quality_inline">qualité de l\'eau</string>
+    <string name="hazard_air_quality_inline">qualité de l\'air</string>
+    <string name="hazard_pollution_inline">pollution</string>
+    <string name="hazard_rocks_inline">rochers et ouvrages</string>
+    <string name="hazard_uv_index_inline">indice UV</string>
+
+    <!-- How bad a hazard is, on the Alerts rows -->
+    <string name="severity_low">Faible</string>
+    <string name="severity_moderate">Modéré</string>
+    <string name="severity_high">Élevé</string>
+    <string name="severity_extreme">Extrême</string>
+
+    <string name="hazard_recorded_lajolla_rips">Forts courants d\'arrachement près de la jetée.</string>
+    <string name="hazard_recorded_step_swim_near_lifeguard">Baigne-toi près d\'un sauveteur</string>
+
+    <string name="hazard_surf_high_body">Les vagues font environ %1$s. Des vagues de cette taille renversent les gens dans les bas-fonds et créent de forts courants d\'arrachement.</string>
+    <string name="hazard_surf_moderate_body">Les vagues font environ %1$s. Assez grosses pour bousculer un nageur moyen, surtout là où elles cassent près du bord.</string>
+    <string name="hazard_surf_step_stay_out">Reste hors de l\'eau</string>
+    <string name="hazard_surf_step_shallow">Reste là où tu as pied</string>
+    <string name="hazard_surf_step_check_flags">Regarde les drapeaux sur la plage</string>
+    <string name="hazard_uv_extreme_body">L\'indice UV est de %1$d. La peau non protégée peut brûler en quelques minutes, et le sable et l\'eau t\'en renvoient encore plus.</string>
+    <string name="hazard_uv_step_cover">Couvre-toi et remets de la crème solaire</string>
+    <string name="hazard_uv_step_shade">Mets-toi à l\'ombre en milieu de journée</string>
+
+    <!-- Tab bar -->
+    <string name="tab_now">Maintenant</string>
+    <string name="tab_alerts">Alertes</string>
+    <string name="tab_saved">Favoris</string>
+    <string name="tab_learn">Apprendre</string>
+    <string name="tab_more">Plus</string>
+
+    <!-- Alerts -->
+    <string name="alerts_active_warning">Alerte en cours</string>
+    <string name="alerts_see_beach">Voir la plage</string>
+    <string name="alert_hero_title">%1$s à %2$s</string>
+    <string name="alerts_empty">Aucun danger n\'est signalé sur les plages proches. Les conditions changent vite : regarde les drapeaux en arrivant.</string>
+    <string name="alerts_empty_saved">Aucun danger n\'est signalé sur tes plages favorites. Les conditions changent vite : regarde les drapeaux en arrivant.</string>
+    <string name="alerts_empty_no_saved">Ajoute une plage à tes favoris pour voir ses alertes ici.</string>
+    <string name="alerts_empty_no_location">Active la localisation pour être informé des plages près de toi, ou ajoute à tes favoris celles qui t\'intéressent.</string>
+    <string name="alerts_section_title">Alertes</string>
+    <string name="alerts_saved_only_title">Plages favorites seulement</string>
+    <string name="alerts_saved_only_subtitle">Sinon, les plages à moins de 80 km sont aussi incluses.</string>
+    <string name="ranking_saved_only_title">Plages favorites seulement</string>
+    <string name="ranking_saved_only_subtitle">Sinon, les plages à moins de 80 km sont aussi classées.</string>
+
+    <!-- Saved -->
+    <string name="saved_empty">Aucune plage favorite pour l\'instant. Ajoute-en une depuis sa page et elle apparaîtra ici avec son état actuel.</string>
+    <string name="save_beach">Ajouter</string>
+    <string name="saved_beach">Ajoutée</string>
+
+    <!-- Learn tab -->
+    <string name="learn_footnote">Les sauveteurs et les panneaux de ta plage connaissent l\'eau du jour. Écoute-les d\'abord.</string>
+
+    <!-- Rip current guide -->
+    <string name="guide_entry_title">Repérer un courant d\'arrachement</string>
+    <string name="guide_title">Repérer un courant d\'arrachement</string>
+    <string name="guide_sign_1_title">Un couloir plus sombre et plus calme</string>
+    <string name="guide_sign_1_body">Plat et tentant. Les vagues cassent de chaque côté, pas dedans.</string>
+    <string name="guide_sign_2_title">Du sable ou de l\'écume qui part au large</string>
+    <string name="guide_sign_2_body">De l\'eau brune et remuée ou de l\'écume qui s\'éloigne au-delà des vagues.</string>
+    <string name="guide_sign_3_title">Une trouée dans les vagues</string>
+    <string name="guide_sign_3_body">Là où l\'écume s\'arrête, l\'eau est plus profonde.</string>
+    <string name="guide_sign_4_title">Des rides en ligne droite</string>
+    <string name="guide_sign_4_body">Un couloir ridé qui file vers le large dans une eau lisse.</string>
+    <string name="guide_caught_title">Pris dans un courant ?</string>
+    <string name="guide_caught_body">Ne nage pas contre lui. Fais la planche, garde la tête hors de l\'eau, lève un bras et crie. Si tu sais nager, va sur le côté vers les vagues qui cassent, puis reviens vers le bord.</string>
+    <string name="guide_tell_title">Une fois sorti, préviens un sauveteur</string>
+    <string name="guide_tell_1_title">Où il se trouvait</string>
+    <string name="guide_tell_1_body">Le numéro du poste le plus proche ou un repère, pour qu\'ils le signalent avant qu\'il n\'emporte quelqu\'un d\'autre.</string>
+    <string name="guide_tell_2_title">Si quelqu\'un est encore dans l\'eau</string>
+    <string name="guide_tell_2_body">Un ami qui était avec toi, ou quelqu\'un venu t\'aider à la nage. N\'y retourne pas toi-même.</string>
+    <string name="guide_tell_3_title">Si tu as inhalé de l\'eau</string>
+    <string name="guide_tell_3_body">La toux, une douleur à la poitrine ou du mal à respirer peuvent apparaître des heures plus tard. Laisse-les t\'examiner.</string>
+
+    <!-- Spotting someone drowning -->
+    <string name="drowning_entry_title">Reconnaître une personne qui se noie</string>
+    <string name="drowning_title">Repérer une noyade</string>
+    <string name="drowning_sign_1_title">Silencieuse, elle n\'appelle pas</string>
+    <string name="drowning_sign_1_body">Elle ne peut ni crier ni faire signe. Appelle-la : pas de réponse, il faut agir tout de suite.</string>
+    <string name="drowning_sign_2_title">Tête en arrière, bouche au ras de l\'eau</string>
+    <string name="drowning_sign_2_body">La bouche au niveau de l\'eau, elle s\'enfonce et remonte.</string>
+    <string name="drowning_sign_3_title">À la verticale, sans battre des jambes</string>
+    <string name="drowning_sign_3_body">Droite dans l\'eau, comme si elle grimpait une échelle invisible.</string>
+    <string name="drowning_sign_4_title">Les bras qui appuient</string>
+    <string name="drowning_sign_4_body">Écartés sur les côtés, ils appuient sur l\'eau au lieu de nager.</string>
+    <string name="drowning_act_title">Quelqu\'un se noie ?</string>
+    <string name="drowning_act_body">Appelle un sauveteur en criant et montre la personne du doigt. Pas de sauveteur : appelle le 911. Lance-lui tout ce qui flotte, et ne nage pas vers elle sans ça : elle t\'entraînerait au fond. Tu as peut-être moins d\'une minute.</string>
+
+    <!-- Beach warning flags guide -->
+    <string name="flag_entry_title">Ce que signifient les drapeaux</string>
+    <string name="flag_title">Drapeaux de plage</string>
+    <string name="flag_double_red_title">Double rouge — Eau fermée</string>
+    <string name="flag_double_red_body">Fermée à tous, pour toutes les activités nautiques.</string>
+    <string name="flag_red_title">Rouge — Danger élevé</string>
+    <string name="flag_red_body">Reste hors de l\'eau. Avec de l\'eau aux genoux, c\'est déjà trop profond.</string>
+    <string name="flag_yellow_title">Jaune — Houle ou courants modérés</string>
+    <string name="flag_yellow_body">Baigne-toi près d\'un sauveteur et reste près du bord.</string>
+    <string name="flag_green_title">Vert — Conditions calmes</string>
+    <string name="flag_green_body">Danger faible. Baigne-toi quand même près d\'un sauveteur, jamais seul.</string>
+    <string name="flag_purple_title">Violet — Faune marine dangereuse</string>
+    <string name="flag_purple_body">Méduses ou raies dans le coin. Regarde le drapeau hissé avec lui.</string>
+    <string name="flag_double_red_icon_desc">Deux drapeaux rouges</string>
+    <string name="flag_icon_desc">Drapeau %1$s</string>
+    <string name="flag_color_red">rouge</string>
+    <string name="flag_color_yellow">jaune</string>
+    <string name="flag_color_green">vert</string>
+    <string name="flag_color_purple">violet</string>
+    <string name="flag_no_flags_title">Aucun drapeau ?</string>
+    <string name="flag_no_flags_body">Pas de drapeau ne veut pas dire sans danger. En général, cela veut dire que personne ne surveille l\'eau.</string>
+
+    <!-- UV index guide -->
+    <string name="uv_entry_title">Ce que signifie l\'indice UV</string>
+    <string name="uv_title">L\'indice UV</string>
+    <string name="uv_level_low">Faible</string>
+    <string name="uv_level_moderate">Modéré</string>
+    <string name="uv_level_high">Élevé</string>
+    <string name="uv_level_very_high">Très élevé</string>
+    <string name="uv_level_extreme">Extrême</string>
+    <string name="uv_level_unknown">Inconnu</string>
+    <string name="uv_reading">%1$s (%2$d)</string>
+    <string name="uv_band_title">%1$s — %2$s</string>
+    <string name="uv_band_range">UV %1$d–%2$d</string>
+    <string name="uv_band_range_open">UV %1$d et plus</string>
+    <string name="uv_band_low_body">Pas besoin de crème solaire.</string>
+    <string name="uv_band_moderate_body">Crème solaire, chapeau et ombre à midi.</string>
+    <string name="uv_band_high_body">Indice 30 et un t-shirt. Remets-en toutes les deux heures.</string>
+    <string name="uv_band_very_high_body">La peau nue brûle en 15 minutes. Indice 50.</string>
+    <string name="uv_band_extreme_body">La peau brûle en quelques minutes. Sors du soleil.</string>
+    <string name="uv_beach_title">La plage aggrave les choses</string>
+    <string name="uv_beach_body">Le sable et l\'eau te le renvoient, et les nuages l\'arrêtent à peine.</string>
+
+    <!-- Daily practice -->
+    <string name="quiz_correct">C\'est ça</string>
+    <string name="quiz_incorrect">Pas tout à fait</string>
+    <string name="practice_entry_title">L\'entraînement du jour</string>
+    <string name="practice_entry_streak_one">Fait aujourd\'hui · 1 jour d\'affilée</string>
+    <string name="practice_entry_streak">Fait aujourd\'hui · %1$d jours d\'affilée</string>
+    <string name="practice_title">L\'entraînement du jour</string>
+    <string name="practice_progress">Question %1$d sur %2$d</string>
+    <string name="practice_done_title">Voilà les trois du jour</string>
+    <string name="practice_done_body">Trois de plus demain.</string>
+    <string name="practice_score">Tu as eu %1$d sur %2$d</string>
+
+    <string name="practice_q_rip_escape_q">Tu nages et tu te rends compte qu\'un courant t\'éloigne de la plage. Que fais-tu ?</string>
+    <string name="practice_q_rip_escape_a">Je reste calme, je flotte et je nage parallèlement à la plage</string>
+    <string name="practice_q_rip_escape_b">Je nage droit vers le sable aussi fort que possible</string>
+    <string name="practice_q_rip_escape_c">Je plonge pour passer en dessous</string>
+    <string name="practice_q_rip_escape_x">Un courant d\'arrachement est une rivière qui part au large, et il va plus vite que toi. Nager droit vers la plage t\'épuise contre lui. Va sur le côté jusqu\'à sortir du courant, puis reviens, ou contente-toi de flotter en faisant signe.</string>
+
+    <string name="practice_q_rip_look_q">À quoi ressemble en général un courant d\'arrachement vu de la plage ?</string>
+    <string name="practice_q_rip_look_a">Une trouée calme et plate où les vagues ne cassent pas</string>
+    <string name="practice_q_rip_look_b">Les vagues les plus grosses et les plus agitées</string>
+    <string name="practice_q_rip_look_c">À rien : il est invisible depuis la terre</string>
+    <string name="practice_q_rip_look_x">Un courant d\'arrachement ressemble au meilleur endroit pour nager : un couloir lisse et calme avec des vagues qui cassent de chaque côté. Cette trouée tentante, c\'est de l\'eau plus profonde qui part au large.</string>
+
+    <string name="practice_q_red_flag_q">Un seul drapeau rouge flotte. Que signifie-t-il ?</string>
+    <string name="practice_q_red_flag_a">Danger élevé : reste hors de l\'eau</string>
+    <string name="practice_q_red_flag_b">Les sauveteurs sont en service aujourd\'hui</string>
+    <string name="practice_q_red_flag_c">Des méduses ont été repérées</string>
+    <string name="practice_q_red_flag_x">Rouge signifie forte houle, forts courants, ou les deux. Même de l\'eau aux genoux est trop profonde pour être sûre. Deux drapeaux rouges, c\'est l\'eau complètement fermée.</string>
+
+    <string name="practice_q_purple_flag_q">Contre quoi te met en garde le drapeau violet ?</string>
+    <string name="practice_q_purple_flag_a">Une faune marine dangereuse, comme des méduses ou des raies</string>
+    <string name="practice_q_purple_flag_b">Des orages qui arrivent</string>
+    <string name="practice_q_purple_flag_c">Une mauvaise qualité de l\'eau après la pluie</string>
+    <string name="practice_q_purple_flag_x">Le violet concerne la faune marine. Il flotte avec un autre drapeau plutôt que seul : regarde l\'autre drapeau pour savoir ce que fait l\'eau elle-même.</string>
+
+    <string name="practice_q_no_flags_q">Tu arrives sur une plage et aucun drapeau ne flotte. Qu\'est-ce que ça t\'apprend ?</string>
+    <string name="practice_q_no_flags_a">Rien : personne n\'a évalué l\'eau, alors juge par toi-même</string>
+    <string name="practice_q_no_flags_b">L\'eau a été vérifiée et elle est sûre</string>
+    <string name="practice_q_no_flags_c">La plage est fermée</string>
+    <string name="practice_q_no_flags_x">Un mât vide n\'est pas un drapeau vert. En général, cela veut dire que la plage n\'est pas surveillée : personne ne regarde l\'eau, et personne ne te regarde.</string>
+
+    <string name="practice_q_shuffle_q">Qu\'est-ce que la « marche de la raie » ?</string>
+    <string name="practice_q_shuffle_a">Faire glisser tes pieds sur le sable en entrant dans l\'eau</string>
+    <string name="practice_q_shuffle_b">Taper fort des pieds pour faire fuir les raies</string>
+    <string name="practice_q_shuffle_c">Nager en zigzag au-dessus des zones de sable</string>
+    <string name="practice_q_shuffle_x">Les raies s\'enterrent dans les bas-fonds et piquent quand on leur marche dessus. Faire glisser tes pieds envoie une vibration devant toi, et la raie s\'en va tout simplement.</string>
+
+    <string name="practice_q_jelly_rinse_q">Une méduse t\'a laissé une marque brûlante sur le bras. Avec quoi la rinces-tu ?</string>
+    <string name="practice_q_jelly_rinse_a">Du vinaigre, ou de l\'eau de mer si tu n\'en as pas</string>
+    <string name="practice_q_jelly_rinse_b">De l\'eau douce froide de la douche de plage</string>
+    <string name="practice_q_jelly_rinse_c">Rien : frotte d\'abord pour enlever le sable</string>
+    <string name="practice_q_jelly_rinse_x">L\'eau douce et le frottement déclenchent tous les deux les cellules urticantes qui n\'avaient pas encore piqué : c\'est pour ça que la douche de plage aggrave les choses. Le vinaigre les neutralise ; l\'eau de mer, au moins, ne fait pas de mal.</string>
+
+    <string name="practice_q_jelly_pee_q">Vrai ou faux : uriner sur une piqûre de méduse soulage.</string>
+    <string name="practice_q_jelly_pee_a">Faux : ça peut aggraver la piqûre</string>
+    <string name="practice_q_jelly_pee_b">Vrai, si on le fait tout de suite</string>
+    <string name="practice_q_jelly_pee_c">Vrai, mais seulement pour la galère portugaise</string>
+    <string name="practice_q_jelly_pee_x">L\'urine ressemble plus à l\'eau douce qu\'au vinaigre, donc elle déclenche davantage de cellules urticantes. C\'est une pure invention de la télé. Le vinaigre puis l\'eau chaude, voilà la vraie réponse.</string>
+
+    <string name="practice_q_hot_water_q">Qu\'est-ce qui soulage vraiment la douleur d\'une piqûre de raie ou de méduse ?</string>
+    <string name="practice_q_hot_water_a">La tremper dans de l\'eau chaude pendant 30 à 90 minutes</string>
+    <string name="practice_q_hot_water_b">Y appliquer une poche de glace</string>
+    <string name="practice_q_hot_water_c">La garder plus haut que le cœur</string>
+    <string name="practice_q_hot_water_x">La chaleur décompose le venin. De l\'eau aussi chaude que ta main le supporte sans te brûler, environ 43–45 °C (110–113 °F), fait plus que n\'importe quel antidouleur. Le froid aggrave les choses.</string>
+
+    <string name="practice_q_manowar_sand_q">Tu trouves une galère portugaise échouée sur le sable sec. Peut-on la toucher sans risque ?</string>
+    <string name="practice_q_manowar_sand_a">Non : elle pique encore des jours après sa mort</string>
+    <string name="practice_q_manowar_sand_b">Oui, hors de l\'eau elle est inoffensive</string>
+    <string name="practice_q_manowar_sand_c">Oui, tant qu\'on ne touche que le flotteur bleu</string>
+    <string name="practice_q_manowar_sand_x">Les cellules urticantes se déclenchent mécaniquement, pas par choix : une galère échouée ou desséchée est toujours armée. Éloigne aussi les enfants et les chiens.</string>
+
+    <string name="practice_q_swim_alone_q">Il n\'y a pas de sauveteur en service sur la plage. Quelle est la chose la plus utile que tu puisses faire ?</string>
+    <string name="practice_q_swim_alone_a">Ne pas nager seul : y aller avec quelqu\'un</string>
+    <string name="practice_q_swim_alone_b">Rester dans une eau qui ne dépasse pas la poitrine</string>
+    <string name="practice_q_swim_alone_c">Nager plus tôt dans la journée</string>
+    <string name="practice_q_swim_alone_x">Les trois aident, mais quelqu\'un qui se noie ne peut pas appeler à l\'aide. Une personne sur la plage qui sait que tu es dans l\'eau fait toute la différence entre une frayeur et un drame.</string>
+
+    <string name="practice_q_child_reach_q">À quelle distance d\'un adulte doit se trouver un jeune enfant dans l\'eau ?</string>
+    <string name="practice_q_child_reach_a">À portée de bras, toujours</string>
+    <string name="practice_q_child_reach_b">Assez près pour qu\'on puisse l\'appeler</string>
+    <string name="practice_q_child_reach_c">N\'importe où entre les drapeaux</string>
+    <string name="practice_q_child_reach_x">La noyade est silencieuse et rapide : en général, ni éclaboussures ni cris. La portée de bras est la seule distance d\'où tu peux agir à temps.</string>
+
+    <string name="practice_q_thunder_q">Tu entends le tonnerre sur la plage. Quand peux-tu retourner à l\'eau ?</string>
+    <string name="practice_q_thunder_a">30 minutes après le dernier grondement</string>
+    <string name="practice_q_thunder_b">Dès que la pluie s\'arrête</string>
+    <string name="practice_q_thunder_c">Dès que le ciel redevient bleu</string>
+    <string name="practice_q_thunder_x">La foudre tombe à des kilomètres de l\'orage dont elle vient, et l\'eau libre et le sable découvert sont les deux pires endroits où se trouver. Si tu l\'entends, tu es assez près pour être touché.</string>
+
+    <string name="practice_q_rain_water_q">Il a beaucoup plu hier. Quel est le conseil habituel pour la baignade aujourd\'hui ?</string>
+    <string name="practice_q_rain_water_a">Rester hors de l\'eau environ 72 heures : le ruissellement apporte de la pollution</string>
+    <string name="practice_q_rain_water_b">Se baigner normalement, la pluie ne touche que le sable</string>
+    <string name="practice_q_rain_water_c">Attendre une heure que l\'eau se calme</string>
+    <string name="practice_q_rain_water_x">Les égouts pluviaux vident les rues dans les vagues. Les avis sanitaires de la plupart des comtés côtiers disent d\'attendre trois jours, et l\'eau a souvent l\'air tout à fait normale au moment où elle est la pire.</string>
+
+    <string name="practice_q_sunscreen_q">À quelle fréquence faut-il remettre de la crème solaire à la plage ?</string>
+    <string name="practice_q_sunscreen_a">Toutes les deux heures, et après chaque baignade</string>
+    <string name="practice_q_sunscreen_b">Une fois le matin suffit si l\'indice est élevé</string>
+    <string name="practice_q_sunscreen_c">Seulement quand la peau commence à chauffer</string>
+    <string name="practice_q_sunscreen_x">Aucune crème ne tient toute la journée, et l\'eau et les serviettes en enlèvent la plus grande partie. Quand la peau chauffe, le coup de soleil est déjà là : il ne s\'est juste pas encore vu.</string>
+
+    <string name="practice_q_uv_cloud_q">Le temps est couvert et frais. Que font les UV ?</string>
+    <string name="practice_q_uv_cloud_a">La plupart passent quand même : tu peux brûler</string>
+    <string name="practice_q_uv_cloud_b">Les nuages les bloquent, la crème peut attendre</string>
+    <string name="practice_q_uv_cloud_c">Ils tombent à zéro en dessous d\'environ 21 °C</string>
+    <string name="practice_q_uv_cloud_x">Une couche nuageuse fine laisse passer la plupart des UV, et ils n\'ont rien à voir avec la température. Certains des pires coups de soleil arrivent par temps gris et venteux, quand personne n\'a chaud.</string>
+
+    <string name="practice_q_float_q">Tu es fatigué, tu n\'as plus pied et personne n\'est là pour t\'aider. Que fais-tu d\'abord ?</string>
+    <string name="practice_q_float_a">Je me mets sur le dos et je fais la planche pour reprendre mon souffle</string>
+    <string name="practice_q_float_b">Je nage le plus vite possible vers le bord</string>
+    <string name="practice_q_float_c">Je fais du surplace avec les bras au-dessus de la tête</string>
+    <string name="practice_q_float_x">Faire la planche ne coûte presque rien et te rend ce que la panique t\'enlève : ton souffle. Reprends-le d\'abord, puis fais signe, puis nage.</string>
+
+    <string name="practice_q_help_signal_q">Quel est le signe reconnu pour dire à un sauveteur que tu as besoin d\'aide ?</string>
+    <string name="practice_q_help_signal_a">Lever un bras bien droit et l\'agiter</string>
+    <string name="practice_q_help_signal_b">Éclabousser autant que possible</string>
+    <string name="practice_q_help_signal_c">Crier et couler à plusieurs reprises</string>
+    <string name="practice_q_help_signal_x">Un bras levé bien droit, agité de gauche à droite, c\'est le signe que les sauveteurs guettent. Les éclaboussures ressemblent à un jeu vues du poste, et c\'est justement là qu\'on les rate.</string>
+
+    <string name="practice_q_seal_pup_q">Un bébé phoque est seul sur le sable. Que dois-tu faire ?</string>
+    <string name="practice_q_seal_pup_a">Le laisser tranquille et rester bien à l\'écart</string>
+    <string name="practice_q_seal_pup_b">Le porter jusqu\'à l\'eau</string>
+    <string name="practice_q_seal_pup_c">Le couvrir d\'une serviette mouillée</string>
+    <string name="practice_q_seal_pup_x">Les mères laissent leurs petits sur la plage pendant des heures pendant qu\'elles se nourrissent. Un petit seul n\'est pas abandonné, et le déplacer est illégal et le plus souvent mortel. Appelle un réseau d\'échouage s\'il semble blessé.</string>
+
+    <string name="practice_q_feed_wildlife_q">Un dauphin s\'approche du bord pendant que tu nages. Quelle est la bonne réaction ?</string>
+    <string name="practice_q_feed_wildlife_a">Garder tes distances et le laisser passer</string>
+    <string name="practice_q_feed_wildlife_b">Nager vers lui pour le voir de plus près</string>
+    <string name="practice_q_feed_wildlife_c">Lui offrir à manger pour qu\'il reste</string>
+    <string name="practice_q_feed_wildlife_x">Nourrir ou poursuivre des mammifères marins est un délit fédéral, et ça leur apprend à s\'approcher des bateaux et des gens, ce qui finit par les tuer. Regarde-le d\'où tu es.</string>
+
+    <string name="practice_q_urchin_spine_q">Tu marches sur un oursin et des piquants se cassent dans ton pied. Que ne faut-il pas faire ?</string>
+    <string name="practice_q_urchin_spine_a">Les extraire en creusant avec une aiguille</string>
+    <string name="practice_q_urchin_spine_b">Tremper le pied dans de l\'eau chaude</string>
+    <string name="practice_q_urchin_spine_c">Retirer à la pince ceux que tu peux saisir</string>
+    <string name="practice_q_urchin_spine_x">Creuser écrase les piquants et laisse des fragments plus profond, ce qui cause les infections des semaines plus tard. Trempe, retire ce que tu peux saisir, et vois un médecin pour le reste.</string>
+
+    <string name="practice_q_swim_between_q">Pourquoi les sauveteurs te demandent-ils de nager entre les drapeaux ?</string>
+    <string name="practice_q_swim_between_a">C\'est la zone qu\'ils jugent la plus sûre et qu\'ils surveillent</string>
+    <string name="practice_q_swim_between_b">Ça sert seulement à tenir les nageurs loin des surfeurs</string>
+    <string name="practice_q_swim_between_c">Ça marque l\'endroit où l\'eau est la moins profonde</string>
+    <string name="practice_q_swim_between_x">Les drapeaux sont déplacés au fil de la journée à mesure que les bancs de sable et les courants bougent. Entre eux, c\'est l\'eau qu\'un professionnel a regardée cette heure-ci et qu\'il surveille activement.</string>
+    <!-- Learn tab groups -->
+    <string name="learn_group_before">Avant d\'entrer dans l\'eau</string>
+    <string name="learn_group_water">Dans l\'eau</string>
+    <string name="learn_group_marine_life">Faune marine</string>
+
+    <!-- Stings and bites guide -->
+    <string name="sting_title">Piqûres et morsures</string>
+    <string name="sting_911_title">Appelle d\'abord le 911 si</string>
+    <string name="sting_911_body">Difficulté à respirer, gonflement du visage ou de la gorge, douleur à la poitrine, malaise ou confusion. Appelle aussi pour une piqûre au visage, au cou ou au torse, un dard resté dans le corps, ou un saignement que tu n\'arrives pas à arrêter.</string>
+    <string name="sting_feels_heading">Comment le reconnaître</string>
+    <string name="sting_do_heading">À faire</string>
+    <string name="sting_dont_heading">À éviter</string>
+
+    <string name="sting_ray_title">Raie pastenague</string>
+    <string name="sting_ray_subtitle">Une douleur soudaine et profonde au pied ou à la cheville</string>
+    <string name="sting_ray_feels">Une raie enfouie dans le sable peu profond fouette de la queue quand tu marches dessus, laissant une plaie irrégulière et une douleur qui monte pendant une heure.</string>
+    <string-array name="sting_ray_do">
+        <item>Sors de l\'eau, assieds-toi, rince à l\'eau de mer et laisse saigner un instant.</item>
+        <item>Trempe la plaie dans l\'eau la plus chaude que ta main supporte sans te brûler, environ 43–45 °C (110–113 °F), pendant 30 à 90 minutes. La chaleur décompose le venin.</item>
+        <item>Retire les fragments de dard que tu vois et que tu peux saisir. Laisse en place tout ce qui est profondément enfoncé.</item>
+        <item>Fais-la examiner : les plaies de raie s\'infectent facilement et demandent en général un rappel antitétanique.</item>
+    </string-array>
+    <string-array name="sting_ray_dont">
+        <item>Ne retire pas un dard planté dans la poitrine, le cou ou le ventre. Appelle le 911 et laisse-le en place.</item>
+        <item>N\'utilise ni glace ni bandage serré. Le froid aggrave cette douleur.</item>
+    </string-array>
+
+    <string name="sting_jelly_title">Méduse</string>
+    <string name="sting_jelly_subtitle">Une ligne ou une marque brûlante là où un tentacule t\'a frôlé</string>
+    <string name="sting_jelly_feels">Une piqûre comme un coup de fouet brûlant, puis une empreinte rouge et gonflée du tentacule. Les morceaux restés sur la peau continuent de piquer tant qu\'ils y sont.</string>
+    <string-array name="sting_jelly_do">
+        <item>Sors de l\'eau et garde la zone immobile. Le mouvement déclenche d\'autres cellules urticantes.</item>
+        <item>Rince au vinaigre pendant 30 secondes, ou à l\'eau de mer si tu n\'en as pas.</item>
+        <item>Retire les tentacules avec une pince ou le bord d\'une carte, jamais avec les doigts.</item>
+        <item>Trempe dans de l\'eau chaude, environ 43–45 °C (110–113 °F), pendant 20 à 45 minutes, puis applique une crème à l\'hydrocortisone contre les démangeaisons.</item>
+    </string-array>
+    <string-array name="sting_jelly_dont">
+        <item>Ne rince pas à l\'eau douce, et ne frotte pas avec du sable ou une serviette. Les trois déclenchent les cellules urticantes.</item>
+        <item>L\'urine ne soulage pas et peut aggraver la piqûre.</item>
+    </string-array>
+
+    <string name="sting_manowar_title">Galère portugaise</string>
+    <string name="sting_manowar_subtitle">Un flotteur bleu sur le sable, de longs filaments derrière</string>
+    <string name="sting_manowar_feels">Le ballon bleu est la partie inoffensive. Les filaments derrière lui mesurent jusqu\'à 9 mètres et continuent de piquer sur le sable sec pendant des jours.</string>
+    <string-array name="sting_manowar_do">
+        <item>Sors de l\'eau et retire les filaments avec une pince ou le bord d\'une carte.</item>
+        <item>Rince à l\'eau de mer. Le vinaigre fait encore débat pour la galère portugaise, l\'eau de mer est donc le choix sûr.</item>
+        <item>Trempe dans de l\'eau chaude, environ 43–45 °C (110–113 °F), pendant 20 à 45 minutes.</item>
+        <item>Reste avec la personne pendant une heure. Crampes, nausées ou difficulté à respirer : appelle le 911.</item>
+    </string-array>
+    <string-array name="sting_manowar_dont">
+        <item>Ne touche pas une galère échouée sur la plage, même desséchée. Elle est toujours armée.</item>
+        <item>N\'utilise ni eau douce, ni sable, ni bandage compressif.</item>
+    </string-array>
+
+    <string name="sting_urchin_title">Oursin</string>
+    <string name="sting_urchin_subtitle">Des piquants cassants restés dans le pied après un pas sur un rocher</string>
+    <string name="sting_urchin_feels">Une douleur vive à l\'instant où tu marches dessus, puis des points violet foncé là où les piquants se sont cassés dans la peau.</string>
+    <string-array name="sting_urchin_do">
+        <item>Trempe le pied dans de l\'eau chaude, environ 43–45 °C (110–113 °F), pendant 30 à 90 minutes. Ça calme la douleur et ramollit les piquants.</item>
+        <item>Retire à la pince les piquants que tu peux saisir, un par un.</item>
+        <item>Vois un médecin pour les piquants profonds, près d\'une articulation, ou trop nombreux pour être comptés.</item>
+    </string-array>
+    <string-array name="sting_urchin_dont">
+        <item>Ne creuse pas avec une aiguille et n\'écrase pas les piquants sous la peau. Ça laisse des fragments plus profond.</item>
+    </string-array>
+
+    <string name="sting_sealice_title">Poux de mer</string>
+    <string name="sting_sealice_subtitle">Une éruption qui démange sous le maillot, des heures après la baignade</string>
+    <string name="sting_sealice_feels">Des larves de méduse grosses comme une tête d\'épingle, coincées sous le tissu, qui piquent là où le maillot appuie. L\'éruption apparaît de quatre à vingt-quatre heures plus tard.</string>
+    <string-array name="sting_sealice_do">
+        <item>Enlève le maillot avant de te doucher. Te doucher avec enfonce les larves.</item>
+        <item>Rince à l\'eau de mer ou au vinaigre, puis douche-toi et sèche-toi.</item>
+        <item>Lave et sèche le maillot à chaud. Les larves survivent dans le tissu humide et piquent à nouveau.</item>
+        <item>Crème à l\'hydrocortisone ou antihistaminique contre les démangeaisons. Ça passe en deux à quatre jours.</item>
+    </string-array>
+    <string-array name="sting_sealice_dont">
+        <item>Ne te gratte pas. La peau abîmée s\'infecte facilement dans l\'eau salée et chaude.</item>
+    </string-array>
+
+    <string name="sting_footnote">Ce sont des premiers secours généraux, pas un avis médical. En cas de doute, ou si la personne va plus mal, appelle le 911 ou le centre antipoison Poison Help au 1-800-222-1222.</string>
+
+    <!-- Beach wildlife guide -->
+    <string name="wildlife_entry_title">La faune de ta plage</string>
+    <string name="wildlife_title">Faune de la plage</string>
+    <string name="wildlife_beaches_label">Dans cette appli : %1$s</string>
+    <string name="wildlife_beaches_and_more">%1$s + %2$d autres</string>
+    <string name="wildlife_first_aid_link">Premiers secours</string>
+
+    <string name="wildlife_risk_harmless">Inoffensif</string>
+    <string name="wildlife_risk_room">Garde tes distances</string>
+    <string name="wildlife_risk_sting">Peut piquer</string>
+    <string name="wildlife_risk_protected">Protégé</string>
+
+    <!-- Southern California -->
+    <string name="wildlife_region_socal">Californie du Sud</string>
+    <string name="wildlife_socal_ray_title">Raie ronde</string>
+    <string name="wildlife_socal_ray_body">Enfouie dans le sable dans l\'eau jusqu\'aux genoux, c\'est la raison pour laquelle les sauveteurs de Californie du Sud soignent des milliers de piqûres chaque été. Elle ne pique que si on lui marche dessus. Fais glisser tes pieds en entrant et elle s\'en va.</string>
+    <string name="wildlife_socal_leopard_title">Requin léopard</string>
+    <string name="wildlife_socal_leopard_body">Des centaines se rassemblent dans les eaux chaudes et peu profondes de La Jolla Shores de juin à octobre. Ils mesurent de 1 à 1,5 mètre, mangent des crabes et des œufs de poisson, et n\'ont jamais mordu un nageur là-bas.</string>
+    <string name="wildlife_socal_sealion_title">Otarie de Californie</string>
+    <string name="wildlife_socal_sealion_body">Bruyante, curieuse et partout sur les falaises de La Jolla. Ce sont des animaux sauvages qui mordent quand on les serre de trop près : reste à 15 mètres et ne te mets jamais entre l\'une d\'elles et l\'eau.</string>
+    <string name="wildlife_socal_seal_title">Phoque commun</string>
+    <string name="wildlife_socal_seal_body">Les petits restent seuls sur le sable pendant des heures pendant que la mère se nourrit. Un petit seul n\'a pas été abandonné. Reste à l\'écart, éloigne les chiens et préviens un sauveteur s\'il semble blessé.</string>
+    <string name="wildlife_socal_jelly_title">Méduse à rayures violettes</string>
+    <string name="wildlife_socal_jelly_body">Une grande méduse aux rayures sombres sur l\'ombrelle, poussée vers la côte par la houle de fin d\'été. La piqûre brûle une heure ou deux et ne demande rarement plus que de l\'eau chaude.</string>
+    <string name="wildlife_socal_velella_title">Vélelle</string>
+    <string name="wildlife_socal_velella_body">Des milliers de petits disques bleus munis d\'une voile transparente, échoués le long de la laisse de mer par les vents de printemps. Elles piquent à peine la peau, mais ne te frotte pas les yeux après en avoir touché une.</string>
+    <string name="wildlife_socal_grunion_title">Grunion</string>
+    <string name="wildlife_socal_grunion_body">Des poissons argentés qui frayent sur le sable même, la nuit, lors des grandes marées de printemps et d\'été. Regarder une remontée est gratuit ; les pêcher demande un permis et c\'est interdit en avril et en mai.</string>
+    <string name="wildlife_socal_note_title">Après la pluie</string>
+    <string name="wildlife_socal_note_body">Les égouts pluviaux déversent les rues directement dans les vagues. Les avis sanitaires du comté disent de rester hors de l\'eau 72 heures après la pluie, quoi que fasse la faune.</string>
+
+    <!-- Florida, Atlantic side -->
+    <string name="wildlife_region_florida">Floride, côte atlantique</string>
+    <string name="wildlife_fl_manowar_title">Galère portugaise</string>
+    <string name="wildlife_fl_manowar_body">Poussée sur la côte par les vents d\'est de novembre à mai. Flotteur bleu, filaments jusqu\'à 9 mètres, et elle pique aussi fort sur le sable sec que dans l\'eau.</string>
+    <string name="wildlife_fl_moon_title">Méduse lune</string>
+    <string name="wildlife_fl_moon_body">Une soucoupe transparente avec quatre anneaux pâles à l\'intérieur. C\'est la méduse que tu peux en général croiser sans souci : la piqûre est légère et passe souvent inaperçue.</string>
+    <string name="wildlife_fl_sealice_title">Poux de mer</string>
+    <string name="wildlife_fl_sealice_body">Des larves de méduse grosses comme une tête d\'épingle, surtout de mars à juillet. Tu ne sens rien dans l\'eau, puis tu te réveilles avec une éruption qui démange exactement là où était ton maillot.</string>
+    <string name="wildlife_fl_ray_title">Pastenague américaine</string>
+    <string name="wildlife_fl_ray_body">Plate, couleur sable, elle se repose dans les bas-fonds sur les fonds sableux. Fais glisser tes pieds et elle bougera avant que tu arrives.</string>
+    <string name="wildlife_fl_turtle_title">Nids de tortues marines</string>
+    <string name="wildlife_fl_turtle_body">Les tortues caouannes pondent sur ces plages de mars à octobre. Ne touche jamais un nid, un piquet de balisage ou un bébé tortue, et pas de lumière blanche sur le sable la nuit : elle attire les petits vers l\'intérieur des terres au lieu de la mer.</string>
+    <string name="wildlife_fl_blacktip_title">Requin bordé</string>
+    <string name="wildlife_fl_blacktip_body">Des milliers descendent cette côte chaque hiver et restent près du bord. Les morsures sont rares et presque toujours des méprises : évite les bancs de petits poissons attaqués par des oiseaux, l\'eau trouble, et l\'eau à l\'aube et au crépuscule.</string>
+    <string name="wildlife_fl_note_title">Quand tu entends le tonnerre</string>
+    <string name="wildlife_fl_note_body">La Floride est la capitale de la foudre du pays et les orages d\'été se forment vite au-dessus de l\'eau. Au premier grondement, quitte la plage, et attends 30 minutes après le dernier avant d\'y retourner.</string>
+
+    <!-- Gulf Coast -->
+    <string name="wildlife_region_gulf">Côte du golfe</string>
+    <string name="wildlife_gulf_dolphin_title">Grand dauphin</string>
+    <string name="wildlife_gulf_dolphin_body">Présent toute l\'année et souvent à moins d\'une centaine de mètres de la plage. Il est illégal de les nourrir ou de nager vers eux : regarde-les d\'où tu es.</string>
+    <string name="wildlife_gulf_ray_title">Pastenague de l\'Atlantique</string>
+    <string name="wildlife_gulf_ray_body">Une eau chaude, peu profonde et en pente douce, c\'est le pays des raies, et c\'est ici le meilleur. Faire glisser tes pieds compte plus ici que n\'importe où ailleurs dans cette appli.</string>
+    <string name="wildlife_gulf_manowar_title">Galère portugaise</string>
+    <string name="wildlife_gulf_manowar_body">Les vents de printemps les échouent en longues lignes sur le sable du Texas. Regarde avant de poser ta serviette, et éloigne les enfants et les chiens des flotteurs bleus.</string>
+    <string name="wildlife_gulf_sargassum_title">Sargasses</string>
+    <string name="wildlife_gulf_sargassum_body">Des algues brunes qui s\'entassent en radeaux au printemps et en été. Elles sont inoffensives et pleines de petits crabes, mais les hydraires qui y poussent peuvent laisser une éruption qui démange : ne t\'y roule pas.</string>
+    <string name="wildlife_gulf_manatee_title">Lamantin</string>
+    <string name="wildlife_gulf_manatee_body">Lent, gris et souvent juste sous la surface dans les eaux chaudes peu profondes et les passes. Ne le touche pas, ne le nourris pas et ne le suis pas : regarde-le et laisse-lui le chenal.</string>
+    <string name="wildlife_gulf_turtle_title">Tortue de Kemp</string>
+    <string name="wildlife_gulf_turtle_body">La tortue marine la plus rare du monde pond sur les plages du Texas d\'avril à juillet. Signale une tortue qui pond ou échouée à la patrouille de plage plutôt que de t\'en approcher.</string>
+    <string name="wildlife_gulf_note_title">Marée rouge</string>
+    <string name="wildlife_gulf_note_body">Une prolifération de Karenia brevis rend l\'eau couleur rouille, tue les poissons et met dans les embruns une toxine qui fait tousser et pique les yeux, surtout sur la côte du golfe en Floride en fin d\'été et en automne. Des poissons morts sur le sable et une odeur âcre : choisis une autre plage, surtout si tu es asthmatique.</string>
+
+    <!-- Northeast Atlantic -->
+    <string name="wildlife_region_northeast">Atlantique Nord-Est</string>
+    <string name="wildlife_ne_lionsmane_title">Méduse crinière de lion</string>
+    <string name="wildlife_ne_lionsmane_body">Grande, rouge rouille et hirsute, elle dérive vers la côte à partir de la fin de l\'été. La piqûre est vive et dure, et les morceaux de tentacules dans les vagues piquent tout seuls.</string>
+    <string name="wildlife_ne_nettle_title">Ortie de mer atlantique</string>
+    <string name="wildlife_ne_nettle_body">Plus petite et plus pâle qu\'une crinière de lion, fréquente pendant les mois chauds dans les baies et les anses. L\'eau chaude calme la piqûre.</string>
+    <string name="wildlife_ne_horseshoe_title">Limule</string>
+    <string name="wildlife_ne_horseshoe_body">Un fossile vivant, pas un crabe, et totalement inoffensif. La queue pointue lui sert de levier pour se retourner, pas de dard : si tu en trouves une sur le dos, retourne-la par la carapace, jamais par la queue.</string>
+    <string name="wildlife_ne_seal_title">Phoque commun</string>
+    <string name="wildlife_ne_seal_body">Il se repose sur ces plages de novembre à avril. Reste à 45 mètres, tiens ton chien en laisse et appelle un réseau d\'échouage plutôt que de le pousser à l\'eau.</string>
+    <string name="wildlife_ne_dogfish_title">Requin des sables</string>
+    <string name="wildlife_ne_dogfish_body">Des émissoles patrouillent la fosse à quelques mètres de la plage tout l\'été. Elles mangent des crabes et des coquillages et ne s\'intéressent pas aux nageurs.</string>
+    <string name="wildlife_ne_bluefish_title">Chasse des tassergals</string>
+    <string name="wildlife_ne_bluefish_body">L\'automne pousse les petits poissons jusque sur la plage, et les tassergals mordent tout ce qui bouge dans l\'écume. Si l\'eau bouillonne de poissons et d\'oiseaux, sors jusqu\'à ce que ça passe.</string>
+    <string name="wildlife_ne_note_title">L\'eau est plus froide qu\'elle n\'en a l\'air</string>
+    <string name="wildlife_ne_note_body">L\'Atlantique ici est encore autour de 16 °C en juin. L\'eau froide te prend tes forces et ton souffle plus vite que tu ne le crois : entre progressivement avant de nager au large.</string>
+
+    <!-- Pacific Northwest -->
+    <string name="wildlife_region_pnw">Nord-Ouest Pacifique</string>
+    <string name="wildlife_pnw_seal_title">Bébé phoque commun</string>
+    <string name="wildlife_pnw_seal_body">Les petits sont laissés sur le sable pendant que la mère se nourrit, et ne sont pas abandonnés. En ramasser un est illégal et le tue le plus souvent. Reste à 90 mètres et appelle le réseau d\'échouage.</string>
+    <string name="wildlife_pnw_puffin_title">Macareux huppé et guillemot de Troïl</string>
+    <string name="wildlife_pnw_puffin_body">Haystack Rock est une colonie de nidification d\'avril à juillet. Le rocher est interdit au-dessus de la ligne des balanes, et les oiseaux s\'observent le mieux depuis le sable à marée basse.</string>
+    <string name="wildlife_pnw_tidepool_title">Étoiles de mer et anémones</string>
+    <string name="wildlife_pnw_tidepool_body">Les mares autour de Haystack Rock forment un jardin marin protégé. Regarde, n\'arrache rien : une étoile de mer décollée de son rocher survit rarement, et une anémone piétinée meurt.</string>
+    <string name="wildlife_pnw_eagle_title">Pygargue à tête blanche</string>
+    <string name="wildlife_pnw_eagle_body">Ses nids dominent la plage et il pille la colonie d\'oiseaux marins presque tous les matins. Observe d\'en bas et tiens-toi loin des arbres qui portent les nids.</string>
+    <string name="wildlife_pnw_jelly_title">Méduse œuf au plat et crinière de lion</string>
+    <string name="wildlife_pnw_jelly_body">Les deux s\'échouent en fin d\'été. La méduse œuf au plat pique légèrement ; la crinière de lion, non, et les deux piquent encore une fois échouées.</string>
+    <string name="wildlife_pnw_whale_title">Baleine grise</string>
+    <string name="wildlife_pnw_whale_body">Elles migrent au large en décembre et janvier, puis de mars à juin, et quelques-unes se nourrissent près des caps tout l\'été. Cherche le souffle depuis les belvédères au-dessus de la plage.</string>
+    <string name="wildlife_pnw_note_title">Vagues traîtresses</string>
+    <string name="wildlife_pnw_note_body">Cette côte projette des vagues loin sur la plage sans prévenir, et elles emportent des troncs avec elles. Ne tourne jamais le dos à l\'eau, ne t\'assieds jamais sur un tronc échoué, et évite les rochers que la marée peut isoler.</string>
+
+    <!-- Central and Northern California -->
+    <string name="wildlife_region_norcal">Californie centrale et du Nord</string>
+    <string name="wildlife_norcal_nettle_title">Ortie de mer du Pacifique</string>
+    <string name="wildlife_norcal_nettle_body">Une ombrelle dorée traînant de longs bras bordeaux, qui prolifère dans la baie de Monterey en fin d\'été. La piqûre reste douloureuse une heure ou deux, et un tentacule cassé dans les bas-fonds pique encore après le départ de la méduse.</string>
+    <string name="wildlife_norcal_white_title">Grand requin blanc</string>
+    <string name="wildlife_norcal_white_body">C\'est le Triangle rouge, et de jeunes requins blancs passent l\'été au large des plages de la baie de Monterey. Ils chassent les raies sur le sable, pas les nageurs, et les morsures restent rares, mais reste hors de l\'eau près des reposoirs de phoques et à l\'aube et au crépuscule.</string>
+    <string name="wildlife_norcal_eseal_title">Éléphant de mer du Nord</string>
+    <string name="wildlife_norcal_eseal_body">Deux tonnes d\'animal qui peuvent te distancer sur le sable. Ils viennent à terre à Año Nuevo, Point Reyes et Piedras Blancas pour se reproduire et muer. Reste à 30 mètres et ne passe jamais entre l\'un d\'eux et la mer.</string>
+    <string name="wildlife_norcal_otter_title">Loutre de mer</string>
+    <string name="wildlife_norcal_otter_body">Des groupes flottent dans le varech de Monterey jusqu\'à Morro Bay. S\'approcher en éloigne une de sa nourriture, et une loutre acculée mord fort : regarde depuis le sable et passe loin d\'un groupe dans l\'eau.</string>
+    <string name="wildlife_norcal_seal_title">Bébé phoque commun</string>
+    <string name="wildlife_norcal_seal_body">Les naissances ont lieu de mars à juin et la mère laisse le petit sur le sable pendant qu\'elle se nourrit. Reste à 45 mètres et garde les chiens en laisse : une mère qui n\'ose pas revenir à terre perd son petit.</string>
+    <string name="wildlife_norcal_tidepool_title">Étoiles de mer ocre et anémones</string>
+    <string name="wildlife_norcal_tidepool_body">La plupart de ces mares se trouvent dans des aires marines protégées où rien ne peut être prélevé. Marche sur la roche nue, et remets toute pierre retournée exactement comme elle était.</string>
+    <string name="wildlife_norcal_note_title">L\'eau ne se réchauffe pas</string>
+    <string name="wildlife_norcal_note_body">La remontée d\'eau profonde maintient cette côte autour de 11 °C tout l\'été. Un froid pareil te coupe le souffle dès la première vague et te prend tes forces en quelques minutes : c\'est pour ça que tout le monde dans l\'eau porte une combinaison.</string>
+
+    <!-- The Southeast Atlantic -->
+    <string name="wildlife_region_southeast">Atlantique Sud-Est</string>
+    <string name="wildlife_se_nettle_title">Ortie de mer atlantique</string>
+    <string name="wildlife_se_nettle_body">Une ombrelle blanche de la taille d\'une soucoupe avec de longs bras, surtout de juillet à septembre. La piqûre brûle une heure, et un bras cassé dans les vagues pique tout seul.</string>
+    <string name="wildlife_se_manowar_title">Galère portugaise</string>
+    <string name="wildlife_se_manowar_body">Poussée sur ces plages par les vents d\'est d\'hiver et de printemps. Le flotteur bleu a la taille d\'une main et les filaments derrière vont bien plus loin que tu ne le croirais : laisse à une galère échouée toute la largeur de la plage.</string>
+    <string name="wildlife_se_ray_title">Pastenague américaine</string>
+    <string name="wildlife_se_ray_body">Enfouie sur les bancs de sable et dans les cuvettes derrière les barres, là où les gens se tiennent. Fais glisser tes pieds dans les bas-fonds et elle partira avant que tu arrives.</string>
+    <string name="wildlife_se_shark_title">Requin bordé et requin tisserand</string>
+    <string name="wildlife_se_shark_body">Ils suivent la migration des mulets le long de cette côte au printemps et en automne et se nourrissent dans la fosse près du bord. Évite l\'eau qui bouillonne de poissons et d\'oiseaux, l\'eau trouble, et l\'eau à l\'aube et au crépuscule.</string>
+    <string name="wildlife_se_dolphin_title">Dauphins qui chassent sur la rive</string>
+    <string name="wildlife_se_dolphin_body">Il n\'y a que dans le Lowcountry que les grands dauphins poussent les poissons hors de l\'eau jusque sur un banc de vase. Regarde à 45 mètres et ne marche pas sur le banc : un dauphin qui ne peut pas s\'échouer reste le ventre vide.</string>
+    <string name="wildlife_se_turtle_title">Nids de tortues caouannes</string>
+    <string name="wildlife_se_turtle_body">Ces plages sont la limite nord de l\'aire de ponte de la caouanne, de mai à août. Ne touche pas les nids balisés, rebouche tout trou que tu creuses, et pas de lumière sur le sable la nuit.</string>
+    <string name="wildlife_se_cannonball_title">Méduse boulet de canon</string>
+    <string name="wildlife_se_cannonball_body">Un dôme brun et ferme de la taille d\'un pamplemousse, échoué par milliers en fin d\'été. C\'est celle que tu peux ramasser : la piqûre se sent à peine sur la peau.</string>
+    <string name="wildlife_se_note_title">Les courants d\'arrachement sont fréquents ici</string>
+    <string name="wildlife_se_note_body">Les Outer Banks perdent plus de nageurs à cause des courants d\'arrachement que presque partout ailleurs dans le pays : les barres sont entrecoupées et l\'eau qui quitte la plage passe par les trouées. Baigne-toi là où il y a un sauveteur, et si tu es emporté, nage parallèlement à la plage, pas contre le courant.</string>
+
+    <!-- The Mid-Atlantic -->
+    <string name="wildlife_region_midatlantic">Centre de l\'Atlantique</string>
+    <string name="wildlife_ma_nettle_title">Ortie de mer</string>
+    <string name="wildlife_ma_nettle_body">Abondante dans la baie de Chesapeake et les baies côtières de juillet à septembre, beaucoup plus rare côté océan. La piqûre est vive mais brève, et l\'eau chaude la calme.</string>
+    <string name="wildlife_ma_ray_title">Mourine américaine</string>
+    <string name="wildlife_ma_ray_body">Des bancs de centaines traversent les baies et longent les plages tout l\'été, le bout des ailes perçant la surface. Elles nagent au lieu de s\'enfouir, et le dard à la base de la queue sert à se défendre : regarde-les passer et n\'en coince jamais une.</string>
+    <string name="wildlife_ma_horseshoe_title">Limule</string>
+    <string name="wildlife_ma_horseshoe_body">La baie du Delaware accueille chaque mois de mai la plus grande ponte de limules au monde, et les oiseaux de rivage qui mangent les œufs viennent avec. L\'animal est inoffensif et la queue pointue est un levier, pas un dard : retourne-en une par la carapace.</string>
+    <string name="wildlife_ma_horses_title">Les chevaux sauvages d\'Assateague</string>
+    <string name="wildlife_ma_horses_body">Ils ont l\'air dociles sur le sable et ne le sont pas : ils mordent et ruent chaque année. Le service des parcs demande 12 mètres, la longueur d\'un bus, et les nourrir est illégal et leur apprend à dépouiller les gens de leur nourriture.</string>
+    <string name="wildlife_ma_plover_title">Pluvier siffleur et petite sterne</string>
+    <string name="wildlife_ma_plover_body">Les deux nichent à même le sable ici, dans un creux que tu ne verrais qu\'en marchant dessus. Reste en dehors des zones balisées de mars à août et garde les chiens loin de ce secteur.</string>
+    <string name="wildlife_ma_shark_title">Requin gris</string>
+    <string name="wildlife_ma_shark_body">L\'embouchure de la Chesapeake est l\'une des grandes nurseries de cette côte pour eux. Ils restent au-delà de la barre à manger des crabes et des raies et ne s\'intéressent pas aux nageurs.</string>
+    <string name="wildlife_ma_note_title">Le long des épis</string>
+    <string name="wildlife_ma_note_body">Ces plages sont maintenues par des épis rocheux et des jetées, et l\'eau qui quitte la plage s\'en va le long de ces ouvrages. Baigne-toi bien à l\'écart de tout rocher, et ne nage jamais dans un chenal.</string>
+
+    <!-- Hawaii -->
+    <string name="wildlife_region_hawaii">Hawaï</string>
+    <string name="wildlife_hi_box_title">Cuboméduse</string>
+    <string name="wildlife_hi_box_body">Huit à dix jours après la pleine lune, elles arrivent en nombre sur les côtes exposées au sud, dont Waikiki, et les sauveteurs posent des panneaux. La piqûre est pire que celle d\'une galère portugaise et peut faire mal pendant des heures.</string>
+    <string name="wildlife_hi_manowar_title">Galère portugaise</string>
+    <string name="wildlife_hi_manowar_body">Les alizés forts les poussent sur les plages au vent à toute époque de l\'année. Flotteur bleu, long filament invisible, et elle pique pareil sur le sable que dans l\'eau.</string>
+    <string name="wildlife_hi_urchin_title">Wana, l\'oursin épineux</string>
+    <string name="wildlife_hi_urchin_body">Des aiguilles noires coincées dans chaque saillie et chaque fissure du récif. Les piquants sont cassants et se brisent sous la peau : regarde avant de poser une main ou un pied, et porte des chaussures sur le récif.</string>
+    <string name="wildlife_hi_monkseal_title">Phoque moine d\'Hawaï</string>
+    <string name="wildlife_hi_monkseal_body">Il n\'en reste qu\'environ 1 600, et un phoque endormi sur le sable se repose, il n\'est pas échoué. La loi fédérale demande 15 mètres, ou 45 d\'une mère avec son petit, et c\'est tout ce qu\'on te demande.</string>
+    <string name="wildlife_hi_honu_title">Honu, la tortue verte</string>
+    <string name="wildlife_hi_honu_body">Elles se chauffent sur le sable et broutent le récif à la vue de tous. Reste à 3 mètres et ne la touche jamais : elle est protégée par les lois de l\'État et fédérales, et une tortue qui ne peut pas sortir de l\'eau perd le repos qu\'elle venait chercher.</string>
+    <string name="wildlife_hi_spinner_title">Dauphin à long bec</string>
+    <string name="wildlife_hi_spinner_body">Ils chassent toute la nuit et entrent dans les baies pour dormir le jour, et c\'est là que les nageurs les trouvent. Les règles fédérales interdisent de s\'approcher à moins de 45 mètres, et un groupe reposé se nourrit ; un groupe dérangé, non.</string>
+    <string name="wildlife_hi_tiger_title">Requin-tigre</string>
+    <string name="wildlife_hi_tiger_body">Présent autour de chaque île toute l\'année, et les morsures restent rares. Évite l\'eau brunie par la pluie, les embouchures de rivières et les pêcheurs, et l\'eau à l\'aube et au crépuscule.</string>
+    <string name="wildlife_hi_note_title">La vague casse sur le sable</string>
+    <string name="wildlife_hi_note_body">Le shorebreak d\'Hawaï s\'abat sur le sable sec dans trente centimètres d\'eau et brise des nuques et des épaules chaque année : il blesse plus de gens que tout le reste de cette liste réuni. Ne lui tourne jamais le dos, et n\'y plonge jamais la tête la première.</string>
+
+    <!-- The Great Lakes -->
+    <string name="wildlife_region_greatlakes">Grands Lacs</string>
+    <string name="wildlife_gl_itch_title">Dermatite du baigneur</string>
+    <string name="wildlife_gl_itch_body">Un parasite des canards et des escargots pénètre la peau dans l\'eau chaude et peu profonde et y meurt, laissant des boutons rouges qui démangent une heure plus tard. Frotte-toi vigoureusement avec une serviette dès la sortie et rince-toi, et en général ça ne prend pas.</string>
+    <string name="wildlife_gl_algae_title">Algues bleu-vert</string>
+    <string name="wildlife_gl_algae_body">En fin d\'été, les proliférations donnent à l\'eau la couleur de la peinture renversée et contiennent une toxine. Une eau qui ressemble à de la soupe de pois ou couverte d\'écume : reste dehors, et garde les chiens dehors aussi. Un chien qui en boit peut mourir le jour même.</string>
+    <string name="wildlife_gl_mussels_title">Moules zébrées et quaggas</string>
+    <string name="wildlife_gl_mussels_body">Elles recouvrent chaque rocher, pilier et brise-lames des lacs, et leurs coquilles coupent comme du verre cassé. Porte des chaussures partout où tu n\'es pas sur du sable propre.</string>
+    <string name="wildlife_gl_plover_title">Pluvier siffleur</string>
+    <string name="wildlife_gl_plover_body">Moins d\'une centaine de couples nichent sur l\'ensemble des Grands Lacs, sur le sable découvert d\'endroits comme Sleeping Bear et Indiana Dunes. Reste en dehors des zones clôturées et garde les chiens en laisse près d\'elles.</string>
+    <string name="wildlife_gl_jelly_title">Méduse d\'eau douce</string>
+    <string name="wildlife_gl_jelly_body">De la taille d\'une pièce et transparente, elle apparaît dans l\'eau chaude et calme en fin d\'été. C\'est une vraie méduse, et elle ne peut pas piquer à travers la peau humaine.</string>
+    <string name="wildlife_gl_sturgeon_title">Esturgeon jaune</string>
+    <string name="wildlife_gl_sturgeon_body">Jusqu\'à près de deux mètres de poisson cuirassé, presque inchangé depuis les dinosaures et protégé ou strictement limité dans tous les États des lacs. Il n\'a pas de dents et aspire les insectes du fond : en voir un, c\'est de la chance, pas un danger.</string>
+    <string name="wildlife_gl_note_title">Le courant le long d\'une jetée</string>
+    <string name="wildlife_gl_note_body">Un vent qui souffle le long du rivage fait filer l\'eau vers le large le long de chaque jetée et brise-lames, et ce courant noie plus de gens sur ces lacs que tout ce qui vit dans l\'eau. Baigne-toi loin des ouvrages, et n\'y monte pas du tout quand les vagues passent par-dessus.</string>
+
+    <!-- Puerto Rico -->
+    <string name="wildlife_region_caribbean">Porto Rico</string>
+    <string name="wildlife_pr_manowar_title">Galère portugaise</string>
+    <string name="wildlife_pr_manowar_body">Les alizés les poussent sur la côte nord, surtout de décembre à avril. Le flotteur bleu sur le sable est encore attaché à des filaments que tu ne vois pas.</string>
+    <string name="wildlife_pr_sealice_title">Poux de mer</string>
+    <string name="wildlife_pr_sealice_body">Des larves de méduse dé à coudre, trop petites pour être vues, surtout au printemps et au début de l\'été. Tu ne sens rien dans l\'eau et tu te retrouves des heures plus tard avec une éruption exactement là où était ton maillot.</string>
+    <string name="wildlife_pr_urchin_title">Erizo, l\'oursin diadème</string>
+    <string name="wildlife_pr_urchin_body">Des piquants noirs longs comme une main, serrés dans le récif et sous chaque saillie. Ils se cassent dans la peau : ne pose jamais un pied nu sur le récif.</string>
+    <string name="wildlife_pr_firecoral_title">Corail de feu</string>
+    <string name="wildlife_pr_firecoral_body">Une croûte brun moutarde aux pointes pâles, qui pousse sur le récif et sur les vieux cordages et épaves. L\'effleurer brûle pendant des heures et laisse des marques le lendemain, et il ne ressemble en rien au feu qu\'il inflige.</string>
+    <string name="wildlife_pr_turtle_title">Tortues vertes et imbriquées</string>
+    <string name="wildlife_pr_turtle_body">Elles pondent sur ces plages de mars à août, surtout à Culebra. Les nids, les bébés et les tortues elles-mêmes sont protégés : regarde de loin et pas de lumière sur le sable.</string>
+    <string name="wildlife_pr_manatee_title">Lamantin des Antilles</string>
+    <string name="wildlife_pr_manatee_body">En danger, et présent dans les baies calmes et les embouchures le long de cette côte. Ne le suis pas, ne le nourris pas et ne nage pas vers lui ; ce sont les bateaux qui les tuent, alors un lamantin a plus besoin du chenal que toi de la photo.</string>
+    <string name="wildlife_pr_reef_title">Le récif lui-même</string>
+    <string name="wildlife_pr_reef_body">Marcher sur le corail tue une colonie qui a mis des décennies à pousser, et une coupure de corail s\'infecte plus facilement que n\'importe quelle écorchure. Flotte au-dessus, et si tu dois te reposer, fais-le sur le sable.</string>
+    <string name="wildlife_pr_note_title">Resacas</string>
+    <string name="wildlife_pr_note_body">La houle d\'hiver de l\'Atlantique Nord frappe fort cette côte de décembre à mars, et l\'eau qu\'elle accumule sur la plage repart par les trouées du récif sous forme de courant d\'arrachement. Baigne-toi sur une plage surveillée, et si le récif a un chenal, c\'est là que passe le courant.</string>
+
+    <!-- Your own photo of a beach -->
+    <string name="photo_add">Ajouter une photo</string>
+    <string name="photo_change">Changer la photo</string>
+    <string name="photo_sheet_note">Reste sur ce téléphone.</string>
+    <string name="photo_take">Prendre une photo</string>
+    <string name="photo_choose">Choisir une photo</string>
+    <string name="photo_remove">Supprimer la photo</string>
+    <string name="photo_failed">Impossible d\'ajouter cette photo.</string>
+    <string name="photo_no_camera">Aucune appli photo sur cet appareil.</string>
+
+    <!-- Emergency sheet -->
+    <string name="sos_label">SOS</string>
+    <string name="sos_title">Obtenir de l\'aide</string>
+    <string name="emergency_number">911</string>
+    <string name="sos_where">Tu es tout près de %1$s. Prépare ta position pour la partager.</string>
+    <string name="sos_where_unknown">Prépare ta position pour la partager.</string>
+    <string name="sos_call_title">Appeler les secours</string>
+    <string name="sos_call_body">Ouvre le clavier : c\'est toi qui passes l\'appel</string>
+    <string name="sos_directions_title">Itinéraire vers le secours le plus proche</string>
+    <string name="sos_directions_none">Aucun point de secours indiqué pour cette plage</string>
+    <string name="sos_share_title">Envoyer ma position</string>
+    <string name="sos_share_body">Partager un repère sur la carte avec quelqu\'un</string>
+    <string name="sos_share_message">Je suis à %1$s. Ma position : https://maps.google.com/?q=%2$s</string>
+    <string name="sos_share_unknown">J\'ai besoin d\'aide à la plage.</string>
+    <string name="sos_share_position">J\'ai besoin d\'aide. Ma position : https://maps.google.com/?q=%1$s</string>
+    <string name="sos_help_tower">Poste de sauveteurs</string>
+    <string name="sos_help_tower_named">Poste de sauveteurs %1$s</string>
+    <string name="sos_no_app">Aucune appli de cet appareil ne peut faire ça.</string>
+
+    <!-- What people report from the beach -->
+    <string name="time_just_now">à l\'instant</string>
+
+    <!-- Rocks underfoot -->
+    <string name="rocks_title">Rochers sous les pieds</string>
+    <string name="rocks_title_for">Rochers à %1$s</string>
+    <string name="rocks_unrated_body">Personne n\'a encore dit à quoi ressemble le sol de cette plage.</string>
+    <string name="rocks_rate_cta">Noter les rochers</string>
+    <string name="rocks_rerate_cta">Modifier cette note</string>
+    <string name="rocks_value">%1$d / 10</string>
+    <string name="rocks_rated_when">Noté %1$s</string>
+
+    <string name="rocks_band_clear">Sable dégagé</string>
+    <string name="rocks_band_few">Quelques rochers</string>
+    <string name="rocks_band_patchy">Rochers par endroits</string>
+    <string name="rocks_band_mostly">Surtout des rochers</string>
+    <string name="rocks_band_throughout">Rochers partout</string>
+
+    <string name="rocks_advice_clear">Pieds nus sans problème jusqu\'à l\'eau.</string>
+    <string name="rocks_advice_few">Surtout du sable. Attention où tu mets les pieds au bord de l\'eau.</string>
+    <string name="rocks_advice_patchy">Autant de rochers que de sable. Prévois quelque chose pour tes pieds.</string>
+    <string name="rocks_advice_mostly">Chaussures nécessaires, et difficile pour les jeunes enfants.</string>
+    <string name="rocks_advice_throughout">Des rochers jusqu\'à l\'eau. Pas une plage pour les pieds nus, et peu pratique avec une planche ou une poussette.</string>
+
+    <string name="rocks_reference_heading">À quoi ressemblent les notes</string>
+    <string name="rocks_reference_note">Choisis la note dont l\'image ressemble le plus à ce que tu as devant toi.</string>
+    <string name="rocks_reference_3">3 — quelques rochers sur du sable dégagé</string>
+    <string name="rocks_reference_5">5 — autant de rochers que de sable</string>
+    <string name="rocks_reference_9">9 — des rochers jusqu\'à l\'eau</string>
+
+    <string name="rocks_your_rating">Ta note</string>
+    <string name="rocks_photo_heading">Ta photo du rivage</string>
+    <string name="rocks_photo_note">Facultatif, et elle reste sur ce téléphone. Elle permet à la personne suivante de vérifier ta note.</string>
+    <string name="rocks_photo_add">Ajouter une photo</string>
+    <string name="rocks_save">Enregistrer la note</string>
+    <string name="rocks_saved">Note enregistrée.</string>
+    <string name="rocks_clear">Supprimer ma note</string>
+    <string name="rocks_cleared">Note supprimée.</string>
+
+    <!-- Seagulls -->
+    <string name="gulls_title">Mouettes et goélands</string>
+    <string name="gulls_sheet_title">Combien de mouettes ?</string>
+    <string name="gulls_unrated_body">Personne n\'a encore dit combien de mouettes il y a ici.</string>
+    <string name="gulls_rate_cta">Noter les mouettes</string>
+    <string name="gulls_level_none">Aucune</string>
+    <string name="gulls_level_few">Quelques-unes</string>
+    <string name="gulls_level_plenty">Pas mal</string>
+    <string name="gulls_level_lots">Beaucoup</string>
+    <string name="gulls_level_swarming">Une nuée</string>
+    <string name="gulls_advice_none">Rien à craindre pour ton pique-nique.</string>
+    <string name="gulls_advice_few">Range la nourriture et elles te laisseront tranquille.</string>
+    <string name="gulls_advice_plenty">Couvre la nourriture et ne les nourris jamais.</string>
+    <string name="gulls_advice_lots">Elles te prendront la nourriture des mains. Mange sous un parasol.</string>
+    <string name="gulls_advice_swarming">Pique-nique ailleurs aujourd\'hui.</string>
+
+    <string name="source_osm">D\'après OpenStreetMap</string>
+    <string name="source_osm_and_you">D\'après OpenStreetMap et ta note</string>
+    <string name="source_ebird">D\'après eBird</string>
+    <string name="source_ebird_and_you">D\'après eBird et ta note</string>
+
+    <!-- The hazard a high rating raises -->
+    <string name="hazard_rocks_rated_body">Quelqu\'un a noté le rivage ici %1$d sur 10 pour les rochers : %2$s.</string>
+    <string name="hazard_rocks_step_shoes">Porte quelque chose aux pieds.</string>
+    <string name="hazard_rocks_step_entry">Cherche un passage de sable dégagé pour entrer dans l\'eau et en sortir.</string>
+    <string name="hazard_rocks_estimate_body">Le rivage ici ressort à %1$d sur 10 pour les rochers : %2$s.</string>
+
+    <!-- Wildlife sightings -->
+    <string name="sighting_species_shark">Requin</string>
+    <string name="sighting_species_ray">Raie</string>
+    <string name="sighting_species_fish">Poisson</string>
+    <string name="sighting_species_jellyfish">Méduse</string>
+    <string name="sighting_species_seal">Phoque</string>
+    <string name="sighting_species_seal_dead">Phoque mort</string>
+    <string name="sighting_species_seagull">Mouette</string>
+    <string name="sighting_species_bird">Oiseau</string>
+    <string name="sighting_species_other">Autre chose</string>
+
+    <string name="sighting_noun_shark">requin</string>
+    <string name="sighting_noun_ray">raie</string>
+    <string name="sighting_noun_fish">poisson</string>
+    <string name="sighting_noun_jellyfish">méduse</string>
+    <string name="sighting_noun_seal">phoque</string>
+    <string name="sighting_noun_seal_dead">phoque mort</string>
+    <string name="sighting_noun_seagull">mouette</string>
+    <string name="sighting_noun_bird">oiseau</string>
+    <string name="sighting_noun_other">animal</string>
+
+    <string name="sighting_title">Signaler un animal</string>
+    <string name="sighting_title_for">Faune à %1$s</string>
+    <string name="sighting_section">Vu ici récemment</string>
+    <string name="sighting_add_cta">Signaler une observation</string>
+    <string name="sighting_none">Rien n\'a encore été signalé ici.</string>
+    <string name="source_inat">2 dernières semaines, d\'après iNaturalist</string>
+    <string name="source_inat_and_you">2 dernières semaines, d\'après iNaturalist et tes signalements</string>
+    <string name="wildlife_tally_with_dead">%1$s · %2$s</string>
+    <plurals name="wildlife_tally_dead">
+        <item quantity="one">%1$d mort</item>
+        <item quantity="many">%1$d morts</item>
+        <item quantity="other">%1$d morts</item>
+    </plurals>
+
+    <string name="sighting_what">Qu\'as-tu vu ?</string>
+    <string name="sighting_where">Où était-ce ?</string>
+    <string name="sighting_where_water">Dans l\'eau</string>
+    <string name="sighting_where_stranded">Échoué sur le sable</string>
+    <string name="sighting_alive">Vivant</string>
+    <string name="sighting_dead">Mort</string>
+
+    <string name="sighting_stranded_title">Cela déclenche une alerte</string>
+    <string name="sighting_stranded_body">Un animal échoué apparaît en tête des alertes de cette plage pendant les deux jours suivants, pour que toute autre personne qui ouvre cette plage le voie en premier. Reste toi-même bien à l\'écart : un animal échoué se repose souvent, et un animal effrayé mord.</string>
+    <string name="sighting_carcass_body">Un phoque mort apparaît en tête des alertes de cette plage pendant les deux jours suivants, pour que toute autre personne qui ouvre cette plage le voie en premier. Ne le touche pas : les phoques morts peuvent transmettre des maladies aux gens et aux animaux de compagnie.</string>
+
+    <string name="sighting_shark_title">Cela déclenche une alerte</string>
+    <string name="sighting_shark_body">Un requin dans l\'eau apparaît en tête des alertes de cette plage pendant la journée suivante, pour que toute autre personne qui ouvre cette plage le voie avant d\'entrer dans l\'eau.</string>
+
+    <string name="sighting_note_hint">Quelque chose à ajouter (facultatif)</string>
+    <string name="sighting_photo_add">Ajouter une photo</string>
+    <string name="sighting_photo_note">Facultatif, et elle reste sur ce téléphone.</string>
+    <string name="sighting_save">Enregistrer le signalement</string>
+    <string name="sighting_saved">Signalement enregistré.</string>
+    <string name="sighting_deleted">Signalement supprimé.</string>
+    <string name="sighting_delete">Supprimer</string>
+
+    <string name="sighting_tag_stranded">Échoué</string>
+    <string name="sighting_tag_water">Dans l\'eau</string>
+
+    <!-- Passing a warning to other people. Written without an article in front
+         of the animal, as in English, so it never has to agree with a noun
+         chosen at runtime. -->
+    <string name="sighting_share_cta">Prévenir les autres</string>
+    <string name="sighting_share_subject">Échouage (%1$s) à %2$s</string>
+    <string name="sighting_share_subject_shark">Requin vu à %1$s</string>
+    <string name="sighting_share_subject_seen">Faune à %1$s</string>
+    <string name="sighting_share_stranded">Attention : animal échoué (%1$s) sur le sable à %2$s. Reste à au moins 45 mètres, éloigne les chiens et ne le repousse pas à l\'eau : ça peut tuer un animal en bonne santé. Signale-le aux sauveteurs sur place ou à ton réseau local d\'échouage des mammifères marins.</string>
+    <string name="sighting_share_carcass">Attention : %1$s sur le sable à %2$s. Ne le touche pas et éloigne les chiens ; les phoques morts peuvent transmettre des maladies aux gens et aux animaux de compagnie. Signale-le aux sauveteurs sur place ou à ton réseau local d\'échouage des mammifères marins.</string>
+    <string name="sighting_share_shark">Attention : requin signalé dans l\'eau à %1$s. Préviens les sauveteurs sur place avant que quelqu\'un entre dans l\'eau.</string>
+    <string name="sighting_share_water">Vu à %2$s : %1$s dans l\'eau.</string>
+    <string name="sighting_share_none">Aucune appli de cet appareil ne peut envoyer ça.</string>
+
+    <!-- The hazard a report raises, in "What to watch for" and Alerts -->
+    <string name="hazard_stranding_body">Animal échoué (%1$s) signalé sur le sable ici. Reste bien à l\'écart.</string>
+    <string name="hazard_stranding_step_back">Reste bien à l\'écart, et éloigne les enfants. Pour un phoque, une otarie, un dauphin ou une baleine, reste à au moins 45 mètres : s\'approcher davantage est une infraction à la Marine Mammal Protection Act.</string>
+    <string name="hazard_stranding_step_dogs">Garde les chiens en laisse et bien à l\'écart.</string>
+    <string name="hazard_stranding_step_leave">Ne le touche pas et ne le repousse pas à l\'eau. Une méduse pique encore une fois morte, et un animal qui se repose sur le rivage peut mourir si on le déplace.</string>
+    <string name="hazard_stranding_step_tell">Préviens les sauveteurs, ou ton réseau local d\'échouage des mammifères marins.</string>
+    <string name="hazard_carcass_step_touch">Ne le touche pas, et éloigne les enfants. Les phoques morts peuvent transmettre des maladies, comme la leptospirose, aux gens et aux animaux de compagnie.</string>
+    <string name="hazard_carcass_step_take">Laisse-le où il est. Emporter la moindre partie d\'un phoque, même un os ou une moustache, est illégal selon la Marine Mammal Protection Act.</string>
+
+    <string name="hazard_shark_body">Un requin a été signalé dans l\'eau ici au cours de la dernière journée.</string>
+    <string name="hazard_shark_step_exit">Si tu es dans l\'eau, sors calmement et régulièrement plutôt qu\'en te débattant.</string>
+    <string name="hazard_shark_step_group">Évite l\'eau à l\'aube et au crépuscule, et ne nage pas seul ni près des bancs de petits poissons et des oiseaux qui plongent.</string>
+    <string name="hazard_shark_step_tell">Préviens les sauveteurs, et vérifie si la plage a été signalée par des panneaux.</string>
+
+    <!-- What's it good for today -->
+    <string name="section_good_for">Idéal aujourd\'hui pour</string>
+    <string name="good_for_loading">Évaluation des activités du jour…</string>
+    <string name="activity_title">Meilleure plage pour…</string>
+    <string name="activity_pick">Que veux-tu faire ?</string>
+
+    <string name="activity_swim">Nager</string>
+    <string name="activity_swim_blurb">Petites vagues, eau propre, idéalement surveillée</string>
+    <string name="activity_surf">Surfer</string>
+    <string name="activity_surf_blurb">Une vraie houle et peu de vent</string>
+    <string name="activity_picnic">Pique-niquer</string>
+    <string name="activity_picnic_blurb">Air calme, chaud sans être brûlant, stationnement facile</string>
+    <string name="activity_fish">Pêcher</string>
+    <string name="activity_fish_blurb">Des structures où pêcher et une eau pas trop agitée</string>
+
+    <string name="fit_great">Excellent</string>
+    <string name="fit_good">Bon</string>
+    <string name="fit_soso">Moyen</string>
+    <string name="fit_poor">Mauvais</string>
+
+    <string name="fit_out_of">%1$d/100</string>
+    <string name="fit_held_back">Pénalisé par %1$s</string>
+    <string name="fit_helped_by">Aidé par %1$s</string>
+    <string name="fit_thin">Pas assez de relevés ici pour être sûr</string>
+    <string name="fit_rank">n° %1$d</string>
+
+    <!-- Factor names, used mid-sentence in "Pénalisé par le vent" -->
+    <string name="factor_water">la qualité de l\'eau</string>
+    <string name="factor_surf">la houle</string>
+    <string name="factor_wind">le vent</string>
+    <string name="factor_warmth">la température</string>
+    <string name="factor_lifeguards">l\'absence de sauveteurs</string>
+    <string name="factor_underfoot">les rochers sous les pieds</string>
+    <string name="factor_gulls">les mouettes</string>
+    <string name="factor_air">la qualité de l\'air</string>
+    <string name="factor_parking">le stationnement</string>
+    <string name="factor_uv">l\'indice UV</string>
+    <string name="factor_structure">des structures où pêcher</string>
+    <string name="factor_hazards">une alerte en cours</string>
+
+    <string name="activity_ranking_heading">%1$s plages classées pour : %2$s</string>
+    <string name="activity_ranking_empty">Aucune plage à proximité à classer. Active la localisation ou ajoute quelques plages à tes favoris.</string>
+    <string name="activity_ranking_empty_saved">Aucune plage favorite à classer pour l\'instant.</string>
+    <string name="activity_ranking_loading">Lecture des conditions sur chaque plage…</string>
+    <string name="activity_ranking_no_readings">Impossible de lire les conditions d\'aucune plage. Vérifie ta connexion et reviens.</string>
+
+    <!-- Environment -->
+    <string name="section_environment">Environnement</string>
+    <string name="aqi_label">Qualité de l\'air</string>
+    <string name="aqi_value">IQA %1$d</string>
+    <string name="aqi_good">Bonne</string>
+    <string name="aqi_moderate">Moyenne</string>
+    <string name="aqi_sensitive">Mauvaise pour les personnes sensibles</string>
+    <string name="aqi_unhealthy">Mauvaise</string>
+    <string name="aqi_very_unhealthy">Très mauvaise</string>
+    <string name="aqi_hazardous">Dangereuse</string>
+    <string name="aqi_advice_good">Air propre. Rien à prévoir.</string>
+    <string name="aqi_advice_moderate">Convient à presque tout le monde. Un long effort intense dehors pourrait te gêner si tu es particulièrement sensible.</string>
+    <string name="aqi_advice_sensitive">Si tu as de l\'asthme ou des problèmes cardiaques ou pulmonaires, reste bref et tranquille aujourd\'hui. Pour les autres, pas de souci.</string>
+    <string name="aqi_advice_unhealthy">Tout le monde devrait limiter les efforts intenses dehors. Les personnes sensibles devraient rester à l\'intérieur.</string>
+    <string name="aqi_advice_hazardous">Reste à l\'intérieur. C\'est le niveau de la fumée des feux de forêt.</string>
+    <string name="aqi_loading">Vérification de l\'air…</string>
+    <string name="aqi_unavailable">La qualité de l\'air n\'est pas disponible pour le moment.</string>
+
+    <!-- Water. A prediction from rainfall and geography, never a water test. -->
+    <string name="water_label">Qualité de l\'eau</string>
+    <string name="water_clean">Probablement propre</string>
+    <string name="water_clean_body">Pas de pluie notable ces trois derniers jours et aucun rejet connu à proximité. Estimé à partir des pluies, pas mesuré : cette appli n\'a aucun prélèvement d\'eau.</string>
+    <string name="water_runoff">Avis de ruissellement</string>
+    <string name="water_runoff_body">Il a plu ici ces trois derniers jours. Les égouts pluviaux emportent la rue jusqu\'à la mer, et les autorités sanitaires conseillent de rester hors de l\'eau environ 72 heures après la pluie.</string>
+    <string name="water_sewage">Risque d\'eaux usées transfrontalières</string>
+    <string name="water_sewage_body">Cette plage est assez proche de l\'embouchure de la Tijuana pour faire l\'objet d\'un avis permanent. Consulte la liste actuelle des fermetures du comté de San Diego avant de te baigner.</string>
+    <string name="water_sewage_rain">Eaux usées et ruissellement à la fois</string>
+    <string name="water_sewage_rain_body">De la pluie en plus des rejets transfrontaliers : c\'est la combinaison qui ferme les plages du sud du comté. Ne va pas dans l\'eau ici aujourd\'hui.</string>
+    <string name="water_loading">Vérification des pluies récentes…</string>
+    <string name="water_unknown">Non vérifiée</string>
+    <string name="water_unknown_body">Les pluies récentes n\'ont pas pu être chargées, donc le ruissellement ne peut pas être évalué. Consulte les avis locaux sur la qualité de l\'eau avant de te baigner.</string>
+
+    <string name="hazard_water_step_stay_out">Garde la tête hors de l\'eau, et ne te baigne pas si tu as une plaie ouverte.</string>
+    <string name="hazard_water_step_wash">Rince-toi à l\'eau propre après.</string>
+    <string name="hazard_water_step_check">Consulte la liste des plages fermées de ton comté avant d\'entrer dans l\'eau.</string>
+    <string name="hazard_air_body">L\'indice de qualité de l\'air ici est de %1$d : %2$s.</string>
+    <string name="hazard_air_step_indoors">Limite les efforts intenses, et rentre si ta poitrine se serre.</string>
+
+    <!-- Parking. What exists and what it costs, never whether it is full. -->
+    <string name="parking_label">Stationnement</string>
+    <string name="parking_none_mapped">Aucun stationnement cartographié à proximité</string>
+    <string name="parking_thin">Presque aucun stationnement cartographié : considère ceci comme une estimation</string>
+    <string name="parking_mostly_free">Surtout du stationnement gratuit à proximité</string>
+    <string name="parking_paid">Stationnement payant uniquement</string>
+    <string name="parking_mixed">Stationnement gratuit et payant à proximité</string>
+    <string name="parking_detail">%1$s, %2$s à moins de 10 minutes à pied</string>
+    <plurals name="parking_lots">
+        <item quantity="one">%1$d parking</item>
+        <item quantity="many">%1$d de parkings</item>
+        <item quantity="other">%1$d parkings</item>
+    </plurals>
+    <plurals name="parking_streets">
+        <item quantity="one">%1$d tronçon de rue</item>
+        <item quantity="many">%1$d de tronçons de rue</item>
+        <item quantity="other">%1$d tronçons de rue</item>
+    </plurals>
+    <string name="parking_caveat">Montre ce qui existe, pas ce qui est libre en ce moment.</string>
+    <string name="parking_loading">Recherche de stationnement à proximité…</string>
+    <string name="parking_unavailable">Les infos de stationnement ne sont pas disponibles pour le moment.</string>
+
+    <plurals name="alert_count">
+        <item quantity="one">%1$d alerte</item>
+        <item quantity="many">%1$d d\'alertes</item>
+        <item quantity="other">%1$d alertes</item>
+    </plurals>
+
+    <plurals name="saved_count">
+        <item quantity="one">%1$d plage favorite</item>
+        <item quantity="many">%1$d de plages favorites</item>
+        <item quantity="other">%1$d plages favorites</item>
+    </plurals>
+
+    <plurals name="beach_count">
+        <item quantity="one">%1$d plage</item>
+        <item quantity="many">%1$d de plages</item>
+        <item quantity="other">%1$d plages</item>
+    </plurals>
+
+    <!-- Beach map -->
+    <string name="map_kicker">Carte de la plage</string>
+    <string name="map_title">Postes de sauveteurs et accès</string>
+    <string name="map_recenter">Recentrer</string>
+    <string name="map_zoom_in">Zoom avant</string>
+    <string name="map_zoom_out">Zoom arrière</string>
+    <string name="map_satellite">Satellite</string>
+    <string name="map_plain">Plan</string>
+    <string name="map_two_finger_hint">Utilise deux doigts pour déplacer la carte</string>
+    <string name="map_legend_tower">Poste de sauveteurs · point de secours</string>
+    <string name="map_you">Toi · %1$s</string>
+    <string name="map_description">Carte de %1$s</string>
+    <string name="map_attribution">© Esri · © OpenStreetMap</string>
+
+    <!-- Support and contact -->
+    <string name="support_section_title">Aide et commentaires</string>
+    <string name="contact_developers_title">Contacter les développeurs</string>
+    <string name="contact_developers_subtitle">Écris à l\'équipe de développement pour une question ou un commentaire</string>
+    <string name="contact_intro_title">Nous contacter</string>
+    <string name="contact_intro_body">Un commentaire, un bug ou une idée ? Écris-nous et nous te répondrons.</string>
+    <string name="contact_email_address">supportflagline@gmail.com</string>
+    <string name="contact_topic_label">Sujet</string>
+    <string name="contact_topic_general">Général</string>
+    <string name="contact_topic_bug">Signaler un bug</string>
+    <string name="contact_topic_feature">Idée de fonctionnalité</string>
+    <string name="contact_topic_data">Données des plages</string>
+    <string name="contact_subject_label">Objet</string>
+    <string name="contact_subject_hint">Saisis l\'objet</string>
+    <string name="contact_message_label">Message</string>
+    <string name="contact_message_hint">Écris ton message ici…</string>
+    <string name="contact_send_button">Envoyer l\'e-mail</string>
+    <string name="contact_chooser_title">Envoyer l\'e-mail avec…</string>
+    <string name="contact_no_email_app">Aucune appli de messagerie trouvée. Tu peux nous écrire à supportflagline@gmail.com</string>
+    <string name="contact_empty_message_error">Écris un message avant d\'envoyer.</string>
+</resources>

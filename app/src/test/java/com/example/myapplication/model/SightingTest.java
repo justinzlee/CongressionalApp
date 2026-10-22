@@ -1,5 +1,7 @@
 package com.example.myapplication.model;
 
+import com.example.myapplication.R;
+
 import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;
@@ -25,7 +27,7 @@ public class SightingTest {
     private static final long DAY = TimeUnit.DAYS.toMillis(1);
 
     private Sighting at(SightingSpecies species, boolean stranded, long timeMillis) {
-        return new Sighting("id", "CA1", species, stranded, null, null, timeMillis);
+        return new Sighting("id", "CA1", species, stranded, false, null, null, timeMillis);
     }
 
     /** A stranding reported just now is the case the whole feature exists for. */
@@ -117,7 +119,7 @@ public class SightingTest {
     @Test
     public void aMissingPhotoFileReadsAsNoPhoto() {
         Sighting sighting = new Sighting("id", "CA1", SightingSpecies.JELLYFISH, true,
-            null, "/nowhere/at/all/missing.jpg", NOW);
+            false, null, "/nowhere/at/all/missing.jpg", NOW);
         assertNull(sighting.getPhoto());
         // But the record keeps the path, so writing it back does not lose it.
         assertEquals("/nowhere/at/all/missing.jpg", sighting.rawPhotoPath());
@@ -136,16 +138,36 @@ public class SightingTest {
     }
 
     /**
-     * Reports filed before this screen offered groups. The three names the app
-     * used to write no longer have a card of their own, so they land in OTHER
-     * along with everything else unrecognised — the report survives, and the
-     * stranding advice it gets is the same advice every washed-up animal gets.
+     * Reports filed by older builds. A seal is a seal again, a sea lion lands
+     * on the seal card that now covers it, and a dolphin, which has no card of
+     * its own, lands in OTHER — the report survives either way.
      */
     @Test
     public void theOldSpeciesNamesStillReadBack() {
         assertEquals(SightingSpecies.OTHER, SightingSpecies.parse("DOLPHIN"));
-        assertEquals(SightingSpecies.OTHER, SightingSpecies.parse("SEAL"));
-        assertEquals(SightingSpecies.OTHER, SightingSpecies.parse("SEA_LION"));
+        assertEquals(SightingSpecies.SEAL, SightingSpecies.parse("SEAL"));
+        assertEquals(SightingSpecies.SEAL, SightingSpecies.parse("SEA_LION"));
+    }
+
+    /** Only a seal can be reported dead; the flag means nothing on any other card. */
+    @Test
+    public void onlyASealCanBeDead() {
+        Sighting seal = new Sighting("id", "CA1", SightingSpecies.SEAL, true, true, null, null, NOW);
+        assertTrue(seal.isDead());
+        assertEquals(R.string.sighting_species_seal_dead, seal.getLabelRes());
+        assertEquals(R.string.sighting_noun_seal_dead, seal.getNounRes());
+
+        Sighting bird = new Sighting("id", "CA1", SightingSpecies.BIRD, true, true, null, null, NOW);
+        assertFalse(bird.isDead());
+        assertEquals(R.string.sighting_species_bird, bird.getLabelRes());
+    }
+
+    /** A dead seal on the sand still warns people, for as long as any stranding does. */
+    @Test
+    public void aDeadSealOnTheSandStillWarns() {
+        Sighting seal = new Sighting("id", "CA1", SightingSpecies.SEAL, true, true, null, null,
+            NOW - DAY);
+        assertTrue(seal.isActiveWarning(NOW));
     }
 
     /** Every group can be written out and read back as itself. */

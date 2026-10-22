@@ -37,6 +37,8 @@ public final class ActivityScorer {
         @Nullable public ParkingSummary parking;
         /** {@link RockRating#UNRATED} when nobody has rated the shore. */
         public int rockRating = RockRating.UNRATED;
+        /** {@link SeagullRating#UNRATED} when nobody has said how many gulls are about. */
+        public int gullRating = SeagullRating.UNRATED;
 
         /**
          * Whether a lifeguard tower is listed for the beach, or null when the
@@ -223,6 +225,11 @@ public final class ActivityScorer {
             // present and light rather than absent.
             factors.add(new ActivityFit.Factor(R.string.factor_uv,
                 band(in.conditions.getUvIndex(), 0, 6, -1, 12), 1.0));
+        }
+        if (SeagullRating.isRated(in.gullRating)) {
+            // The one activity gulls actually spoil: they are after the food.
+            factors.add(new ActivityFit.Factor(R.string.factor_gulls,
+                SeagullRating.picnicScore(in.gullRating), 1.5));
         }
         return factors;
     }

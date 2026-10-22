@@ -35,7 +35,7 @@ public final class SightingSheet {
         View sheet = LayoutInflater.from(context).inflate(R.layout.sheet_sighting, null);
         dialog.setContentView(sheet);
 
-        String species = context.getString(sighting.getSpecies().getLabelRes());
+        String species = context.getString(sighting.getLabelRes());
         String where = context.getString(sighting.isStranded()
             ? R.string.sighting_tag_stranded : R.string.sighting_tag_water);
         ((TextView) sheet.findViewById(R.id.sightingSheetTitle)).setText(

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  A seagull, head to the right, in the same single-weight outline as ic_fish.
+
+  Drawn perched rather than in flight. The flying-gull glyph everyone reaches
+  for is two arcs, which at 20dp is a swoosh and reads as weather rather than as
+  an animal; a body with a head, a beak and a leg on it is unmistakably a bird
+  at any size the app uses. The beak is the one detail deliberately oversized -
+  it is what stops the silhouette reading as a fish lying on its side.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Moves the drawing so its ink is centred in the 24x24 frame. -->
+    <group android:translateX="-0.1" android:translateY="-0.41">
+        <!-- Body, head and beak as one silhouette, tail sweeping back to the left -->
+        <path
+            android:pathData="M2.8,16.2 C3.6,11.8 7.4,8.4 12.2,8.0 C12.8,6.4 14.3,5.4 15.9,5.6 C17.6,5.8 18.8,7.2 18.8,8.9 L21.4,9.6 L18.6,10.6 C18.2,12.2 16.8,13.3 15.2,13.4 C12.2,15.8 7.6,17.0 2.8,16.2 Z"
+            android:strokeColor="#000000"
+            android:strokeWidth="1.6"
+            android:strokeLineJoin="round"
+            android:strokeLineCap="round" />
+
+        <!-- Folded wing -->
+        <path
+            android:pathData="M6.9,14.9 C8.5,12.4 10.7,10.7 13.3,9.9"
+            android:strokeColor="#000000"
+            android:strokeWidth="1.5"
+            android:strokeLineCap="round" />
+
+        <!-- Leg and webbed foot -->
+        <path
+            android:pathData="M10.6,15.6 L10.3,19.3 M8.7,19.3 L11.9,19.3"
+            android:strokeColor="#000000"
+            android:strokeWidth="1.5"
+            android:strokeLineCap="round" />
+
+        <path
+            android:pathData="M16.2,8.4 m-0.8,0 a0.8,0.8 0,1 0,1.6 0 a0.8,0.8 0,1 0,-1.6 0"
+            android:fillColor="#000000" />
+    </group>
+</vector>

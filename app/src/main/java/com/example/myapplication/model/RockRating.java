@@ -153,6 +153,48 @@ public final class RockRating {
         return isRated(rating) && rating >= HAZARD_FROM;
     }
 
+    /**
+     * A starting point read from what OpenStreetMap says the beach is made of,
+     * or {@link #UNRATED} for a surface it does not name or one this cannot
+     * place on the scale.
+     *
+     * <p>Deliberately short of the ends of the scale. A map tag covers the
+     * whole drawn beach, so "rock" says the stretch is rocky, not that there is
+     * no sand anywhere on it, and "sand" leaves room for the rocks at either
+     * end. A tag listing several surfaces ({@code sand;pebbles}) sits in the
+     * middle.
+     */
+    public static int forSurface(String surface) {
+        if (surface == null) return UNRATED;
+        String value = surface.trim().toLowerCase(java.util.Locale.ROOT);
+        if (value.isEmpty()) return UNRATED;
+        if (value.contains(";")) return 5;
+        switch (value) {
+            case "sand":
+            case "fine_sand":
+            case "dirt":
+            case "earth":
+            case "ground":
+                return 1;
+            case "gravel":
+            case "fine_gravel":
+            case "compacted":
+                return 5;
+            case "pebbles":
+            case "pebblestone":
+            case "shingle":
+            case "shells":
+                return 6;
+            case "rock":
+            case "rocks":
+            case "stone":
+            case "bare_rock":
+                return 8;
+            default:
+                return UNRATED;
+        }
+    }
+
     /** 0-4, the band a rating falls in. Private: the bands are an implementation detail. */
     private static int band(int rating) {
         int value = clamp(rating);

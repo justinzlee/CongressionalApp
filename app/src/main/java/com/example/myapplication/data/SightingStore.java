@@ -58,6 +58,7 @@ public class SightingStore {
     private static final String FIELD_ID = "id";
     private static final String FIELD_SPECIES = "species";
     private static final String FIELD_STRANDED = "stranded";
+    private static final String FIELD_DEAD = "dead";
     private static final String FIELD_NOTE = "note";
     private static final String FIELD_PHOTO = "photo";
     private static final String FIELD_AT = "at";
@@ -104,12 +105,13 @@ public class SightingStore {
      *              photograph on the form before committing to the report.
      */
     public Sighting add(String beachId, SightingSpecies species, boolean stranded,
-                        @Nullable String note, @Nullable File photo) {
+                        boolean dead, @Nullable String note, @Nullable File photo) {
         Sighting sighting = new Sighting(
             UUID.randomUUID().toString(),
             beachId,
             species,
             stranded,
+            dead,
             emptyToNull(note),
             photo == null ? null : photo.getAbsolutePath(),
             System.currentTimeMillis());
@@ -173,6 +175,9 @@ public class SightingStore {
             json.addProperty(FIELD_ID, sighting.getId());
             json.addProperty(FIELD_SPECIES, sighting.getSpecies().name());
             json.addProperty(FIELD_STRANDED, sighting.isStranded());
+            if (sighting.isDead()) {
+                json.addProperty(FIELD_DEAD, true);
+            }
             json.addProperty(FIELD_AT, sighting.getTimeMillis());
             if (sighting.getNote() != null) {
                 json.addProperty(FIELD_NOTE, sighting.getNote());
@@ -217,6 +222,7 @@ public class SightingStore {
                     beachId,
                     SightingSpecies.parse(optString(json, FIELD_SPECIES)),
                     json.has(FIELD_STRANDED) && json.get(FIELD_STRANDED).getAsBoolean(),
+                    json.has(FIELD_DEAD) && json.get(FIELD_DEAD).getAsBoolean(),
                     optString(json, FIELD_NOTE),
                     optString(json, FIELD_PHOTO),
                     json.get(FIELD_AT).getAsLong()));

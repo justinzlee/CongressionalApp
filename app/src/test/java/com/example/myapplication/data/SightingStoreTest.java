@@ -28,7 +28,7 @@ public class SightingStoreTest {
 
     private Sighting sighting(String id, SightingSpecies species, boolean stranded,
                               String note, String photo, long at) {
-        return new Sighting(id, "CA1", species, stranded, note, photo, at);
+        return new Sighting(id, "CA1", species, stranded, false, note, photo, at);
     }
 
     /** Everything written must come back the same. */
@@ -149,11 +149,11 @@ public class SightingStoreTest {
     }
 
     /**
-     * A log written before this app offered groups rather than species. Not a
-     * hypothetical corrupt file: it is sitting on the phone of everybody who had
-     * the previous build. None of the three names it could write has a card any
-     * more, so they read back as OTHER — the reports survive with their dates,
-     * photographs and stranding warnings intact, which is what matters.
+     * A log written by older builds. Not a hypothetical corrupt file: it is
+     * sitting on the phone of everybody who had them. Seals and sea lions land
+     * on the seal card, a dolphin in OTHER, and every report survives with its
+     * date, photograph and stranding warning intact. None of them says dead,
+     * because none of those builds could.
      */
     @Test
     public void aLogFromTheOldSpeciesListStillReadsBack() {
@@ -166,9 +166,21 @@ public class SightingStoreTest {
         List<Sighting> read = SightingStore.decode("CA1", json);
 
         assertEquals(3, read.size());
+        assertEquals(SightingSpecies.SEAL, read.get(0).getSpecies());
+        assertEquals(SightingSpecies.SEAL, read.get(1).getSpecies());
+        assertEquals(SightingSpecies.OTHER, read.get(2).getSpecies());
         for (Sighting sighting : read) {
-            assertEquals(SightingSpecies.OTHER, sighting.getSpecies());
+            assertFalse(sighting.isDead());
         }
         assertTrue(read.get(0).isActiveWarning(NOW));
+    }
+
+    /** A dead seal comes back dead. */
+    @Test
+    public void aDeadSealRoundTrips() {
+        Sighting dead = new Sighting("a", "CA1", SightingSpecies.SEAL, true, true, null, null, NOW);
+        List<Sighting> read = SightingStore.decode("CA1",
+            SightingStore.encode(Collections.singletonList(dead)).toString());
+        assertTrue(read.get(0).isDead());
     }
 }
