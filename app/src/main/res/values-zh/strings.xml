@@ -1,0 +1,1038 @@
+<resources>
+    <!--
+      Simplified Chinese (简体中文). Plain, direct wording addressed to "你":
+      the English copy talks to one person standing on the sand.
+
+      Beach names, NOAA station ids, the 911 and Poison Help numbers and the
+      app's own name stay as they are. Distances and temperatures are given in
+      metric first, as the Spanish and French do, with Fahrenheit kept where a
+      reader may be checking a thermometer marked in it. Chinese has a single
+      plural form, so every plurals entry carries only "other".
+    -->
+    <string name="app_name">Flagline</string>
+    <string name="app_tagline">下水之前，先了解</string>
+    <string name="splash_checking">正在查看 %1$s 的海况</string>
+    <string name="splash_checking_nearby">正在寻找离你最近的海滩</string>
+    <string name="air_temp">气温</string>
+    <string name="water_temp">水温</string>
+    <string name="uv_index">紫外线指数</string>
+    <string name="wind_speed">风速</string>
+    <string name="wave_height">浪高</string>
+    <string name="visibility">能见度</string>
+    <string name="low_tide">低潮</string>
+    <string name="high_tide">高潮</string>
+    <string name="tide_checking">查询中…</string>
+    <string name="tide_now">正在转潮</string>
+    <string name="tide_in_minutes">%1$d 分钟后</string>
+    <string name="tide_in_hours_minutes">%1$d 小时 %2$d 分钟后</string>
+    <string name="tide_unavailable">暂无数据</string>
+    <string name="tide_none">无潮汐</string>
+    <string name="placeholder_dashes">--</string>
+    <string name="no_major_hazards">未报告重大危险。</string>
+    <string name="select_coastal_city">选择一个沿海城市</string>
+    <string name="beach_name_hint">海滩名称</string>
+    <string name="radius_label">搜索范围</string>
+    <string name="radius_needs_location">搜索城市或开启定位，即可按距离筛选</string>
+    <string name="radius_all">全部</string>
+    <string name="search_using_location">正在使用实时定位</string>
+    <string name="location_permission_needed">Flagline 没有定位权限。请在手机的“设置”中允许，以查看离你最近的海滩。</string>
+    <string name="location_off">定位已关闭。开启后即可查看离你最近的海滩。</string>
+    <string name="location_unavailable">暂时无法获取你的位置。</string>
+    <string name="search_near_city">正在搜索附近：%1$s</string>
+    <string name="search_city_not_found">找不到该地点</string>
+    <string name="search_network_error">网络错误</string>
+    <string name="find_nearby_beaches">查找附近海滩</string>
+    <string name="find_nearby_searching">搜索中…</string>
+    <string name="search_clear">清除海滩名称</string>
+    <string name="nearby_beaches">附近海滩</string>
+    <string name="nearby_report_action">附近海滩报告</string>
+    <string name="distance_away">距离 %1$.1f 英里</string>
+    <string name="distance_away_km">距离 %1$.1f 公里</string>
+    <string name="radius_step">%1$d %2$s</string>
+    <string name="beach_image_desc">海滩照片</string>
+    <string name="empty_state_title">没有可显示的海滩</string>
+    <string name="empty_state_subtitle">换一个城市试试，或扩大搜索范围。</string>
+    <string name="settings_title">设置</string>
+    <string name="units_section_title">单位</string>
+    <string name="use_metric_title">使用公制单位</string>
+    <string name="use_metric_subtitle">温度显示为 °C，风速为 km/h，浪高为米。</string>
+    <string name="display_section_title">显示</string>
+    <string name="use_dark_mode_title">深色模式</string>
+    <string name="use_dark_mode_subtitle">在这里切换之前，跟随手机设置。</string>
+    <string name="language_title">语言</string>
+    <string name="language_system">跟随系统</string>
+    <string name="language_english">English</string>
+    <string name="language_spanish">Español</string>
+    <string name="settings_footnote">海况数据来自公开的沿海预报。海滩照片来自 Wikimedia Commons。请始终遵守海滩上的标志和旗帜。</string>
+
+    <!-- Swim verdict -->
+    <string name="verdict_safe">适合游泳</string>
+    <string name="verdict_safe_short">适合游泳</string>
+    <string name="verdict_caution">注意安全</string>
+    <string name="verdict_caution_short">注意安全</string>
+    <string name="verdict_danger">不宜游泳</string>
+    <string name="verdict_danger_short">今天不安全</string>
+    <string name="verdict_unknown">正在查看海况</string>
+    <string name="verdict_unknown_note">这片海滩的实时海况尚未加载。下水前请先查看海滩上的旗帜和标志。</string>
+    <string name="loading">加载中</string>
+    <string name="verdict_unavailable">海况暂不可用</string>
+    <string name="conditions_error_none">无法加载实时海况。点按重试。</string>
+    <string name="conditions_error_stale">无法刷新这些海况。点按重试。</string>
+    <string name="verdict_updated_now">刚刚更新</string>
+    <string name="verdict_updated_minutes">%1$d 分钟前更新</string>
+    <string name="verdict_updated_hours">%1$d 小时前更新</string>
+    <string name="beach_details">海滩详情</string>
+
+    <string name="note_surf_unknown">这片海滩的实时浪况数据还没有到。</string>
+    <string name="note_surf_flat">目前海面几乎平静。</string>
+    <string name="note_surf_small">目前有容易应付的小浪。</string>
+    <string name="note_surf_moderate">目前有中等涌浪。</string>
+    <string name="note_surf_heavy">目前有大涌浪。</string>
+    <string name="note_hazard_one">这里有%1$s警告。</string>
+    <string name="note_hazard_many">这里有以下警告：%1$s。</string>
+    <string name="note_hazard_join">%1$s和%2$s</string>
+    <string name="note_uv">紫外线%1$s——请做好遮挡并补涂防晒霜。</string>
+    <string name="note_advice_danger">请远离水域，并遵守海滩上的旗帜和标志。</string>
+    <string name="note_advice_caution">在旗帜之间游泳，并密切留意水中的每一个人。</string>
+    <string name="note_advice_safe">仍请在有救生员值守的旗帜之间游泳。</string>
+
+    <!-- Home header -->
+    <string name="header_kicker_near_you">你的附近</string>
+    <string name="header_kicker_searching">正在显示</string>
+    <string name="header_title_default">你附近的海滩</string>
+
+    <string name="back">返回</string>
+    <string name="guarded_yes">附近有救生塔</string>
+    <string name="guarded_no">未列出救生巡逻</string>
+    <string name="section_conditions">海况</string>
+
+    <!-- Wave height card -->
+    <string name="wave_card_today">今天</string>
+    <string name="wave_card_headline">%1$s — %2$s</string>
+    <string name="wave_card_scale">%1$s %2$s 刻度</string>
+    <string name="wave_card_reading">浪高 %1$s</string>
+    <string name="wave_card_reading_unknown">浪高数据不可用</string>
+    <string name="wave_level_small">小浪</string>
+    <string name="wave_level_moderate">中浪</string>
+    <string name="wave_level_hazardous">危险</string>
+    <string name="wave_advice_small">小到中等的浪。大多数人可以游泳。</string>
+    <string name="wave_advice_moderate">中等涌浪。仅适合游泳能力强的人。</string>
+    <string name="wave_advice_hazardous">大浪和离岸流。请远离水域。</string>
+    <string name="wave_advice_unknown">这片海滩暂无浪况数据。下水前请先查看海滩上的旗帜。</string>
+    <string name="wave_advice_loading">正在查看今天的浪况…</string>
+    <string name="section_watch_for">注意事项</string>
+    <string name="section_search">查找海滩</string>
+    <string name="lifeguards_title">救生员</string>
+    <string name="lifeguards_none">这片海滩没有列出救生站。切勿独自游泳。</string>
+    <string name="lifeguards_nearest">已知最近的救援点是 %1$s。</string>
+    <plurals name="lifeguards_mapped">
+        <item quantity="other">地图上标有 %1$d 座救生塔。</item>
+    </plurals>
+    <string name="stat_surf">浪况</string>
+    <string name="stat_uv">紫外线</string>
+    <string name="stat_wind">风</string>
+    <string name="stat_water">气温</string>
+    <string name="surf_suffix">浪高 %1$s</string>
+
+    <!-- Hazard names -->
+    <string name="hazard_high_surf">大浪</string>
+    <string name="hazard_rip_current">离岸流</string>
+    <string name="hazard_marine_life">海洋生物</string>
+    <string name="hazard_water_quality">水质</string>
+    <string name="hazard_air_quality">空气质量</string>
+    <string name="hazard_pollution">污染</string>
+    <string name="hazard_rocks">礁石与构筑物</string>
+    <string name="hazard_uv_index">紫外线指数</string>
+    <string name="hazard_high_surf_inline">大浪</string>
+    <string name="hazard_rip_current_inline">离岸流</string>
+    <string name="hazard_marine_life_inline">海洋生物</string>
+    <string name="hazard_water_quality_inline">水质</string>
+    <string name="hazard_air_quality_inline">空气质量</string>
+    <string name="hazard_pollution_inline">污染</string>
+    <string name="hazard_rocks_inline">礁石与构筑物</string>
+    <string name="hazard_uv_index_inline">紫外线指数</string>
+
+    <!-- How bad a hazard is, on the Alerts rows -->
+    <string name="severity_low">低</string>
+    <string name="severity_moderate">中</string>
+    <string name="severity_high">高</string>
+    <string name="severity_extreme">极高</string>
+
+    <string name="hazard_recorded_lajolla_rips">码头附近有强离岸流。</string>
+    <string name="hazard_recorded_step_swim_near_lifeguard">在救生员附近游泳</string>
+
+    <string name="hazard_surf_high_body">目前浪高约 %1$s。这样的浪会在浅水区把人打倒，并引发强烈的离岸流。</string>
+    <string name="hazard_surf_moderate_body">目前浪高约 %1$s。足以把普通游泳者推来推去，尤其是在近岸碎浪区。</string>
+    <string name="hazard_surf_step_stay_out">远离水域</string>
+    <string name="hazard_surf_step_shallow">待在脚能踩到底的地方</string>
+    <string name="hazard_surf_step_check_flags">查看海滩上的旗帜</string>
+    <string name="hazard_uv_extreme_body">紫外线指数为 %1$d。未防护的皮肤几分钟内就会晒伤，沙子和海水还会把更多紫外线反射到你身上。</string>
+    <string name="hazard_uv_step_cover">做好遮挡并补涂防晒霜</string>
+    <string name="hazard_uv_step_shade">正午时段待在阴凉处</string>
+
+    <!-- Tab bar -->
+    <string name="tab_now">现在</string>
+    <string name="tab_alerts">警报</string>
+    <string name="tab_saved">收藏</string>
+    <string name="tab_learn">学习</string>
+    <string name="tab_more">更多</string>
+
+    <!-- Alerts -->
+    <string name="alerts_active_warning">当前警告</string>
+    <string name="alerts_see_beach">查看海滩</string>
+    <string name="alert_hero_title">%2$s：%1$s</string>
+    <string name="alerts_empty">附近海滩目前没有危险记录。海况变化很快——到达后请查看旗帜。</string>
+    <string name="alerts_empty_saved">你收藏的海滩目前没有危险记录。海况变化很快——到达后请查看旗帜。</string>
+    <string name="alerts_empty_no_saved">收藏一片海滩，即可在这里查看它的警报。</string>
+    <string name="alerts_empty_no_location">开启定位以获取附近海滩的信息，或收藏你关心的海滩。</string>
+    <string name="alerts_section_title">警报</string>
+    <string name="alerts_saved_only_title">仅限收藏的海滩</string>
+    <string name="alerts_saved_only_subtitle">否则也会包括 80 公里内的海滩。</string>
+    <string name="ranking_saved_only_title">仅限收藏的海滩</string>
+    <string name="ranking_saved_only_subtitle">否则也会对 80 公里内的海滩排名。</string>
+
+    <!-- Saved -->
+    <string name="saved_empty">还没有收藏的海滩。在海滩页面收藏后，它会连同当前状态显示在这里。</string>
+    <string name="save_beach">收藏</string>
+    <string name="saved_beach">已收藏</string>
+
+    <!-- Learn tab -->
+    <string name="learn_footnote">你所在海滩的救生员和标志最了解今天的海况。请首先听从他们。</string>
+
+    <!-- Rip current guide -->
+    <string name="guide_entry_title">如何识别离岸流</string>
+    <string name="guide_title">识别离岸流</string>
+    <string name="guide_sign_1_title">一条颜色更深、更平静的水道</string>
+    <string name="guide_sign_1_body">平坦又诱人。浪在它两侧破碎，而不是在里面。</string>
+    <string name="guide_sign_2_title">泥沙或泡沫向外流</string>
+    <string name="guide_sign_2_body">浑浊翻滚的褐色海水或泡沫越过碎浪带向外移动。</string>
+    <string name="guide_sign_3_title">碎浪中的缺口</string>
+    <string name="guide_sign_3_body">白浪中断的地方，水更深。</string>
+    <string name="guide_sign_4_title">呈直线的波纹</string>
+    <string name="guide_sign_4_body">平滑海面上一条向外海延伸的波纹带。</string>
+    <string name="guide_caught_title">被卷进去了？</string>
+    <string name="guide_caught_body">不要逆流游。浮在水面，保持头部露出，举起一只手臂并呼喊。如果你会游泳，就横向朝浪花破碎的地方游，然后再游回岸边。</string>
+    <string name="guide_tell_title">上岸后，告诉救生员</string>
+    <string name="guide_tell_1_title">离岸流在哪里</string>
+    <string name="guide_tell_1_body">最近的救生塔编号或一个地标，好让他们在它卷走别人之前插旗示警。</string>
+    <string name="guide_tell_2_title">是否还有人在水里</string>
+    <string name="guide_tell_2_body">和你一起的朋友，或游出来帮你的人。不要自己回去找他们。</string>
+    <string name="guide_tell_3_title">你是否呛了水</string>
+    <string name="guide_tell_3_body">咳嗽、胸痛或呼吸困难可能在几小时后才出现。让他们给你检查一下。</string>
+
+    <!-- Spotting someone drowning -->
+    <string name="drowning_entry_title">如何判断有人溺水</string>
+    <string name="drowning_title">识别溺水</string>
+    <string name="drowning_sign_1_title">很安静，不呼救</string>
+    <string name="drowning_sign_1_body">他们无法呼喊或挥手。叫他们一声——没有回应就要立即行动。</string>
+    <string name="drowning_sign_2_title">头后仰，嘴贴着水面</string>
+    <string name="drowning_sign_2_body">嘴在水面附近，沉下去又浮上来。</string>
+    <string name="drowning_sign_3_title">身体直立，不踢腿</string>
+    <string name="drowning_sign_3_body">在水中直立，好像在爬一架不存在的梯子。</string>
+    <string name="drowning_sign_4_title">手臂向下压</string>
+    <string name="drowning_sign_4_body">双臂向两侧伸开，往下压水，而不是在游泳。</string>
+    <string name="drowning_act_title">觉得有人溺水？</string>
+    <string name="drowning_act_body">大声呼叫救生员并指向溺水者。没有救生员就拨打 911。把任何能漂浮的东西扔给他们，没有漂浮物不要游过去——他们会把你拖下水。你可能只有不到一分钟的时间。</string>
+
+    <!-- Beach warning flags guide -->
+    <string name="flag_entry_title">海滩旗帜的含义</string>
+    <string name="flag_title">海滩警示旗</string>
+    <string name="flag_double_red_title">双红旗——水域关闭</string>
+    <string name="flag_double_red_body">对所有人关闭，禁止一切水上活动。</string>
+    <string name="flag_red_title">红旗——高度危险</string>
+    <string name="flag_red_body">不要下水。水深及膝就已经不安全了。</string>
+    <string name="flag_yellow_title">黄旗——中等浪或水流</string>
+    <string name="flag_yellow_body">在救生员附近游泳，并靠近岸边。</string>
+    <string name="flag_green_title">绿旗——海况平静</string>
+    <string name="flag_green_body">危险较低。仍要在救生员附近游泳，切勿独自下水。</string>
+    <string name="flag_purple_title">紫旗——危险海洋生物</string>
+    <string name="flag_purple_body">附近有水母或魟鱼。请同时留意与它一起悬挂的旗帜。</string>
+    <string name="flag_double_red_icon_desc">两面红旗</string>
+    <string name="flag_icon_desc">%1$s旗</string>
+    <string name="flag_color_red">红</string>
+    <string name="flag_color_yellow">黄</string>
+    <string name="flag_color_green">绿</string>
+    <string name="flag_color_purple">紫</string>
+    <string name="flag_no_flags_title">没有挂旗？</string>
+    <string name="flag_no_flags_body">没有旗帜不代表安全。通常意味着没有人在看守这片水域。</string>
+
+    <!-- UV index guide -->
+    <string name="uv_entry_title">紫外线指数的含义</string>
+    <string name="uv_title">紫外线指数</string>
+    <string name="uv_level_low">低</string>
+    <string name="uv_level_moderate">中等</string>
+    <string name="uv_level_high">高</string>
+    <string name="uv_level_very_high">很高</string>
+    <string name="uv_level_extreme">极高</string>
+    <string name="uv_level_unknown">未知</string>
+    <string name="uv_reading">%1$s（%2$d）</string>
+    <string name="uv_band_title">%1$s — %2$s</string>
+    <string name="uv_band_range">紫外线 %1$d–%2$d</string>
+    <string name="uv_band_range_open">紫外线 %1$d 及以上</string>
+    <string name="uv_band_low_body">无需防晒霜。</string>
+    <string name="uv_band_moderate_body">防晒霜、帽子，正午找阴凉。</string>
+    <string name="uv_band_high_body">SPF 30 加一件上衣。每两小时补涂一次。</string>
+    <string name="uv_band_very_high_body">裸露皮肤 15 分钟就会晒伤。用 SPF 50。</string>
+    <string name="uv_band_extreme_body">皮肤几分钟内就会晒伤。离开阳光。</string>
+    <string name="uv_beach_title">海滩会让情况更糟</string>
+    <string name="uv_beach_body">沙子和海水会把紫外线反射到你身上，云层也几乎挡不住它。</string>
+
+    <!-- Daily practice -->
+    <string name="quiz_correct">答对了</string>
+    <string name="quiz_incorrect">不太对</string>
+    <string name="practice_entry_title">今日练习</string>
+    <string name="practice_entry_streak_one">今天已完成 · 连续 1 天</string>
+    <string name="practice_entry_streak">今天已完成 · 连续 %1$d 天</string>
+    <string name="practice_title">今日练习</string>
+    <string name="practice_progress">第 %1$d 题，共 %2$d 题</string>
+    <string name="practice_done_title">今天的三道题完成了</string>
+    <string name="practice_done_body">明天还有三道。</string>
+    <string name="practice_score">你答对了 %1$d / %2$d</string>
+
+    <string name="practice_q_rip_escape_q">你在游泳时发现一股水流正把你带离海滩。你该怎么做？</string>
+    <string name="practice_q_rip_escape_a">保持冷静，浮在水面，沿着海岸横向游</string>
+    <string name="practice_q_rip_escape_b">拼尽全力直接游回沙滩</string>
+    <string name="practice_q_rip_escape_c">潜下去，试着从下面游过去</string>
+    <string name="practice_q_rip_escape_x">离岸流就像一条流向外海的河，比你游得快。直接朝岸边游只会让你在逆流中耗尽体力。横向游到水流之外再游回来——或者干脆浮着挥手求救。</string>
+
+    <string name="practice_q_rip_look_q">从海滩上看，离岸流通常是什么样子？</string>
+    <string name="practice_q_rip_look_a">一处平静、平坦、没有浪花破碎的缺口</string>
+    <string name="practice_q_rip_look_b">浪最大、最乱的地方</string>
+    <string name="practice_q_rip_look_c">什么也看不出来——从岸上根本看不见</string>
+    <string name="practice_q_rip_look_x">离岸流看上去像是最好的游泳地点：一条平滑平静的水道，两侧都有浪花破碎。那个诱人的缺口其实是正在流向外海的深水。</string>
+
+    <string name="practice_q_red_flag_q">海滩上挂着一面红旗。这代表什么？</string>
+    <string name="practice_q_red_flag_a">高度危险——不要下水</string>
+    <string name="practice_q_red_flag_b">今天有救生员值班</string>
+    <string name="practice_q_red_flag_c">发现了水母</string>
+    <string name="practice_q_red_flag_x">红旗表示大浪、强水流，或两者都有。即使是及膝深的水也不安全。两面红旗表示水域完全关闭。</string>
+
+    <string name="practice_q_purple_flag_q">紫旗在提醒你注意什么？</string>
+    <string name="practice_q_purple_flag_a">危险的海洋生物，比如水母或魟鱼</string>
+    <string name="practice_q_purple_flag_b">雷暴即将来临</string>
+    <string name="practice_q_purple_flag_c">雨后水质差</string>
+    <string name="practice_q_purple_flag_x">紫旗针对海洋生物。它总是和另一面旗一起悬挂，所以要看另一面旗来了解海水本身的状况。</string>
+
+    <string name="practice_q_no_flags_q">你来到一片海滩，发现一面旗都没挂。这说明什么？</string>
+    <string name="practice_q_no_flags_a">什么也说明不了——没人评估过海况，你得自己判断</string>
+    <string name="practice_q_no_flags_b">海水已经检查过，是安全的</string>
+    <string name="practice_q_no_flags_c">海滩关闭了</string>
+    <string name="practice_q_no_flags_x">空旗杆不等于绿旗。通常意味着这片海滩没有救生员巡逻，没有人看着海水，也没有人看着你。</string>
+
+    <string name="practice_q_shuffle_q">什么是“魟鱼拖步”？</string>
+    <string name="practice_q_shuffle_a">下水时让双脚贴着沙子滑行</string>
+    <string name="practice_q_shuffle_b">用力跺脚把魟鱼吓跑</string>
+    <string name="practice_q_shuffle_c">在沙地上方之字形游泳</string>
+    <string name="practice_q_shuffle_x">魟鱼会把自己埋在浅水里，被人从上面踩到时就会蜇人。拖着脚走会在你前方产生震动，魟鱼自然就游走了。</string>
+
+    <string name="practice_q_jelly_rinse_q">水母在你手臂上留下了一道灼痛的红痕。你该用什么冲洗？</string>
+    <string name="practice_q_jelly_rinse_a">醋；没有醋就用海水</string>
+    <string name="practice_q_jelly_rinse_b">海滩淋浴的冷淡水</string>
+    <string name="practice_q_jelly_rinse_c">什么都不用——先把沙子搓掉</string>
+    <string name="practice_q_jelly_rinse_x">淡水和搓擦都会触发还没发射的刺细胞，所以海滩淋浴会让情况更糟。醋能让它们失效；海水至少无害。</string>
+
+    <string name="practice_q_jelly_pee_q">对还是错：往水母蜇伤处撒尿有帮助。</string>
+    <string name="practice_q_jelly_pee_a">错——可能让蜇伤更严重</string>
+    <string name="practice_q_jelly_pee_b">对，只要马上这样做</string>
+    <string name="practice_q_jelly_pee_c">对，但只对僧帽水母有效</string>
+    <string name="practice_q_jelly_pee_x">尿液更接近淡水而不是醋，所以会触发更多刺细胞。这纯粹是电视剧里的说法。先用醋、再用热水才是正确做法。</string>
+
+    <string name="practice_q_hot_water_q">什么才能真正缓解魟鱼或水母蜇伤的疼痛？</string>
+    <string name="practice_q_hot_water_a">用热水浸泡 30 到 90 分钟</string>
+    <string name="practice_q_hot_water_b">敷上冰袋</string>
+    <string name="practice_q_hot_water_c">把伤处抬高到心脏以上</string>
+    <string name="practice_q_hot_water_x">热量能分解毒素。手能承受又不至于烫伤的热水，约 43–45 °C（110–113 °F），比任何止痛药都管用。冷敷会让情况更糟。</string>
+
+    <string name="practice_q_manowar_sand_q">你在干沙上发现一只被冲上岸的僧帽水母。能碰吗？</string>
+    <string name="practice_q_manowar_sand_a">不能——它死后几天内仍会蜇人</string>
+    <string name="practice_q_manowar_sand_b">能，离开水后它就无害了</string>
+    <string name="practice_q_manowar_sand_c">能，只要你只碰那个蓝色浮囊</string>
+    <string name="practice_q_manowar_sand_x">刺细胞是机械触发的，不由它自己决定，所以搁浅或干瘪的僧帽水母仍然带刺。也要让孩子和狗远离它。</string>
+
+    <string name="practice_q_swim_alone_q">海滩上没有救生员值班。你能做的最有用的一件事是什么？</string>
+    <string name="practice_q_swim_alone_a">不要独自游泳——和别人一起下水</string>
+    <string name="practice_q_swim_alone_b">只待在不超过胸口深的水里</string>
+    <string name="practice_q_swim_alone_c">早一点去游泳</string>
+    <string name="practice_q_swim_alone_x">三样都有帮助，但溺水的人无法为自己呼救。岸上有个人知道你在水里，就是虚惊一场和悲剧之间的区别。</string>
+
+    <string name="practice_q_child_reach_q">小孩在水里时，离大人应该多近？</string>
+    <string name="practice_q_child_reach_a">始终在一臂之内</string>
+    <string name="practice_q_child_reach_b">近到能喊得到</string>
+    <string name="practice_q_child_reach_c">在旗帜之间任何地方都行</string>
+    <string name="practice_q_child_reach_x">溺水安静又迅速——通常没有拍水，也没有呼喊。一臂之内是你唯一来得及出手的距离。</string>
+
+    <string name="practice_q_thunder_q">你在海滩上听到了雷声。什么时候才能安全地回到水里？</string>
+    <string name="practice_q_thunder_a">最后一声雷响后 30 分钟</string>
+    <string name="practice_q_thunder_b">雨一停就可以</string>
+    <string name="practice_q_thunder_c">一看到蓝天就可以</string>
+    <string name="practice_q_thunder_x">闪电可能落在离雷暴好几公里的地方，而开阔的水面和沙滩是最危险的两个地方。如果你能听到雷声，你就近到可能被击中。</string>
+
+    <string name="practice_q_rain_water_q">昨天下了大雨。今天游泳通常有什么建议？</string>
+    <string name="practice_q_rain_water_a">大约 72 小时内不要下水——地表径流会带来污染</string>
+    <string name="practice_q_rain_water_b">照常下水，雨只影响沙滩</string>
+    <string name="practice_q_rain_water_c">等一小时让海水沉淀</string>
+    <string name="practice_q_rain_water_x">雨水排水管把街道上的东西直接冲进海里。大多数沿海县的健康公告建议等三天，而且海水在最脏的时候往往看起来完全正常。</string>
+
+    <string name="practice_q_sunscreen_q">在海滩上，防晒霜应该多久补涂一次？</string>
+    <string name="practice_q_sunscreen_a">每两小时一次，每次游泳后也要补</string>
+    <string name="practice_q_sunscreen_b">高倍数的话，早上涂一次就够了</string>
+    <string name="practice_q_sunscreen_c">只在皮肤开始发烫时补涂</string>
+    <string name="practice_q_sunscreen_x">没有哪种防晒霜能撑一整天，海水和毛巾会带走大部分。等皮肤发烫时已经晒伤了——只是还没显现出来。</string>
+
+    <string name="practice_q_uv_cloud_q">今天阴天又凉爽。紫外线怎么样？</string>
+    <string name="practice_q_uv_cloud_a">大部分仍然能穿透——你会被晒伤</string>
+    <string name="practice_q_uv_cloud_b">云层会挡住它，防晒可以等等</string>
+    <string name="practice_q_uv_cloud_c">气温低于约 21 °C 时会降到零</string>
+    <string name="practice_q_uv_cloud_x">薄云会让大部分紫外线透过，而且紫外线与气温无关。一些最严重的晒伤就发生在灰蒙蒙、有风、谁都不觉得热的日子。</string>
+
+    <string name="practice_q_float_q">你累了，脚踩不到底，附近也没人帮忙。第一件事该做什么？</string>
+    <string name="practice_q_float_a">翻身仰浮，先喘口气</string>
+    <string name="practice_q_float_b">以最快速度游向岸边</string>
+    <string name="practice_q_float_c">双手举过头顶踩水</string>
+    <string name="practice_q_float_x">漂浮几乎不耗体力，还能找回被恐慌夺走的东西——呼吸。先把气喘匀，再发信号，然后再游。</string>
+
+    <string name="practice_q_help_signal_q">向救生员示意你需要帮助，公认的方式是什么？</string>
+    <string name="practice_q_help_signal_a">把一只手臂笔直举起并挥动</string>
+    <string name="practice_q_help_signal_b">尽量用力拍水</string>
+    <string name="practice_q_help_signal_c">一边呼喊一边反复沉下去</string>
+    <string name="practice_q_help_signal_x">一只手臂笔直举起、左右挥动，就是救生员在搜寻的信号。从救生塔上看，拍水像是在玩耍，这正是最容易被忽略的时候。</string>
+
+    <string name="practice_q_seal_pup_q">沙滩上有一只独自待着的小海豹。你该怎么做？</string>
+    <string name="practice_q_seal_pup_a">别打扰它，远远地待着</string>
+    <string name="practice_q_seal_pup_b">把它抱到水里</string>
+    <string name="practice_q_seal_pup_c">用湿毛巾盖住它</string>
+    <string name="practice_q_seal_pup_x">海豹妈妈觅食时会把幼崽留在海滩上好几个小时。独自待着的幼崽并没有被遗弃，挪动它既违法，通常也会害死它。如果它看起来受伤了，请拨打搁浅救助热线。</string>
+
+    <string name="practice_q_feed_wildlife_q">你游泳时有一只海豚靠近岸边。正确的做法是什么？</string>
+    <string name="practice_q_feed_wildlife_a">保持距离，让它游过去</string>
+    <string name="practice_q_feed_wildlife_b">游过去近距离看看</string>
+    <string name="practice_q_feed_wildlife_c">喂它点东西让它留下来</string>
+    <string name="practice_q_feed_wildlife_x">喂食或追逐海洋哺乳动物属于联邦违法行为，还会让它们学会接近船只和人——这正是它们丧命的原因。就在原地观看吧。</string>
+
+    <string name="practice_q_urchin_spine_q">你踩到海胆，有刺断在脚里。哪件事不该做？</string>
+    <string name="practice_q_urchin_spine_a">用针把刺挑出来</string>
+    <string name="practice_q_urchin_spine_b">把脚泡在热水里</string>
+    <string name="practice_q_urchin_spine_c">用镊子拔出能夹住的刺</string>
+    <string name="practice_q_urchin_spine_x">挑刺会把刺压碎，让碎片留得更深，这正是几周后引发感染的原因。浸泡、拔出能夹住的，其余的去看医生。</string>
+
+    <string name="practice_q_swim_between_q">为什么救生员要你在旗帜之间游泳？</string>
+    <string name="practice_q_swim_between_a">那是他们判断最安全、并且正在看守的区域</string>
+    <string name="practice_q_swim_between_b">只是为了让游泳者远离冲浪者</string>
+    <string name="practice_q_swim_between_c">那里标出了水最浅的地方</string>
+    <string name="practice_q_swim_between_x">随着沙洲和离岸流的变化，旗帜一天中会被多次挪动。旗帜之间的水域是专业人员这个钟头看过、并且正在积极看守的。</string>
+    <!-- Learn tab groups -->
+    <string name="learn_group_before">下水之前</string>
+    <string name="learn_group_water">在水中</string>
+    <string name="learn_group_marine_life">海洋生物</string>
+
+    <!-- Stings and bites guide -->
+    <string name="sting_title">蜇伤和咬伤</string>
+    <string name="sting_911_title">出现以下情况，先拨打 911</string>
+    <string name="sting_911_body">呼吸困难、面部或喉咙肿胀、胸痛、头晕或意识模糊。面部、颈部或躯干被蜇、毒刺仍留在体内，或出血止不住时，也要拨打。</string>
+    <string name="sting_feels_heading">如何辨认</string>
+    <string name="sting_do_heading">应该做</string>
+    <string name="sting_dont_heading">不要做</string>
+
+    <string name="sting_ray_title">魟鱼</string>
+    <string name="sting_ray_subtitle">脚或脚踝突然一阵深层剧痛</string>
+    <string name="sting_ray_feels">埋在浅沙里的魟鱼被踩到时会甩尾，留下一个不规则的刺伤，疼痛会在一小时内不断加剧。</string>
+    <string-array name="sting_ray_do">
+        <item>离开水，坐下，用海水冲洗，让伤口流一会儿血。</item>
+        <item>用手能承受又不至于烫伤的最热的水浸泡，约 43–45 °C（110–113 °F），泡 30 到 90 分钟。热量能分解毒素。</item>
+        <item>取出看得见、夹得住的刺碎片。深深扎入的不要动。</item>
+        <item>去看医生——魟鱼伤口容易感染，通常需要打破伤风针。</item>
+    </string-array>
+    <string-array name="sting_ray_dont">
+        <item>不要拔出扎在胸部、颈部或腹部的刺。拨打 911，让它留在原处。</item>
+        <item>不要用冰敷或紧绷带。冷会让这种疼痛更严重。</item>
+    </string-array>
+
+    <string name="sting_jelly_title">水母</string>
+    <string name="sting_jelly_subtitle">被触手擦过的地方出现灼痛的线状红痕</string>
+    <string name="sting_jelly_feels">像被烫热的鞭子抽了一下，随后皮肤上浮现触手形状的红色隆起。留在皮肤上的碎片会持续蜇人。</string>
+    <string-array name="sting_jelly_do">
+        <item>离开水，保持患处不动。动作会触发更多刺细胞。</item>
+        <item>用醋冲洗 30 秒；没有醋就用海水。</item>
+        <item>用镊子或卡片边缘挑掉触手，切勿徒手。</item>
+        <item>用约 43–45 °C（110–113 °F）的热水浸泡 20 到 45 分钟，然后涂氢化可的松乳膏止痒。</item>
+    </string-array>
+    <string-array name="sting_jelly_dont">
+        <item>不要用淡水冲洗，也不要用沙子或毛巾擦。这三样都会触发刺细胞。</item>
+        <item>尿液没用，还可能让蜇伤更严重。</item>
+    </string-array>
+
+    <string name="sting_manowar_title">僧帽水母</string>
+    <string name="sting_manowar_subtitle">沙滩上的蓝色浮囊，后面拖着长丝</string>
+    <string name="sting_manowar_feels">蓝色气囊是无害的部分。后面的丝可长达 9 米，在干沙上也会持续蜇人好几天。</string>
+    <string-array name="sting_manowar_do">
+        <item>离开水，用镊子或卡片边缘挑掉触丝。</item>
+        <item>用海水冲洗。醋对僧帽水母是否有效仍有争议，所以海水是稳妥的选择。</item>
+        <item>用约 43–45 °C（110–113 °F）的热水浸泡 20 到 45 分钟。</item>
+        <item>陪伴伤者一小时。出现抽筋、恶心或呼吸困难，请拨打 911。</item>
+    </string-array>
+    <string-array name="sting_manowar_dont">
+        <item>不要碰冲上海滩的僧帽水母，哪怕已经干瘪。它仍然带刺。</item>
+        <item>不要用淡水、沙子或加压绷带。</item>
+    </string-array>
+
+    <string name="sting_urchin_title">海胆</string>
+    <string name="sting_urchin_subtitle">踩到礁石后，脆刺断在脚里</string>
+    <string name="sting_urchin_feels">一踩上去就一阵锐痛，随后刺断在皮肤里的地方出现深紫色小点。</string>
+    <string-array name="sting_urchin_do">
+        <item>用约 43–45 °C（110–113 °F）的热水泡脚 30 到 90 分钟。能缓解疼痛并软化刺。</item>
+        <item>用镊子一根一根拔出能夹住的刺。</item>
+        <item>刺扎得深、靠近关节或多到数不清时，去看医生。</item>
+    </string-array>
+    <string-array name="sting_urchin_dont">
+        <item>不要用针挑，也不要把皮下的刺压碎。那会让碎片留得更深。</item>
+    </string-array>
+
+    <string name="sting_sealice_title">海虱</string>
+    <string name="sting_sealice_subtitle">游泳几小时后，泳衣下出现发痒的皮疹</string>
+    <string name="sting_sealice_feels">针尖大小的水母幼体被困在布料下，在泳衣贴紧的地方蜇人。皮疹会在四到二十四小时后出现。</string>
+    <string-array name="sting_sealice_do">
+        <item>淋浴前先脱掉泳衣。穿着泳衣冲澡会把幼体压进皮肤。</item>
+        <item>用海水或醋冲洗，然后淋浴并擦干。</item>
+        <item>用热水洗泳衣并高温烘干。幼体能在潮湿的布料里存活并再次蜇人。</item>
+        <item>用氢化可的松乳膏或抗组胺药止痒。两到四天会消退。</item>
+    </string-array>
+    <string-array name="sting_sealice_dont">
+        <item>不要抓挠。破损的皮肤在温暖的海水里很容易感染。</item>
+    </string-array>
+
+    <string name="sting_footnote">这些是一般急救知识，不是医疗建议。如果不确定，或伤者情况恶化，请拨打 911 或中毒求助热线 Poison Help：1-800-222-1222。</string>
+
+    <!-- Beach wildlife guide -->
+    <string name="wildlife_entry_title">你所在海滩的野生动物</string>
+    <string name="wildlife_title">海滩野生动物</string>
+    <string name="wildlife_beaches_label">本应用中：%1$s</string>
+    <string name="wildlife_beaches_and_more">%1$s 等另外 %2$d 处</string>
+    <string name="wildlife_first_aid_link">急救</string>
+
+    <string name="wildlife_risk_harmless">无害</string>
+    <string name="wildlife_risk_room">保持距离</string>
+    <string name="wildlife_risk_sting">会蜇人</string>
+    <string name="wildlife_risk_protected">受保护</string>
+
+    <!-- Southern California -->
+    <string name="wildlife_region_socal">南加州</string>
+    <string name="wildlife_socal_ray_title">圆魟</string>
+    <string name="wildlife_socal_ray_body">埋在及膝深的水底沙里，南加州救生员每年夏天要处理成千上万起蜇伤，就是因为它。只有被踩到时才会蜇人。拖着脚走进去，它就会游开。</string>
+    <string name="wildlife_socal_leopard_title">豹纹鲨</string>
+    <string name="wildlife_socal_leopard_body">每年 6 月到 10 月，成百上千条豹纹鲨聚集在 La Jolla Shores 温暖的浅水里。它们长 1 到 1.5 米，吃螃蟹和鱼卵，在那里从未咬过游泳者。</string>
+    <string name="wildlife_socal_sealion_title">加州海狮</string>
+    <string name="wildlife_socal_sealion_body">吵闹、好奇，遍布 La Jolla 的悬崖。它们是野生动物，被逼近时会咬人，所以请保持 15 米距离，永远不要挡在它和海水之间。</string>
+    <string name="wildlife_socal_seal_title">港海豹</string>
+    <string name="wildlife_socal_seal_body">母海豹觅食时，幼崽会独自在沙滩上待好几个小时。独自待着的幼崽并没有被遗弃。请保持距离、让狗远离，如果它看起来受伤了就告诉救生员。</string>
+    <string name="wildlife_socal_jelly_title">紫纹水母</string>
+    <string name="wildlife_socal_jelly_body">伞盖上有深色条纹的大型水母，夏末被涌浪推近岸边。蜇伤会灼痛一两个小时，通常用热水处理就够了。</string>
+    <string name="wildlife_socal_velella_title">帆水母</string>
+    <string name="wildlife_socal_velella_body">春风把成千上万带透明小帆的蓝色小圆盘吹到潮线上。它们几乎蜇不痛皮肤，但摸过之后不要揉眼睛。</string>
+    <string name="wildlife_socal_grunion_title">滑银汉鱼</string>
+    <string name="wildlife_socal_grunion_body">银色的小鱼，在春夏大潮的夜里直接在沙滩上产卵。观看免费；捕捉需要许可证，4 月和 5 月禁捕。</string>
+    <string name="wildlife_socal_note_title">下雨之后</string>
+    <string name="wildlife_socal_note_body">雨水排水管把街道上的东西直接冲进海里。县卫生公告建议雨后 72 小时内不要下水，无论野生动物情况如何。</string>
+
+    <!-- Florida, Atlantic side -->
+    <string name="wildlife_region_florida">佛罗里达大西洋沿岸</string>
+    <string name="wildlife_fl_manowar_title">僧帽水母</string>
+    <string name="wildlife_fl_manowar_body">11 月到次年 5 月被东风吹上岸。蓝色浮囊，触丝长达 9 米，躺在干沙上和在水里一样会狠狠蜇人。</string>
+    <string name="wildlife_fl_moon_title">海月水母</string>
+    <string name="wildlife_fl_moon_body">透明的碟状身体，里面有四个淡色圆环。这种水母通常可以放心游过——蜇伤很轻，常常察觉不到。</string>
+    <string name="wildlife_fl_sealice_title">海虱</string>
+    <string name="wildlife_fl_sealice_body">针尖大小的水母幼体，3 月到 7 月最多。在水里毫无感觉，醒来却发现泳衣覆盖的地方长满了发痒的皮疹。</string>
+    <string name="wildlife_fl_ray_title">美洲魟</string>
+    <string name="wildlife_fl_ray_body">扁平、沙色，栖息在沙滩浅水中。拖着脚走，它会在你走近之前游开。</string>
+    <string name="wildlife_fl_turtle_title">海龟巢</string>
+    <string name="wildlife_fl_turtle_body">3 月到 10 月，蠵龟在这些海滩上筑巢。切勿触碰龟巢、标记桩或幼龟，夜间不要用白光照射沙滩——白光会把幼龟引向内陆而不是大海。</string>
+    <string name="wildlife_fl_blacktip_title">黑鳍鲨</string>
+    <string name="wildlife_fl_blacktip_body">每年冬天，成千上万条黑鳍鲨沿这段海岸南下，并且离岸很近。咬人事件很少，而且几乎都是误咬：远离有鸟在俯冲捕食的小鱼群、远离浑水，黎明和黄昏不要下水。</string>
+    <string name="wildlife_fl_note_title">听到雷声时</string>
+    <string name="wildlife_fl_note_body">佛罗里达是全美的闪电之都，夏季雷暴会在海面上迅速形成。听到第一声雷就离开沙滩，最后一声雷响后等 30 分钟再回来。</string>
+
+    <!-- Gulf Coast -->
+    <string name="wildlife_region_gulf">墨西哥湾沿岸</string>
+    <string name="wildlife_gulf_dolphin_title">宽吻海豚</string>
+    <string name="wildlife_gulf_dolphin_body">常年栖息于此，经常出现在离海滩一百米以内的地方。喂食它们或朝它们游去都是违法的，请在原地观看。</string>
+    <string name="wildlife_gulf_ray_title">大西洋魟</string>
+    <string name="wildlife_gulf_ray_body">温暖、浅而缓坡的水域是魟鱼的天下，而这里是其中最典型的。在这里拖着脚走，比本应用中任何其他地方都更重要。</string>
+    <string name="wildlife_gulf_manowar_title">僧帽水母</string>
+    <string name="wildlife_gulf_manowar_body">春风把它们成排地冲上德州的沙滩。铺毛巾之前先看看，让孩子和狗远离那些蓝色浮囊。</string>
+    <string name="wildlife_gulf_sargassum_title">马尾藻</string>
+    <string name="wildlife_gulf_sargassum_body">春夏时节堆积成片的褐色海藻。它本身无害，还藏着许多小螃蟹，但长在上面的水螅可能引起发痒的皮疹，所以不要在里面打滚。</string>
+    <string name="wildlife_gulf_manatee_title">海牛</string>
+    <string name="wildlife_gulf_manatee_body">动作缓慢、灰色，常在温暖浅水和水道中贴着水面下方游动。不要触摸、喂食或跟随——观看就好，把水道让给它。</string>
+    <string name="wildlife_gulf_turtle_title">肯氏龟</string>
+    <string name="wildlife_gulf_turtle_body">世界上最稀有的海龟，4 月到 7 月在德州海滩筑巢。发现正在筑巢或搁浅的海龟，请报告海滩巡逻队，不要靠近。</string>
+    <string name="wildlife_gulf_note_title">赤潮</string>
+    <string name="wildlife_gulf_note_body">短凯伦藻大量繁殖会把海水染成铁锈色、毒死鱼类，并让海浪飞沫带上毒素，使人咳嗽、刺痛眼睛——佛罗里达墨西哥湾沿岸夏末和秋季最严重。沙滩上有死鱼、空气中有刺鼻气味，就换一片海滩，哮喘患者尤其要注意。</string>
+
+    <!-- Northeast Atlantic -->
+    <string name="wildlife_region_northeast">东北大西洋沿岸</string>
+    <string name="wildlife_ne_lionsmane_title">狮鬃水母</string>
+    <string name="wildlife_ne_lionsmane_body">体型大、锈红色、毛茸茸的，夏末开始漂近岸边。蜇伤剧烈且持久，浪里断掉的触手碎片自己也会蜇人。</string>
+    <string name="wildlife_ne_nettle_title">大西洋海荨麻</string>
+    <string name="wildlife_ne_nettle_body">比狮鬃水母小、颜色浅，温暖月份常见于海湾和小港湾。热水能缓解蜇伤。</string>
+    <string name="wildlife_ne_horseshoe_title">鲎</string>
+    <string name="wildlife_ne_horseshoe_body">活化石，不是螃蟹，完全无害。尖尾是它翻身用的杠杆，不是毒刺——如果看到一只翻倒的鲎，抓着壳把它翻回来，千万别抓尾巴。</string>
+    <string name="wildlife_ne_seal_title">港海豹</string>
+    <string name="wildlife_ne_seal_body">11 月到次年 4 月会上岸到这些海滩休息。保持 45 米距离，给狗拴好牵绳，拨打搁浅救助热线，而不是把它推回水里。</string>
+    <string name="wildlife_ne_dogfish_title">沙鲨</string>
+    <string name="wildlife_ne_dogfish_body">整个夏天，星鲨都在离海滩几米远的水槽里巡游。它们吃螃蟹和贝类，对游泳者毫无兴趣。</string>
+    <string name="wildlife_ne_bluefish_title">扁鲹围猎</string>
+    <string name="wildlife_ne_bluefish_body">秋天，小鱼被赶到岸边，扁鲹会咬浪花里的任何东西。如果海水里翻腾着小鱼和飞鸟，就先上岸，等它们过去。</string>
+    <string name="wildlife_ne_note_title">水比看起来冷</string>
+    <string name="wildlife_ne_note_body">这里的大西洋到 6 月仍只有 16 °C 左右。冷水夺走体力和呼吸的速度比你想象的快，所以先慢慢走进水里，再往外游。</string>
+
+    <!-- Pacific Northwest -->
+    <string name="wildlife_region_pnw">太平洋西北地区</string>
+    <string name="wildlife_pnw_seal_title">港海豹幼崽</string>
+    <string name="wildlife_pnw_seal_body">母海豹觅食时把幼崽留在沙滩上，它们并没有被遗弃。抱起幼崽是违法的，通常还会害死它。保持 90 米距离，并联系搁浅救助网络。</string>
+    <string name="wildlife_pnw_puffin_title">簇羽海鹦和崖海鸦</string>
+    <string name="wildlife_pnw_puffin_body">4 月到 7 月，Haystack Rock 是海鸟的繁殖地。藤壶线以上的岩石禁止攀登，退潮时从沙滩上观鸟最好。</string>
+    <string name="wildlife_pnw_tidepool_title">海星和海葵</string>
+    <string name="wildlife_pnw_tidepool_body">Haystack Rock 周围的潮池是受保护的海洋花园。只看不撬：被扯下岩石的海星很少能活下来，被踩到的海葵会死。</string>
+    <string name="wildlife_pnw_eagle_title">白头海雕</string>
+    <string name="wildlife_pnw_eagle_body">它们的巢俯瞰着海滩，几乎每天早上都会袭击海鸟群。在下方观看，远离筑巢的树。</string>
+    <string name="wildlife_pnw_jelly_title">煎蛋水母和狮鬃水母</string>
+    <string name="wildlife_pnw_jelly_body">两者都会在夏末被冲上岸。煎蛋水母蜇伤较轻；狮鬃水母可不轻，而且两者搁浅后仍会蜇人。</string>
+    <string name="wildlife_pnw_whale_title">灰鲸</string>
+    <string name="wildlife_pnw_whale_body">它们在 12 月和 1 月、以及 3 月到 6 月迁徙经过，还有一些整个夏天都在岬角附近觅食。在海滩上方的观景点留意它们喷出的水柱。</string>
+    <string name="wildlife_pnw_note_title">偷袭浪</string>
+    <string name="wildlife_pnw_note_body">这段海岸会毫无预警地把浪推上海滩很远，还会卷着原木一起冲上来。永远不要背对大海，永远不要坐在海滩原木上，远离可能被潮水隔断的礁石。</string>
+
+    <!-- Central and Northern California -->
+    <string name="wildlife_region_norcal">加州中部和北部</string>
+    <string name="wildlife_norcal_nettle_title">太平洋海荨麻</string>
+    <string name="wildlife_norcal_nettle_body">金色伞盖拖着长长的暗红色触手，夏末在蒙特雷湾大量出现。蜇伤会疼一两个小时，浅水里断掉的触手在水母离开后仍会蜇人。</string>
+    <string name="wildlife_norcal_white_title">大白鲨</string>
+    <string name="wildlife_norcal_white_body">这里是“红色三角区”，年轻的大白鲨在蒙特雷湾海滩外度过夏天。它们在沙底捕食魟鱼，而不是游泳者，咬人事件依然罕见——但在海豹上岸处附近、以及黎明和黄昏时不要下水。</string>
+    <string name="wildlife_norcal_eseal_title">北象海豹</string>
+    <string name="wildlife_norcal_eseal_body">两吨重的动物，在沙地上能跑得比你快。它们在 Año Nuevo、Point Reyes 和 Piedras Blancas 上岸繁殖和换毛。保持 30 米距离，永远不要走到它和大海之间。</string>
+    <string name="wildlife_norcal_otter_title">海獭</string>
+    <string name="wildlife_norcal_otter_body">从蒙特雷到莫罗湾，成群的海獭漂浮在海藻林中。靠得太近会让它丢下食物，被逼急的海獭咬人很狠，所以请在沙滩上观看，在水中远远绕开它们。</string>
+    <string name="wildlife_norcal_seal_title">港海豹幼崽</string>
+    <string name="wildlife_norcal_seal_body">产崽期在 3 月到 6 月，母海豹觅食时把幼崽留在沙滩上。保持 45 米距离，给狗拴好牵绳——母海豹不敢上岸，就会失去幼崽。</string>
+    <string name="wildlife_norcal_tidepool_title">赭色海星和海葵</string>
+    <string name="wildlife_norcal_tidepool_body">这里大多数潮池都位于海洋保护区内，禁止带走任何东西。踩在裸露的岩石上走，翻过的石头要按原样放回。</string>
+    <string name="wildlife_norcal_note_title">海水不会变暖</string>
+    <string name="wildlife_norcal_note_body">上升流让这段海岸整个夏天都保持在 11 °C 左右。这么冷的水在第一个浪打来时就会让你喘不过气，几分钟内就会耗尽体力，所以水里的每个人都穿着潜水服。</string>
+
+    <!-- The Southeast Atlantic -->
+    <string name="wildlife_region_southeast">东南大西洋沿岸</string>
+    <string name="wildlife_se_nettle_title">大西洋海荨麻</string>
+    <string name="wildlife_se_nettle_body">碟子大小的白色伞盖，拖着长长的触手，7 月到 9 月最多。蜇伤会灼痛一小时，浪里断掉的触手自己也会蜇人。</string>
+    <string name="wildlife_se_manowar_title">僧帽水母</string>
+    <string name="wildlife_se_manowar_body">冬春季的东风把它们吹上这些海滩。蓝色浮囊有手掌大，后面的触丝长得超乎想象，所以离搁浅的僧帽水母越远越好。</string>
+    <string name="wildlife_se_ray_title">美洲魟</string>
+    <string name="wildlife_se_ray_body">埋在沙坪和沙洲后面的水洼里，正是人们站立的地方。在浅水里拖着脚走，它会在你走近之前离开。</string>
+    <string name="wildlife_se_shark_title">黑鳍鲨和旋转鲨</string>
+    <string name="wildlife_se_shark_body">它们在春秋两季跟随鲻鱼群沿海岸洄游，在近岸水槽里觅食。远离翻腾着小鱼和飞鸟的水域、远离浑水，黎明和黄昏不要下水。</string>
+    <string name="wildlife_se_dolphin_title">搁浅捕食的海豚</string>
+    <string name="wildlife_se_dolphin_body">只有在 Lowcountry，宽吻海豚会把鱼赶出水面、赶到泥滩上。在 45 米外观看，不要走上泥滩：不能搁浅捕食的海豚就会挨饿。</string>
+    <string name="wildlife_se_turtle_title">蠵龟巢</string>
+    <string name="wildlife_se_turtle_body">这些海滩是蠵龟筑巢范围的北端，筑巢期为 5 月到 8 月。不要动有标记的巢，挖的坑要填平，夜间不要用灯照沙滩。</string>
+    <string name="wildlife_se_cannonball_title">炮弹水母</string>
+    <string name="wildlife_se_cannonball_body">柚子大小、结实的褐色圆顶，夏末成千上万地被冲上岸。这是可以拿起来的那种——蜇在皮肤上几乎没感觉。</string>
+    <string name="wildlife_se_note_title">这里有离岸流</string>
+    <string name="wildlife_se_note_body">外滩群岛因离岸流失去的游泳者几乎比全美任何地方都多：沙洲断断续续，离开海滩的海水会从缺口流出。在有救生员的地方游泳，如果被卷走，沿着海岸横向游，不要逆流。</string>
+
+    <!-- The Mid-Atlantic -->
+    <string name="wildlife_region_midatlantic">大西洋中部沿岸</string>
+    <string name="wildlife_ma_nettle_title">海荨麻</string>
+    <string name="wildlife_ma_nettle_body">7 月到 9 月在切萨皮克湾和沿海海湾里很多，在外海一侧则少得多。蜇伤剧烈但短暂，热水能缓解。</string>
+    <string name="wildlife_ma_ray_title">牛鼻鲼</string>
+    <string name="wildlife_ma_ray_body">整个夏天，成百上千的牛鼻鲼成群游过海湾和海滩，翼尖划破水面。它们游动而不是埋在沙里，尾根的刺是用来防御的，所以看着它们游过，永远不要把它逼到角落。</string>
+    <string name="wildlife_ma_horseshoe_title">鲎</string>
+    <string name="wildlife_ma_horseshoe_body">每年 5 月，特拉华湾都有全世界最大规模的鲎产卵，以鲎卵为食的滨鸟也随之而来。鲎无害，尖尾是杠杆不是毒刺——翻倒的鲎要抓着壳翻回来。</string>
+    <string name="wildlife_ma_horses_title">阿萨蒂格岛的野马</string>
+    <string name="wildlife_ma_horses_body">它们在沙滩上看起来很温顺，其实不是：每年都有人被咬或被踢。国家公园管理局要求保持 12 米距离，大约一辆公交车的长度。喂它们既违法，也会让它们学会向人抢食。</string>
+    <string name="wildlife_ma_plover_title">笛鸻和小燕鸥</string>
+    <string name="wildlife_ma_plover_body">两者都直接在开阔的沙地上筑巢，那个浅坑你不踩上去是看不见的。3 月到 8 月请待在围绳区域之外，那一段完全不要让狗进入。</string>
+    <string name="wildlife_ma_shark_title">沙洲鲨</string>
+    <string name="wildlife_ma_shark_body">切萨皮克湾口是这段海岸上它们最重要的育幼场之一。它们待在沙洲外吃螃蟹和魟鱼，对游泳者没有兴趣。</string>
+    <string name="wildlife_ma_note_title">丁坝旁边</string>
+    <string name="wildlife_ma_note_body">这些海滩靠石砌丁坝和入海口防波堤固定，离开海滩的海水会沿着它们流出去。游泳时要远离任何礁石，永远不要游过入海口。</string>
+
+    <!-- Hawaii -->
+    <string name="wildlife_region_hawaii">夏威夷</string>
+    <string name="wildlife_hi_box_title">箱水母</string>
+    <string name="wildlife_hi_box_body">满月后八到十天，它们会大量出现在包括威基基在内的南向海岸，救生员会竖起警示牌。蜇伤比僧帽水母更厉害，可能疼上好几个小时。</string>
+    <string name="wildlife_hi_manowar_title">僧帽水母</string>
+    <string name="wildlife_hi_manowar_body">强劲的信风一年四季都可能把它们推上迎风面的海滩。蓝色浮囊，看不见的长丝，躺在沙上和在水里一样会蜇人。</string>
+    <string name="wildlife_hi_urchin_title">Wana，长刺海胆</string>
+    <string name="wildlife_hi_urchin_body">黑色长针卡在礁石的每一道缝隙和岩架里。刺很脆，会断在皮肤下，所以放手放脚之前先看清楚，在礁石上要穿鞋。</string>
+    <string name="wildlife_hi_monkseal_title">夏威夷僧海豹</string>
+    <string name="wildlife_hi_monkseal_body">仅存约 1,600 只，在沙滩上睡觉的僧海豹是在休息，不是搁浅。联邦法律要求保持 15 米距离，带着幼崽的母海豹则为 45 米，这就是对你的全部要求。</string>
+    <string name="wildlife_hi_honu_title">Honu，绿海龟</string>
+    <string name="wildlife_hi_honu_body">它们会在众目睽睽下在沙滩上晒太阳、在礁石上吃草。保持 3 米距离，永远不要触摸：它受州和联邦法律保护，无法上岸的海龟就得不到它需要的休息。</string>
+    <string name="wildlife_hi_spinner_title">飞旋海豚</string>
+    <string name="wildlife_hi_spinner_body">它们整夜捕猎，白天进入海湾睡觉，游泳者就是在这时遇到它们的。联邦规定禁止靠近到 45 米以内；休息好的海豚群会去觅食，被打扰的则不会。</string>
+    <string name="wildlife_hi_tiger_title">虎鲨</string>
+    <string name="wildlife_hi_tiger_body">全年出没于每座岛屿周围，咬人事件依然罕见。远离被雨水染成褐色的海水、河口和钓鱼的人，黎明和黄昏不要下水。</string>
+    <string name="wildlife_hi_note_title">浪打在沙滩上</string>
+    <string name="wildlife_hi_note_body">夏威夷的岸边碎浪会在只有三十厘米深的水里直接砸到干沙上，每年都有人因此摔断脖子和肩膀——伤到的人比这份清单上所有其他东西加起来还多。永远不要背对它，也永远不要头朝下扎进去。</string>
+
+    <!-- The Great Lakes -->
+    <string name="wildlife_region_greatlakes">五大湖</string>
+    <string name="wildlife_gl_itch_title">游泳者瘙痒症</string>
+    <string name="wildlife_gl_itch_body">一种寄生于鸭子和螺类的寄生虫会在温暖的浅水中钻进皮肤并死在那里，一小时后留下发痒的红疹。一上岸就用毛巾用力擦干并冲洗，通常就不会发作。</string>
+    <string name="wildlife_gl_algae_title">蓝绿藻</string>
+    <string name="wildlife_gl_algae_body">夏末的藻华会让湖水看起来像打翻的油漆，并带有毒素。湖水看起来像豌豆汤或表面有浮沫，就不要下水，也别让狗下水——狗喝了可能当天就会死。</string>
+    <string name="wildlife_gl_mussels_title">斑马贻贝和斑驴贻贝</string>
+    <string name="wildlife_gl_mussels_body">湖里的每一块岩石、码头桩和防波堤上都长满了它们，贝壳锋利得像碎玻璃。只要不是在干净的沙地上，就要穿鞋。</string>
+    <string name="wildlife_gl_plover_title">笛鸻</string>
+    <string name="wildlife_gl_plover_body">整个五大湖地区只有不到一百对在筑巢，就在睡熊沙丘和印第安纳沙丘这类地方的开阔沙地上。请待在围栏区域之外，在附近要给狗拴好牵绳。</string>
+    <string name="wildlife_gl_jelly_title">桃花水母</string>
+    <string name="wildlife_gl_jelly_body">硬币大小、透明，夏末出现在温暖平静的水中。它是真正的水母，但刺不穿人的皮肤。</string>
+    <string name="wildlife_gl_sturgeon_title">湖鲟</string>
+    <string name="wildlife_gl_sturgeon_body">长近两米、披着骨甲的鱼，从恐龙时代至今几乎没变，在五大湖各州都受保护或严格限捕。它没有牙齿，靠吸食湖底的昆虫为生，见到它是运气，不是危险。</string>
+    <string name="wildlife_gl_note_title">码头旁边的水流</string>
+    <string name="wildlife_gl_note_body">沿岸吹的风会让湖水沿着每一座码头和防波堤快速向外流，这股水流在这些湖里淹死的人比水中任何生物都多。游泳时远离这些构筑物，浪打过上面时更不要走上去。</string>
+
+    <!-- Puerto Rico -->
+    <string name="wildlife_region_caribbean">波多黎各</string>
+    <string name="wildlife_pr_manowar_title">僧帽水母</string>
+    <string name="wildlife_pr_manowar_body">信风把它们吹上北海岸，12 月到次年 4 月最严重。沙滩上的蓝色浮囊仍连着你看不见的触丝。</string>
+    <string name="wildlife_pr_sealice_title">海虱</string>
+    <string name="wildlife_pr_sealice_body">顶针水母的幼体，小到看不见，春季和初夏最多。在水里毫无感觉，几个小时后泳衣覆盖的地方就会长出皮疹。</string>
+    <string name="wildlife_pr_urchin_title">Erizo，冠海胆</string>
+    <string name="wildlife_pr_urchin_body">手掌长的黑刺，密布在礁石上和每一处岩架下。它们会断在皮肤里，所以永远不要光脚踩在礁石上。</string>
+    <string name="wildlife_pr_firecoral_title">火珊瑚</string>
+    <string name="wildlife_pr_firecoral_body">芥末褐色的硬壳，尖端发白，长在礁石、旧缆绳和沉船上。轻轻擦过就会灼痛好几个小时，第二天起红肿，它的外表完全看不出有多“火辣”。</string>
+    <string name="wildlife_pr_turtle_title">绿海龟和玳瑁</string>
+    <string name="wildlife_pr_turtle_body">3 月到 8 月它们在这些海滩上筑巢，以库莱布拉岛最多。龟巢、幼龟和海龟本身都受保护——远远观看，夜间不要用灯照沙滩。</string>
+    <string name="wildlife_pr_manatee_title">安的列斯海牛</string>
+    <string name="wildlife_pr_manatee_body">濒危物种，栖息在这段海岸平静的海湾和河口。不要跟随、喂食或朝它游去；船只是它们的头号杀手，所以海牛比你更需要那条水道，你也没那么需要那张照片。</string>
+    <string name="wildlife_pr_reef_title">珊瑚礁本身</string>
+    <string name="wildlife_pr_reef_body">踩在珊瑚上会杀死一个花了几十年才长成的群落，而珊瑚划伤比任何擦伤都更容易感染。从上面漂过去，如果一定要休息，就在沙地上休息。</string>
+    <string name="wildlife_pr_note_title">Resacas（离岸流）</string>
+    <string name="wildlife_pr_note_body">12 月到 3 月，来自北大西洋的冬季涌浪猛烈拍打这段海岸，堆上海滩的海水会从礁石缺口以离岸流的形式流出。请在有救生员的海滩游泳，如果礁石有水道，水流就从那里走。</string>
+
+    <!-- Your own photo of a beach -->
+    <string name="photo_add">添加照片</string>
+    <string name="photo_change">更换照片</string>
+    <string name="photo_sheet_note">仅保存在这部手机上。</string>
+    <string name="photo_take">拍照</string>
+    <string name="photo_choose">选择照片</string>
+    <string name="photo_remove">移除照片</string>
+    <string name="photo_failed">无法添加这张照片。</string>
+    <string name="photo_no_camera">此设备上没有相机应用。</string>
+
+    <!-- Emergency sheet -->
+    <string name="sos_label">SOS</string>
+    <string name="sos_title">求助</string>
+    <string name="emergency_number">911</string>
+    <string name="sos_where">你离 %1$s 最近。请准备好分享你的位置。</string>
+    <string name="sos_where_unknown">请准备好分享你的位置。</string>
+    <string name="sos_call_title">拨打紧急电话</string>
+    <string name="sos_call_body">打开拨号盘——由你拨出电话</string>
+    <string name="sos_directions_title">前往最近救援点的路线</string>
+    <string name="sos_directions_none">这片海滩没有列出救援点</string>
+    <string name="sos_share_title">发送我的位置</string>
+    <string name="sos_share_body">与他人分享地图定位</string>
+    <string name="sos_share_message">我在 %1$s。我的位置：https://maps.google.com/?q=%2$s</string>
+    <string name="sos_share_unknown">我在海滩需要帮助。</string>
+    <string name="sos_share_position">我需要帮助。我的位置：https://maps.google.com/?q=%1$s</string>
+    <string name="sos_help_tower">救生塔</string>
+    <string name="sos_help_tower_named">救生塔 %1$s</string>
+    <string name="sos_no_app">此设备上没有应用能处理该操作。</string>
+
+    <!-- What people report from the beach -->
+    <string name="time_just_now">刚刚</string>
+
+    <!-- Rocks underfoot -->
+    <string name="rocks_title">脚下的礁石</string>
+    <string name="rocks_title_for">%1$s 的礁石</string>
+    <string name="rocks_unrated_body">还没有人说过这里的岸边踩上去是什么样子。</string>
+    <string name="rocks_rate_cta">给礁石评分</string>
+    <string name="rocks_rerate_cta">修改评分</string>
+    <string name="rocks_value">%1$d / 10</string>
+    <string name="rocks_rated_when">评分时间：%1$s</string>
+
+    <string name="rocks_band_clear">纯沙滩</string>
+    <string name="rocks_band_few">少量礁石</string>
+    <string name="rocks_band_patchy">零星礁石</string>
+    <string name="rocks_band_mostly">大部分是礁石</string>
+    <string name="rocks_band_throughout">遍布礁石</string>
+
+    <string name="rocks_advice_clear">可以一路光脚走到水边。</string>
+    <string name="rocks_advice_few">大部分是沙子。在水边注意脚下。</string>
+    <string name="rocks_advice_patchy">礁石和沙子差不多一样多。带双鞋吧。</string>
+    <string name="rocks_advice_mostly">需要穿鞋，小孩子走起来很吃力。</string>
+    <string name="rocks_advice_throughout">一路都是礁石。不适合光脚，带冲浪板或推婴儿车也很不方便。</string>
+
+    <string name="rocks_reference_heading">各个分数的样子</string>
+    <string name="rocks_reference_note">选一个图片最接近你眼前景象的分数。</string>
+    <string name="rocks_reference_3">3 — 开阔沙滩上有少量礁石</string>
+    <string name="rocks_reference_5">5 — 礁石和沙子一样多</string>
+    <string name="rocks_reference_9">9 — 一路都是礁石</string>
+
+    <string name="rocks_your_rating">你的评分</string>
+    <string name="rocks_photo_heading">你拍的岸边照片</string>
+    <string name="rocks_photo_note">可选，只保存在这部手机上。它能让下一个人核对你的分数。</string>
+    <string name="rocks_photo_add">添加照片</string>
+    <string name="rocks_save">保存评分</string>
+    <string name="rocks_saved">评分已保存。</string>
+    <string name="rocks_clear">移除我的评分</string>
+    <string name="rocks_cleared">评分已移除。</string>
+
+    <!-- Seagulls -->
+    <string name="gulls_title">海鸥</string>
+    <string name="gulls_sheet_title">有多少海鸥？</string>
+    <string name="gulls_unrated_body">还没有人说过这里有多少海鸥。</string>
+    <string name="gulls_rate_cta">给海鸥评分</string>
+    <string name="gulls_level_none">没有</string>
+    <string name="gulls_level_few">几只</string>
+    <string name="gulls_level_plenty">不少</string>
+    <string name="gulls_level_lots">很多</string>
+    <string name="gulls_level_swarming">成群结队</string>
+    <string name="gulls_advice_none">不用担心你的午餐。</string>
+    <string name="gulls_advice_few">把食物收好，它们就不会来打扰你。</string>
+    <string name="gulls_advice_plenty">食物要盖好，千万别喂它们。</string>
+    <string name="gulls_advice_lots">它们会从你手里抢食物。在遮阳伞下吃东西。</string>
+    <string name="gulls_advice_swarming">今天换个地方野餐吧。</string>
+
+    <string name="source_osm">来自 OpenStreetMap</string>
+    <string name="source_osm_and_you">来自 OpenStreetMap 和你的评分</string>
+    <string name="source_ebird">来自 eBird</string>
+    <string name="source_ebird_and_you">来自 eBird 和你的评分</string>
+
+    <!-- The hazard a high rating raises -->
+    <string name="hazard_rocks_rated_body">有人给这里的岸边礁石评了 %1$d 分（满分 10 分）——%2$s。</string>
+    <string name="hazard_rocks_step_shoes">穿上鞋。</string>
+    <string name="hazard_rocks_step_entry">找一条干净的沙道进出水域。</string>
+    <string name="hazard_rocks_estimate_body">这里岸边的礁石程度综合为 %1$d 分（满分 10 分）——%2$s。</string>
+
+    <!-- Wildlife sightings -->
+    <string name="sighting_species_shark">鲨鱼</string>
+    <string name="sighting_species_ray">魟鱼</string>
+    <string name="sighting_species_fish">鱼</string>
+    <string name="sighting_species_jellyfish">水母</string>
+    <string name="sighting_species_seal">海豹</string>
+    <string name="sighting_species_seal_dead">死海豹</string>
+    <string name="sighting_species_seagull">海鸥</string>
+    <string name="sighting_species_bird">鸟</string>
+    <string name="sighting_species_other">其他</string>
+
+    <string name="sighting_noun_shark">鲨鱼</string>
+    <string name="sighting_noun_ray">魟鱼</string>
+    <string name="sighting_noun_fish">鱼</string>
+    <string name="sighting_noun_jellyfish">水母</string>
+    <string name="sighting_noun_seal">海豹</string>
+    <string name="sighting_noun_seal_dead">死海豹</string>
+    <string name="sighting_noun_seagull">海鸥</string>
+    <string name="sighting_noun_bird">鸟</string>
+    <string name="sighting_noun_other">动物</string>
+
+    <string name="sighting_title">报告野生动物</string>
+    <string name="sighting_title_for">%1$s 的野生动物</string>
+    <string name="sighting_section">最近在这里看到的</string>
+    <string name="sighting_add_cta">报告目击</string>
+    <string name="sighting_none">这里还没有报告。</string>
+    <string name="source_inat">过去 2 周，来自 iNaturalist</string>
+    <string name="source_inat_and_you">过去 2 周，来自 iNaturalist 和你的报告</string>
+    <string name="wildlife_tally_with_dead">%1$s · %2$s</string>
+    <plurals name="wildlife_tally_dead">
+        <item quantity="other">%1$d 只死亡</item>
+    </plurals>
+
+    <string name="sighting_what">你看到了什么？</string>
+    <string name="sighting_where">它在哪里？</string>
+    <string name="sighting_where_water">在水里</string>
+    <string name="sighting_where_stranded">被冲上沙滩</string>
+    <string name="sighting_alive">活的</string>
+    <string name="sighting_dead">死的</string>
+
+    <string name="sighting_stranded_title">这会发出警告</string>
+    <string name="sighting_stranded_body">被冲上岸的动物会在接下来两天显示在这片海滩警报的最上方，让其他打开这片海滩的人第一眼就看到。你自己也要远离它——搁浅的动物往往只是在休息，受惊的动物会咬人。</string>
+    <string name="sighting_carcass_body">死海豹会在接下来两天显示在这片海滩警报的最上方，让其他打开这片海滩的人第一眼就看到。不要触碰它——死海豹可能携带会传染给人和宠物的疾病。</string>
+
+    <string name="sighting_shark_title">这会发出警告</string>
+    <string name="sighting_shark_body">水中的鲨鱼会在接下来一天显示在这片海滩警报的最上方，让其他打开这片海滩的人在下水前就看到。</string>
+
+    <string name="sighting_note_hint">还有什么要补充的（可选）</string>
+    <string name="sighting_photo_add">添加照片</string>
+    <string name="sighting_photo_note">可选，只保存在这部手机上。</string>
+    <string name="sighting_save">保存报告</string>
+    <string name="sighting_saved">报告已保存。</string>
+    <string name="sighting_deleted">报告已删除。</string>
+    <string name="sighting_delete">删除</string>
+
+    <string name="sighting_tag_stranded">冲上岸</string>
+    <string name="sighting_tag_water">在水里</string>
+
+    <!-- Passing a warning to other people -->
+    <string name="sighting_share_cta">提醒其他人</string>
+    <string name="sighting_share_subject">%2$s 有%1$s被冲上岸</string>
+    <string name="sighting_share_subject_shark">%1$s 发现鲨鱼</string>
+    <string name="sighting_share_subject_seen">%1$s 的野生动物</string>
+    <string name="sighting_share_stranded">注意——%2$s 的沙滩上有%1$s被冲上岸。请保持至少 45 米距离，让狗远离，不要把它推回水里，那样可能害死一只健康的动物。请报告当地救生员或当地海洋哺乳动物搁浅救助网络。</string>
+    <string name="sighting_share_carcass">注意——%2$s 的沙滩上有一只%1$s。不要触碰，让狗远离；死海豹可能携带会传染给人和宠物的疾病。请报告当地救生员或当地海洋哺乳动物搁浅救助网络。</string>
+    <string name="sighting_share_shark">注意——有人报告 %1$s 水中有鲨鱼。请在任何人下水之前告诉那里的救生员。</string>
+    <string name="sighting_share_water">在 %2$s 看到：水中有%1$s。</string>
+    <string name="sighting_share_none">此设备上没有应用能发送该内容。</string>
+
+    <!-- The hazard a report raises, in "What to watch for" and Alerts -->
+    <string name="hazard_stranding_body">有人报告这里的沙滩上有%1$s被冲上岸。请远离它。</string>
+    <string name="hazard_stranding_step_back">远离它，也让孩子远离。如果是海豹、海狮、海豚或鲸，请保持至少 45 米距离——靠得更近违反美国《海洋哺乳动物保护法》（Marine Mammal Protection Act）。</string>
+    <string name="hazard_stranding_step_dogs">给狗拴好牵绳，让它远离。</string>
+    <string name="hazard_stranding_step_leave">不要触碰，也不要把它推回水里。水母死后仍会蜇人，在岸上休息的动物被挪动可能会死。</string>
+    <string name="hazard_stranding_step_tell">告诉救生员，或当地海洋哺乳动物搁浅救助网络。</string>
+    <string name="hazard_carcass_step_touch">不要触碰，让孩子远离。死海豹可能携带钩端螺旋体病等会传染给人和宠物的疾病。</string>
+    <string name="hazard_carcass_step_take">让它留在原处。根据美国《海洋哺乳动物保护法》，拿走海豹的任何部分——哪怕一块骨头或一根胡须——都是违法的。</string>
+
+    <string name="hazard_shark_body">过去一天内有人报告这里的水中有鲨鱼。</string>
+    <string name="hazard_shark_step_exit">如果你在水里，请平静、平稳地上岸，不要乱扑腾。</string>
+    <string name="hazard_shark_step_group">黎明和黄昏不要下水，不要独自游泳，也不要靠近小鱼群和俯冲的海鸟。</string>
+    <string name="hazard_shark_step_tell">告诉救生员，并查看海滩是否已张贴警示。</string>
+
+    <!-- What's it good for today -->
+    <string name="section_good_for">今天适合</string>
+    <string name="good_for_loading">正在为今天的活动评分…</string>
+    <string name="activity_title">最适合…的海滩</string>
+    <string name="activity_pick">你想做什么？</string>
+
+    <string name="activity_swim">游泳</string>
+    <string name="activity_swim_blurb">小浪、干净的水，最好有救生员</string>
+    <string name="activity_surf">冲浪</string>
+    <string name="activity_surf_blurb">像样的涌浪和微风</string>
+    <string name="activity_picnic">野餐</string>
+    <string name="activity_picnic_blurb">无风、温暖但不炎热、停车方便</string>
+    <string name="activity_fish">钓鱼</string>
+    <string name="activity_fish_blurb">有可供垂钓的结构，水况不太汹涌</string>
+
+    <string name="fit_great">极佳</string>
+    <string name="fit_good">良好</string>
+    <string name="fit_soso">一般</string>
+    <string name="fit_poor">较差</string>
+
+    <string name="fit_out_of">%1$d/100</string>
+    <string name="fit_held_back">受%1$s拖累</string>
+    <string name="fit_helped_by">得益于%1$s</string>
+    <string name="fit_thin">这里的数据不足，无法确定</string>
+    <string name="fit_rank">第 %1$d 名</string>
+
+    <!-- Factor names, used mid-sentence in "受风拖累" -->
+    <string name="factor_water">水质</string>
+    <string name="factor_surf">浪况</string>
+    <string name="factor_wind">风</string>
+    <string name="factor_warmth">气温</string>
+    <string name="factor_lifeguards">没有救生员</string>
+    <string name="factor_underfoot">脚下的礁石</string>
+    <string name="factor_gulls">海鸥</string>
+    <string name="factor_air">空气质量</string>
+    <string name="factor_parking">停车</string>
+    <string name="factor_uv">紫外线指数</string>
+    <string name="factor_structure">可供垂钓的结构</string>
+    <string name="factor_hazards">当前危险警告</string>
+
+    <string name="activity_ranking_heading">%1$s片海滩的%2$s排名</string>
+    <string name="activity_ranking_empty">范围内没有可排名的海滩。开启定位，或收藏几片海滩。</string>
+    <string name="activity_ranking_empty_saved">还没有可排名的收藏海滩。</string>
+    <string name="activity_ranking_loading">正在读取每片海滩的海况…</string>
+    <string name="activity_ranking_no_readings">无法读取任何海滩的海况。请检查网络连接后再回来。</string>
+
+    <!-- Environment -->
+    <string name="section_environment">环境</string>
+    <string name="aqi_label">空气质量</string>
+    <string name="aqi_value">AQI %1$d</string>
+    <string name="aqi_good">良好</string>
+    <string name="aqi_moderate">中等</string>
+    <string name="aqi_sensitive">对敏感人群不健康</string>
+    <string name="aqi_unhealthy">不健康</string>
+    <string name="aqi_very_unhealthy">非常不健康</string>
+    <string name="aqi_hazardous">危险</string>
+    <string name="aqi_advice_good">空气清新，无需顾虑。</string>
+    <string name="aqi_advice_moderate">几乎所有人都没问题。如果你特别敏感，长时间的剧烈户外运动可能会让你不适。</string>
+    <string name="aqi_advice_sensitive">如果你有哮喘或心肺疾病，今天活动要短而轻松。其他人没有问题。</string>
+    <string name="aqi_advice_unhealthy">所有人都应减少户外剧烈运动。敏感人群应待在室内。</string>
+    <string name="aqi_advice_hazardous">请待在室内。这是山火烟雾的级别。</string>
+    <string name="aqi_loading">正在检查空气…</string>
+    <string name="aqi_unavailable">暂时无法获取空气质量。</string>
+
+    <!-- Water. A prediction from rainfall and geography, never a water test. -->
+    <string name="water_label">水质</string>
+    <string name="water_clean">可能干净</string>
+    <string name="water_clean_body">过去三天没有明显降雨，附近也没有已知排放。根据降雨推测，并非实测——本应用没有水样检测。</string>
+    <string name="water_runoff">径流警示</string>
+    <string name="water_runoff_body">过去三天这里下过雨。雨水排水管会把街道上的东西带进海里，卫生部门建议雨后约 72 小时内不要下水。</string>
+    <string name="water_sewage">跨境污水风险</string>
+    <string name="water_sewage_body">这片海滩离蒂华纳河口很近，处于长期警示范围内。下水前请查看圣地亚哥县当前的关闭名单。</string>
+    <string name="water_sewage_rain">污水和径流叠加</string>
+    <string name="water_sewage_rain_body">降雨叠加跨境污水——正是这种组合让南县的海滩关闭。今天不要在这里下水。</string>
+    <string name="water_loading">正在查看近期降雨…</string>
+    <string name="water_unknown">未检查</string>
+    <string name="water_unknown_body">近期降雨数据未能加载，因此无法判断径流情况。下水前请查看当地的水质公告。</string>
+
+    <string name="hazard_water_step_stay_out">头部不要入水，有开放性伤口时不要游泳。</string>
+    <string name="hazard_water_step_wash">游完后用清水冲洗。</string>
+    <string name="hazard_water_step_check">下水前查看你所在县的海滩关闭名单。</string>
+    <string name="hazard_air_body">这里的空气质量指数为 %1$d——%2$s。</string>
+    <string name="hazard_air_step_indoors">剧烈运动要缩短时间，胸口发紧就进屋。</string>
+
+    <!-- Parking. What exists and what it costs, never whether it is full. -->
+    <string name="parking_label">停车</string>
+    <string name="parking_none_mapped">附近没有标注停车位</string>
+    <string name="parking_thin">几乎没有标注停车位——仅供参考</string>
+    <string name="parking_mostly_free">附近大多是免费停车</string>
+    <string name="parking_paid">只有付费停车</string>
+    <string name="parking_mixed">附近有免费和付费停车</string>
+    <string name="parking_detail">步行 10 分钟内有%1$s、%2$s</string>
+    <plurals name="parking_lots">
+        <item quantity="other">%1$d 个停车场</item>
+    </plurals>
+    <plurals name="parking_streets">
+        <item quantity="other">%1$d 段路边停车</item>
+    </plurals>
+    <string name="parking_caveat">显示的是有哪些车位，而不是现在有没有空位。</string>
+    <string name="parking_loading">正在查找附近的停车位…</string>
+    <string name="parking_unavailable">暂时无法获取停车信息。</string>
+
+    <plurals name="alert_count">
+        <item quantity="other">%1$d 条警报</item>
+    </plurals>
+
+    <plurals name="saved_count">
+        <item quantity="other">%1$d 片收藏的海滩</item>
+    </plurals>
+
+    <plurals name="beach_count">
+        <item quantity="other">%1$d 片海滩</item>
+    </plurals>
+
+    <!-- Beach map -->
+    <string name="map_kicker">海滩地图</string>
+    <string name="map_title">救生塔与入口</string>
+    <string name="map_recenter">重新居中</string>
+    <string name="map_zoom_in">放大</string>
+    <string name="map_zoom_out">缩小</string>
+    <string name="map_satellite">卫星</string>
+    <string name="map_plain">普通</string>
+    <string name="map_two_finger_hint">用两根手指移动地图</string>
+    <string name="map_legend_tower">救生塔 · 救援点</string>
+    <string name="map_you">你 · %1$s</string>
+    <string name="map_description">%1$s 的地图</string>
+    <string name="map_attribution">© Esri · © OpenStreetMap</string>
+
+    <!-- Support and contact -->
+    <string name="support_section_title">支持与反馈</string>
+    <string name="contact_developers_title">联系开发者</string>
+    <string name="contact_developers_subtitle">发邮件给开发团队，提出问题或反馈</string>
+    <string name="contact_intro_title">联系我们</string>
+    <string name="contact_intro_body">有反馈、发现错误或有想法？发邮件给我们，我们会回复。</string>
+    <string name="contact_email_address">supportflagline@gmail.com</string>
+    <string name="contact_topic_label">主题</string>
+    <string name="contact_topic_general">一般</string>
+    <string name="contact_topic_bug">错误报告</string>
+    <string name="contact_topic_feature">功能建议</string>
+    <string name="contact_topic_data">海滩数据</string>
+    <string name="contact_subject_label">标题</string>
+    <string name="contact_subject_hint">输入标题</string>
+    <string name="contact_message_label">内容</string>
+    <string name="contact_message_hint">在这里输入你的消息…</string>
+    <string name="contact_send_button">发送邮件</string>
+    <string name="contact_chooser_title">通过以下方式发送邮件…</string>
+    <string name="contact_no_email_app">未找到邮件应用。你可以发邮件到 supportflagline@gmail.com 联系我们</string>
+    <string name="contact_empty_message_error">发送前请先写点内容。</string>
+</resources>

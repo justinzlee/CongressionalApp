@@ -104,6 +104,54 @@
                 android:layout_marginTop="8dp"
                 android:orientation="vertical" />
 
+            <!-- Shown only once the seal card is picked. A dead seal is a
+                 disease risk rather than an animal to give room to, so the
+                 warning it raises gives different steps. -->
+            <LinearLayout
+                android:id="@+id/sightingCondition"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                tools:visibility="visible">
+
+                <LinearLayout
+                    android:id="@+id/sightingAlive"
+                    style="@style/Widget.App.WhereChoice"
+                    android:layout_width="0dp"
+                    android:layout_marginEnd="4dp"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/sightingAliveMark"
+                        style="@style/Widget.App.WhereChoiceMark"
+                        android:src="@drawable/ic_check_circle" />
+
+                    <TextView
+                        style="@style/Widget.App.WhereChoiceLabel"
+                        android:text="@string/sighting_alive" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/sightingDead"
+                    style="@style/Widget.App.WhereChoice"
+                    android:layout_width="0dp"
+                    android:layout_marginStart="4dp"
+                    android:layout_weight="1">
+
+                    <ImageView
+                        android:id="@+id/sightingDeadMark"
+                        style="@style/Widget.App.WhereChoiceMark"
+                        android:src="@drawable/ic_x_circle" />
+
+                    <TextView
+                        style="@style/Widget.App.WhereChoiceLabel"
+                        android:text="@string/sighting_dead" />
+                </LinearLayout>
+            </LinearLayout>
+
             <!-- ══════ WHERE ══════ -->
             <TextView
                 android:layout_width="wrap_content"
@@ -178,6 +226,7 @@
                         android:textSize="17sp" />
 
                     <TextView
+                        android:id="@+id/sightingStrandedBody"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"

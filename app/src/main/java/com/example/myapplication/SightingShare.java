@@ -33,12 +33,15 @@ public final class SightingShare {
 
     /** Opens the share sheet with a message about this sighting. */
     public static void share(Context context, Beach beach, Sighting sighting) {
-        String noun = context.getString(sighting.getSpecies().getNounRes());
+        String noun = context.getString(sighting.getNounRes());
         String beachName = beach.getName();
 
         String message;
         String subject;
-        if (sighting.isStranded()) {
+        if (sighting.isStranded() && sighting.isDead()) {
+            message = context.getString(R.string.sighting_share_carcass, noun, beachName);
+            subject = context.getString(R.string.sighting_share_subject, noun, beachName);
+        } else if (sighting.isStranded()) {
             message = context.getString(R.string.sighting_share_stranded, noun, beachName);
             subject = context.getString(R.string.sighting_share_subject, noun, beachName);
         } else if (sighting.getSpecies() == SightingSpecies.SHARK) {

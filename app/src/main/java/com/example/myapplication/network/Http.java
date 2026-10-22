@@ -33,6 +33,13 @@ final class Http {
 
     static final OkHttpClient CLIENT = new OkHttpClient();
 
+    /**
+     * Sent to the public services that ask apps to say who they are, so a
+     * misbehaving one can be contacted rather than blocked: iNaturalist, eBird
+     * and Overpass, which refuses OkHttp's default outright.
+     */
+    static final String USER_AGENT = "Flagline-Android/1.0 (supportflagline@gmail.com)";
+
     static final ExecutorService IO = Executors.newFixedThreadPool(WORKERS, new ThreadFactory() {
         private final AtomicInteger count = new AtomicInteger(1);
 

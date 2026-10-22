@@ -36,6 +36,9 @@ public class SettingsActivity extends AppCompatActivity {
     public static final String LANGUAGE_SYSTEM = "";
     public static final String LANGUAGE_ENGLISH = "en";
     public static final String LANGUAGE_SPANISH = "es";
+    public static final String LANGUAGE_FRENCH = "fr";
+    /** Simplified Chinese, from res/values-zh. */
+    public static final String LANGUAGE_CHINESE = "zh";
 
     /**
      * Puts the app in whichever appearance the user last picked, and leaves it
@@ -103,6 +106,8 @@ public class SettingsActivity extends AppCompatActivity {
     private static int languageLabelRes(String tag) {
         if (LANGUAGE_ENGLISH.equals(tag)) return R.string.language_english;
         if (LANGUAGE_SPANISH.equals(tag)) return R.string.language_spanish;
+        if (LANGUAGE_FRENCH.equals(tag)) return R.string.language_french;
+        if (LANGUAGE_CHINESE.equals(tag)) return R.string.language_chinese;
         return R.string.language_system;
     }
 

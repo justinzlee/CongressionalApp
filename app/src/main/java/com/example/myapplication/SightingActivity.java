@@ -59,6 +59,7 @@ public class SightingActivity extends AppCompatActivity {
     private static final String STATE_PENDING_CAPTURE = "pending_capture";
     private static final String STATE_SPECIES = "species";
     private static final String STATE_STRANDED = "stranded";
+    private static final String STATE_DEAD = "dead";
     private static final String STATE_PENDING_PHOTO = "pending_photo";
 
     /**
@@ -74,7 +75,7 @@ public class SightingActivity extends AppCompatActivity {
     /**
      * "Something else" to start with. Something has to be selected — an unset
      * "what" would let a report be filed that says only where it was — and of
-     * the six this is the only one that asserts nothing. A specific animal as
+     * the groups this is the only one that asserts nothing. A specific animal as
      * the default would mean a user who tapped straight past this question
      * filed a report that is wrong rather than one that is merely vague, and
      * vague is the cheaper of the two mistakes for everyone reading it after.
@@ -82,10 +83,19 @@ public class SightingActivity extends AppCompatActivity {
     private SightingSpecies species = SightingSpecies.OTHER;
     private boolean stranded;
 
+    /**
+     * Only asked of a seal. Alive to start with: a live animal reported as dead
+     * would be left on the sand with nobody giving it room, which is the worse
+     * of the two mistakes.
+     */
+    private boolean dead;
+
     /** Every animal card, keyed by what it stands for. Built in {@link #buildSpeciesChoices}. */
     private final Map<SightingSpecies, View> speciesCards = new EnumMap<>(SightingSpecies.class);
 
     private View inWaterChoice, strandedChoice, strandedNote, sharkNote;
+    private TextView strandedBody;
+    private View conditionRow, aliveChoice, deadChoice;
     private ImageView photo;
     private View photoEmpty;
     private TextInputEditText note;
@@ -137,6 +147,10 @@ public class SightingActivity extends AppCompatActivity {
         strandedChoice = findViewById(R.id.sightingStranded);
         strandedNote = findViewById(R.id.sightingStrandedNote);
         sharkNote = findViewById(R.id.sightingSharkNote);
+        strandedBody = findViewById(R.id.sightingStrandedBody);
+        conditionRow = findViewById(R.id.sightingCondition);
+        aliveChoice = findViewById(R.id.sightingAlive);
+        deadChoice = findViewById(R.id.sightingDead);
         photo = findViewById(R.id.sightingPhoto);
         photoEmpty = findViewById(R.id.sightingPhotoEmpty);
         note = findViewById(R.id.sightingNote);
@@ -144,6 +158,7 @@ public class SightingActivity extends AppCompatActivity {
         if (savedInstanceState != null) {
             species = SightingSpecies.parse(savedInstanceState.getString(STATE_SPECIES));
             stranded = savedInstanceState.getBoolean(STATE_STRANDED);
+            dead = savedInstanceState.getBoolean(STATE_DEAD);
             String pendingCapturePath = savedInstanceState.getString(STATE_PENDING_CAPTURE);
             if (pendingCapturePath != null) pendingCapture = new File(pendingCapturePath);
             String pendingPhotoPath = savedInstanceState.getString(STATE_PENDING_PHOTO);
@@ -154,6 +169,8 @@ public class SightingActivity extends AppCompatActivity {
 
         inWaterChoice.setOnClickListener(v -> setStranded(false));
         strandedChoice.setOnClickListener(v -> setStranded(true));
+        aliveChoice.setOnClickListener(v -> setDead(false));
+        deadChoice.setOnClickListener(v -> setDead(true));
 
         View.OnClickListener choosePhoto = v -> openPhotoSheet();
         photo.setOnClickListener(choosePhoto);
@@ -213,13 +230,15 @@ public class SightingActivity extends AppCompatActivity {
         }
 
         // A short last row is padded out so its cards keep the same third of the
-        // width as the rows above. Six groups divide evenly today; this is here
-        // so that adding a seventh stays a one-line change to the enum rather
-        // than a row of stretched cards nobody thought to look at.
+        // width as the rows above, so a group added to the enum never leaves a
+        // row of stretched cards nobody thought to look at. The spacer matches
+        // the row's height like the cards do: a fixed height here becomes the
+        // only measured child, and the row collapses to it.
         int remainder = groups.length % SPECIES_COLUMNS;
         if (remainder != 0 && row != null) {
             for (int i = remainder; i < SPECIES_COLUMNS; i++) {
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, 1, 1f);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    0, ViewGroup.LayoutParams.MATCH_PARENT, 1f);
                 params.setMarginStart(gap);
                 row.addView(new View(this), params);
             }
@@ -243,7 +262,25 @@ public class SightingActivity extends AppCompatActivity {
         for (Map.Entry<SightingSpecies, View> entry : speciesCards.entrySet()) {
             paintChoice(entry.getValue(), entry.getKey() == species);
         }
+        showCondition();
         showWarningNote();
+    }
+
+    // ── Alive or dead (seals only) ────────────────────────────────────────
+
+    private void setDead(boolean value) {
+        dead = value;
+        showCondition();
+    }
+
+    private void showCondition() {
+        conditionRow.setVisibility(species == SightingSpecies.SEAL ? View.VISIBLE : View.GONE);
+        paintWhere(aliveChoice, R.id.sightingAliveMark, !dead, false);
+        paintWhere(deadChoice, R.id.sightingDeadMark, dead, false);
+        // "Often just resting, and a frightened one bites" is untrue of a
+        // carcass, so a dead seal on the sand gets the disease warning instead.
+        strandedBody.setText(species == SightingSpecies.SEAL && dead
+            ? R.string.sighting_carcass_body : R.string.sighting_stranded_body);
     }
 
     // ── Where it was ──────────────────────────────────────────────────────
@@ -318,7 +355,10 @@ public class SightingActivity extends AppCompatActivity {
      * to find a share button afterwards is how it does not get done.
      */
     private void save() {
-        Sighting sighting = store.add(beach.getId(), species, stranded,
+        // The answer only stands while the seal card is the one picked; one
+        // given and then abandoned for another animal says nothing about it.
+        boolean deadSeal = species == SightingSpecies.SEAL && dead;
+        Sighting sighting = store.add(beach.getId(), species, stranded, deadSeal,
             note.getText() == null ? null : note.getText().toString(), pendingPhoto);
         saved = true;
 
@@ -447,6 +487,7 @@ public class SightingActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState.putString(STATE_SPECIES, species.name());
         outState.putBoolean(STATE_STRANDED, stranded);
+        outState.putBoolean(STATE_DEAD, dead);
         if (pendingCapture != null) {
             outState.putString(STATE_PENDING_CAPTURE, pendingCapture.getAbsolutePath());
         }

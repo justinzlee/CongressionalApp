@@ -126,4 +126,68 @@
             app:tint="@color/primary" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/languageFrench"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:background="@drawable/bg_surface_card"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="13dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/language_french"
+            android:textColor="@color/text_primary"
+            android:textSize="17sp" />
+
+        <ImageView
+            android:id="@+id/languageFrenchTick"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_check_circle"
+            android:visibility="gone"
+            app:tint="@color/primary" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/languageChinese"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:background="@drawable/bg_surface_card"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="13dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-medium"
+            android:text="@string/language_chinese"
+            android:textColor="@color/text_primary"
+            android:textSize="17sp" />
+
+        <ImageView
+            android:id="@+id/languageChineseTick"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="10dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_check_circle"
+            android:visibility="gone"
+            app:tint="@color/primary" />
+    </LinearLayout>
+
 </LinearLayout>

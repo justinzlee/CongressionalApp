@@ -223,6 +223,13 @@
     <string name="guide_sign_4_body">Un canal rizado que sale hacia el mar entre agua lisa.</string>
     <string name="guide_caught_title">¿Te atrapó una?</string>
     <string name="guide_caught_body">No nades contra ella. Flota, mantén la cabeza fuera, levanta un brazo y grita. Si puedes nadar, ve de lado hacia donde rompen las olas y después hacia la orilla.</string>
+    <string name="guide_tell_title">Ya fuera, avisa a un salvavidas</string>
+    <string name="guide_tell_1_title">Dónde estaba</string>
+    <string name="guide_tell_1_body">El número de la torre más cercana o un punto de referencia, para que la señalicen antes de que atrape a alguien más.</string>
+    <string name="guide_tell_2_title">Si alguien sigue en el agua</string>
+    <string name="guide_tell_2_body">Un amigo que estaba contigo, o alguien que nadó para ayudarte. No vuelvas a entrar por esa persona.</string>
+    <string name="guide_tell_3_title">Si inhalaste agua</string>
+    <string name="guide_tell_3_body">La tos, el dolor en el pecho o la dificultad para respirar pueden empezar horas después. Deja que te revisen.</string>
 
     <!-- Las cuatro señales son la respuesta instintiva de ahogamiento: cómo se
          ve alguien en el último minuto antes de hundirse, que no se parece en
@@ -789,10 +796,31 @@
     <string name="rocks_clear">Quitar mi calificación</string>
     <string name="rocks_cleared">Calificación eliminada.</string>
 
+    <string name="gulls_title">Gaviotas</string>
+    <string name="gulls_sheet_title">¿Cuántas gaviotas hay?</string>
+    <string name="gulls_unrated_body">Nadie ha dicho cuántas gaviotas hay por aquí.</string>
+    <string name="gulls_rate_cta">Calificar las gaviotas</string>
+    <string name="gulls_level_none">Ninguna</string>
+    <string name="gulls_level_few">Unas pocas</string>
+    <string name="gulls_level_plenty">Bastantes</string>
+    <string name="gulls_level_lots">Muchas</string>
+    <string name="gulls_level_swarming">Un enjambre</string>
+    <string name="gulls_advice_none">No tienes que cuidar tu comida.</string>
+    <string name="gulls_advice_few">Guarda la comida y te dejarán en paz.</string>
+    <string name="gulls_advice_plenty">Mantén la comida tapada y nunca les des de comer.</string>
+    <string name="gulls_advice_lots">Te quitarán la comida de la mano. Come bajo una sombrilla.</string>
+    <string name="gulls_advice_swarming">Hoy mejor haz tu pícnic en otro lugar.</string>
+
+    <string name="source_osm">Según OpenStreetMap</string>
+    <string name="source_osm_and_you">Según OpenStreetMap y tu calificación</string>
+    <string name="source_ebird">Según eBird</string>
+    <string name="source_ebird_and_you">Según eBird y tu calificación</string>
+
     <!-- El peligro que levanta una calificación alta -->
     <string name="hazard_rocks_rated_body">Alguien calificó la orilla aquí con %1$d de 10 en piedra: %2$s.</string>
     <string name="hazard_rocks_step_shoes">Lleva algo en los pies.</string>
     <string name="hazard_rocks_step_entry">Busca un canal de arena limpio para entrar y salir del agua.</string>
+    <string name="hazard_rocks_estimate_body">La orilla aquí sale en %1$d de 10 en piedras: %2$s.</string>
 
     <!-- Avistamientos de fauna. Grupos, no especies: ver el comentario en el
          archivo en inglés. Cada etiqueta va acompañada de un sustantivo suelto
@@ -801,6 +829,9 @@
     <string name="sighting_species_ray">Raya</string>
     <string name="sighting_species_fish">Pez</string>
     <string name="sighting_species_jellyfish">Medusa</string>
+    <string name="sighting_species_seal">Foca</string>
+    <string name="sighting_species_seal_dead">Foca muerta</string>
+    <string name="sighting_species_seagull">Gaviota</string>
     <string name="sighting_species_bird">Ave</string>
     <string name="sighting_species_other">Otra cosa</string>
 
@@ -808,6 +839,9 @@
     <string name="sighting_noun_ray">raya</string>
     <string name="sighting_noun_fish">pez</string>
     <string name="sighting_noun_jellyfish">medusa</string>
+    <string name="sighting_noun_seal">foca</string>
+    <string name="sighting_noun_seal_dead">foca muerta</string>
+    <string name="sighting_noun_seagull">gaviota</string>
     <string name="sighting_noun_bird">ave</string>
     <string name="sighting_noun_other">animal</string>
 
@@ -816,14 +850,25 @@
     <string name="sighting_section">Visto aquí últimamente</string>
     <string name="sighting_add_cta">Reportar un avistamiento</string>
     <string name="sighting_none">Todavía no hay nada reportado aquí.</string>
+    <string name="source_inat">Últimas 2 semanas, según iNaturalist</string>
+    <string name="source_inat_and_you">Últimas 2 semanas, según iNaturalist y tus reportes</string>
+    <string name="wildlife_tally_with_dead">%1$s · %2$s</string>
+    <plurals name="wildlife_tally_dead">
+        <item quantity="one">%1$d muerta</item>
+        <item quantity="many">%1$d muertas</item>
+        <item quantity="other">%1$d muertas</item>
+    </plurals>
 
     <string name="sighting_what">¿Qué viste?</string>
     <string name="sighting_where">¿Dónde estaba?</string>
     <string name="sighting_where_water">En el agua</string>
     <string name="sighting_where_stranded">Varado en la arena</string>
+    <string name="sighting_alive">Viva</string>
+    <string name="sighting_dead">Muerta</string>
 
     <string name="sighting_stranded_title">Esto levanta un aviso</string>
     <string name="sighting_stranded_body">Un animal varado aparece arriba de los avisos de esta playa durante dos días, para que cualquiera que la abra lo vea primero. Mantente bien lejos tú también: un animal varado muchas veces solo está descansando, y asustado muerde.</string>
+    <string name="sighting_carcass_body">Una foca muerta aparece al principio de las alertas de esta playa durante los próximos dos días, para que cualquiera que abra esta playa la vea primero. No la toques: las focas muertas pueden transmitir enfermedades a personas y mascotas.</string>
 
     <string name="sighting_shark_title">Esto levanta un aviso</string>
     <string name="sighting_shark_body">Un tiburón en el agua aparece arriba de los avisos de esta playa durante un día, para que cualquiera que la abra lo vea antes de entrar.</string>
@@ -844,6 +889,7 @@
     <string name="sighting_share_subject_shark">Tiburón visto en %1$s</string>
     <string name="sighting_share_subject_seen">Fauna en %1$s</string>
     <string name="sighting_share_stranded">Atención: hay un varamiento de %1$s en la arena en %2$s. Quédate a por lo menos 45 metros, aleja a los perros y no lo empujes de vuelta al agua; eso puede matar a un animal sano. Repórtalo a los salvavidas de ahí o a tu red local de varamientos de mamíferos marinos.</string>
+    <string name="sighting_share_carcass">Atención: hay una %1$s en la arena en %2$s. No la toques y aleja a los perros; las focas muertas pueden transmitir enfermedades a personas y mascotas. Repórtala a los salvavidas de ahí o a tu red local de varamientos de mamíferos marinos.</string>
     <string name="sighting_share_shark">Atención: reportaron un tiburón en el agua en %1$s. Avisa a los salvavidas de ahí antes de que alguien entre.</string>
     <string name="sighting_share_water">Visto en %2$s: %1$s en el agua.</string>
     <string name="sighting_share_none">Ninguna app de este dispositivo puede enviar eso.</string>
@@ -854,6 +900,8 @@
     <string name="hazard_stranding_step_dogs">Mantén a los perros con correa y bien lejos.</string>
     <string name="hazard_stranding_step_leave">No lo toques ni lo empujes de vuelta al agua. Una medusa sigue picando aunque esté muerta, y un animal que descansa en la orilla puede morir si lo mueven.</string>
     <string name="hazard_stranding_step_tell">Avisa a los salvavidas, o a tu red local de varamientos de mamíferos marinos.</string>
+    <string name="hazard_carcass_step_touch">No la toques, y mantén lejos a los niños. Las focas muertas pueden transmitir enfermedades, como la leptospirosis, a personas y mascotas.</string>
+    <string name="hazard_carcass_step_take">Déjala donde está. Llevarse cualquier parte de una foca, aunque sea un hueso o un bigote, es ilegal bajo la Marine Mammal Protection Act.</string>
 
     <string name="hazard_shark_body">Reportaron un tiburón en el agua aquí en el último día.</string>
     <string name="hazard_shark_step_exit">Si estás en el agua, sal con calma y sin chapotear.</string>
@@ -894,6 +942,7 @@
     <string name="factor_warmth">la temperatura</string>
     <string name="factor_lifeguards">la falta de salvavidas</string>
     <string name="factor_underfoot">las piedras bajo los pies</string>
+    <string name="factor_gulls">las gaviotas</string>
     <string name="factor_air">la calidad del aire</string>
     <string name="factor_parking">el estacionamiento</string>
     <string name="factor_uv">el índice UV</string>

@@ -113,6 +113,27 @@
                     android:textAppearance="@style/TextAppearance.App.Body" />
             </LinearLayout>
 
+            <!-- Once out of it: what only the person who was caught can tell
+                 the lifeguards. -->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
+                android:text="@string/guide_tell_title"
+                android:textAppearance="@style/TextAppearance.App.Section" />
+
+            <LinearLayout
+                android:id="@+id/guideTellList"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical"
+                android:background="@drawable/bg_surface_card"
+                android:clipToOutline="true"
+                tools:targetApi="31"
+                android:divider="@drawable/divider_inset"
+                android:showDividers="middle" />
+
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

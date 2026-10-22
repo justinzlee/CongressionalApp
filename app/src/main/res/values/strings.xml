@@ -62,6 +62,8 @@
     <string name="language_system">System default</string>
     <string name="language_english">English</string>
     <string name="language_spanish">Español</string>
+    <string name="language_french" translatable="false">Français</string>
+    <string name="language_chinese" translatable="false">中文</string>
     <!-- Beach photos come from Wikimedia Commons under free licences, which
          ask to be credited wherever the pictures are shown. -->
     <string name="settings_footnote">Conditions come from public coastal forecasts. Beach photos are from Wikimedia Commons. Always follow the signs and flags at the beach.</string>
@@ -227,6 +229,13 @@
     <string name="guide_sign_4_body">A rippled lane running seaward through smooth water.</string>
     <string name="guide_caught_title">Caught in one?</string>
     <string name="guide_caught_body">Don\'t swim against it. Float, keep your head up, raise an arm and shout. If you can swim, go sideways towards the breaking waves, then in.</string>
+    <string name="guide_tell_title">Once you\'re out, tell a lifeguard</string>
+    <string name="guide_tell_1_title">Where it was</string>
+    <string name="guide_tell_1_body">The nearest tower number or a landmark, so they can flag it before it catches someone else.</string>
+    <string name="guide_tell_2_title">Anyone still out there</string>
+    <string name="guide_tell_2_body">A friend you were with, or someone who swam out to help you. Don\'t go back in for them.</string>
+    <string name="guide_tell_3_title">If you breathed in water</string>
+    <string name="guide_tell_3_body">Coughing, chest pain or trouble breathing can start hours later. Let them check you over.</string>
 
     <!-- Spotting someone drowning. The four signs are the instinctive drowning
          response: how a person looks in the last minute or so before they go
@@ -801,23 +810,51 @@
     <string name="rocks_clear">Remove my rating</string>
     <string name="rocks_cleared">Rating removed.</string>
 
+    <!-- Seagulls. Five steps rather than a number: nobody counts gulls, and
+         what changes from one step to the next is what to do with your food. -->
+    <string name="gulls_title">Seagulls</string>
+    <string name="gulls_sheet_title">How many seagulls?</string>
+    <string name="gulls_unrated_body">Nobody has said how many gulls are about here.</string>
+    <string name="gulls_rate_cta">Rate the seagulls</string>
+    <string name="gulls_level_none">None</string>
+    <string name="gulls_level_few">A few</string>
+    <string name="gulls_level_plenty">Plenty</string>
+    <string name="gulls_level_lots">Lots</string>
+    <string name="gulls_level_swarming">Swarming</string>
+    <string name="gulls_advice_none">Nothing to guard your lunch from.</string>
+    <string name="gulls_advice_few">Keep food packed away and they\'ll leave you be.</string>
+    <string name="gulls_advice_plenty">Keep food covered, and never feed them.</string>
+    <string name="gulls_advice_lots">They\'ll take food from your hand. Eat under an umbrella.</string>
+    <string name="gulls_advice_swarming">Picnic somewhere else today.</string>
+
+    <!-- Where a combined rating came from: the real-world starting point, and
+         whether this phone's own rating was weighed in with it. -->
+    <string name="source_osm">From OpenStreetMap</string>
+    <string name="source_osm_and_you">From OpenStreetMap and your rating</string>
+    <string name="source_ebird">From eBird</string>
+    <string name="source_ebird_and_you">From eBird and your rating</string>
+
     <!-- The hazard a high rating raises, in "What to watch for" and Alerts -->
     <string name="hazard_rocks_rated_body">Somebody rated the shore here %1$d out of 10 for rock — %2$s.</string>
     <string name="hazard_rocks_step_shoes">Wear something on your feet.</string>
     <string name="hazard_rocks_step_entry">Look for a clear channel of sand to get in and out of the water.</string>
+    <string name="hazard_rocks_estimate_body">The shore here comes out at %1$d out of 10 for rock — %2$s.</string>
 
     <!-- Wildlife sightings.
 
-         Groups, not species. Asking somebody standing on sand with a phone to
-         tell a seal from a sea lion got a narrow log of three animals and no
-         way at all to report the shark, the jellyfish bloom or the thing nobody
-         could name. Each label is paired with a bare noun below it for the
-         middle of a sentence, because "Something else washed up at Del Mar"
-         is not English and no amount of lower-casing makes it so. -->
+         Mostly groups, not species: a shark, a jellyfish bloom or the thing
+         nobody could name can all be reported. "Seal" covers sea lions too,
+         and is the one card that also asks whether the animal was alive or
+         dead. Each label is paired with a bare noun below it for the middle of
+         a sentence, because "Something else washed up at Del Mar" is not
+         English and no amount of lower-casing makes it so. -->
     <string name="sighting_species_shark">Shark</string>
     <string name="sighting_species_ray">Ray</string>
     <string name="sighting_species_fish">Fish</string>
     <string name="sighting_species_jellyfish">Jellyfish</string>
+    <string name="sighting_species_seal">Seal</string>
+    <string name="sighting_species_seal_dead">Dead seal</string>
+    <string name="sighting_species_seagull">Seagull</string>
     <string name="sighting_species_bird">Bird</string>
     <string name="sighting_species_other">Something else</string>
 
@@ -825,6 +862,9 @@
     <string name="sighting_noun_ray">ray</string>
     <string name="sighting_noun_fish">fish</string>
     <string name="sighting_noun_jellyfish">jellyfish</string>
+    <string name="sighting_noun_seal">seal</string>
+    <string name="sighting_noun_seal_dead">dead seal</string>
+    <string name="sighting_noun_seagull">seagull</string>
     <string name="sighting_noun_bird">bird</string>
     <string name="sighting_noun_other">animal</string>
 
@@ -833,14 +873,25 @@
     <string name="sighting_section">Seen here lately</string>
     <string name="sighting_add_cta">Report a sighting</string>
     <string name="sighting_none">Nothing reported here yet.</string>
+    <!-- The fortnight's count of sightings by group, above this phone's reports -->
+    <string name="source_inat">Last 2 weeks, from iNaturalist</string>
+    <string name="source_inat_and_you">Last 2 weeks, from iNaturalist and your reports</string>
+    <string name="wildlife_tally_with_dead">%1$s · %2$s</string>
+    <plurals name="wildlife_tally_dead">
+        <item quantity="one">%1$d dead</item>
+        <item quantity="other">%1$d dead</item>
+    </plurals>
 
     <string name="sighting_what">What did you see?</string>
     <string name="sighting_where">Where was it?</string>
     <string name="sighting_where_water">Out in the water</string>
     <string name="sighting_where_stranded">Washed up on the sand</string>
+    <string name="sighting_alive">Alive</string>
+    <string name="sighting_dead">Dead</string>
 
     <string name="sighting_stranded_title">This raises a warning</string>
     <string name="sighting_stranded_body">A washed-up animal shows at the top of this beach\'s alerts for the next two days, so anyone else who opens this beach sees it first. Keep well back from it yourself — a stranded animal is often just resting, and a frightened one bites.</string>
+    <string name="sighting_carcass_body">A dead seal shows at the top of this beach\'s alerts for the next two days, so anyone else who opens this beach sees it first. Don\'t touch it yourself — dead seals can carry diseases that spread to people and pets.</string>
 
     <string name="sighting_shark_title">This raises a warning</string>
     <string name="sighting_shark_body">A shark in the water shows at the top of this beach\'s alerts for the next day, so anyone else who opens this beach sees it before they get in.</string>
@@ -869,6 +920,7 @@
     <string name="sighting_share_subject_shark">Shark seen at %1$s</string>
     <string name="sighting_share_subject_seen">Wildlife at %1$s</string>
     <string name="sighting_share_stranded">Heads up — washed-up %1$s on the sand at %2$s. Keep at least 150 feet back, keep dogs away, and don\'t push it back into the water; that can kill a healthy animal. Report it to the lifeguards there or your local marine mammal stranding network.</string>
+    <string name="sighting_share_carcass">Heads up — %1$s on the sand at %2$s. Don\'t touch it and keep dogs away; dead seals can carry diseases that spread to people and pets. Report it to the lifeguards there or your local marine mammal stranding network.</string>
     <string name="sighting_share_shark">Heads up — shark reported in the water at %1$s. Tell the lifeguards there before anyone gets in.</string>
     <string name="sighting_share_water">Seen at %2$s: %1$s in the water.</string>
     <string name="sighting_share_none">No app on this device can send that.</string>
@@ -878,12 +930,16 @@
          Two sets of steps for a stranding. The Marine Mammal Protection Act
          distance and the do-not-refloat instruction are true of seals, sea
          lions, dolphins and whales and of nothing else, so a washed-up fish
-         gets the short version instead of a federal offence it is not. -->
+         gets the short version instead of a federal offence it is not. A dead
+         seal gets its own two steps in place of the ones that only make sense
+         for a live animal. -->
     <string name="hazard_stranding_body">Washed-up %1$s reported on the sand here. Keep well back from it.</string>
     <string name="hazard_stranding_step_back">Keep well back, and keep children back. For a seal, sea lion, dolphin or whale, stay at least 150 feet away — closer than that is an offence under the Marine Mammal Protection Act.</string>
     <string name="hazard_stranding_step_dogs">Keep dogs leashed and well away.</string>
     <string name="hazard_stranding_step_leave">Do not touch it, and do not push it back into the water. A jellyfish still stings once it is dead, and an animal resting on shore can be killed by being moved.</string>
     <string name="hazard_stranding_step_tell">Tell the lifeguards, or your local marine mammal stranding network.</string>
+    <string name="hazard_carcass_step_touch">Don\'t touch it, and keep children back. Dead seals can carry diseases, such as leptospirosis, that spread to people and pets.</string>
+    <string name="hazard_carcass_step_take">Leave it where it is. Taking any part of a seal, even a bone or a whisker, is illegal under the Marine Mammal Protection Act.</string>
 
     <string name="hazard_shark_body">A shark was reported in the water here within the last day.</string>
     <string name="hazard_shark_step_exit">If you are in the water, leave it calmly and steadily rather than thrashing.</string>
@@ -927,6 +983,7 @@
     <string name="factor_warmth">the temperature</string>
     <string name="factor_lifeguards">the lack of lifeguards</string>
     <string name="factor_underfoot">rocks underfoot</string>
+    <string name="factor_gulls">the seagulls</string>
     <string name="factor_air">air quality</string>
     <string name="factor_parking">parking</string>
     <string name="factor_uv">the UV index</string>

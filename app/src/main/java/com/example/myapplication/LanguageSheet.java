@@ -39,6 +39,10 @@ public final class LanguageSheet {
             SettingsActivity.LANGUAGE_ENGLISH, current, choice);
         bind(dialog, sheet, R.id.languageSpanish, R.id.languageSpanishTick,
             SettingsActivity.LANGUAGE_SPANISH, current, choice);
+        bind(dialog, sheet, R.id.languageFrench, R.id.languageFrenchTick,
+            SettingsActivity.LANGUAGE_FRENCH, current, choice);
+        bind(dialog, sheet, R.id.languageChinese, R.id.languageChineseTick,
+            SettingsActivity.LANGUAGE_CHINESE, current, choice);
 
         dialog.show();
     }

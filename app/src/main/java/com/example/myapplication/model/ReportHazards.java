@@ -3,7 +3,7 @@ package com.example.myapplication.model;
 import android.content.Context;
 
 import com.example.myapplication.R;
-import com.example.myapplication.data.RockRatingStore;
+import com.example.myapplication.data.CombinedReports;
 import com.example.myapplication.data.SightingStore;
 
 import java.util.ArrayList;
@@ -39,13 +39,20 @@ public final class ReportHazards {
         Sighting warning = new SightingStore(context)
             .activeWarningFor(beach.getId(), System.currentTimeMillis());
         if (warning != null) {
-            hazards.add(warning.isStranded()
-                ? strandingHazard(context, warning)
-                : sharkHazard(context));
+            if (!warning.isStranded()) {
+                hazards.add(sharkHazard(context));
+            } else if (warning.isDead()) {
+                hazards.add(carcassHazard(context, warning));
+            } else {
+                hazards.add(strandingHazard(context, warning));
+            }
         }
 
-        int rocks = new RockRatingStore(context).ratingFor(beach.getId());
-        if (RockRating.isHazard(rocks)) {
+        // The shore as the map and this phone's rating put it together, so a
+        // beach mapped as rock warns before anybody has rated it, and a rating
+        // from somebody standing on the sand can take that warning down.
+        CombinedReports.Rating rocks = new CombinedReports(context).rocks(beach.getId());
+        if (RockRating.isHazard(rocks.value)) {
             hazards.add(rockHazard(context, rocks));
         }
 
@@ -73,7 +80,7 @@ public final class ReportHazards {
      * now that the form has no card for them.
      */
     private static Hazard strandingHazard(Context context, Sighting stranding) {
-        String noun = context.getString(stranding.getSpecies().getNounRes());
+        String noun = context.getString(stranding.getNounRes());
         return new Hazard(
             HazardType.MARINE_LIFE,
             Severity.HIGH,
@@ -82,6 +89,30 @@ public final class ReportHazards {
                 context.getString(R.string.hazard_stranding_step_back),
                 context.getString(R.string.hazard_stranding_step_dogs),
                 context.getString(R.string.hazard_stranding_step_leave),
+                context.getString(R.string.hazard_stranding_step_tell)));
+    }
+
+    /**
+     * A dead seal on the sand.
+     *
+     * <p>Its own steps rather than the stranding ones, because two of those
+     * stop being true once the animal is dead: there is no point giving it
+     * room to rest, and no risk in it being refloated. What replaces them is
+     * the disease risk — leptospirosis and the like reach people and dogs
+     * through a carcass — and the law on taking any part of it home. The
+     * stranding network still wants the call: dead animals are how it tracks
+     * what is killing the live ones.
+     */
+    private static Hazard carcassHazard(Context context, Sighting carcass) {
+        String noun = context.getString(carcass.getNounRes());
+        return new Hazard(
+            HazardType.MARINE_LIFE,
+            Severity.HIGH,
+            context.getString(R.string.hazard_stranding_body, noun),
+            Arrays.asList(
+                context.getString(R.string.hazard_carcass_step_touch),
+                context.getString(R.string.hazard_stranding_step_dogs),
+                context.getString(R.string.hazard_carcass_step_take),
                 context.getString(R.string.hazard_stranding_step_tell)));
     }
 
@@ -110,12 +141,18 @@ public final class ReportHazards {
      * Ground you cannot cross barefoot. Never worse than {@link
      * Severity#MODERATE} — see {@link RockRating#isHazard}.
      */
-    private static Hazard rockHazard(Context context, int rating) {
+    private static Hazard rockHazard(Context context, CombinedReports.Rating rocks) {
+        String band = context.getString(RockRating.labelRes(rocks.value))
+            .toLowerCase(Locale.getDefault());
+        // "Somebody rated" only when that is the whole story; once the map has
+        // a say, the number is the combination and is described as one.
+        String body = rocks.fromBase
+            ? context.getString(R.string.hazard_rocks_estimate_body, rocks.value, band)
+            : context.getString(R.string.hazard_rocks_rated_body, rocks.value, band);
         return new Hazard(
             HazardType.ROCKS_AND_STRUCTURES,
             Severity.MODERATE,
-            context.getString(R.string.hazard_rocks_rated_body, rating,
-                context.getString(RockRating.labelRes(rating)).toLowerCase(Locale.getDefault())),
+            body,
             Arrays.asList(
                 context.getString(R.string.hazard_rocks_step_shoes),
                 context.getString(R.string.hazard_rocks_step_entry)));

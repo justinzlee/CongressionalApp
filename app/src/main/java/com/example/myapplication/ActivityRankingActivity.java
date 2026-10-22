@@ -20,7 +20,7 @@ import com.example.myapplication.data.BeachRepository;
 import com.example.myapplication.data.LastKnownLocation;
 import com.example.myapplication.data.LiveReadings;
 import com.example.myapplication.data.RankingScope;
-import com.example.myapplication.data.RockRatingStore;
+import com.example.myapplication.data.CombinedReports;
 import com.example.myapplication.location.LocationService;
 import com.example.myapplication.model.Activity;
 import com.example.myapplication.model.ActivityFit;
@@ -394,7 +394,7 @@ public class ActivityRankingActivity extends AppCompatActivity {
      * list would be a claim rather than an omission.
      */
     private List<ActivityFit> rank() {
-        RockRatingStore rocks = new RockRatingStore(this);
+        CombinedReports reports = new CombinedReports(this);
         LifeguardClient towers = new LifeguardClient(this);
 
         List<ActivityFit> fits = new ArrayList<>();
@@ -407,7 +407,10 @@ public class ActivityRankingActivity extends AppCompatActivity {
             in.air = air[i];
             in.water = water[i];
             in.parking = parking[i];
-            in.rockRating = rocks.ratingFor(beach.getId());
+            // The same combined ratings the beach's own page shows, from the
+            // caches that page fills.
+            in.rockRating = reports.rocks(beach.getId()).value;
+            in.gullRating = reports.gulls(beach.getId()).value;
             // The towers its own page found, from the cache that page fills,
             // so a beach patrolled on its page is patrolled here too.
             in.guarded = ActivityScorer.guardedState(beach, towers.cachedTowers(beach.getId()));

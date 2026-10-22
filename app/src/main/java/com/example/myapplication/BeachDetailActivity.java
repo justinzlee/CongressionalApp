@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.core.widget.ImageViewCompat;
+import androidx.core.widget.TextViewCompat;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
@@ -33,7 +34,9 @@ import com.example.myapplication.data.BeachPhotoStore;
 import com.example.myapplication.data.BeachRepository;
 import com.example.myapplication.data.LastKnownLocation;
 import com.example.myapplication.data.LiveReadings;
+import com.example.myapplication.data.CombinedReports;
 import com.example.myapplication.data.RockRatingStore;
+import com.example.myapplication.data.SeagullRatingStore;
 import com.example.myapplication.data.SavedBeachStore;
 import com.example.myapplication.data.SightingStore;
 import com.google.android.material.button.MaterialButton;
@@ -49,9 +52,12 @@ import com.example.myapplication.model.ActivityScorer;
 import com.example.myapplication.model.AirQuality;
 import com.example.myapplication.model.ParkingSummary;
 import com.example.myapplication.model.RockRating;
+import com.example.myapplication.model.SeagullRating;
 import com.example.myapplication.model.SafetyLevel;
 import com.example.myapplication.model.Severity;
 import com.example.myapplication.model.Sighting;
+import com.example.myapplication.model.SightingSpecies;
+import com.example.myapplication.model.WildlifeTally;
 import com.example.myapplication.model.Tide;
 import com.example.myapplication.model.WaterQuality;
 import com.example.myapplication.model.TideForecast;
@@ -71,6 +77,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.TimeZone;
 
 /**
@@ -160,6 +167,8 @@ public class BeachDetailActivity extends AppCompatActivity {
     private File pendingCapture;
 
     private RockRatingStore rockStore;
+    private SeagullRatingStore gullStore;
+    private CombinedReports combined;
     private SightingStore sightingStore;
 
     private AirQualityClient airClient;
@@ -246,9 +255,16 @@ public class BeachDetailActivity extends AppCompatActivity {
         bindMap();
 
         rockStore = new RockRatingStore(this);
+        gullStore = new SeagullRatingStore(this);
+        combined = new CombinedReports(this);
+        // The real-world starting points for rocks, gulls and wildlife. Each
+        // redraws its card when it lands; until then the cards show this
+        // phone's reports alone, or whatever an earlier visit cached.
+        combined.refresh(beach, this::onStartingPointsChanged);
         sightingStore = new SightingStore(this);
         findViewById(R.id.detailRocksCard).setOnClickListener(
             v -> startActivity(RockRatingActivity.intentFor(this, beach.getId())));
+        findViewById(R.id.detailGullsCard).setOnClickListener(v -> rateGulls());
         findViewById(R.id.detailSightingCta).setOnClickListener(
             v -> startActivity(SightingActivity.intentFor(this, beach.getId())));
         // The rows themselves are drawn in onResume, which also runs on the way
@@ -329,6 +345,7 @@ public class BeachDetailActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         bindRocks();
+        bindGulls();
         bindSightings();
         bindHazards();
         // A rocks rating filed on the way back moves two of the four scores:
@@ -356,12 +373,13 @@ public class BeachDetailActivity extends AppCompatActivity {
     }
 
     /**
-     * The rocks-underfoot card: the rating if this beach has one, and an
-     * invitation to give it one either way.
+     * The rocks-underfoot card: what the shore comes out as once the map's
+     * starting point and this phone's rating are put together, and an
+     * invitation to rate it either way.
      */
     private void bindRocks() {
-        int rating = rockStore.ratingFor(beach.getId());
-        boolean rated = RockRating.isRated(rating);
+        CombinedReports.Rating rocks = combined.rocks(beach.getId());
+        boolean rated = rocks.isRated();
 
         TextView value = findViewById(R.id.detailRocksValue);
         TextView body = findViewById(R.id.detailRocksBody);
@@ -372,29 +390,23 @@ public class BeachDetailActivity extends AppCompatActivity {
         value.setVisibility(rated ? View.VISIBLE : View.GONE);
         adviceLine.setVisibility(rated ? View.VISIBLE : View.GONE);
         ((TextView) findViewById(R.id.detailRocksCta)).setText(
-            rated ? R.string.rocks_rerate_cta : R.string.rocks_rate_cta);
+            rocks.fromUser ? R.string.rocks_rerate_cta : R.string.rocks_rate_cta);
+        bindSource(findViewById(R.id.detailRocksSource), rocks);
+        bindRatedWhen(when, rocks.fromUser ? rockStore.ratedAt(beach.getId()) : 0);
 
         if (!rated) {
             body.setText(R.string.rocks_unrated_body);
-            when.setVisibility(View.GONE);
             photo.setVisibility(View.GONE);
             return;
         }
 
-        value.setText(getString(R.string.rocks_value, rating));
-        body.setText(RockRating.labelRes(rating));
-        adviceLine.setText(RockRating.adviceRes(rating));
+        value.setText(getString(R.string.rocks_value, rocks.value));
+        body.setText(RockRating.labelRes(rocks.value));
+        adviceLine.setText(RockRating.adviceRes(rocks.value));
 
-        long ratedAt = rockStore.ratedAt(beach.getId());
-        if (ratedAt > 0) {
-            when.setVisibility(View.VISIBLE);
-            when.setText(getString(R.string.rocks_rated_when,
-                SightingSheet.relativeTime(this, ratedAt)));
-        } else {
-            when.setVisibility(View.GONE);
-        }
-
-        File evidence = rockStore.photoFor(beach.getId());
+        // The photograph is the evidence for this phone's own rating, so it
+        // goes with that rating and not with a number the map supplied.
+        File evidence = rocks.fromUser ? rockStore.photoFor(beach.getId()) : null;
         if (evidence == null) {
             photo.setVisibility(View.GONE);
         } else {
@@ -403,18 +415,130 @@ public class BeachDetailActivity extends AppCompatActivity {
         }
     }
 
-    /** The wildlife log for this beach, newest first. */
+    /** The seagulls card: eBird's count and this phone's rating, put together. */
+    private void bindGulls() {
+        CombinedReports.Rating gulls = combined.gulls(beach.getId());
+        boolean rated = gulls.isRated();
+
+        TextView value = findViewById(R.id.detailGullsValue);
+        TextView body = findViewById(R.id.detailGullsBody);
+
+        value.setVisibility(rated ? View.VISIBLE : View.GONE);
+        ((TextView) findViewById(R.id.detailGullsCta)).setText(
+            gulls.fromUser ? R.string.rocks_rerate_cta : R.string.gulls_rate_cta);
+        // The nobody-has-said line reads at the rocks card's size; the advice
+        // under a rating is secondary to the step named beside the title.
+        TextViewCompat.setTextAppearance(body, rated
+            ? R.style.TextAppearance_App_Subtitle : R.style.TextAppearance_App_Body);
+        bindSource(findViewById(R.id.detailGullsSource), gulls);
+        bindRatedWhen(findViewById(R.id.detailGullsWhen),
+            gulls.fromUser ? gullStore.ratedAt(beach.getId()) : 0);
+
+        if (!rated) {
+            body.setText(R.string.gulls_unrated_body);
+            return;
+        }
+        value.setText(SeagullRating.labelRes(gulls.value));
+        body.setText(SeagullRating.adviceRes(gulls.value));
+    }
+
+    /** "From OpenStreetMap", "From eBird and your rating"; hidden for a rating that is only this phone's. */
+    private static void bindSource(TextView line, CombinedReports.Rating rating) {
+        line.setVisibility(rating.sourceRes == 0 ? View.GONE : View.VISIBLE);
+        if (rating.sourceRes != 0) line.setText(rating.sourceRes);
+    }
+
+    /** "Rated 3 days ago" for this phone's own rating; hidden when there is none. */
+    private void bindRatedWhen(TextView when, long ratedAt) {
+        when.setVisibility(ratedAt > 0 ? View.VISIBLE : View.GONE);
+        if (ratedAt > 0) {
+            when.setText(getString(R.string.rocks_rated_when,
+                SightingSheet.relativeTime(this, ratedAt)));
+        }
+    }
+
+    /**
+     * Redraws everything a starting point can move, as each one arrives from
+     * the network. The hazards and scores are included because a rocky shore
+     * on the map raises one and moves the other, exactly as a rating does.
+     */
+    private void onStartingPointsChanged() {
+        if (isFinishing() || isDestroyed()) return;
+        bindRocks();
+        bindGulls();
+        bindSightings();
+        bindHazards();
+        bindGoodFor();
+    }
+
+    private void rateGulls() {
+        SeagullSheet.show(this, gullStore.ratingFor(beach.getId()), new SeagullSheet.Choice() {
+            @Override
+            public void onRated(int rating) {
+                gullStore.save(beach.getId(), rating);
+                bindGulls();
+                // Gulls go after picnics, so the picnic score moves with them.
+                bindGoodFor();
+            }
+
+            @Override
+            public void onCleared() {
+                gullStore.clear(beach.getId());
+                bindGulls();
+                bindGoodFor();
+            }
+        });
+    }
+
+    /**
+     * The last fortnight's sightings counted by group — iNaturalist's and this
+     * phone's together — and under them this phone's own reports, newest
+     * first, which are the ones that can be shared or taken back.
+     */
     private void bindSightings() {
         List<Sighting> sightings = sightingStore.forBeach(beach.getId());
+        WildlifeTally tally = combined.wildlife(beach.getId());
+        bindTally(tally);
 
         ViewGroup list = findViewById(R.id.detailSightingsList);
         list.removeAllViews();
-        findViewById(R.id.detailSightingsEmpty)
-            .setVisibility(sightings.isEmpty() ? View.VISIBLE : View.GONE);
+        boolean counted = combined.wildlifeHasBase(beach.getId());
+        findViewById(R.id.detailSightingsEmpty).setVisibility(
+            sightings.isEmpty() && !counted ? View.VISIBLE : View.GONE);
 
         LayoutInflater inflater = LayoutInflater.from(this);
         for (Sighting sighting : sightings) {
             list.addView(buildSightingRow(inflater, list, sighting));
+        }
+    }
+
+    /**
+     * The fortnight's count, shown only when iNaturalist has contributed to it.
+     * A count made of nothing but this phone's reports would repeat the rows
+     * listed straight underneath.
+     */
+    private void bindTally(WildlifeTally tally) {
+        ViewGroup rows = findViewById(R.id.detailWildlifeTally);
+        TextView source = findViewById(R.id.detailWildlifeSource);
+        rows.removeAllViews();
+        boolean show = combined.wildlifeHasBase(beach.getId());
+        rows.setVisibility(show ? View.VISIBLE : View.GONE);
+        source.setVisibility(show ? View.VISIBLE : View.GONE);
+        if (!show) return;
+        source.setText(sightingStore.forBeach(beach.getId()).isEmpty()
+            ? R.string.source_inat : R.string.source_inat_and_you);
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        for (SightingSpecies group : tally.groupsBySize()) {
+            View row = inflater.inflate(R.layout.item_wildlife_tally, rows, false);
+            ((ImageView) row.findViewById(R.id.tallyIcon)).setImageResource(group.getIconRes());
+            ((TextView) row.findViewById(R.id.tallyLabel)).setText(group.getLabelRes());
+            String count = String.format(Locale.getDefault(), "%d", tally.count(group));
+            int dead = group == SightingSpecies.SEAL ? tally.getDeadSeals() : 0;
+            ((TextView) row.findViewById(R.id.tallyCount)).setText(dead == 0 ? count
+                : getString(R.string.wildlife_tally_with_dead, count,
+                    getResources().getQuantityString(R.plurals.wildlife_tally_dead, dead, dead)));
+            rows.addView(row);
         }
     }
 
@@ -435,7 +559,7 @@ public class BeachDetailActivity extends AppCompatActivity {
         ImageViewCompat.setImageTintList(icon, ColorStateList.valueOf(color));
 
         ((TextView) row.findViewById(R.id.sightingRowSpecies))
-            .setText(sighting.getSpecies().getLabelRes());
+            .setText(sighting.getLabelRes());
 
         TextView tag = row.findViewById(R.id.sightingRowTag);
         tag.setText(stranded ? R.string.sighting_tag_stranded : R.string.sighting_tag_water);
@@ -1152,7 +1276,8 @@ public class BeachDetailActivity extends AppCompatActivity {
         in.air = air;
         in.water = water;
         in.parking = parking;
-        in.rockRating = rockStore.ratingFor(beach.getId());
+        in.rockRating = combined.rocks(beach.getId()).value;
+        in.gullRating = combined.gulls(beach.getId()).value;
         in.guarded = ActivityScorer.guardedState(beach, mappedTowers);
         in.worstHazard = ActivityScorer.worstOf(ConditionHazards.merged(this, beach));
         return in;

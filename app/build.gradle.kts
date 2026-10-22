@@ -1,5 +1,15 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
+}
+
+// Keys that must not reach the repository live in local.properties, which is
+// git-ignored. A build without one still works; the feature it unlocks is
+// simply off (see EBirdClient).
+val localProperties = Properties().apply {
+    val file = rootProject.file("local.properties")
+    if (file.exists()) file.inputStream().use { load(it) }
 }
 
 android {
@@ -14,6 +24,13 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "EBIRD_API_KEY",
+            "\"" + localProperties.getProperty("ebird.apiKey", "") + "\"")
+    }
+
+    buildFeatures {
+        buildConfig = true
     }
 
     buildTypes {

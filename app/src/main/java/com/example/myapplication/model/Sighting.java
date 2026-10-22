@@ -1,14 +1,17 @@
 package com.example.myapplication.model;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+
+import com.example.myapplication.R;
 
 import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 /**
  * One animal somebody logged at a beach: what it was, when, optionally a
- * photograph, and whether it was washed up on the shore rather than out
- * swimming.
+ * photograph, whether it was washed up on the shore rather than out swimming,
+ * and — for a seal — whether it was alive or dead.
  *
  * <p>Those two fields together are the whole difference between the two things
  * this record does. A dolphin off the break is good news and belongs on the
@@ -53,16 +56,22 @@ public final class Sighting {
     private final String beachId;
     private final SightingSpecies species;
     private final boolean stranded;
+    private final boolean dead;
     @Nullable private final String note;
     @Nullable private final String photoPath;
     private final long timeMillis;
 
     public Sighting(String id, String beachId, SightingSpecies species, boolean stranded,
-                    @Nullable String note, @Nullable String photoPath, long timeMillis) {
+                    boolean dead, @Nullable String note, @Nullable String photoPath,
+                    long timeMillis) {
         this.id = id;
         this.beachId = beachId;
         this.species = species;
         this.stranded = stranded;
+        // Only the seal card asks. A dead flag on anything else could only
+        // have come from a hand-edited or future record, and would put "dead"
+        // in front of a noun the form never offered it for.
+        this.dead = dead && species == SightingSpecies.SEAL;
         this.note = note;
         this.photoPath = photoPath;
         this.timeMillis = timeMillis;
@@ -75,6 +84,21 @@ public final class Sighting {
 
     /** On the sand rather than in the water: the case that warrants a warning. */
     public boolean isStranded() { return stranded; }
+
+    /** A seal reported dead. Always false for every other group. */
+    public boolean isDead() { return dead; }
+
+    /** The card label for this report: "Seal", or "Dead seal". */
+    @StringRes
+    public int getLabelRes() {
+        return dead ? R.string.sighting_species_seal_dead : species.getLabelRes();
+    }
+
+    /** The mid-sentence noun for this report: "seal", or "dead seal". */
+    @StringRes
+    public int getNounRes() {
+        return dead ? R.string.sighting_noun_seal_dead : species.getNounRes();
+    }
 
     @Nullable public String getNote() { return note; }
 
